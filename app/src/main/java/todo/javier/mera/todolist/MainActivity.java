@@ -2,24 +2,37 @@ package todo.javier.mera.todolist;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import todo.javier.mera.todolist.adapters.TodoListAdapter;
+import todo.javier.mera.todolist.dialogs.DialogView;
+import todo.javier.mera.todolist.dialogs.FragmentAddTodoList;
 import todo.javier.mera.todolist.fragments.FragmentHome;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+    implements DialogView {
+
+    public static final String FRAGMENT_HOME_TAG = "FRAGMENT_HOME";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ButterKnife.bind(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.home_text));
 
@@ -30,15 +43,19 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         fragmentTransaction
-            .add(R.id.fragmentContainer, fragment)
+            .add(R.id.fragmentContainer, fragment, FRAGMENT_HOME_TAG)
             .commit();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+                FragmentAddTodoList fragment = new FragmentAddTodoList();
+                fragment.show(getSupportFragmentManager(), "add_list_dialog");
+
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
             }
         });
     }
@@ -63,5 +80,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onAddTodoList(String todoListTitle) {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentHome fragment = (FragmentHome) fragmentManager.findFragmentByTag(FRAGMENT_HOME_TAG);
+
+        if(null != fragment) {
+
+            fragment.addTodoList(todoListTitle);
+        }
     }
 }
