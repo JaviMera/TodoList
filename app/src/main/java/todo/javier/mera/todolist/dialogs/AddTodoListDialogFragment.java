@@ -21,7 +21,7 @@ import todo.javier.mera.todolist.R;
  * Created by Javier on 11/28/2016.
  */
 
-public class FragmentAddTodoList extends DialogFragment {
+public class AddTodoListDialogFragment extends DialogFragment {
 
     private MainActivity mParent;
     private DialogView mListener;

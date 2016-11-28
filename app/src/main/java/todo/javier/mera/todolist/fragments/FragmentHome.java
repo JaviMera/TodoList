@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.TodoListAdapter;
+import todo.javier.mera.todolist.exceptions.EmptyTodoTitleException;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class FragmentHome extends Fragment {
@@ -63,7 +64,12 @@ public class FragmentHome extends Fragment {
         return view;
     }
 
-    public void addTodoList(String todoListTitle) {
+    public void addTodoList(String todoListTitle) throws EmptyTodoTitleException {
+
+        if(todoListTitle.isEmpty()) {
+
+            throw new EmptyTodoTitleException();
+        }
 
         TodoList todoList = new TodoList(todoListTitle);
         TodoListAdapter adapter = (TodoListAdapter) mRecyclerView.getAdapter();

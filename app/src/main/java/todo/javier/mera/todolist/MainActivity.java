@@ -6,19 +6,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import todo.javier.mera.todolist.adapters.TodoListAdapter;
+import todo.javier.mera.todolist.dialogs.AddTodoListDialogFragment;
 import todo.javier.mera.todolist.dialogs.DialogView;
-import todo.javier.mera.todolist.dialogs.FragmentAddTodoList;
+import todo.javier.mera.todolist.exceptions.EmptyTodoTitleException;
 import todo.javier.mera.todolist.fragments.FragmentHome;
 
 public class MainActivity extends AppCompatActivity
@@ -51,7 +47,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                FragmentAddTodoList fragment = new FragmentAddTodoList();
+                AddTodoListDialogFragment fragment = new AddTodoListDialogFragment();
                 fragment.show(getSupportFragmentManager(), "add_list_dialog");
 
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -90,7 +86,15 @@ public class MainActivity extends AppCompatActivity
 
         if(null != fragment) {
 
-            fragment.addTodoList(todoListTitle);
+            try {
+
+                fragment.addTodoList(todoListTitle);
+
+            } catch (EmptyTodoTitleException e) {
+
+                // TODO: add behavior to display a dialog to the user, saying that a todo list
+                // without a name can't be added
+            }
         }
     }
 }
