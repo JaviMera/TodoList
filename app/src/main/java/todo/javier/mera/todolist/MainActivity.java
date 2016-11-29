@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import butterknife.ButterKnife;
 import todo.javier.mera.todolist.dialogs.AddTodoListDialogFragment;
 import todo.javier.mera.todolist.dialogs.DialogView;
-import todo.javier.mera.todolist.exceptions.EmptyTodoTitleException;
 import todo.javier.mera.todolist.fragments.FragmentHome;
 
 public class MainActivity extends AppCompatActivity
@@ -86,15 +85,7 @@ public class MainActivity extends AppCompatActivity
 
         if(null != fragment) {
 
-            try {
-
-                fragment.addTodoList(todoListTitle);
-
-            } catch (EmptyTodoTitleException e) {
-
-                // TODO: add behavior to display a dialog to the user, saying that a todo list
-                // without a name can't be added
-            }
+            fragment.addTodoList(todoListTitle);
         }
     }
 }

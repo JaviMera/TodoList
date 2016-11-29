@@ -59,7 +59,7 @@ public class AddTodoListDialogFragment extends DialogFragment {
 
         if(name.isEmpty()) {
 
-            mNameEditText.setHint("Enter a valid name...");
+            mNameEditText.setHint(R.string.dialog_todo_list_hint_error);
 
             int errorColor = ContextCompat.getColor(mParent, android.R.color.holo_red_light);
             mNameEditText.setHintTextColor(errorColor);

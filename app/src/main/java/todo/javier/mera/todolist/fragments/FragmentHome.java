@@ -2,6 +2,7 @@ package todo.javier.mera.todolist.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.BinderThread;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -11,12 +12,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.TodoListAdapter;
-import todo.javier.mera.todolist.exceptions.EmptyTodoTitleException;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class FragmentHome extends Fragment {
@@ -25,6 +26,9 @@ public class FragmentHome extends Fragment {
 
     @BindView(R.id.todoListsRecyclerView)
     RecyclerView mRecyclerView;
+
+    @BindView(R.id.recyclerViewEmptyText)
+    TextView mRecyclerEmptyText;
 
     public static FragmentHome newInstance() {
 
@@ -64,11 +68,11 @@ public class FragmentHome extends Fragment {
         return view;
     }
 
-    public void addTodoList(String todoListTitle) throws EmptyTodoTitleException {
+    public void addTodoList(String todoListTitle) {
 
-        if(todoListTitle.isEmpty()) {
+        if(mRecyclerEmptyText.getVisibility() == View.VISIBLE) {
 
-            throw new EmptyTodoTitleException();
+            mRecyclerEmptyText.setVisibility(View.INVISIBLE);
         }
 
         TodoList todoList = new TodoList(todoListTitle);

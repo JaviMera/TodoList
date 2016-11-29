@@ -12,7 +12,7 @@ public class TodoList {
         mTitle = title;
     }
 
-    public String getmTitle() {
+    public String getTitle() {
         return mTitle;
     }
 }

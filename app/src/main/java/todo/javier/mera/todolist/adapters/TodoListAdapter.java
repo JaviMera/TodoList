@@ -37,6 +37,11 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
         return mItems.size();
     }
 
+    public TodoList getItem(int position) {
+
+        return mItems.get(position);
+    }
+
     @Override
     public void onBindViewHolder(TodoListViewHolder holder, int position) {
 
@@ -61,7 +66,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
 
         public void bind(TodoList todoList) {
 
-            mTitle.setText(todoList.getmTitle());
+            mTitle.setText(todoList.getTitle());
         }
     }
 }
