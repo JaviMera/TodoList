@@ -10,6 +10,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -61,6 +63,8 @@ public class AddTodoListDialogFragment extends DialogFragment {
 
             int errorColor = ContextCompat.getColor(mParent, android.R.color.holo_red_light);
             mNameEditText.setHintTextColor(errorColor);
+            Animation shake = AnimationUtils.loadAnimation(mParent, R.anim.shake);
+            mNameEditText.startAnimation(shake);
         }
         else {
 
