@@ -2,8 +2,10 @@ package todo.javier.mera.todolist.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -52,7 +54,18 @@ public class AddTodoListDialogFragment extends DialogFragment {
     public void onAddButtonClick(View view) {
 
         String name = mNameEditText.getText().toString();
-        mListener.onAddTodoList(name);
-        dismiss();
+
+        if(name.isEmpty()) {
+
+            mNameEditText.setHint("Enter a valid name...");
+
+            int errorColor = ContextCompat.getColor(mParent, android.R.color.holo_red_light);
+            mNameEditText.setHintTextColor(errorColor);
+        }
+        else {
+
+            mListener.onAddTodoList(name);
+            dismiss();
+        }
     }
 }
