@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.model.TodoList;
@@ -56,17 +57,20 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoLi
 
     class TodoListViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mTitle;
+        TextView mTodolistTitle;
+        TextView mTodolistItems;
 
         public TodoListViewHolder(View itemView) {
             super(itemView);
 
-            mTitle = (TextView) itemView.findViewById(R.id.todoTitleView);
+            mTodolistTitle = (TextView) itemView.findViewById(R.id.todoTitleView);
+            mTodolistItems = (TextView) itemView.findViewById(R.id.todoItemsView);
         }
 
         public void bind(TodoList todoList) {
 
-            mTitle.setText(todoList.getTitle());
+            mTodolistTitle.setText(todoList.getTitle());
+            mTodolistItems.setText(String.format(Locale.ENGLISH, "%d items...", todoList.getItemsCount()));
         }
     }
 }

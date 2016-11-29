@@ -11,16 +11,21 @@
         android:id="@+id/todoTitleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="15dp"
         tools:text="This is a todo list title"
         android:textSize="18sp"
         android:textColor="@android:color/white"
         android:background="@color/colorPrimary"/>
 
     <TextView
+        android:id="@+id/todoItemsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center"
-        tools:text="This will be the fake content"/>
+        android:gravity="left|center"
+        android:paddingTop="15dp"
+        android:paddingLeft="15dp"
+        tools:text="0 items..."
+        android:textSize="16sp"
+        android:textStyle="italic"/>
 </LinearLayout>

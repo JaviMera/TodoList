@@ -64,6 +64,20 @@ public class MainActivityUITest {
         onView(withId(expectedView)).check(matches(isDisplayed()));
     }
 
+
+    @Test
+    public void addInvalidTodolistDisplaysError() throws Exception {
+
+        // Arrange
+        String expectedErrorMessage = activityRule.getActivity().getString(R.string.dialog_todo_list_hint_error);
+        // Act
+        onView(withId(R.id.fab)).perform(click());
+        onView(withId(R.id.todoListAddButton)).perform(click());
+
+        // Assert
+        onView(withId(R.id.todoListNameEditText)).check(matches(withHint(expectedErrorMessage)));
+    }
+
     @Test
     public void addValidTodolistIsDisplayedInHomeScreen() throws Exception {
 
@@ -78,19 +92,6 @@ public class MainActivityUITest {
         // Assert
         onView(withId(R.id.todoListsRecyclerView)).check(matches(new RecyclerViewMatcher(todoListName)));
         onView(withId(R.id.recyclerViewEmptyText)).check(matches(not(isDisplayed())));
-    }
-
-    @Test
-    public void addInvalidTodolistDisplaysError() throws Exception {
-
-        // Arrange
-        String expectedErrorMessage = activityRule.getActivity().getString(R.string.dialog_todo_list_hint_error);
-        // Act
-        onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.todoListAddButton)).perform(click());
-
-        // Assert
-        onView(withId(R.id.todoListNameEditText)).check(matches(withHint(expectedErrorMessage)));
     }
 
     private class TitleMatcher extends BaseMatcher {
