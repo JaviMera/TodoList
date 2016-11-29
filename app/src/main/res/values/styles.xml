@@ -22,6 +22,8 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <!-- Add To-do List Dialog Fragment -->
+
     <style name="DialogTodolistTitle" parent="DialogTodoList">
         <item name="android:textSize">@dimen/dialog_todo_list_title</item>
         <item name="android:padding">@dimen/dialog_todo_list_pad</item>
@@ -57,5 +59,25 @@
 
     <style name="TodolistAddButton" parent="DialogTodolistButton">
         <item name="android:text">@string/dialog_todo_list_add_text</item>
+    </style>
+
+    <!-- To-do list item -->
+    <style name="TodolistItemView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ItemTitle" parent="TodolistItemView">
+        <item name="android:padding">@dimen/item_title_pad</item>
+        <item name="android:textSize">@dimen/item_title_size</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/item_title_background</item>
+    </style>
+
+    <style name="ItemBody" parent="TodolistItemView">
+        <item name="android:padding">@dimen/item_body_pad</item>
+        <item name="android:textSize">@dimen/item_body_size</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:background">@drawable/item_body_background</item>
     </style>
 </resources>

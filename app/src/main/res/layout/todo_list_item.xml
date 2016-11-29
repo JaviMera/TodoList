@@ -9,22 +9,11 @@
 
     <TextView
         android:id="@+id/todoTitleView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        tools:text="This is a todo list title"
-        android:textSize="20sp"
-        android:textColor="@android:color/white"
-        android:background="@drawable/item_title_background" />
+        style="@style/ItemTitle"
+        tools:text="This is a todo list title"/>
 
     <TextView
         android:id="@+id/todoItemsView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left|center"
-        android:padding="20dp"
-        tools:text="0 items..."
-        android:textSize="16sp"
-        android:textStyle="italic"
-        android:background="@drawable/item_body_background"/>
+        style="@style/ItemBody"
+        tools:text="0 items..."/>
 </LinearLayout>

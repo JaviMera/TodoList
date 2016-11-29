@@ -3,4 +3,8 @@
     <dimen name="dialog_todo_list_pad">10dp</dimen>
     <dimen name="dialog_todo_list_margin">10dp</dimen>
     <dimen name="zero">0dp</dimen>
+    <dimen name="item_title_pad">15dp</dimen>
+    <dimen name="item_title_size">10sp</dimen>
+    <dimen name="item_body_pad">20dp</dimen>
+    <dimen name="item_body_size">16sp</dimen>
 </resources>
