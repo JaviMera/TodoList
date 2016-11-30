@@ -29,4 +29,9 @@ public class FragmentRecyclerPresenter {
 
         mView.setLayoutManager(context);
     }
+
+    public void setFixedSize(boolean isFixed) {
+
+        mView.setFixedSize(isFixed);
+    }
 }

@@ -68,4 +68,17 @@ public class FragmentRecyclerPresenterTest {
         // Assert
         Mockito.verify(mView).setLayoutManager(context);
     }
+
+    @Test
+    public void setFixedSize() throws Exception {
+
+        // Arrange
+        boolean isFixed = true;
+
+        // Act
+        mPresenter.setFixedSize(isFixed);
+
+        // Assert
+        Mockito.verify(mView).setFixedSize(isFixed);
+    }
 }

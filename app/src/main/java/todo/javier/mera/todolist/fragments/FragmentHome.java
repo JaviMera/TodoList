@@ -58,16 +58,12 @@ public class FragmentHome extends Fragment
 
         ButterKnife.bind(this, view);
 
-        RecyclerView.ItemAnimator animator = new FlipInTopXAnimator(
-
-            new OvershootInterpolator()
-        );
-
+        RecyclerView.ItemAnimator animator = new FlipInTopXAnimator();
         mPresenter.setItemAnimator(animator);
+
         mPresenter.setAdapter(mParent);
         mPresenter.setLayoutManager(mParent);
-
-        mRecyclerView.setHasFixedSize(true);
+        mPresenter.setFixedSize(true);
 
         return view;
     }
@@ -81,7 +77,8 @@ public class FragmentHome extends Fragment
 
         TodoList todoList = new TodoList(todoListTitle);
         TodolistAdapterPortrait adapter = (TodolistAdapterPortrait) mRecyclerView.getAdapter();
-        adapter.addItem(todoList);
+        int scrollto = adapter.addItem(todoList);
+        mRecyclerView.smoothScrollToPosition(scrollto);
     }
 
     @Override
@@ -107,5 +104,11 @@ public class FragmentHome extends Fragment
         );
 
         mRecyclerView.setLayoutManager(layoutManager);
+    }
+
+    @Override
+    public void setFixedSize(boolean isFixed) {
+
+        mRecyclerView.setHasFixedSize(isFixed);
     }
 }
