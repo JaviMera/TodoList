@@ -11,7 +11,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import todo.javier.mera.todolist.adapters.TodoListAdapter;
 import todo.javier.mera.todolist.model.TodoList;
 
 import static android.support.test.espresso.Espresso.onView;
