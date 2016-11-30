@@ -1,23 +1,18 @@
 package todo.javier.mera.todolist;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import butterknife.ButterKnife;
-import todo.javier.mera.todolist.dialogs.AddTodoListDialogFragment;
-import todo.javier.mera.todolist.dialogs.DialogView;
 import todo.javier.mera.todolist.fragments.FragmentHome;
 
-public class MainActivity extends AppCompatActivity
-    implements DialogView {
+public class MainActivity extends AppCompatActivity {
 
     public static final String FRAGMENT_HOME_TAG = "FRAGMENT_HOME";
 
@@ -62,16 +57,5 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onAddTodoList(String todoListTitle) {
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentHome fragment = (FragmentHome) fragmentManager.findFragmentByTag(FRAGMENT_HOME_TAG);
-
-        if(null != fragment) {
-
-        }
     }
 }

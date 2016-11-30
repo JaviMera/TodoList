@@ -102,6 +102,7 @@ public class FragmentHome extends Fragment
             manager.hideSoftInputFromWindow(mParent.getCurrentFocus().getWindowToken(), 0);
 
             addTodoList(name);
+            mNameEditText.getText().clear();
         }
     }
 
