@@ -42,4 +42,30 @@ public class FragmentRecyclerPresenterTest {
         // Assert
         Mockito.verify(mView).setAdapter(awesomeContext);
     }
+
+    @Test
+    public void setItemAnimation() throws Exception {
+
+        // Arrange
+        RecyclerView.ItemAnimator animator = null;
+
+        // Act
+        mPresenter.setItemAnimator(animator);
+
+        // Assert
+        Mockito.verify(mView).setItemAnimator(animator);
+    }
+
+    @Test
+    public void setLayoutManager() throws Exception {
+
+        // Arrange
+        Context context = null;
+
+        // Act
+        mPresenter.setLayoutManager(context);
+
+        // Assert
+        Mockito.verify(mView).setLayoutManager(context);
+    }
 }

@@ -19,4 +19,14 @@ public class FragmentRecyclerPresenter {
 
         mView.setAdapter(context);
     }
+
+    public void setItemAnimator(RecyclerView.ItemAnimator animator) {
+
+        mView.setItemAnimator(animator);
+    }
+
+    public void setLayoutManager(Context context) {
+
+        mView.setLayoutManager(context);
+    }
 }

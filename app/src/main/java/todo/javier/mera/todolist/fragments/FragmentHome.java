@@ -11,6 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.Interpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -55,18 +58,15 @@ public class FragmentHome extends Fragment
 
         ButterKnife.bind(this, view);
 
-        mRecyclerView.setItemAnimator(new FlipInTopXAnimator());
+        RecyclerView.ItemAnimator animator = new FlipInTopXAnimator(
 
-        mPresenter.setAdapter(mParent);
-
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
-            mParent,
-            1,
-            LinearLayoutManager.VERTICAL,
-            false
+            new OvershootInterpolator()
         );
 
-        mRecyclerView.setLayoutManager(layoutManager);
+        mPresenter.setItemAnimator(animator);
+        mPresenter.setAdapter(mParent);
+        mPresenter.setLayoutManager(mParent);
+
         mRecyclerView.setHasFixedSize(true);
 
         return view;
@@ -86,8 +86,26 @@ public class FragmentHome extends Fragment
 
     @Override
     public void setAdapter(Context context) {
-
         TodolistAdapterPortrait adapter = new TodolistAdapterPortrait(context);
         mRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void setItemAnimator(RecyclerView.ItemAnimator animator) {
+
+        mRecyclerView.setItemAnimator(animator);
+    }
+
+    @Override
+    public void setLayoutManager(Context context) {
+
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
+            context,
+            1,
+            LinearLayoutManager.VERTICAL,
+            false
+        );
+
+        mRecyclerView.setLayoutManager(layoutManager);
     }
 }
