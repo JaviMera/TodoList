@@ -1,7 +1,6 @@
 package todo.javier.mera.todolist.fragments;
 
 import android.content.Context;
-import android.hardware.input.InputManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,10 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.Interpolator;
-import android.view.animation.OvershootInterpolator;
-import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -29,7 +24,6 @@ import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.TodolistAdapterPortrait;
-import todo.javier.mera.todolist.adapters.TodolistViewHolderPortrait;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class FragmentHome extends Fragment
@@ -44,7 +38,7 @@ public class FragmentHome extends Fragment
     @BindView(R.id.recyclerViewEmptyText)
     TextView mRecyclerEmptyText;
 
-    @BindView(R.id.todoListNameEditText)
+    @BindView(R.id.itemNameEditText)
     EditText mNameEditText;
 
     public static FragmentHome newInstance() {
@@ -70,7 +64,7 @@ public class FragmentHome extends Fragment
         ButterKnife.bind(this, view);
 
         RecyclerView.ItemAnimator animator = new FlipInTopXAnimator();
-        mPresenter.setItemAnimator(animator);
+       // mPresenter.setItemAnimator(animator);
 
         mPresenter.setAdapter(mParent);
         mPresenter.setLayoutManager(mParent);
@@ -95,14 +89,24 @@ public class FragmentHome extends Fragment
         }
         else {
 
+            if(mRecyclerEmptyText.getVisibility() == View.VISIBLE) {
+
+                mRecyclerEmptyText.setVisibility(View.INVISIBLE);
+            }
+
             // Hide the keyboard when adding a list
             // If not hidden. it interferes with updating the recycler view and sometimes the added
             // item is not drawn on the screen
             InputMethodManager manager = (InputMethodManager) mParent.getSystemService(Context.INPUT_METHOD_SERVICE);
             manager.hideSoftInputFromWindow(mParent.getCurrentFocus().getWindowToken(), 0);
 
+            scrollToLastPosition();
+
             addTodoList(name);
             mNameEditText.getText().clear();
+
+            int hintColor = ContextCompat.getColor(mParent, android.R.color.darker_gray);
+            mNameEditText.setHintTextColor(hintColor);
         }
     }
 
@@ -141,17 +145,10 @@ public class FragmentHome extends Fragment
 
         TodolistAdapterPortrait adapter = (TodolistAdapterPortrait) mRecyclerView.getAdapter();
         int lastPosition = adapter.getItemCount();
-        mRecyclerView.scrollToPosition(lastPosition);
+        mRecyclerView.smoothScrollToPosition(lastPosition);
     }
 
     private void addTodoList(String todoListTitle) {
-
-        if(mRecyclerEmptyText.getVisibility() == View.VISIBLE) {
-
-            mRecyclerEmptyText.setVisibility(View.INVISIBLE);
-        }
-
-        scrollToLastPosition();
 
         TodoList todoList = new TodoList(todoListTitle);
         TodolistAdapterPortrait adapter = (TodolistAdapterPortrait) mRecyclerView.getAdapter();

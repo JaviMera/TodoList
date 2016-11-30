@@ -26,6 +26,7 @@ public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends Re
     protected List<T> mItems;
 
     protected abstract T getItem(int position);
+    protected abstract void setAnimation(View itemView, int position, int i);
     public abstract void addItem(T item);
 
 
@@ -59,5 +60,6 @@ public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends Re
     public void onBindViewHolder(H holder, int position) {
 
         holder.bind(mItems.get(position));
+        setAnimation(holder.itemView, position, mItems.size() - 1);
     }
 }

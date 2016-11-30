@@ -8,7 +8,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3">
+        android:layout_weight="3"
+        android:layout_margin="10dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/todoListsRecyclerView"
@@ -25,22 +26,5 @@
             android:gravity="center"/>
     </FrameLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:background="@drawable/edit_text_background"
-            android:id="@+id/todoListNameEditText"
-            style="@style/DialogTodolistEditText"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/fab_margin"
-            android:layout_marginRight="@dimen/fab_margin"
-            app:srcCompat="@android:drawable/ic_input_add" />
-
-    </LinearLayout>
+    <include layout="@layout/add_item_layout" />
 </LinearLayout>
