@@ -56,7 +56,7 @@ public class FragmentHome extends Fragment {
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
             mParent,
-            2,
+            1,
             LinearLayoutManager.VERTICAL,
             false
         );
