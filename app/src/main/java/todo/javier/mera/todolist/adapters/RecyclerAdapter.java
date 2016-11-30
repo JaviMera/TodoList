@@ -26,7 +26,8 @@ public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends Re
     protected List<T> mItems;
 
     protected abstract T getItem(int position);
-    public abstract int  addItem(T item);
+    public abstract void addItem(T item);
+
 
     public RecyclerAdapter(Context context, Class<H> holderType) {
 

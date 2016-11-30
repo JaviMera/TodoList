@@ -40,19 +40,6 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction
             .add(R.id.fragmentContainer, fragment, FRAGMENT_HOME_TAG)
             .commit();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                AddTodoListDialogFragment fragment = new AddTodoListDialogFragment();
-                fragment.show(getSupportFragmentManager(), "add_list_dialog");
-
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-            }
-        });
     }
 
     @Override
@@ -85,7 +72,6 @@ public class MainActivity extends AppCompatActivity
 
         if(null != fragment) {
 
-            fragment.addTodoList(todoListTitle);
         }
     }
 }

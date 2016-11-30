@@ -1,20 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/todoListsRecyclerView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/recyclerViewEmptyText"
+        <EditText
+            android:id="@+id/todoListNameEditText"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            style="@style/DialogTodolistEditText"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/fab_margin"
+            app:srcCompat="@android:drawable/ic_input_add" />
+
+    </LinearLayout>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/recycler_empty_text"
-        android:layout_gravity="center"
-        android:gravity="center"/>
-</FrameLayout>
+        android:layout_height="0dp"
+        android:layout_weight="3">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/todoListsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp" />
+
+        <TextView
+            android:id="@+id/recyclerViewEmptyText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/recycler_empty_text"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+    </FrameLayout>
+</LinearLayout>

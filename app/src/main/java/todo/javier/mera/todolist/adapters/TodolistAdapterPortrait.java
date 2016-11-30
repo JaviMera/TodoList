@@ -21,12 +21,9 @@ public class TodolistAdapterPortrait extends RecyclerAdapter<TodoList, TodolistV
     }
 
     @Override
-    public int addItem(TodoList item) {
+    public void addItem(TodoList item) {
 
-        int position = mItems.size();
         mItems.add(item);
-        notifyItemInserted(position);
-
-        return position;
+        notifyItemInserted(getItemCount() - 1);
     }
 }
