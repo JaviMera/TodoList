@@ -1,10 +1,15 @@
 package todo.javier.mera.todolist.adapters;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 
+import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInRightAnimator;
+import todo.javier.mera.todolist.MainActivity;
+import todo.javier.mera.todolist.fragments.FragmentHome;
 import todo.javier.mera.todolist.model.TodoList;
 
 /**
@@ -13,7 +18,7 @@ import todo.javier.mera.todolist.model.TodoList;
 
 public class TodolistAdapterPortrait extends RecyclerAdapter<TodoList, TodolistViewHolderPortrait> {
 
-    public TodolistAdapterPortrait(Context context) {
+    public TodolistAdapterPortrait(Fragment context) {
         super(context, TodolistViewHolderPortrait.class);
     }
 
@@ -24,29 +29,20 @@ public class TodolistAdapterPortrait extends RecyclerAdapter<TodoList, TodolistV
     }
 
     @Override
-    protected void setAnimation(View itemView, int position, int i) {
+    protected void removeItem(int position) {
 
-        if(position == i) {
+        mItems.remove(position);
+        ((FragmentHome)mContext).setItemAnimator(new SlideInRightAnimator());
 
-            ScaleAnimation animation = new ScaleAnimation(
-                0.0f,
-                1.0f,
-                0.0f,
-                1.0f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f);
-
-            animation.setDuration(500);
-            itemView.startAnimation(animation);
-        }
+        notifyItemRemoved(position);
     }
 
     @Override
     public void addItem(TodoList item) {
 
         mItems.add(item);
+        ((FragmentHome)mContext).setItemAnimator(new FlipInTopXAnimator());
+
         notifyItemInserted(getItemCount() - 1);
     }
 }

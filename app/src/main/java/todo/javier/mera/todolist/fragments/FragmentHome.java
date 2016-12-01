@@ -63,9 +63,6 @@ public class FragmentHome extends Fragment
 
         ButterKnife.bind(this, view);
 
-        RecyclerView.ItemAnimator animator = new FlipInTopXAnimator();
-       // mPresenter.setItemAnimator(animator);
-
         mPresenter.setAdapter(mParent);
         mPresenter.setLayoutManager(mParent);
         mPresenter.setFixedSize(true);
@@ -112,7 +109,7 @@ public class FragmentHome extends Fragment
 
     @Override
     public void setAdapter(Context context) {
-        TodolistAdapterPortrait adapter = new TodolistAdapterPortrait(context);
+        TodolistAdapterPortrait adapter = new TodolistAdapterPortrait(this);
         mRecyclerView.setAdapter(adapter);
     }
 

@@ -8,14 +8,10 @@ import java.util.Locale;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.model.TodoList;
 
-/**
- * Created by javie on 11/30/2016.
- */
+public class TodolistViewHolderPortrait extends ViewHolderBase<TodoList> implements View.OnClickListener{
 
-public class TodolistViewHolderPortrait extends ViewHolderBase<TodoList> {
-
-    TextView mTodolistTitle;
-    TextView mTodolistItems;
+    private TextView mTodolistTitle;
+    private TextView mTodolistItems;
 
     public TodolistViewHolderPortrait(View itemView) {
         super(itemView);
@@ -33,5 +29,12 @@ public class TodolistViewHolderPortrait extends ViewHolderBase<TodoList> {
 
         mTodolistTitle = (TextView) itemView.findViewById(R.id.todoTitleView);
         mTodolistItems = (TextView) itemView.findViewById(R.id.todoItemsView);
+        itemView.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        String text = mTodolistTitle.getText().toString();
     }
 }

@@ -1,18 +1,15 @@
 package todo.javier.mera.todolist.adapters;
 
-import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 import todo.javier.mera.todolist.R;
-import todo.javier.mera.todolist.model.TodoList;
 
 /**
  * Created by javie on 11/29/2016.
@@ -20,17 +17,18 @@ import todo.javier.mera.todolist.model.TodoList;
 
 public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends RecyclerView.Adapter<H> {
 
-    private final Context mContext;
+    protected final Fragment mContext;
     private final Class<H> mHolderType;
 
     protected List<T> mItems;
 
     protected abstract T getItem(int position);
-    protected abstract void setAnimation(View itemView, int position, int i);
+    protected abstract void removeItem(int position);
+
     public abstract void addItem(T item);
 
 
-    public RecyclerAdapter(Context context, Class<H> holderType) {
+    public RecyclerAdapter(Fragment context, Class<H> holderType) {
 
         mContext = context;
         mHolderType = holderType;
@@ -40,7 +38,7 @@ public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends Re
     @Override
     public H onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(mContext).inflate(R.layout.todo_list_item, parent, false);
+        View view = LayoutInflater.from(mContext.getActivity()).inflate(R.layout.todo_list_item, parent, false);
 
         if(mHolderType.equals(TodolistViewHolderPortrait.class)) {
 
@@ -60,6 +58,5 @@ public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends Re
     public void onBindViewHolder(H holder, int position) {
 
         holder.bind(mItems.get(position));
-        setAnimation(holder.itemView, position, mItems.size() - 1);
     }
 }
