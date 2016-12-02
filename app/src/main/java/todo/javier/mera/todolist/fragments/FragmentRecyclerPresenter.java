@@ -25,13 +25,18 @@ public class FragmentRecyclerPresenter {
         mView.setItemAnimator(animator);
     }
 
-    public void setLayoutManager(Context context) {
+    public void setLayoutManager(Context context, int orientation) {
 
-        mView.setLayoutManager(context);
+        mView.setLayoutManager(context, orientation);
     }
 
     public void setFixedSize(boolean isFixed) {
 
         mView.setFixedSize(isFixed);
+    }
+
+    public void updateEditTextHintColor(Context context, int colorId) {
+
+        mView.updateEditTextHintColor(context, colorId);
     }
 }

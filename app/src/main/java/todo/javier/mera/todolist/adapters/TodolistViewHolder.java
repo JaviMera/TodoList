@@ -8,12 +8,12 @@ import java.util.Locale;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.model.TodoList;
 
-public class TodolistViewHolderPortrait extends ViewHolderBase<TodoList> implements View.OnClickListener{
+public class TodolistViewHolder extends ViewHolderBase<TodoList> implements View.OnClickListener{
 
     private TextView mTodolistTitle;
     private TextView mTodolistItems;
 
-    public TodolistViewHolderPortrait(View itemView) {
+    public TodolistViewHolder(View itemView) {
         super(itemView);
     }
 

@@ -1,12 +1,12 @@
 package todo.javier.mera.todolist.fragments;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,14 +16,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
 import todo.javier.mera.todolist.R;
-import todo.javier.mera.todolist.adapters.TodolistAdapterPortrait;
+import todo.javier.mera.todolist.adapters.TodolistAdapter;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class FragmentHome extends Fragment
@@ -34,9 +33,6 @@ public class FragmentHome extends Fragment
 
     @BindView(R.id.todoListsRecyclerView)
     RecyclerView mRecyclerView;
-
-    @BindView(R.id.recyclerViewEmptyText)
-    TextView mRecyclerEmptyText;
 
     @BindView(R.id.itemNameEditText)
     EditText mNameEditText;
@@ -64,9 +60,8 @@ public class FragmentHome extends Fragment
         ButterKnife.bind(this, view);
 
         mPresenter.setAdapter(mParent);
-        mPresenter.setLayoutManager(mParent);
+        mPresenter.setLayoutManager(mParent, getOrientation(mParent));
         mPresenter.setFixedSize(true);
-
         return view;
     }
 
@@ -79,55 +74,48 @@ public class FragmentHome extends Fragment
 
             mNameEditText.setHint(R.string.dialog_todo_list_hint_error);
 
-            int errorColor = ContextCompat.getColor(mParent, android.R.color.holo_red_light);
-            mNameEditText.setHintTextColor(errorColor);
+            mPresenter.updateEditTextHintColor(mParent, android.R.color.holo_red_light);
+
             Animation shake = AnimationUtils.loadAnimation(mParent, R.anim.shake);
             mNameEditText.startAnimation(shake);
         }
         else {
 
-            if(mRecyclerEmptyText.getVisibility() == View.VISIBLE) {
-
-                mRecyclerEmptyText.setVisibility(View.INVISIBLE);
-            }
-
-            // Hide the keyboard when adding a list
-            // If not hidden. it interferes with updating the recycler view and sometimes the added
-            // item is not drawn on the screen
+//            // Hide the keyboard when adding a list
+//            // If not hidden. it interferes with updating the recycler view and sometimes the added
+//            // item is not drawn on the screen
             InputMethodManager manager = (InputMethodManager) mParent.getSystemService(Context.INPUT_METHOD_SERVICE);
             manager.hideSoftInputFromWindow(mParent.getCurrentFocus().getWindowToken(), 0);
 
             scrollToLastPosition();
 
+            mPresenter.setItemAnimator(new FlipInTopXAnimator());
+
             addTodoList(name);
             mNameEditText.getText().clear();
 
-            int hintColor = ContextCompat.getColor(mParent, android.R.color.darker_gray);
-            mNameEditText.setHintTextColor(hintColor);
+            mPresenter.updateEditTextHintColor(mParent, android.R.color.darker_gray);
         }
     }
 
     @Override
     public void setAdapter(Context context) {
-        TodolistAdapterPortrait adapter = new TodolistAdapterPortrait(this);
+        TodolistAdapter adapter = new TodolistAdapter(this);
         mRecyclerView.setAdapter(adapter);
     }
 
     @Override
     public void setItemAnimator(RecyclerView.ItemAnimator animator) {
 
-        mRecyclerView.setItemAnimator(animator);
+        if(mRecyclerView.getItemAnimator() != animator)
+            mRecyclerView.setItemAnimator(animator);
     }
 
     @Override
-    public void setLayoutManager(Context context) {
+    public void setLayoutManager(Context context, int orientation) {
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
-            context,
-            1,
-            LinearLayoutManager.VERTICAL,
-            false
-        );
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
+            context, orientation, false);
 
         mRecyclerView.setLayoutManager(layoutManager);
     }
@@ -138,9 +126,16 @@ public class FragmentHome extends Fragment
         mRecyclerView.setHasFixedSize(isFixed);
     }
 
+    @Override
+    public void updateEditTextHintColor(Context context, int colorId) {
+
+        int hintColor = ContextCompat.getColor(context, colorId);
+        mNameEditText.setHintTextColor(hintColor);
+    }
+
     private void scrollToLastPosition() {
 
-        TodolistAdapterPortrait adapter = (TodolistAdapterPortrait) mRecyclerView.getAdapter();
+        TodolistAdapter adapter = (TodolistAdapter) mRecyclerView.getAdapter();
         int lastPosition = adapter.getItemCount();
         mRecyclerView.smoothScrollToPosition(lastPosition);
     }
@@ -148,7 +143,17 @@ public class FragmentHome extends Fragment
     private void addTodoList(String todoListTitle) {
 
         TodoList todoList = new TodoList(todoListTitle);
-        TodolistAdapterPortrait adapter = (TodolistAdapterPortrait) mRecyclerView.getAdapter();
+        TodolistAdapter adapter = (TodolistAdapter) mRecyclerView.getAdapter();
         adapter.addItem(todoList);
+    }
+
+    private int getOrientation(Context context) {
+
+        if(mParent.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+            return LinearLayoutManager.HORIZONTAL;
+        }
+
+        return LinearLayoutManager.VERTICAL;
     }
 }

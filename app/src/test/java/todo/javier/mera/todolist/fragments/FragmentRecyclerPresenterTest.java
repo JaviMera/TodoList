@@ -2,7 +2,6 @@ package todo.javier.mera.todolist.fragments;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,8 +9,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by javie on 11/29/2016.
@@ -61,12 +58,13 @@ public class FragmentRecyclerPresenterTest {
 
         // Arrange
         Context context = null;
+        int orientation = 1;
 
         // Act
-        mPresenter.setLayoutManager(context);
+        mPresenter.setLayoutManager(context, orientation);
 
         // Assert
-        Mockito.verify(mView).setLayoutManager(context);
+        Mockito.verify(mView).setLayoutManager(context, orientation);
     }
 
     @Test
@@ -80,5 +78,20 @@ public class FragmentRecyclerPresenterTest {
 
         // Assert
         Mockito.verify(mView).setFixedSize(isFixed);
+    }
+
+
+    @Test
+    public void updateEditTextHintColor() throws Exception {
+
+        // Arrange
+        Context context = null;
+        int colorId = 123;
+
+        // Act
+        mPresenter.updateEditTextHintColor(context, colorId);
+
+        // Assert
+        Mockito.verify(mView).updateEditTextHintColor(context, colorId);
     }
 }

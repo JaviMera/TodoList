@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         fragmentTransaction
-            .add(R.id.fragmentContainer, fragment, FRAGMENT_HOME_TAG)
+            .replace(R.id.fragmentContainer, fragment, FRAGMENT_HOME_TAG)
             .commit();
     }
 

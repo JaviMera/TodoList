@@ -40,9 +40,9 @@ public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends Re
 
         View view = LayoutInflater.from(mContext.getActivity()).inflate(R.layout.todo_list_item, parent, false);
 
-        if(mHolderType.equals(TodolistViewHolderPortrait.class)) {
+        if(mHolderType.equals(TodolistViewHolder.class)) {
 
-            return (H) new TodolistViewHolderPortrait(view);
+            return (H) new TodolistViewHolder(view);
         }
 
         return null;
