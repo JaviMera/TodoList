@@ -2,6 +2,7 @@ package todo.javier.mera.todolist.fragments;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.animation.Animation;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -80,6 +81,18 @@ public class FragmentRecyclerPresenterTest {
         Mockito.verify(mView).setFixedSize(isFixed);
     }
 
+    @Test
+    public void updateEditTextHint() throws Exception {
+
+        // Arrange
+        String text = "";
+
+        // Act
+        mPresenter.updateEditTextHint(text);
+
+        // Assert
+        Mockito.verify(mView).updateEditTextHint(text);
+    }
 
     @Test
     public void updateEditTextHintColor() throws Exception {
@@ -93,5 +106,31 @@ public class FragmentRecyclerPresenterTest {
 
         // Assert
         Mockito.verify(mView).updateEditTextHintColor(context, colorId);
+    }
+
+    @Test
+    public void updateEditText() throws Exception {
+
+        // Arrange
+        String text = "";
+
+        // Act
+        mPresenter.updateEditText(text);
+
+        // Assert
+        Mockito.verify(mView).updateEditText(text);
+    }
+
+    @Test
+    public void startEditTextAnim() throws Exception {
+
+        // Arrange
+        Animation anim = null;
+
+        // Act
+        mPresenter.startEditTextAnim(anim);
+
+        // Assert
+        Mockito.verify(mView).startEditTextAnim(anim);
     }
 }

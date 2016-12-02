@@ -14,13 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
+import todo.javier.mera.todolist.ParentView;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.TodolistAdapter;
 import todo.javier.mera.todolist.model.TodoList;
@@ -36,6 +36,7 @@ public class FragmentHome extends Fragment
 
     @BindView(R.id.itemNameEditText)
     EditText mNameEditText;
+    private Animation mShakeAnimation;
 
     public static FragmentHome newInstance() {
 
@@ -48,6 +49,7 @@ public class FragmentHome extends Fragment
         super.onAttach(context);
 
         mParent = getActivity();
+        mShakeAnimation = AnimationUtils.loadAnimation(mParent, R.anim.shake);
         mPresenter = new FragmentRecyclerPresenter(this);
     }
 
@@ -62,6 +64,7 @@ public class FragmentHome extends Fragment
         mPresenter.setAdapter(mParent);
         mPresenter.setLayoutManager(mParent, getOrientation(mParent));
         mPresenter.setFixedSize(true);
+
         return view;
     }
 
@@ -72,29 +75,23 @@ public class FragmentHome extends Fragment
 
         if(name.isEmpty()) {
 
-            mNameEditText.setHint(R.string.dialog_todo_list_hint_error);
+            String errorText = mParent.getString(R.string.dialog_todo_list_hint_error);
+            mPresenter.updateEditTextHint(errorText);
 
             mPresenter.updateEditTextHintColor(mParent, android.R.color.holo_red_light);
-
-            Animation shake = AnimationUtils.loadAnimation(mParent, R.anim.shake);
-            mNameEditText.startAnimation(shake);
+            mPresenter.startEditTextAnim(mShakeAnimation);
         }
         else {
 
-//            // Hide the keyboard when adding a list
-//            // If not hidden. it interferes with updating the recycler view and sometimes the added
-//            // item is not drawn on the screen
-            InputMethodManager manager = (InputMethodManager) mParent.getSystemService(Context.INPUT_METHOD_SERVICE);
-            manager.hideSoftInputFromWindow(mParent.getCurrentFocus().getWindowToken(), 0);
+            ((ParentView)mParent).hideKeyboard();
 
             scrollToLastPosition();
 
             mPresenter.setItemAnimator(new FlipInTopXAnimator());
+            mPresenter.updateEditText("");
+            mPresenter.updateEditTextHintColor(mParent, android.R.color.darker_gray);
 
             addTodoList(name);
-            mNameEditText.getText().clear();
-
-            mPresenter.updateEditTextHintColor(mParent, android.R.color.darker_gray);
         }
     }
 
@@ -131,6 +128,24 @@ public class FragmentHome extends Fragment
 
         int hintColor = ContextCompat.getColor(context, colorId);
         mNameEditText.setHintTextColor(hintColor);
+    }
+
+    @Override
+    public void updateEditText(String text) {
+
+        mNameEditText.setText(text);
+    }
+
+    @Override
+    public void updateEditTextHint(String text) {
+
+        mNameEditText.setHint(text);
+    }
+
+    @Override
+    public void startEditTextAnim(Animation anim) {
+
+        mNameEditText.startAnimation(anim);
     }
 
     private void scrollToLastPosition() {

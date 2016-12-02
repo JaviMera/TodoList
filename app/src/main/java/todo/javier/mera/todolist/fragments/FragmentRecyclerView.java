@@ -2,6 +2,7 @@ package todo.javier.mera.todolist.fragments;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.animation.Animation;
 
 /**
  * Created by javie on 11/29/2016.
@@ -14,4 +15,7 @@ public interface FragmentRecyclerView {
     void setLayoutManager(Context context, int orientation);
     void setFixedSize(boolean isFixed);
     void updateEditTextHintColor(Context context, int colorId);
+    void updateEditText(String text);
+    void updateEditTextHint(String text);
+    void startEditTextAnim(Animation anim);
 }

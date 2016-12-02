@@ -2,6 +2,8 @@ package todo.javier.mera.todolist.fragments;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.animation.Animation;
+
 /**
  * Created by javie on 11/29/2016.
  */
@@ -38,5 +40,20 @@ public class FragmentRecyclerPresenter {
     public void updateEditTextHintColor(Context context, int colorId) {
 
         mView.updateEditTextHintColor(context, colorId);
+    }
+
+    public void updateEditText(String text) {
+
+        mView.updateEditText(text);
+    }
+
+    public void updateEditTextHint(String text) {
+
+        mView.updateEditTextHint(text);
+    }
+
+    public void startEditTextAnim(Animation anim) {
+
+        mView.startEditTextAnim(anim);
     }
 }
