@@ -1,6 +1,7 @@
 package todo.javier.mera.todolist.adapters;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInRightAnimator;

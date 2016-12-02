@@ -1,6 +1,8 @@
 package todo.javier.mera.todolist.fragments;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.animation.Animation;
 
@@ -10,7 +12,7 @@ import android.view.animation.Animation;
 
 public interface FragmentRecyclerView {
 
-    void setAdapter(Context context);
+    void setAdapter(Fragment context);
     void setItemAnimator(RecyclerView.ItemAnimator animator);
     void setLayoutManager(Context context, int orientation);
     void setFixedSize(boolean isFixed);

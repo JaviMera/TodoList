@@ -40,8 +40,7 @@ public class FragmentHome extends Fragment
 
     public static FragmentHome newInstance() {
 
-        FragmentHome fragment = new FragmentHome();
-        return fragment;
+        return new FragmentHome();
     }
 
     @Override
@@ -61,7 +60,7 @@ public class FragmentHome extends Fragment
 
         ButterKnife.bind(this, view);
 
-        mPresenter.setAdapter(mParent);
+        mPresenter.setAdapter(this);
         mPresenter.setLayoutManager(mParent, getOrientation(mParent));
         mPresenter.setFixedSize(true);
 
@@ -96,8 +95,8 @@ public class FragmentHome extends Fragment
     }
 
     @Override
-    public void setAdapter(Context context) {
-        TodolistAdapter adapter = new TodolistAdapter(this);
+    public void setAdapter(Fragment fragment) {
+        TodolistAdapter adapter = new TodolistAdapter(fragment);
         mRecyclerView.setAdapter(adapter);
     }
 

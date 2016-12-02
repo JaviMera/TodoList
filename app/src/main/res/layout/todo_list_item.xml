@@ -10,11 +10,29 @@
 
     <TextView
         android:id="@+id/todoTitleView"
-        style="@style/ItemTitle"
+        style="@style/TodoListTitle"
         tools:text="This is a todo list title"/>
 
-    <TextView
-        android:id="@+id/todoItemsView"
-        style="@style/ItemBody"
-        tools:text="0 items..."/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_body_background"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/totalItemsText"
+            style="@style/TodoListBodyPortrait"
+            tools:text="0 Total Items..."/>
+
+        <TextView
+            android:id="@+id/completedItemsText"
+            style="@style/TodoListBodyPortrait"
+            tools:text="0 Completed Items"/>
+
+        <TextView
+            android:id="@+id/incompletedItemsText"
+            style="@style/TodoListBodyPortrait"
+            tools:text="0 Incompleted Items"/>
+
+    </LinearLayout>
 </LinearLayout>

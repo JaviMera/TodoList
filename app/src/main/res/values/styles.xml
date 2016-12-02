@@ -28,12 +28,12 @@
         <item name="android:textStyle">italic</item>
     </style>
 
-    <style name="TodolistItemView">
+    <style name="TodoListView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="ItemTitle" parent="TodolistItemView">
+    <style name="TodoListTitle" parent="TodoListView">
         <item name="android:padding">@dimen/item_title_pad</item>
         <item name="android:textSize">@dimen/item_title_size</item>
         <item name="android:textColor">@android:color/white</item>
@@ -41,10 +41,15 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="ItemBody" parent="TodolistItemView">
-        <item name="android:padding">@dimen/item_body_pad</item>
-        <item name="android:textSize">@dimen/item_body_size</item>
+    <style name="TodoListBodyPortrait" parent="TodoListView">
+        <item name="android:padding">@dimen/item_body_pad_portrait</item>
+        <item name="android:textSize">@dimen/item_body_size_portrait</item>
         <item name="android:textStyle">italic</item>
-        <item name="android:background">@drawable/item_body_background</item>
+    </style>
+
+    <style name="TodoListBodyLandscape" parent="TodoListView">
+        <item name="android:padding">@dimen/item_body_pad_land</item>
+        <item name="android:textSize">@dimen/item_body_size_land</item>
+        <item name="android:textStyle">italic</item>
     </style>
 </resources>

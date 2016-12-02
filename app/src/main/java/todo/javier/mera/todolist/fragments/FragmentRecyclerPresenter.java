@@ -1,6 +1,8 @@
 package todo.javier.mera.todolist.fragments;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.animation.Animation;
 
@@ -17,9 +19,9 @@ public class FragmentRecyclerPresenter {
         mView = view;
     }
 
-    public void setAdapter(Context context) {
+    public void setAdapter(Fragment fragment) {
 
-        mView.setAdapter(context);
+        mView.setAdapter(fragment);
     }
 
     public void setItemAnimator(RecyclerView.ItemAnimator animator) {

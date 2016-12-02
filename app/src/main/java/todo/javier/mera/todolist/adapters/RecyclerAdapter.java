@@ -17,7 +17,7 @@ import todo.javier.mera.todolist.R;
 
 public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends RecyclerView.Adapter<H> {
 
-    protected final Fragment mContext;
+    protected final Fragment mFragment;
     private final Class<H> mHolderType;
 
     protected List<T> mItems;
@@ -28,9 +28,9 @@ public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends Re
     public abstract void addItem(T item);
 
 
-    public RecyclerAdapter(Fragment context, Class<H> holderType) {
+    public RecyclerAdapter(Fragment fragment, Class<H> holderType) {
 
-        mContext = context;
+        mFragment = fragment;
         mHolderType = holderType;
         mItems = new LinkedList<>();
     }
@@ -38,7 +38,7 @@ public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends Re
     @Override
     public H onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(mContext.getActivity()).inflate(R.layout.todo_list_item, parent, false);
+        View view = LayoutInflater.from(mFragment.getActivity()).inflate(R.layout.todo_list_item, parent, false);
 
         if(mHolderType.equals(TodolistViewHolder.class)) {
 
