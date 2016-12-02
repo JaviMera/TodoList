@@ -10,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import todo.javier.mera.todolist.R;
+import todo.javier.mera.todolist.fragments.FragmentHome;
+import todo.javier.mera.todolist.fragments.TodoListListener;
 
 /**
  * Created by javie on 11/29/2016.
@@ -42,7 +44,7 @@ public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends Re
 
         if(mHolderType.equals(TodolistViewHolder.class)) {
 
-            return (H) new TodolistViewHolder(view);
+            return (H) new TodolistViewHolder((TodoListListener) mFragment, view);
         }
 
         return null;

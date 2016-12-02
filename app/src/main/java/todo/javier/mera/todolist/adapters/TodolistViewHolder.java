@@ -6,17 +6,21 @@ import android.widget.TextView;
 import java.util.Locale;
 
 import todo.javier.mera.todolist.R;
+import todo.javier.mera.todolist.fragments.TodoListListener;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class TodolistViewHolder extends ViewHolderBase<TodoList> implements View.OnClickListener{
 
+    private final TodoListListener mListener;
     private TextView mTodolistTitle;
     private TextView mTotalitems;
     private TextView mCompletedItems;
     private TextView mIncompleItems;
 
-    public TodolistViewHolder(View itemView) {
+    public TodolistViewHolder(TodoListListener listener, View itemView) {
         super(itemView);
+
+        mListener = listener;
     }
 
     @Override
@@ -42,5 +46,6 @@ public class TodolistViewHolder extends ViewHolderBase<TodoList> implements View
     public void onClick(View view) {
 
         String text = mTodolistTitle.getText().toString();
+        mListener.onTodoListClick(mTodolistTitle);
     }
 }

@@ -20,13 +20,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
-import todo.javier.mera.todolist.ParentView;
+import todo.javier.mera.todolist.ui.ParentView;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.TodolistAdapter;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class FragmentHome extends Fragment
-    implements FragmentRecyclerView{
+    implements FragmentRecyclerView,
+    TodoListListener {
 
     private FragmentActivity mParent;
     private FragmentRecyclerPresenter mPresenter;
@@ -169,5 +170,11 @@ public class FragmentHome extends Fragment
         }
 
         return LinearLayoutManager.VERTICAL;
+    }
+
+    @Override
+    public void onTodoListClick(View view) {
+
+        ((ParentView)mParent).startActivityWithTransition(view);
     }
 }

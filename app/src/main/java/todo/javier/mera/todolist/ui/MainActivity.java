@@ -1,19 +1,23 @@
-package todo.javier.mera.todolist;
+package todo.javier.mera.todolist.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
-import jp.wasabeef.recyclerview.animators.SlideInRightAnimator;
+import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentHome;
 
 public class MainActivity extends AppCompatActivity
@@ -72,5 +76,23 @@ public class MainActivity extends AppCompatActivity
         // item is not drawn on the screen
         InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+    }
+
+    @Override
+    public void startActivityWithTransition(View viewToAnimate) {
+
+        Intent intent = new Intent(this, TodoListActivity.class);
+        intent.putExtra(
+            TodoListActivity.TODO_LIST_TITLE,
+            ((TextView)viewToAnimate).getText().toString()
+        );
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            this,
+            viewToAnimate,
+            getString(R.string.todo_list_transition_name)
+        );
+
+        startActivity(intent, options.toBundle());
     }
 }
