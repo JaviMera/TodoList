@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    android:layout_gravity="center"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/todoTitleView"
+        style="@style/ItemTitle"
+        tools:text="This is a todo list title"/>
+
+    <TextView
+        android:id="@+id/todoItemsView"
+        style="@style/ItemBody"
+        tools:text="0 items..."/>
+</LinearLayout>
