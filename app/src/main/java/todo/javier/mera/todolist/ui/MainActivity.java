@@ -2,10 +2,7 @@ package todo.javier.mera.todolist.ui;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -21,10 +18,12 @@ import todo.javier.mera.todolist.fragments.FragmentTodoList;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class MainActivity extends AppCompatActivity
-    implements ParentView {
+    implements ActivityView {
 
     public static final String FRAGMENT_HOME_TAG = "fragment_home";
     private static final String FRAGMENT_TODO_LIST = "fragment_todo_list";
+
+    private FragmentHelper mFragmentHelper;
 
     @BindView(R.id.toolbar) Toolbar mToolBar;
 
@@ -33,6 +32,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mFragmentHelper = new FragmentHelper(getSupportFragmentManager());
         ButterKnife.bind(this);
 
         // Initially set the title to empty string, and then Fragment Home will initialize it to its
@@ -40,15 +40,11 @@ public class MainActivity extends AppCompatActivity
         // For some reason if the title is not initially set to something, when the Fragment calls for the first time
         // to set the title, the title will not be changed.
         mToolBar.setTitle("");
+
         setSupportActionBar(mToolBar);
 
         Fragment fragment = FragmentHome.newInstance();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction
-            .replace(R.id.fragmentContainer, fragment, FRAGMENT_HOME_TAG)
-            .commit();
+        mFragmentHelper.replace(R.id.fragmentContainer, fragment);
     }
 
     @Override
@@ -101,12 +97,10 @@ public class MainActivity extends AppCompatActivity
     public void showFragmentTodoList(TodoList todoList) {
 
         Fragment fragment = FragmentTodoList.newInstance(todoList);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction
-                .replace(R.id.fragmentContainer, fragment, FRAGMENT_TODO_LIST)
-                .addToBackStack(null)
-                .commit();
+        mFragmentHelper.replaceWithBackStack(
+            R.id.fragmentContainer,
+            fragment,
+            null
+        );
     }
 }

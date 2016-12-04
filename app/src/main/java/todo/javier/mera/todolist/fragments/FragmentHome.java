@@ -24,7 +24,7 @@ import todo.javier.mera.todolist.ui.MainActivity;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.TodolistAdapter;
 import todo.javier.mera.todolist.model.TodoList;
-import todo.javier.mera.todolist.ui.ParentView;
+import todo.javier.mera.todolist.ui.ActivityView;
 
 public class FragmentHome extends Fragment
     implements FragmentRecyclerView,
@@ -89,7 +89,7 @@ public class FragmentHome extends Fragment
         }
         else {
 
-            ((ParentView)mParent).hideKeyboard();
+            ((ActivityView)mParent).hideKeyboard();
 
             scrollToLastPosition();
 
@@ -181,6 +181,6 @@ public class FragmentHome extends Fragment
     @Override
     public void onTodoListClick(TodoList todoList) {
 
-        ((ParentView)mParent).showFragmentTodoList(todoList);
+        ((ActivityView)mParent).showFragmentTodoList(todoList);
     }
 }
