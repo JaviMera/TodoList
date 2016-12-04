@@ -3,6 +3,7 @@ package todo.javier.mera.todolist.fragments;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -30,6 +31,7 @@ public class FragmentHome extends Fragment
     implements FragmentRecyclerView,
     TodoListListener {
 
+    public static final int ANIM_DELAY = 200;
     private FragmentActivity mParent;
     private FragmentRecyclerPresenter mPresenter;
     private Animation mShakeAnimation;
@@ -77,7 +79,7 @@ public class FragmentHome extends Fragment
     @OnClick(R.id.fab)
     public void onAddListButtonClick(View view) {
 
-        String name = mNameEditText.getText().toString();
+        final String name = mNameEditText.getText().toString();
 
         if(name.isEmpty()) {
 
@@ -91,13 +93,22 @@ public class FragmentHome extends Fragment
 
             ((ActivityView)mParent).hideKeyboard();
 
-            scrollToLastPosition();
+            // Wait 200ms after the keyboard has been manually closed.
+            // This gives a friendlier animation when the user is adding an item to the recycler view
+            // and half of the screen is being blocked by the keyboard.
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
 
-            mPresenter.setItemAnimator(new FlipInTopXAnimator());
-            mPresenter.updateEditText("");
-            mPresenter.updateEditTextHintColor(mParent, android.R.color.darker_gray);
+                    scrollToLastPosition();
+                    mPresenter.setItemAnimator(new FlipInTopXAnimator());
+                    mPresenter.updateEditText("");
+                    mPresenter.updateEditTextHintColor(mParent, android.R.color.darker_gray);
 
-            addTodoList(name);
+                    addTodoList(name);
+                }
+            },
+            ANIM_DELAY);
         }
     }
 
