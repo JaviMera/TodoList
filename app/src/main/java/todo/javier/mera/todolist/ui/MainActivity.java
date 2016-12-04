@@ -2,6 +2,7 @@ package todo.javier.mera.todolist.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -70,7 +71,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void setToolbarTitle(String text) {
 
-        mToolBar.setTitle(text);
+        if(getSupportActionBar() != null) {
+
+            getSupportActionBar()
+                .setTitle(text);
+        }
     }
 
     @Override
@@ -80,7 +85,15 @@ public class MainActivity extends AppCompatActivity
         // If not hidden, it interferes with updating the recycler view and sometimes the added
         // item is not drawn on the screen
         InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
+        View view = getCurrentFocus();
+        if(view != null) {
+
+            manager.hideSoftInputFromWindow(
+                view.getWindowToken(),
+                0
+            );
+        }
     }
 
     @Override
