@@ -35,10 +35,8 @@ public class MainActivity extends AppCompatActivity
         mFragmentHelper = new FragmentHelper(getSupportFragmentManager());
         ButterKnife.bind(this);
 
-        // Initially set the title to empty string, and then Fragment Home will initialize it to its
-        // title value.
-        // For some reason if the title is not initially set to something, when the Fragment calls for the first time
-        // to set the title, the title will not be changed.
+        // For some reason if the title is not initially set to something, when the Fragment calls
+        // for the first time to set the title, the title will not be changed.
         mToolBar.setTitle("");
 
         setSupportActionBar(mToolBar);
