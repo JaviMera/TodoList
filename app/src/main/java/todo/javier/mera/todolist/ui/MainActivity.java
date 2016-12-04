@@ -1,9 +1,7 @@
 package todo.javier.mera.todolist.ui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,17 +11,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentHome;
+import todo.javier.mera.todolist.fragments.FragmentTodoList;
+import todo.javier.mera.todolist.model.TodoList;
 
 public class MainActivity extends AppCompatActivity
     implements ParentView {
 
-    public static final String FRAGMENT_HOME_TAG = "FRAGMENT_HOME";
+    public static final String FRAGMENT_HOME_TAG = "fragment_home";
+    private static final String FRAGMENT_TODO_LIST = "fragment_todo_list";
+
+    @BindView(R.id.toolbar) Toolbar mToolBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +34,7 @@ public class MainActivity extends AppCompatActivity
 
         ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(getString(R.string.home_text));
-
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolBar);
 
         Fragment fragment = FragmentHome.newInstance();
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -69,30 +68,31 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void setToolbarTitle(String text) {
+
+        mToolBar.setTitle(text);
+    }
+
+    @Override
     public void hideKeyboard() {
 
         // Hide the keyboard when adding a list
-        // If not hidden. it interferes with updating the recycler view and sometimes the added
+        // If not hidden, it interferes with updating the recycler view and sometimes the added
         // item is not drawn on the screen
         InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
 
     @Override
-    public void startActivityWithTransition(View viewToAnimate) {
+    public void showFragmentTodoList(TodoList todoList) {
 
-        Intent intent = new Intent(this, TodoListActivity.class);
-        intent.putExtra(
-            TodoListActivity.TODO_LIST_TITLE,
-            ((TextView)viewToAnimate).getText().toString()
-        );
+        Fragment fragment = FragmentTodoList.newInstance(todoList);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-            this,
-            viewToAnimate,
-            getString(R.string.todo_list_transition_name)
-        );
-
-        startActivity(intent, options.toBundle());
+        fragmentTransaction
+                .replace(R.id.fragmentContainer, fragment, FRAGMENT_TODO_LIST)
+                .addToBackStack(null)
+                .commit();
     }
 }

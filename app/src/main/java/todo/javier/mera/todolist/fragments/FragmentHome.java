@@ -20,10 +20,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
-import todo.javier.mera.todolist.ui.ParentView;
+import todo.javier.mera.todolist.ui.MainActivity;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.TodolistAdapter;
 import todo.javier.mera.todolist.model.TodoList;
+import todo.javier.mera.todolist.ui.ParentView;
 
 public class FragmentHome extends Fragment
     implements FragmentRecyclerView,
@@ -31,13 +32,15 @@ public class FragmentHome extends Fragment
 
     private FragmentActivity mParent;
     private FragmentRecyclerPresenter mPresenter;
+    private Animation mShakeAnimation;
+    private String mTitle;
 
     @BindView(R.id.todoListsRecyclerView)
     RecyclerView mRecyclerView;
 
     @BindView(R.id.itemNameEditText)
     EditText mNameEditText;
-    private Animation mShakeAnimation;
+
 
     public static FragmentHome newInstance() {
 
@@ -64,6 +67,9 @@ public class FragmentHome extends Fragment
         mPresenter.setAdapter(this);
         mPresenter.setLayoutManager(mParent, getOrientation(mParent));
         mPresenter.setFixedSize(true);
+
+        mTitle = "Home";
+        ((MainActivity)mParent).setToolbarTitle(mTitle);
 
         return view;
     }
@@ -173,8 +179,8 @@ public class FragmentHome extends Fragment
     }
 
     @Override
-    public void onTodoListClick(View view) {
+    public void onTodoListClick(TodoList todoList) {
 
-        ((ParentView)mParent).startActivityWithTransition(view);
+        ((ParentView)mParent).showFragmentTodoList(todoList);
     }
 }

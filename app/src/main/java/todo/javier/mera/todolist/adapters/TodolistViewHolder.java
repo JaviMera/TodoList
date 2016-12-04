@@ -12,6 +12,7 @@ import todo.javier.mera.todolist.model.TodoList;
 public class TodolistViewHolder extends ViewHolderBase<TodoList> implements View.OnClickListener{
 
     private final TodoListListener mListener;
+    private TodoList mTodoList;
     private TextView mTodolistTitle;
     private TextView mTotalitems;
     private TextView mCompletedItems;
@@ -26,10 +27,11 @@ public class TodolistViewHolder extends ViewHolderBase<TodoList> implements View
     @Override
     public void bind(TodoList item) {
 
-        mTodolistTitle.setText(item.getTitle());
-        mTotalitems.setText(String.format(Locale.ENGLISH, "%d items...", item.getItemsCount()));
-        mCompletedItems.setText(String.format(Locale.ENGLISH, "%d Completed Items", item.getCompletedItems()));
-        mIncompleItems.setText(String.format(Locale.ENGLISH, "%d Incomplete Items", item.getIncompleteItems()));
+        mTodoList = item;
+        mTodolistTitle.setText(mTodoList.getTitle());
+        mTotalitems.setText(String.format(Locale.ENGLISH, "%d items...", mTodoList.getItemsCount()));
+        mCompletedItems.setText(String.format(Locale.ENGLISH, "%d Completed Items", mTodoList.getCompletedItems()));
+        mIncompleItems.setText(String.format(Locale.ENGLISH, "%d Incomplete Items", mTodoList.getIncompleteItems()));
     }
 
     @Override
@@ -45,7 +47,6 @@ public class TodolistViewHolder extends ViewHolderBase<TodoList> implements View
     @Override
     public void onClick(View view) {
 
-        String text = mTodolistTitle.getText().toString();
-        mListener.onTodoListClick(mTodolistTitle);
+        mListener.onTodoListClick(mTodoList);
     }
 }

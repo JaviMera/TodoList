@@ -6,7 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="15dp"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?android:attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/todoTitleView"
@@ -21,7 +24,6 @@
 
         <TextView
             android:id="@+id/totalItemsText"
-            android:transitionName="@string/todo_list_transition_name"
             style="@style/TodoListBodyPortrait"
             tools:text="0 Total Items..."/>
 

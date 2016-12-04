@@ -8,5 +8,4 @@
     <string name="dialog_todo_list_cancel_text">Cancel</string>
     <string name="dialog_todo_list_add_text">Add</string>
     <string name="dialog_todo_list_hint_error">Enter a valid name...</string>
-    <string name="todo_list_transition_name">todolist</string>
 </resources>
