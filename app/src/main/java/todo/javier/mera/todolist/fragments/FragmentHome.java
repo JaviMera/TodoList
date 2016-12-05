@@ -24,7 +24,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
-import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.ui.MainActivity;
 import todo.javier.mera.todolist.R;
@@ -131,7 +130,7 @@ public class FragmentHome extends Fragment
                     long creationDate = new Date().getTime();
 
                     dataSource.openWriteable();
-                    long newId = dataSource.create(
+                    long newId = dataSource.createTodoList(
                         name,
                         creationDate
                     );

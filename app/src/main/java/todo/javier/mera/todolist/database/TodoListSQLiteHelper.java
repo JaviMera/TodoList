@@ -27,6 +27,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_TODO_LIST_ITEMS = "TODO_LIST_ITEMS";
     public static final String COLUMN_ITEMS_FOREIGN_KEY = "TODO_LIST_ID";
+    public static final String COLUMN_ITEMS_DESCRIPTION = "DESCRIPTION";
     public static final String COLUMN_ITEMS_COMPLETED = "COMPLETED";
     public static final String COLUMN_ITEMS_TIMESTAMP = "TIMESTAMP";
     private static final String CREATE_TODO_LIST_ITEMS = "CREATE TABLE "
@@ -34,11 +35,11 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
         + "("
         + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
         + COLUMN_ITEMS_FOREIGN_KEY + " INTEGER, "
+        + COLUMN_ITEMS_DESCRIPTION + " TEXT, "
         + COLUMN_ITEMS_COMPLETED + " INTEGER, "
-        + COLUMN_ITEMS_TIMESTAMP +  " INTEGER"
+        + COLUMN_ITEMS_TIMESTAMP +  " INTEGER, "
+        + "FOREIGN KEY " + "(" + COLUMN_ITEMS_FOREIGN_KEY + ") REFERENCES " + TABLE_TODO_LISTS + "(" + BaseColumns._ID + ")"
         + ")";
-
-    private SQLiteDatabase mDatabase;
 
     public TodoListSQLiteHelper(Context context) {
 
@@ -53,7 +54,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
 
     }
 }

@@ -9,7 +9,10 @@ import android.provider.BaseColumns;
 import java.util.LinkedList;
 import java.util.List;
 
+import todo.javier.mera.todolist.adapters.TodolistViewHolder;
 import todo.javier.mera.todolist.model.TodoList;
+import todo.javier.mera.todolist.model.TodoListItem;
+import todo.javier.mera.todolist.model.TodoListStatus;
 
 /**
  * Created by javie on 12/4/2016.
@@ -47,11 +50,10 @@ public class TodoListDataSource {
         return mDb.isOpen();
     }
 
-    public long create(String todoListTitle, long creationDate) {
+    public long createTodoList(String todoListTitle, long creationDate) {
 
         mDb.beginTransaction();
 
-        TodoList newTodoList;
         ContentValues todoListValues = new ContentValues();
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME, todoListTitle);
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_TIMESTAMP, creationDate);
@@ -113,5 +115,67 @@ public class TodoListDataSource {
 
         mDb.delete(TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS, null, null);
         mDb.delete(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, null);
+    }
+
+    public long createTodoListItem(long id, String description, TodoListStatus status, long timeStamp) {
+
+        mDb.beginTransaction();
+
+        ContentValues itemValues = new ContentValues();
+        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_FOREIGN_KEY, id);
+        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION, description);
+        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED, status.ordinal());
+        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_TIMESTAMP, timeStamp);
+
+        long newId = mDb.insert(TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS, null, itemValues);
+
+        mDb.setTransactionSuccessful();
+        mDb.endTransaction();
+        return newId;
+    }
+
+    public List<TodoListItem> readAllTodoListItems(long todoListId) {
+
+        List<TodoListItem> items = new LinkedList<>();
+
+        Cursor cursor = mDb.query(
+            TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
+            new String[]{
+                BaseColumns._ID,
+                TodoListSQLiteHelper.COLUMN_ITEMS_FOREIGN_KEY,
+                TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION,
+                TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED,
+                TodoListSQLiteHelper.COLUMN_ITEMS_TIMESTAMP
+                },
+            TodoListSQLiteHelper.COLUMN_ITEMS_FOREIGN_KEY + "=?",
+            new String[]{String.valueOf(todoListId)},
+            null,
+            null,
+            null
+        );
+
+        if(cursor.moveToFirst()) {
+
+            do {
+
+                int id = getInt(cursor, BaseColumns._ID);
+                int itemId = getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_FOREIGN_KEY);
+                String description = getString(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION);
+                TodoListStatus status = TodoListStatus.values()[
+                    getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED)];
+
+                int timeStamp = getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_TIMESTAMP);
+
+                TodoListItem item = new TodoListItem(id, itemId, description, status, timeStamp);
+                items.add(item);
+            }while(cursor.moveToNext());
+        }
+        return items;
+    }
+
+    private long getLong(Cursor cursor, String columnName) {
+
+        int columnIndex = cursor.getColumnIndex(columnName);
+        return cursor.getLong(columnIndex);
     }
 }

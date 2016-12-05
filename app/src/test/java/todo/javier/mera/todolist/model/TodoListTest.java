@@ -15,6 +15,7 @@ import static org.junit.Assert.*;
 public class TodoListTest {
 
     private TodoList mTodoList;
+    private long expectedId = 1234;
     private String expectedTitle = "Some List";
     private long expectedDate = new Date().getTime();
     private int expectedItemcount = 0;
@@ -22,7 +23,7 @@ public class TodoListTest {
     @Before
     public void setUp() throws Exception {
 
-        mTodoList = new TodoList("Some List", expectedDate);
+        mTodoList = new TodoList(expectedId, "Some List", expectedDate);
     }
 
     @Test
@@ -34,12 +35,6 @@ public class TodoListTest {
 
     @Test
     public void getId() throws Exception {
-
-        // Arrange
-        int expectedId = 123;
-
-        // Act
-        mTodoList.setId(expectedId);
 
         // Assert
         Assert.assertEquals(expectedId, mTodoList.getId());

@@ -5,13 +5,20 @@ package todo.javier.mera.todolist.model;
  */
 public class TodoListItem {
 
+    private long mTodoListId;
+    private long mItemId;
     private String mDescription;
     private TodoListStatus mStatus;
+    private long mCreationDate;
 
-    public TodoListItem(String description, TodoListStatus completed) {
+    public TodoListItem(long todoListId, long itemId, String description, TodoListStatus status,
+        long creationDate) {
 
+        mTodoListId = todoListId;
+        mItemId = itemId;
         mDescription = description;
-        mStatus = completed;
+        mStatus = status;
+        mCreationDate = creationDate;
     }
 
     public String getDescription() {
