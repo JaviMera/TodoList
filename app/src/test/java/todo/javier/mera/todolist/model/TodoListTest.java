@@ -14,11 +14,11 @@ import static org.junit.Assert.*;
  */
 public class TodoListTest {
 
-    private TodoList mTodoList;
     private long expectedId = 1234;
     private String expectedTitle = "Some List";
-    private long expectedDate = new Date().getTime();
+    private int expectedDate = (int)new Date().getTime();
     private int expectedItemcount = 0;
+    private TodoList mTodoList;
 
     @Before
     public void setUp() throws Exception {

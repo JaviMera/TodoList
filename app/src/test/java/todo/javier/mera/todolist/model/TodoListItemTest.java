@@ -5,43 +5,64 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Date;
+
 /**
  * Created by javie on 11/29/2016.
  */
 public class TodoListItemTest {
 
+    private long mExpectedTodolistId = 123;
+    private long mExpectedItemId = 321;
+    private String mExpectedDescription = "Some task to do";
+    private TodoListStatus mExpectedStatus = TodoListStatus.Created;
+    private int mExpectedCreationDate = (int) new Date().getTime();
     private TodoListItem mItem;
 
     @Before
     public void setUp() throws Exception {
 
-        mItem = new TodoListItem("Some task to do", TodoListStatus.Created);
+        mItem = new TodoListItem(
+            mExpectedItemId,
+            mExpectedTodolistId,
+            mExpectedDescription,
+            mExpectedStatus,
+            mExpectedCreationDate);
+    }
+
+    @Test
+    public void getTodoListId() throws Exception {
+
+        // Assert
+        Assert.assertEquals(mExpectedTodolistId, mItem.getTodoListId());
+    }
+
+    @Test
+    public void getItemId() throws Exception {
+
+        // Assert
+        Assert.assertEquals(mExpectedItemId, mItem.getItemId());
     }
 
     @Test
     public void getDescription() throws Exception {
 
-        // Arrange
-        String expectedDesc = "Some task to do";
-
-        // Act
-        String actualDescription = mItem.getDescription();
-
         // Assert
-        Assert.assertEquals(expectedDesc, actualDescription);
+        Assert.assertEquals(mExpectedDescription, mItem.getDescription());
     }
 
     @Test
-    public void isCompleted() throws Exception {
-
-        // Arrange
-        TodoListStatus expectedStatus = TodoListStatus.Created;
-
-        // Act
-        TodoListStatus actualStatus = mItem.getStatus();
+    public void getStatus() throws Exception {
 
         // Assert
-        Assert.assertEquals(expectedStatus, actualStatus);
+        Assert.assertEquals(mExpectedStatus, mItem.getStatus());
+    }
+
+    @Test
+    public void getCreationDate() throws Exception {
+
+        // Assert
+        Assert.assertEquals(mExpectedCreationDate, mItem.getCreationDate());
     }
 
     @Test

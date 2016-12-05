@@ -62,7 +62,7 @@ public class DatabaseTest {
 
         // Act
         mDataSource.openWriteable();
-        long newId = mDataSource.createTodoList(expectedTitle, expectedCreationDate);
+        long newId = mDataSource.createTodoList(expectedTitle, (int) expectedCreationDate);
 
         // Assert
         Assert.assertTrue(newId > -1);
@@ -73,7 +73,7 @@ public class DatabaseTest {
 
         // Arrange
         String expectedTitle = "My List";
-        long expectedCreationDate = new Date().getTime();
+        int expectedCreationDate = (int)new Date().getTime();
 
         // Act
         mDataSource.openReadable();
@@ -91,11 +91,11 @@ public class DatabaseTest {
 
         // Arrange
         String todoListTitle = "My Other list";
-        long todoListCreationDate = new Date().getTime();
+        int todoListCreationDate = (int)new Date().getTime();
 
         String description = "first task";
         TodoListStatus status = TodoListStatus.Created;
-        long timeStamp = new Date().getTime();
+        int timeStamp = (int)new Date().getTime();
 
         // Act
         mDataSource.openWriteable();
@@ -112,24 +112,29 @@ public class DatabaseTest {
 
         // Arrange
         String todoListTitle = "My Other list";
-        long todoListCreationDate = new Date().getTime();
+        int todoListCreationDate = (int)new Date().getTime();
 
         String description = "first task";
         TodoListStatus status = TodoListStatus.Created;
-        long timeStamp = new Date().getTime();
-        int expectedSize = 3;
+        int timeStamp = (int)new Date().getTime();
+        int expectedSize = 1;
 
         // Act
         mDataSource.openReadable();
 
         long todoListId = mDataSource.createTodoList(todoListTitle, todoListCreationDate);
-        mDataSource.createTodoListItem(todoListId, description, status, timeStamp);
-        mDataSource.createTodoListItem(todoListId, description, status, timeStamp);
-        mDataSource.createTodoListItem(todoListId, description, status, timeStamp);
+        long item1Id = mDataSource.createTodoListItem(todoListId, description, status, timeStamp);
 
         List<TodoListItem> items = mDataSource.readAllTodoListItems(todoListId);
 
         // Assert
         Assert.assertEquals(expectedSize, items.size());
+
+        TodoListItem item = items.get(0);
+        Assert.assertEquals(item1Id, item.getItemId());
+        Assert.assertEquals(todoListId, item.getTodoListId());
+        Assert.assertEquals(description, item.getDescription());
+        Assert.assertEquals(timeStamp, item.getCreationDate());
+        Assert.assertEquals(status, item.getStatus());
     }
 }

@@ -11,11 +11,11 @@ public class TodoListItem {
     private TodoListStatus mStatus;
     private long mCreationDate;
 
-    public TodoListItem(long todoListId, long itemId, String description, TodoListStatus status,
+    public TodoListItem(long itemId, long todoListId, String description, TodoListStatus status,
         long creationDate) {
 
-        mTodoListId = todoListId;
         mItemId = itemId;
+        mTodoListId = todoListId;
         mDescription = description;
         mStatus = status;
         mCreationDate = creationDate;
@@ -34,5 +34,18 @@ public class TodoListItem {
     public void update(TodoListStatus newStatus) {
 
         mStatus = newStatus;
+    }
+
+    public long getTodoListId() {
+        return mTodoListId;
+    }
+
+    public long getItemId() {
+        return mItemId;
+    }
+
+    public long getCreationDate() {
+
+        return mCreationDate;
     }
 }

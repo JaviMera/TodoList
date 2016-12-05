@@ -50,7 +50,7 @@ public class TodoListDataSource {
         return mDb.isOpen();
     }
 
-    public long createTodoList(String todoListTitle, long creationDate) {
+    public long createTodoList(String todoListTitle, int creationDate) {
 
         mDb.beginTransaction();
 
@@ -117,12 +117,12 @@ public class TodoListDataSource {
         mDb.delete(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, null);
     }
 
-    public long createTodoListItem(long id, String description, TodoListStatus status, long timeStamp) {
+    public long createTodoListItem(long todoListId, String description, TodoListStatus status, int timeStamp) {
 
         mDb.beginTransaction();
 
         ContentValues itemValues = new ContentValues();
-        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_FOREIGN_KEY, id);
+        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_FOREIGN_KEY, todoListId);
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION, description);
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED, status.ordinal());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_TIMESTAMP, timeStamp);
@@ -158,24 +158,18 @@ public class TodoListDataSource {
 
             do {
 
-                int id = getInt(cursor, BaseColumns._ID);
-                int itemId = getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_FOREIGN_KEY);
+                int itemId = getInt(cursor, BaseColumns._ID);
+                int id = getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_FOREIGN_KEY);
                 String description = getString(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION);
                 TodoListStatus status = TodoListStatus.values()[
                     getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED)];
 
                 int timeStamp = getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_TIMESTAMP);
 
-                TodoListItem item = new TodoListItem(id, itemId, description, status, timeStamp);
+                TodoListItem item = new TodoListItem(itemId, id, description, status, timeStamp);
                 items.add(item);
             }while(cursor.moveToNext());
         }
         return items;
-    }
-
-    private long getLong(Cursor cursor, String columnName) {
-
-        int columnIndex = cursor.getColumnIndex(columnName);
-        return cursor.getLong(columnIndex);
     }
 }

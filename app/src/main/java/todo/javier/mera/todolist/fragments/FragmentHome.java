@@ -132,10 +132,10 @@ public class FragmentHome extends Fragment
                     dataSource.openWriteable();
                     long newId = dataSource.createTodoList(
                         name,
-                        creationDate
+                            (int) creationDate
                     );
 
-                    TodoList todoList = new TodoList(newId, name, creationDate);
+                    TodoList todoList = new TodoList(newId, name, (int) creationDate);
                     addTodoList(todoList);
                     dataSource.close();
                 }
