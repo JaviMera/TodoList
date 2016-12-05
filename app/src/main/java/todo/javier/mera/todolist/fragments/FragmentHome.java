@@ -17,10 +17,15 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
+import java.util.Date;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
+import todo.javier.mera.todolist.adapters.RecyclerAdapter;
+import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.ui.MainActivity;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.TodolistAdapter;
@@ -73,13 +78,33 @@ public class FragmentHome extends Fragment
         mTitle = "Home";
         ((MainActivity)mParent).setToolbarTitle(mTitle);
 
+
+        mPresenter.setItemAnimator(new FlipInTopXAnimator());
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                TodoListDataSource source = new TodoListDataSource(mParent);
+                List<TodoList> todoLists = source.readTodoLists();
+                TodolistAdapter adapter = (TodolistAdapter) mRecyclerView.getAdapter();
+                for(TodoList tl : todoLists) {
+
+                    adapter.addItem(tl);
+                }
+            }
+        },
+        200);
+
         return view;
     }
 
     @OnClick(R.id.fab)
     public void onAddListButtonClick(View view) {
 
-        final String name = mNameEditText.getText().toString();
+        final String name = mNameEditText
+            .getText()
+            .toString();
 
         if(name.isEmpty()) {
 
@@ -100,12 +125,18 @@ public class FragmentHome extends Fragment
                 @Override
                 public void run() {
 
-                    scrollToLastPosition();
-                    mPresenter.setItemAnimator(new FlipInTopXAnimator());
-                    mPresenter.updateEditText("");
-                    mPresenter.updateEditTextHintColor(mParent, android.R.color.darker_gray);
+                scrollToLastPosition();
+                mPresenter.setItemAnimator(new FlipInTopXAnimator());
+                mPresenter.updateEditText("");
+                mPresenter.updateEditTextHintColor(mParent, android.R.color.darker_gray);
 
-                    addTodoList(name);
+                TodoListDataSource dataSource = new TodoListDataSource(mParent);
+                TodoList todoList = dataSource.create(
+                    name,
+                    new Date().getTime()
+                );
+
+                addTodoList(todoList);
                 }
             },
             ANIM_DELAY);
@@ -172,9 +203,8 @@ public class FragmentHome extends Fragment
         mRecyclerView.smoothScrollToPosition(lastPosition);
     }
 
-    private void addTodoList(String todoListTitle) {
+    private void addTodoList(TodoList todoList) {
 
-        TodoList todoList = new TodoList(todoListTitle);
         TodolistAdapter adapter = (TodolistAdapter) mRecyclerView.getAdapter();
         adapter.addItem(todoList);
     }

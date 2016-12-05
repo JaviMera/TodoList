@@ -11,12 +11,16 @@ import java.util.List;
  */
 public class TodoList implements Parcelable {
 
+    private long mId;
     private String mTitle;
+    private long mCreationDate;
     private List<TodoListItem> mItems;
 
-    public TodoList(String title) {
+    public TodoList(long id, String title, long creationDate) {
 
+        mId = id;
         mTitle = title;
+        mCreationDate = creationDate;
         mItems = new LinkedList<>();
     }
 
@@ -55,9 +59,9 @@ public class TodoList implements Parcelable {
         return 0;
     }
 
-    public int getId() {
+    public long getId() {
 
-        return -1;
+        return mId;
     }
 
     @Override
@@ -68,5 +72,10 @@ public class TodoList implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(mTitle);
+    }
+
+    public long getCreationDate() {
+
+        return mCreationDate;
     }
 }

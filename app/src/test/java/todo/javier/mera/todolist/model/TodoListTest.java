@@ -5,6 +5,8 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Date;
+
 import static org.junit.Assert.*;
 
 /**
@@ -14,12 +16,13 @@ public class TodoListTest {
 
     private TodoList mTodoList;
     private String expectedTitle = "Some List";
+    private long expectedDate = new Date().getTime();
     private int expectedItemcount = 0;
 
     @Before
     public void setUp() throws Exception {
 
-        mTodoList = new TodoList("Some List");
+        mTodoList = new TodoList("Some List", expectedDate);
     }
 
     @Test
@@ -27,6 +30,26 @@ public class TodoListTest {
 
         // Assert
         Assert.assertEquals(expectedTitle, mTodoList.getTitle());
+    }
+
+    @Test
+    public void getId() throws Exception {
+
+        // Arrange
+        int expectedId = 123;
+
+        // Act
+        mTodoList.setId(expectedId);
+
+        // Assert
+        Assert.assertEquals(expectedId, mTodoList.getId());
+    }
+
+    @Test
+    public void getCreationdate() throws Exception {
+
+        // Assert
+        Assert.assertEquals(expectedDate, mTodoList.getCreationDate());
     }
 
     @Test
