@@ -102,11 +102,7 @@ public class FragmentHome extends Fragment
     @OnClick(R.id.fab)
     public void onAddListButtonClick(View view) {
 
-        final String name = mNameEditText
-            .getText()
-            .toString();
-
-        if(name.isEmpty()) {
+        if(mNameEditText.getText().toString().isEmpty()) {
 
             String errorText = mParent.getString(R.string.dialog_todo_list_hint_error);
             mPresenter.updateEditTextHint(errorText);
@@ -125,18 +121,24 @@ public class FragmentHome extends Fragment
                 @Override
                 public void run() {
 
-                scrollToLastPosition();
-                mPresenter.setItemAnimator(new FlipInTopXAnimator());
-                mPresenter.updateEditText("");
-                mPresenter.updateEditTextHintColor(mParent, android.R.color.darker_gray);
+                    scrollToLastPosition();
+                    mPresenter.setItemAnimator(new FlipInTopXAnimator());
+                    mPresenter.updateEditText("");
+                    mPresenter.updateEditTextHintColor(mParent, android.R.color.darker_gray);
 
-                TodoListDataSource dataSource = new TodoListDataSource(mParent);
-                TodoList todoList = dataSource.create(
-                    name,
-                    new Date().getTime()
-                );
+                    TodoListDataSource dataSource = new TodoListDataSource(mParent);
+                    String name = mNameEditText.getText().toString();
+                    long creationDate = new Date().getTime();
 
-                addTodoList(todoList);
+                    dataSource.openWriteable();
+                    long newId = dataSource.create(
+                        name,
+                        creationDate
+                    );
+
+                    TodoList todoList = new TodoList(newId, name, creationDate);
+                    addTodoList(todoList);
+                    dataSource.close();
                 }
             },
             ANIM_DELAY);

@@ -19,6 +19,7 @@ public class TodoListDataSource {
 
     private Context mContext;
     private TodoListSQLiteHelper mSqliteHelper;
+    private SQLiteDatabase mDb;
 
     public TodoListDataSource(Context context) {
 
@@ -26,46 +27,46 @@ public class TodoListDataSource {
         mSqliteHelper = new TodoListSQLiteHelper(context);
     }
 
-    public SQLiteDatabase openWriteable() {
+    public void openWriteable() {
 
-        return mSqliteHelper.getWritableDatabase();
+        mDb = mSqliteHelper.getWritableDatabase();
     }
 
-    public SQLiteDatabase openReadable() {
+    public void openReadable() {
 
-        return mSqliteHelper.getReadableDatabase();
+        mDb = mSqliteHelper.getReadableDatabase();
     }
 
-    public void close(SQLiteDatabase database) {
+    public void close() {
 
-        database.close();
+        mDb.close();
     }
 
-    public TodoList create(String todoListTitle, long creationDate) {
+    public boolean isOpen() {
 
-        SQLiteDatabase database = openWriteable();
-        database.beginTransaction();
+        return mDb.isOpen();
+    }
+
+    public long create(String todoListTitle, long creationDate) {
+
+        mDb.beginTransaction();
 
         TodoList newTodoList;
         ContentValues todoListValues = new ContentValues();
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME, todoListTitle);
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_TIMESTAMP, creationDate);
 
-        long id = database.insert(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, todoListValues);
-        newTodoList = new TodoList(id, todoListTitle, creationDate);
+        long id = mDb.insert(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, todoListValues);
 
-        database.setTransactionSuccessful();
-        database.endTransaction();
-        close(database);
+        mDb.setTransactionSuccessful();
+        mDb.endTransaction();
 
-        return newTodoList;
+        return id;
     }
 
     public List<TodoList> readTodoLists() {
 
-        SQLiteDatabase database = openReadable();
-
-        Cursor cursor = database.query(
+        Cursor cursor = mDb.query(
 
             TodoListSQLiteHelper.TABLE_TODO_LISTS,
             new String[] {BaseColumns._ID, TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME, TodoListSQLiteHelper.COLUMN_TODO_LIST_TIMESTAMP},
@@ -92,7 +93,6 @@ public class TodoListDataSource {
         }
 
         cursor.close();
-        close(database);
 
         return todoLists;
     }
@@ -107,5 +107,11 @@ public class TodoListDataSource {
 
         int columnIndex = cursor.getColumnIndex(columnName);
         return cursor.getString(columnIndex);
+    }
+
+    public void clear() {
+
+        mDb.delete(TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS, null, null);
+        mDb.delete(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, null);
     }
 }
