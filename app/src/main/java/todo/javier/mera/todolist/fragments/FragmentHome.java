@@ -132,18 +132,19 @@ public class FragmentHome extends Fragment
                 public void run() {
 
                     scrollToLastPosition();
+
+                    String name = mNameEditText.getText().toString();
                     mPresenter.setItemAnimator(new FlipInTopXAnimator());
                     mPresenter.updateEditText("");
                     mPresenter.updateEditTextHintColor(mParent, android.R.color.darker_gray);
 
                     TodoListDataSource dataSource = new TodoListDataSource(mParent);
-                    String name = mNameEditText.getText().toString();
                     long creationDate = new Date().getTime();
 
                     dataSource.openWriteable();
                     long newId = dataSource.createTodoList(
                         name,
-                            (int) creationDate
+                        (int) creationDate
                     );
 
                     TodoList todoList = new TodoList(newId, name, (int) creationDate);
