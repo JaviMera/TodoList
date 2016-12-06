@@ -4,14 +4,19 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.animation.DecelerateInterpolator;
 
 import java.util.Date;
 
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
+import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TodoListItemAdapter;
@@ -114,6 +119,8 @@ public class FragmentTodoList extends FragmentRecycler
                 creationDate
         );
         source.close();
+
+        setItemAnimator(new FadeInUpAnimator(new DecelerateInterpolator()));
 
         TodoListItemAdapter adapter = (TodoListItemAdapter) mRecyclerView.getAdapter();
         adapter.addItem(new TodoListItem(
