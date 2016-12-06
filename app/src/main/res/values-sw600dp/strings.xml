@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="todo_list_transition_name">todolist</string>
+    <string name="dialog_task_title">Enter your new task!</string>
 </resources>

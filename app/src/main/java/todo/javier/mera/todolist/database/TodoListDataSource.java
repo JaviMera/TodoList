@@ -9,10 +9,9 @@ import android.provider.BaseColumns;
 import java.util.LinkedList;
 import java.util.List;
 
-import todo.javier.mera.todolist.adapters.TodolistViewHolder;
 import todo.javier.mera.todolist.model.TodoList;
 import todo.javier.mera.todolist.model.TodoListItem;
-import todo.javier.mera.todolist.model.TodoListStatus;
+import todo.javier.mera.todolist.model.TaskStatus;
 
 /**
  * Created by javie on 12/4/2016.
@@ -123,7 +122,7 @@ public class TodoListDataSource {
         mDb.delete(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, null);
     }
 
-    public long createTodoListItem(long todoListId, String description, TodoListStatus status, long timeStamp) {
+    public long createTodoListItem(long todoListId, String description, TaskStatus status, long timeStamp) {
 
         mDb.beginTransaction();
 
@@ -167,7 +166,7 @@ public class TodoListDataSource {
                 int itemId = getInt(cursor, BaseColumns._ID);
                 int id = getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_FOREIGN_KEY);
                 String description = getString(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION);
-                TodoListStatus status = TodoListStatus.values()[
+                TaskStatus status = TaskStatus.values()[
                     getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED)];
 
                 int columnIndex = cursor.getColumnIndex(TodoListSQLiteHelper.COLUMN_ITEMS_TIMESTAMP);

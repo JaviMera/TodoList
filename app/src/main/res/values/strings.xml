@@ -9,4 +9,8 @@
     <string name="dialog_todo_list_add_text">Add</string>
     <string name="dialog_todo_list_hint_error">Enter a valid name...</string>
     <string name="menu_add_task">Add task</string>
+    <string name="dialog_task_title">Enter your new task!</string>
+    <string name="dialog_task_hint">task description</string>
+    <string name="dialog_task_cancel_text">Cancel</string>
+    <string name="dialog_task_add_text">Add</string>
 </resources>

@@ -15,7 +15,7 @@ public class TodoListItemTest {
     private long mExpectedTodolistId = 123;
     private long mExpectedItemId = 321;
     private String mExpectedDescription = "Some task to do";
-    private TodoListStatus mExpectedStatus = TodoListStatus.Created;
+    private TaskStatus mExpectedStatus = TaskStatus.Created;
     private int mExpectedCreationDate = (int) new Date().getTime();
     private TodoListItem mItem;
 
@@ -69,11 +69,11 @@ public class TodoListItemTest {
     public void setCompleted() throws Exception {
 
         // Arrange
-        TodoListStatus expectedStatus = TodoListStatus.Completed;
+        TaskStatus expectedStatus = TaskStatus.Completed;
 
         // Act
         mItem.update(expectedStatus);
-        TodoListStatus actualStatus = mItem.getStatus();
+        TaskStatus actualStatus = mItem.getStatus();
 
         // Assert
         Assert.assertEquals(expectedStatus, actualStatus);

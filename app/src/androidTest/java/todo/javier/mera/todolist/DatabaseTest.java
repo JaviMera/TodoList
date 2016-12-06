@@ -18,7 +18,7 @@ import java.util.List;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.model.TodoList;
 import todo.javier.mera.todolist.model.TodoListItem;
-import todo.javier.mera.todolist.model.TodoListStatus;
+import todo.javier.mera.todolist.model.TaskStatus;
 
 /**
  * Created by javie on 12/5/2016.
@@ -94,7 +94,7 @@ public class DatabaseTest {
         long todoListCreationDate = new Date().getTime();
 
         String description = "first task";
-        TodoListStatus status = TodoListStatus.Created;
+        TaskStatus status = TaskStatus.Created;
         long timeStamp = new Date().getTime();
 
         // Act
@@ -115,7 +115,7 @@ public class DatabaseTest {
         long todoListCreationDate = new Date().getTime();
 
         String description = "first task";
-        TodoListStatus status = TodoListStatus.Created;
+        TaskStatus status = TaskStatus.Created;
         long timeStamp = new Date().getTime();
         int expectedSize = 1;
 

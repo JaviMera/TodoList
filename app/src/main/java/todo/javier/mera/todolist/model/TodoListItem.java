@@ -8,10 +8,10 @@ public class TodoListItem {
     private long mTodoListId;
     private long mItemId;
     private String mDescription;
-    private TodoListStatus mStatus;
+    private TaskStatus mStatus;
     private long mCreationDate;
 
-    public TodoListItem(long itemId, long todoListId, String description, TodoListStatus status,
+    public TodoListItem(long itemId, long todoListId, String description, TaskStatus status,
         long creationDate) {
 
         mItemId = itemId;
@@ -26,12 +26,12 @@ public class TodoListItem {
         return mDescription;
     }
 
-    public TodoListStatus getStatus() {
+    public TaskStatus getStatus() {
 
         return mStatus;
     }
 
-    public void update(TodoListStatus newStatus) {
+    public void update(TaskStatus newStatus) {
 
         mStatus = newStatus;
     }
