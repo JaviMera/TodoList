@@ -16,6 +16,7 @@ import todo.javier.mera.todolist.model.TodoList;
 public class TodolistAdapter extends RecyclerAdapter<TodoList, TodolistViewHolder> {
 
     public TodolistAdapter(Fragment context) {
+
         super(context, TodolistViewHolder.class);
     }
 

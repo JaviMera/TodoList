@@ -40,7 +40,9 @@ public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends Re
     @Override
     public H onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(mFragment.getActivity()).inflate(R.layout.todo_list, parent, false);
+        View view = LayoutInflater
+            .from(mFragment.getActivity())
+            .inflate(getLayout(), parent, false);
 
         if(mHolderType.equals(TodolistViewHolder.class)) {
 
