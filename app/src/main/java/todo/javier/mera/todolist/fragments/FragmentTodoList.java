@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +28,7 @@ import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TodoListItemAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
+import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTask;
 import todo.javier.mera.todolist.model.TodoList;
 import todo.javier.mera.todolist.model.TodoListItem;
 import todo.javier.mera.todolist.model.TodoListStatus;
@@ -72,6 +74,8 @@ public class FragmentTodoList extends FragmentRecycler {
         switch(item.getItemId()) {
 
             case R.id.action_add_task:
+                DialogFragment dialogFragment = new FragmentDialogTask();
+                dialogFragment.show(mParent.getSupportFragmentManager(), "dialog_task");
                 break;
             default:
             return super.onOptionsItemSelected(item);

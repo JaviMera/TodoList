@@ -53,4 +53,9 @@
         <item name="android:textSize">@dimen/item_body_size_land</item>
         <item name="android:textStyle">italic</item>
     </style>
+
+    <style name="FragmentDialogTaskAnimations">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
 </resources>
