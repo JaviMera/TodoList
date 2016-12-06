@@ -1,12 +1,9 @@
 package todo.javier.mera.todolist.fragments;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,37 +20,24 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
-import todo.javier.mera.todolist.ui.MainActivity;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.TodolistAdapter;
+import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogListener;
+import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTodoList;
 import todo.javier.mera.todolist.model.TodoList;
-import todo.javier.mera.todolist.ui.ActivityView;
 
-public class FragmentHome extends FragmentRecycler
-    implements TodoListListener {
+public class FragmentTodoLists extends FragmentRecycler
+    implements TodoListListener, FragmentDialogListener {
 
-    public static final int ANIM_DELAY = 200;
+    public static final int ANIM_DELAY = 1000;
 
-    private Animation mShakeAnimation;
+    public static FragmentTodoLists newInstance() {
 
-    @BindView(R.id.itemNameEditText)
-    EditText mNameEditText;
-
-    public static FragmentHome newInstance() {
-
-        return new FragmentHome();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        mShakeAnimation = AnimationUtils.loadAnimation(context, R.anim.shake);
+        return new FragmentTodoLists();
     }
 
     @Override
@@ -65,7 +49,7 @@ public class FragmentHome extends FragmentRecycler
     @Override
     protected int getLayout() {
 
-        return R.layout.fragment_home;
+        return R.layout.fragment_todo_lists;
     }
 
     @Override
@@ -118,51 +102,9 @@ public class FragmentHome extends FragmentRecycler
     @OnClick(R.id.fab)
     public void onAddListButtonClick(View view) {
 
-        if(mNameEditText.getText().toString().isEmpty()) {
-
-            String errorText = mParent.getString(R.string.dialog_todo_list_hint_error);
-            mNameEditText.setHint(errorText);
-
-            int hintColor = ContextCompat.getColor(mParent, android.R.color.holo_red_light);
-            mNameEditText.setHintTextColor(hintColor);
-            mNameEditText.startAnimation(mShakeAnimation);
-        }
-        else {
-
-            mParent.hideKeyboard();
-
-            // Wait 200ms after the keyboard has been manually closed.
-            // This gives a friendlier animation when the user is adding an item to the recycler view
-            // and half of the screen is being blocked by the keyboard.
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
-                    scrollToLastPosition();
-
-                    String name = mNameEditText.getText().toString();
-                    setItemAnimator(new FlipInTopXAnimator());
-                    mNameEditText.setText("");
-
-                    int hintColor = ContextCompat.getColor(mParent, android.R.color.darker_gray);
-                    mNameEditText.setHintTextColor(hintColor);
-
-                    TodoListDataSource dataSource = new TodoListDataSource(mParent);
-                    long creationDate = new Date().getTime();
-
-                    dataSource.openWriteable();
-                    long newId = dataSource.createTodoList(
-                        name,
-                        creationDate
-                    );
-
-                    TodoList todoList = new TodoList(newId, name, (int) creationDate);
-                    addTodoList(todoList);
-                    dataSource.close();
-                }
-            },
-            ANIM_DELAY);
-        }
+        FragmentDialogTodoList dialogTodoList = new FragmentDialogTodoList();
+        dialogTodoList.setTargetFragment(this, 1);
+        dialogTodoList.show(mParent.getSupportFragmentManager(), "dialog_todolists");
     }
 
     private void scrollToLastPosition() {
@@ -183,4 +125,37 @@ public class FragmentHome extends FragmentRecycler
 
         mParent.showFragmentTodoList(todoList);
     }
+
+    @Override
+    public void onAddItem(final String title) {
+
+        scrollToLastPosition();
+        // Wait 200ms after the keyboard has been manually closed.
+        // This gives a friendlier animation when the user is adding an item to the recycler view
+        // and half of the screen is being blocked by the keyboard.
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                scrollToLastPosition();
+
+                setItemAnimator(new FlipInTopXAnimator());
+
+                TodoListDataSource dataSource = new TodoListDataSource(mParent);
+                long creationDate = new Date().getTime();
+
+                dataSource.openWriteable();
+                long newId = dataSource.createTodoList(
+                    title,
+                    creationDate
+                );
+
+                TodoList todoList = new TodoList(newId, title, creationDate);
+                addTodoList(todoList);
+                dataSource.close();
+            }
+        },
+        ANIM_DELAY);
+    }
 }
+

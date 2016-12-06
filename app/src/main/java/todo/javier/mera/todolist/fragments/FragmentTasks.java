@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -14,9 +13,7 @@ import android.view.animation.DecelerateInterpolator;
 
 import java.util.Date;
 
-import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
-import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TodoListItemAdapter;
@@ -31,15 +28,15 @@ import todo.javier.mera.todolist.model.TaskStatus;
  * Created by javie on 12/2/2016.
  */
 
-public class FragmentTodoList extends FragmentRecycler
+public class FragmentTasks extends FragmentRecycler
     implements FragmentDialogListener {
 
     public static final String TODO_LISt = "TODO_LISt";
     private TodoList mTodoList;
 
-    public static FragmentTodoList newInstance(TodoList todoList) {
+    public static FragmentTasks newInstance(TodoList todoList) {
 
-        FragmentTodoList fragment = new FragmentTodoList();
+        FragmentTasks fragment = new FragmentTasks();
         Bundle bundle = new Bundle();
         bundle.putParcelable(TODO_LISt, todoList);
 
@@ -88,7 +85,7 @@ public class FragmentTodoList extends FragmentRecycler
     @Override
     protected int getLayout() {
 
-        return R.layout.fragment_todo_list;
+        return R.layout.fragment_tasks;
     }
 
     @Override
@@ -104,7 +101,7 @@ public class FragmentTodoList extends FragmentRecycler
     }
 
     @Override
-    public void onAddTask(String title) {
+    public void onAddItem(String title) {
 
         long creationDate = new Date().getTime();
         TaskStatus status = TaskStatus.Created;

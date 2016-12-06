@@ -1,12 +1,8 @@
 package todo.javier.mera.todolist.adapters;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 
-import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
-import jp.wasabeef.recyclerview.animators.SlideInRightAnimator;
 import todo.javier.mera.todolist.R;
-import todo.javier.mera.todolist.fragments.FragmentHome;
 import todo.javier.mera.todolist.model.TodoList;
 
 /**
@@ -36,7 +32,7 @@ public class TodolistAdapter extends RecyclerAdapter<TodoList, TodolistViewHolde
     @Override
     protected int getLayout() {
 
-        return R.layout.todo_list;
+        return R.layout.todo_list_item;
     }
 
     @Override

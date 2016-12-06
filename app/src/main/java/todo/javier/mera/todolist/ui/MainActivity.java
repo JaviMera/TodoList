@@ -5,23 +5,21 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import todo.javier.mera.todolist.R;
-import todo.javier.mera.todolist.fragments.FragmentHome;
-import todo.javier.mera.todolist.fragments.FragmentTodoList;
+import todo.javier.mera.todolist.fragments.FragmentTodoLists;
+import todo.javier.mera.todolist.fragments.FragmentTasks;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class MainActivity extends AppCompatActivity
     implements ActivityView {
 
-    public static final String FRAGMENT_HOME_TAG = "fragment_home";
-    private static final String FRAGMENT_TODO_LIST = "fragment_todo_list";
+    public static final String FRAGMENT_HOME_TAG = "fragment_todo_lists";
+    private static final String FRAGMENT_TODO_LIST = "fragment_tasks";
 
     private FragmentHelper mFragmentHelper;
 
@@ -41,7 +39,7 @@ public class MainActivity extends AppCompatActivity
 
         setSupportActionBar(mToolBar);
 
-        Fragment fragment = FragmentHome.newInstance();
+        Fragment fragment = FragmentTodoLists.newInstance();
         mFragmentHelper.replace(R.id.fragmentContainer, fragment);
     }
 
@@ -72,7 +70,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void showFragmentTodoList(TodoList todoList) {
 
-        Fragment fragment = FragmentTodoList.newInstance(todoList);
+        Fragment fragment = FragmentTasks.newInstance(todoList);
         mFragmentHelper.replaceWithBackStack(
             R.id.fragmentContainer,
             fragment,

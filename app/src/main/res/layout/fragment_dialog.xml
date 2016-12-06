@@ -4,9 +4,9 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/dialogTitleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_task_title"
         android:gravity="center"
         android:padding="15dp"
         android:textSize="20sp"

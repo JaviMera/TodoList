@@ -32,7 +32,7 @@ public class TodoListItemAdapter extends RecyclerAdapter<TodoListItem, TodoListI
     @Override
     protected int getLayout() {
 
-        return R.layout.todo_list_item;
+        return R.layout.task_item;
     }
 
     @Override

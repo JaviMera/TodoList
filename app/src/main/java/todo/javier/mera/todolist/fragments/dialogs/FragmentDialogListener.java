@@ -7,5 +7,5 @@ import todo.javier.mera.todolist.model.TodoListItem;
  */
 public interface FragmentDialogListener {
 
-    void onAddTask(String title);
+    void onAddItem(String title);
 }
