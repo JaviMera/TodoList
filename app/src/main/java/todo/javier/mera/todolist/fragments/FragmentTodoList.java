@@ -67,7 +67,7 @@ public class FragmentTodoList extends FragmentRecycler {
     public void onAddButtonClick(View view) {
 
         String taskName = mNameEditText.getText().toString();
-        int creationDate = (int)new Date().getTime();
+        long creationDate = new Date().getTime();
 
         TodoListDataSource source = new TodoListDataSource(mParent);
         source.openWriteable();

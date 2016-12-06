@@ -50,7 +50,7 @@ public class TodoListDataSource {
         return mDb.isOpen();
     }
 
-    public long createTodoList(String todoListTitle, int creationDate) {
+    public long createTodoList(String todoListTitle, long creationDate) {
 
         mDb.beginTransaction();
 
@@ -86,7 +86,7 @@ public class TodoListDataSource {
 
                 int id = getInt(cursor, BaseColumns._ID);
                 String name = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME);
-                int creationDate = getInt(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_TIMESTAMP);
+                long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_TIMESTAMP);
 
                 TodoList todoList = new TodoList(id, name, creationDate);
                 todoLists.add(todoList);
@@ -111,13 +111,19 @@ public class TodoListDataSource {
         return cursor.getString(columnIndex);
     }
 
+    private long getLong(Cursor cursor, String columnName) {
+
+        int columnIndex = cursor.getColumnIndex(columnName);
+        return cursor.getLong(columnIndex);
+    }
+
     public void clear() {
 
         mDb.delete(TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS, null, null);
         mDb.delete(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, null);
     }
 
-    public long createTodoListItem(long todoListId, String description, TodoListStatus status, int timeStamp) {
+    public long createTodoListItem(long todoListId, String description, TodoListStatus status, long timeStamp) {
 
         mDb.beginTransaction();
 
@@ -164,9 +170,10 @@ public class TodoListDataSource {
                 TodoListStatus status = TodoListStatus.values()[
                     getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED)];
 
-                int timeStamp = getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_TIMESTAMP);
+                int columnIndex = cursor.getColumnIndex(TodoListSQLiteHelper.COLUMN_ITEMS_TIMESTAMP);
+                long creationDate = cursor.getLong(columnIndex);
 
-                TodoListItem item = new TodoListItem(itemId, id, description, status, timeStamp);
+                TodoListItem item = new TodoListItem(itemId, id, description, status, creationDate);
                 items.add(item);
             }while(cursor.moveToNext());
         }

@@ -139,7 +139,7 @@ public class FragmentHome extends Fragment
                     mPresenter.updateEditTextHintColor(mParent, android.R.color.darker_gray);
 
                     TodoListDataSource dataSource = new TodoListDataSource(mParent);
-                    int creationDate = (int)new Date().getTime();
+                    long creationDate = new Date().getTime();
 
                     dataSource.openWriteable();
                     long newId = dataSource.createTodoList(

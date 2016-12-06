@@ -13,10 +13,10 @@ public class TodoList implements Parcelable {
 
     private long mId;
     private String mTitle;
-    private int mCreationDate;
+    private long mCreationDate;
     private List<TodoListItem> mItems;
 
-    public TodoList(long id, String title, int creationDate) {
+    public TodoList(long id, String title, long creationDate) {
 
         mId = id;
         mTitle = title;
@@ -74,7 +74,7 @@ public class TodoList implements Parcelable {
         parcel.writeString(mTitle);
     }
 
-    public int getCreationDate() {
+    public long getCreationDate() {
 
         return mCreationDate;
     }

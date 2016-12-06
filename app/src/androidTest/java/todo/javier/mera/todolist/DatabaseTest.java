@@ -73,7 +73,7 @@ public class DatabaseTest {
 
         // Arrange
         String expectedTitle = "My List";
-        int expectedCreationDate = (int)new Date().getTime();
+        long expectedCreationDate = new Date().getTime();
 
         // Act
         mDataSource.openReadable();
@@ -91,11 +91,11 @@ public class DatabaseTest {
 
         // Arrange
         String todoListTitle = "My Other list";
-        int todoListCreationDate = (int)new Date().getTime();
+        long todoListCreationDate = new Date().getTime();
 
         String description = "first task";
         TodoListStatus status = TodoListStatus.Created;
-        int timeStamp = (int)new Date().getTime();
+        long timeStamp = new Date().getTime();
 
         // Act
         mDataSource.openWriteable();
@@ -112,19 +112,21 @@ public class DatabaseTest {
 
         // Arrange
         String todoListTitle = "My Other list";
-        int todoListCreationDate = (int)new Date().getTime();
+        long todoListCreationDate = new Date().getTime();
 
         String description = "first task";
         TodoListStatus status = TodoListStatus.Created;
-        int timeStamp = (int)new Date().getTime();
+        long timeStamp = new Date().getTime();
         int expectedSize = 1;
 
         // Act
-        mDataSource.openReadable();
+        mDataSource.openWriteable();
 
         long todoListId = mDataSource.createTodoList(todoListTitle, todoListCreationDate);
         long item1Id = mDataSource.createTodoListItem(todoListId, description, status, timeStamp);
 
+        mDataSource.close();
+        mDataSource.openReadable();
         List<TodoListItem> items = mDataSource.readAllTodoListItems(todoListId);
 
         // Assert
