@@ -55,7 +55,7 @@
     </style>
 
     <style name="FragmentDialogTaskAnimations">
-        <item name="android:windowEnterAnimation">@anim/slide_up</item>
-        <item name="android:windowExitAnimation">@anim/slide_down</item>
+        <item name="android:windowEnterAnimation">@anim/slide_top_to_middle</item>
+        <item name="android:windowExitAnimation">@anim/slide_middle_to_bottom</item>
     </style>
 </resources>
