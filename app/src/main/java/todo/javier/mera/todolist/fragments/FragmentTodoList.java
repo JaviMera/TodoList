@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,10 +20,9 @@ import todo.javier.mera.todolist.ui.MainActivity;
  * Created by javie on 12/2/2016.
  */
 
-public class FragmentTodoList extends Fragment {
+public class FragmentTodoList extends FragmentRecycler {
 
     public static final String TODO_LISt = "TODO_LISt";
-    private FragmentActivity mParent;
     private TodoList mTodoList;
 
     public static FragmentTodoList newInstance(TodoList todoList) {
@@ -35,23 +36,28 @@ public class FragmentTodoList extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        inflater.inflate(R.menu.fragment_todo_list_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mParent = getActivity();
         mTodoList = getArguments().getParcelable(TODO_LISt);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    protected int getLayout() {
 
-        View view = inflater.inflate(R.layout.fragment_todo_list, container, false);
+        return R.layout.fragment_todo_list;
+    }
 
-        ButterKnife.bind(this, view);
+    @Override
+    protected String getTitle() {
 
-        ((MainActivity)mParent).setToolbarTitle(mTodoList.getTitle());
-
-        return view;
+        return mTodoList.getTitle();
     }
 }

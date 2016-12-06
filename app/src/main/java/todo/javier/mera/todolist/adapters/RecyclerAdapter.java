@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import todo.javier.mera.todolist.R;
-import todo.javier.mera.todolist.fragments.FragmentHome;
 import todo.javier.mera.todolist.fragments.TodoListListener;
 
 /**
@@ -26,6 +25,7 @@ public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends Re
 
     protected abstract T getItem(int position);
     protected abstract void removeItem(int position);
+    protected abstract int getLayout();
 
     public abstract void addItem(T item);
 
@@ -40,11 +40,15 @@ public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends Re
     @Override
     public H onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(mFragment.getActivity()).inflate(R.layout.todo_list_item, parent, false);
+        View view = LayoutInflater.from(mFragment.getActivity()).inflate(R.layout.todo_list, parent, false);
 
         if(mHolderType.equals(TodolistViewHolder.class)) {
 
             return (H) new TodolistViewHolder((TodoListListener) mFragment, view);
+        }
+        else if(mHolderType.equals(TodoListItemViewHolder.class)) {
+
+            return (H) new TodoListItemViewHolder(view);
         }
 
         return null;
