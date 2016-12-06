@@ -14,10 +14,10 @@ public interface FragmentRecyclerView {
 
     void setAdapter(Fragment context);
     void setItemAnimator(RecyclerView.ItemAnimator animator);
-    void setLayoutManager(Context context, int orientation);
+    void setLayoutManager(Context context);
     void setFixedSize(boolean isFixed);
-    void updateEditTextHintColor(Context context, int colorId);
-    void updateEditText(String text);
-    void updateEditTextHint(String text);
-    void startEditTextAnim(Animation anim);
+//    void updateEditTextHintColor(Context context, int colorId);
+//    void updateEditText(String text);
+//    void updateEditTextHint(String text);
+//    void startEditTextAnim(Animation anim);
 }

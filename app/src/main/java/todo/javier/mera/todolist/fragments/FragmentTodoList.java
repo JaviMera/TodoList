@@ -1,13 +1,18 @@
 package todo.javier.mera.todolist.fragments;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -36,9 +41,6 @@ public class FragmentTodoList extends FragmentRecycler {
     public static final String TODO_LISt = "TODO_LISt";
     private TodoList mTodoList;
 
-    @BindView(R.id.itemNameEditText)
-    EditText mNameEditText;
-
     public static FragmentTodoList newInstance(TodoList todoList) {
 
         FragmentTodoList fragment = new FragmentTodoList();
@@ -56,6 +58,7 @@ public class FragmentTodoList extends FragmentRecycler {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,31 +66,45 @@ public class FragmentTodoList extends FragmentRecycler {
         mTodoList = getArguments().getParcelable(TODO_LISt);
     }
 
-    @OnClick(R.id.fab)
-    public void onAddButtonClick(View view) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-        String taskName = mNameEditText.getText().toString();
-        long creationDate = new Date().getTime();
+        switch(item.getItemId()) {
 
-        TodoListDataSource source = new TodoListDataSource(mParent);
-        source.openWriteable();
+            case R.id.action_add_task:
+                break;
+            default:
+            return super.onOptionsItemSelected(item);
+        }
 
-        long newId = source.createTodoListItem(
-            mTodoList.getId(),
-            taskName,
-            TodoListStatus.Created,
-            creationDate
-        );
-        source.close();
-
-        TodoListItemAdapter adapter = (TodoListItemAdapter) mRecyclerView.getAdapter();
-        adapter.addItem(new TodoListItem(
-            newId,
-            mTodoList.getId(),
-            mNameEditText.getText().toString(),
-            TodoListStatus.Created,
-            creationDate));
+        return true;
     }
+
+    //    @OnClick(R.id.fab)
+//    public void onAddButtonClick(View view) {
+
+//        String taskName = mNameEditText.getText().toString();
+//        long creationDate = new Date().getTime();
+//
+//        TodoListDataSource source = new TodoListDataSource(mParent);
+//        source.openWriteable();
+//
+//        long newId = source.createTodoListItem(
+//            mTodoList.getId(),
+//            taskName,
+//            TodoListStatus.Created,
+//            creationDate
+//        );
+//        source.close();
+//
+//        TodoListItemAdapter adapter = (TodoListItemAdapter) mRecyclerView.getAdapter();
+//        adapter.addItem(new TodoListItem(
+//            newId,
+//            mTodoList.getId(),
+//            mNameEditText.getText().toString(),
+//            TodoListStatus.Created,
+//            creationDate));
+//    }
 
     @Override
     protected RecyclerAdapter getAdapter() {
@@ -105,5 +122,11 @@ public class FragmentTodoList extends FragmentRecycler {
     protected String getTitle() {
 
         return mTodoList.getTitle();
+    }
+
+    @Override
+    protected RecyclerView.LayoutManager getLayoutManager(Context context) {
+
+        return new LinearLayoutManager(context);
     }
 }

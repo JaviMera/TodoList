@@ -5,19 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:layout_margin="10dp">
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/todoListItemsRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </android.support.v7.widget.RecyclerView>
-    </FrameLayout>
-
-    <include layout="@layout/add_item_layout" />
 </LinearLayout>

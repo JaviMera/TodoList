@@ -64,10 +64,10 @@ public class FragmentRecyclerPresenterTest {
         int orientation = 1;
 
         // Act
-        mPresenter.setLayoutManager(context, orientation);
+        mPresenter.setLayoutManager(context);
 
         // Assert
-        Mockito.verify(mView).setLayoutManager(context, orientation);
+        Mockito.verify(mView).setLayoutManager(context);
     }
 
     @Test
@@ -81,58 +81,5 @@ public class FragmentRecyclerPresenterTest {
 
         // Assert
         Mockito.verify(mView).setFixedSize(isFixed);
-    }
-
-    @Test
-    public void updateEditTextHint() throws Exception {
-
-        // Arrange
-        String text = "";
-
-        // Act
-        mPresenter.updateEditTextHint(text);
-
-        // Assert
-        Mockito.verify(mView).updateEditTextHint(text);
-    }
-
-    @Test
-    public void updateEditTextHintColor() throws Exception {
-
-        // Arrange
-        Context context = null;
-        int colorId = 123;
-
-        // Act
-        mPresenter.updateEditTextHintColor(context, colorId);
-
-        // Assert
-        Mockito.verify(mView).updateEditTextHintColor(context, colorId);
-    }
-
-    @Test
-    public void updateEditText() throws Exception {
-
-        // Arrange
-        String text = "";
-
-        // Act
-        mPresenter.updateEditText(text);
-
-        // Assert
-        Mockito.verify(mView).updateEditText(text);
-    }
-
-    @Test
-    public void startEditTextAnim() throws Exception {
-
-        // Arrange
-        Animation anim = null;
-
-        // Act
-        mPresenter.startEditTextAnim(anim);
-
-        // Assert
-        Mockito.verify(mView).startEditTextAnim(anim);
     }
 }
