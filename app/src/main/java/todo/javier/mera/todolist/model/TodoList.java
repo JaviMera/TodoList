@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Javier on 11/28/2016.
  */
-public class TodoList implements Parcelable {
+public class TodoList extends Removable implements Parcelable {
 
     private long mId;
     private String mTitle;

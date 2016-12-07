@@ -3,7 +3,7 @@ package todo.javier.mera.todolist.model;
 /**
  * Created by javie on 11/29/2016.
  */
-public class TodoListTask {
+public class TodoListTask extends Removable{
 
     private long mTodoListId;
     private long mItemId;
@@ -12,13 +12,14 @@ public class TodoListTask {
     private long mCreationDate;
 
     public TodoListTask(long itemId, long todoListId, String description, TaskStatus status,
-                        long creationDate) {
+        long creationDate, boolean canRemove) {
 
         mItemId = itemId;
         mTodoListId = todoListId;
         mDescription = description;
         mStatus = status;
         mCreationDate = creationDate;
+        setCanRemove(canRemove);
     }
 
     public String getDescription() {

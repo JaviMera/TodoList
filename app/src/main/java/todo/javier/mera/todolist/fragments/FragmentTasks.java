@@ -9,17 +9,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.animation.DecelerateInterpolator;
+import android.view.View;
+import android.widget.Toast;
 
 import java.util.Date;
 import java.util.List;
 
-import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import todo.javier.mera.todolist.R;
+import todo.javier.mera.todolist.adapters.ItemLongClickListener;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TodoListTaskAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
-import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogListener;
 import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTask;
 import todo.javier.mera.todolist.model.TodoList;
 import todo.javier.mera.todolist.model.TodoListTask;
@@ -47,7 +47,19 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        inflater.inflate(R.menu.fragment_todo_list_menu, menu);
+        inflater.inflate(R.menu.fragment_task_menu, menu);
+
+        if(mIsRemovingItems) {
+
+            menu.findItem(R.id.action_add_task).setVisible(false);
+            menu.findItem(R.id.action_delete_task).setVisible(true);
+        }
+        else {
+
+            menu.findItem(R.id.action_add_task).setVisible(true);
+            menu.findItem(R.id.action_delete_task).setVisible(false);
+        }
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -57,7 +69,9 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
         super.onCreate(savedInstanceState);
 
         mTodoList = getArguments().getParcelable(TODO_LISt);
+        mIsRemovingItems = false;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -69,6 +83,7 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
                 dialogFragment.setTargetFragment(this, 1);
                 dialogFragment.show(mParent.getSupportFragmentManager(), "dialog_task");
                 break;
+
             default:
             return super.onOptionsItemSelected(item);
         }

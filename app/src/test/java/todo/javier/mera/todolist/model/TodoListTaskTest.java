@@ -18,6 +18,7 @@ public class TodoListTaskTest {
     private TaskStatus mExpectedStatus = TaskStatus.Created;
     private int mExpectedCreationDate = (int) new Date().getTime();
     private TodoListTask mItem;
+    private boolean mExpectedCanRemove = false;
 
     @Before
     public void setUp() throws Exception {
@@ -27,7 +28,8 @@ public class TodoListTaskTest {
             mExpectedTodolistId,
             mExpectedDescription,
             mExpectedStatus,
-            mExpectedCreationDate);
+            mExpectedCreationDate,
+            mExpectedCanRemove);
     }
 
     @Test

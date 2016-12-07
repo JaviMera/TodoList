@@ -8,33 +8,40 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import todo.javier.mera.todolist.R;
+import todo.javier.mera.todolist.adapters.ItemLongClickListener;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
-import todo.javier.mera.todolist.adapters.TodolistAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogListener;
+import todo.javier.mera.todolist.model.Removable;
 import todo.javier.mera.todolist.ui.MainActivity;
 
 /**
  * Created by javie on 12/5/2016.
  */
 
-public abstract class FragmentRecycler<T> extends Fragment
-    implements FragmentRecyclerView, FragmentDialogListener{
+public abstract class FragmentRecycler<T extends Removable> extends Fragment
+    implements FragmentRecyclerView,
+    FragmentDialogListener,
+    ItemClickListener,
+    ItemLongClickListener{
 
     private FragmentRecyclerPresenter mPresenter;
 
     protected MainActivity mParent;
+    protected boolean mIsRemovingItems;
+
     protected abstract RecyclerAdapter getAdapter();
     protected abstract int getLayout();
     protected abstract String getTitle();
@@ -81,6 +88,7 @@ public abstract class FragmentRecycler<T> extends Fragment
         return view;
     }
 
+
     @Override
     public void setAdapter(Fragment context) {
 
@@ -102,7 +110,6 @@ public abstract class FragmentRecycler<T> extends Fragment
         mRecyclerView.setLayoutManager(layoutManager);
     }
 
-
     @Override
     public void setFixedSize(boolean isFixed) {
 
@@ -118,16 +125,50 @@ public abstract class FragmentRecycler<T> extends Fragment
             @Override
             public void run() {
 
-                scrollToLastPosition();
-                TodoListDataSource source = new TodoListDataSource(mParent);
-                source.openWriteable();
-                T item = createItem(source, title);
+            scrollToLastPosition();
+            TodoListDataSource source = new TodoListDataSource(mParent);
+            source.openWriteable();
+            T item = createItem(source, title);
 
-                RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-                adapter.addItem(item);
-                source.close();
+            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+            adapter.addItem(item);
+            source.close();
             }
         }, 1000);
+    }
+
+    @Override
+    public void onLongClick(int position) {
+
+        if(!mIsRemovingItems) {
+
+            mIsRemovingItems = true;
+            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+            adapter.setRemovable(position);
+
+            mParent.invalidateOptionsMenu();
+        }
+    }
+
+    @Override
+    public void onClick(int position) {
+
+        if(mIsRemovingItems) {
+
+            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+            adapter.setRemovable(position);
+
+            int count = adapter.getRemovableCount();
+            if(count == 0) {
+
+                mIsRemovingItems = false;
+                mParent.invalidateOptionsMenu();
+            }
+        }
+        else {
+
+            Toast.makeText(mParent, "cant remove", Toast.LENGTH_SHORT).show();
+        }
     }
 
     protected int getOrientation(Context context) {

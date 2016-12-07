@@ -9,17 +9,23 @@ import android.view.ViewGroup;
 import java.util.LinkedList;
 import java.util.List;
 
-import todo.javier.mera.todolist.R;
+import todo.javier.mera.todolist.fragments.FragmentRecycler;
+import todo.javier.mera.todolist.fragments.FragmentTasks;
 import todo.javier.mera.todolist.fragments.TodoListListener;
+import todo.javier.mera.todolist.model.Removable;
+import todo.javier.mera.todolist.model.TodoListTask;
 
 /**
  * Created by javie on 11/29/2016.
  */
 
-public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends RecyclerView.Adapter<H> {
+public abstract class RecyclerAdapter<T extends Removable, H extends ViewHolderBase<T>> extends RecyclerView.Adapter<H>
+
+    {
 
     protected final Fragment mFragment;
     private final Class<H> mHolderType;
+    private boolean mCanDelete;
 
     protected List<T> mItems;
 
@@ -31,6 +37,19 @@ public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends Re
 
         mItems.add(item);
         notifyItemInserted(mItems.size() - 1);
+    }
+
+    public void setRemovable(int itemLongClicked) {
+
+        T item = mItems.get(itemLongClicked);
+
+        // This will work as a toggle for can or can't be removed
+        // The item will start as non removable, so the first click will make it removable, the next
+        // will set it back to non removable and so on.
+        boolean isRemovable = !item.getCanRemove();
+
+        item.setCanRemove(isRemovable);
+        notifyItemChanged(itemLongClicked);
     }
 
     public RecyclerAdapter(Fragment fragment, Class<H> holderType) {
@@ -51,9 +70,9 @@ public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends Re
 
             return (H) new TodolistViewHolder((TodoListListener) mFragment, view);
         }
-        else if(mHolderType.equals(TodoListItemViewHolder.class)) {
+        else if(mHolderType.equals(TodoListTaskViewHolder.class)) {
 
-            return (H) new TodoListItemViewHolder(view);
+            return (H) new TodoListTaskViewHolder(view, (FragmentTasks) mFragment);
         }
 
         return null;
@@ -69,5 +88,20 @@ public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends Re
     public void onBindViewHolder(H holder, int position) {
 
         holder.bind(mItems.get(position));
+    }
+
+    public int getRemovableCount() {
+
+        int count = 0;
+
+        for(T item : mItems) {
+
+            if(item.getCanRemove()) {
+
+                count++;
+            }
+        }
+
+        return count;
     }
 }

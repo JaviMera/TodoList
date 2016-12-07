@@ -9,11 +9,11 @@ import todo.javier.mera.todolist.model.TodoListTask;
  * Created by javie on 12/5/2016.
  */
 
-public class TodoListTaskAdapter extends RecyclerAdapter<TodoListTask, TodoListItemViewHolder> {
+public class TodoListTaskAdapter extends RecyclerAdapter<TodoListTask, TodoListTaskViewHolder> {
 
     public TodoListTaskAdapter(Fragment fragment) {
 
-        super(fragment, TodoListItemViewHolder.class);
+        super(fragment, TodoListTaskViewHolder.class);
     }
 
     @Override
@@ -34,11 +34,4 @@ public class TodoListTaskAdapter extends RecyclerAdapter<TodoListTask, TodoListI
 
         return R.layout.task_item;
     }
-
-//    @Override
-//    public void addItem(TodoListTask item) {
-//
-//        mItems.add(item);
-//        notifyItemInserted(getItemCount() - 1);
-//    }
 }

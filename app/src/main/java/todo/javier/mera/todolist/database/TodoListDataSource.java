@@ -137,7 +137,7 @@ public class TodoListDataSource {
         mDb.setTransactionSuccessful();
         mDb.endTransaction();
 
-        return new TodoListTask(newId, todoListId, description, status, timeStamp);
+        return new TodoListTask(newId, todoListId, description, status, timeStamp, false);
     }
 
     public List<TodoListTask> readTodoListTasks(long todoListId) {
@@ -173,10 +173,19 @@ public class TodoListDataSource {
                 int columnIndex = cursor.getColumnIndex(TodoListSQLiteHelper.COLUMN_ITEMS_TIMESTAMP);
                 long creationDate = cursor.getLong(columnIndex);
 
-                TodoListTask item = new TodoListTask(itemId, id, description, status, creationDate);
+                TodoListTask item = new TodoListTask(itemId, id, description, status, creationDate, false);
                 items.add(item);
             }while(cursor.moveToNext());
         }
         return items;
+    }
+
+    public int removeTodoListTask(long itemId) {
+
+        return mDb.delete(
+            TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
+            BaseColumns._ID + "=?",
+            new String[]{String.valueOf(itemId)}
+        );
     }
 }

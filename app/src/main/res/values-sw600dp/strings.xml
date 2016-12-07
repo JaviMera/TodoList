@@ -2,4 +2,5 @@
 <resources>
     <string name="todo_list_transition_name">todolist</string>
     <string name="dialog_task_title">Enter your new task!</string>
+    <string name="menu_delete_task">Delete task(s)</string>
 </resources>
