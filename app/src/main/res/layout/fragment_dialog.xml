@@ -5,21 +5,11 @@
 
     <TextView
         android:id="@+id/dialogTitleView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="15dp"
-        android:textSize="20sp"
-        android:textColor="@android:color/white"
-        android:background="@color/colorPrimary"/>
+        style="@style/DialogTitle"/>
 
     <EditText
         android:id="@+id/taskEditTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="italic"
-        android:textColor="@android:color/darker_gray"
-        android:layout_margin="15dp"/>
+        style="@style/DialogEditText" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,22 +17,10 @@
 
         <Button
             android:id="@+id/cancelTaskView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/dialog_task_cancel_text"
-            android:textColor="@android:color/white"
-            android:layout_margin="10dp"
-            android:background="@drawable/button_background"/>
+            style="@style/CancelButton"/>
 
         <Button
             android:id="@+id/addTaskView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/dialog_task_add_text"
-            android:textColor="@android:color/white"
-            android:layout_margin="10dp"
-            android:background="@drawable/button_background"/>
+            style="@style/AddButton"/>
     </LinearLayout>
 </LinearLayout>

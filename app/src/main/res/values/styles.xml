@@ -6,7 +6,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
-        <item name="android:windowContentTransitions">true</item>
+    </style>
+
+    <style name="FragmentDialogTaskAnimations">
+        <item name="android:windowEnterAnimation">@anim/slide_top_to_middle</item>
+        <item name="android:windowExitAnimation">@anim/slide_middle_to_bottom</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -54,8 +58,38 @@
         <item name="android:textStyle">italic</item>
     </style>
 
-    <style name="FragmentDialogTaskAnimations">
-        <item name="android:windowEnterAnimation">@anim/slide_top_to_middle</item>
-        <item name="android:windowExitAnimation">@anim/slide_middle_to_bottom</item>
+    <style name="DialogButton">
+        <item name="android:layout_width">@dimen/zero</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:layout_margin">@dimen/dialog_button_margin</item>
+    </style>
+
+    <style name="CancelButton" parent="DialogButton">
+        <item name="android:text">@string/dialog_cancel_text</item>
+    </style>
+
+    <style name="AddButton" parent="DialogButton">
+        <item name="android:text">@string/dialog_add_text</item>
+    </style>
+
+    <style name="DialogTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/dialog_title_size</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:padding">@dimen/dialog_title_pad</item>
+    </style>
+
+    <style name="DialogEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:layout_margin">@dimen/dialog_edit_text_margin</item>
     </style>
 </resources>

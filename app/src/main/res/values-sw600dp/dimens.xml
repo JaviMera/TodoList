@@ -9,4 +9,8 @@
     <dimen name="item_body_size_portrait">16sp</dimen>
     <dimen name="item_body_pad_land">10dp</dimen>
     <dimen name="item_body_size_land">12sp</dimen>
+    <dimen name="dialog_button_margin">10dp</dimen>
+    <dimen name="dialog_edit_text_margin">15dp</dimen>
+    <dimen name="dialog_title_size">20sp</dimen>
+    <dimen name="dialog_title_pad">15dp</dimen>
 </resources>

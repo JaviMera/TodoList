@@ -11,6 +11,6 @@
     <string name="menu_add_task">Add task</string>
     <string name="dialog_task_title">Enter your new task!</string>
     <string name="dialog_task_hint">task description</string>
-    <string name="dialog_task_cancel_text">Cancel</string>
-    <string name="dialog_task_add_text">Add</string>
+    <string name="dialog_cancel_text">Cancel</string>
+    <string name="dialog_add_text">Add</string>
 </resources>
