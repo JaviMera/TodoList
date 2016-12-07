@@ -28,7 +28,7 @@ public class TodoListTaskViewHolder extends ViewHolderBase<TodoListTask> impleme
         super(itemView);
 
         mParent = fragment;
-        mRemovableColor = ContextCompat.getColor(mParent.getActivity(), android.R.color.holo_red_light);
+        mRemovableColor = ContextCompat.getColor(mParent.getActivity(), R.color.remove_item_color);
         mNonRemovableColor = ContextCompat.getColor(mParent.getActivity(), android.R.color.transparent);
     }
 
