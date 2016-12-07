@@ -4,12 +4,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import todo.javier.mera.todolist.R;
-import todo.javier.mera.todolist.model.TodoListItem;
+import todo.javier.mera.todolist.model.TodoListTask;
 
 /**
  * Created by javie on 12/5/2016.
  */
-public class TodoListItemViewHolder extends ViewHolderBase<TodoListItem>{
+public class TodoListItemViewHolder extends ViewHolderBase<TodoListTask>{
 
     private TextView mDescription;
 
@@ -18,7 +18,7 @@ public class TodoListItemViewHolder extends ViewHolderBase<TodoListItem>{
     }
 
     @Override
-    public void bind(TodoListItem item) {
+    public void bind(TodoListTask item) {
 
         mDescription.setText(item.getDescription());
     }

@@ -3,7 +3,7 @@ package todo.javier.mera.todolist.model;
 /**
  * Created by javie on 11/29/2016.
  */
-public class TodoListItem {
+public class TodoListTask {
 
     private long mTodoListId;
     private long mItemId;
@@ -11,8 +11,8 @@ public class TodoListItem {
     private TaskStatus mStatus;
     private long mCreationDate;
 
-    public TodoListItem(long itemId, long todoListId, String description, TaskStatus status,
-        long creationDate) {
+    public TodoListTask(long itemId, long todoListId, String description, TaskStatus status,
+                        long creationDate) {
 
         mItemId = itemId;
         mTodoListId = todoListId;

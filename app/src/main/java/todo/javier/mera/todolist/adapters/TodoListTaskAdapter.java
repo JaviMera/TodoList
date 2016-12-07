@@ -3,21 +3,21 @@ package todo.javier.mera.todolist.adapters;
 import android.support.v4.app.Fragment;
 
 import todo.javier.mera.todolist.R;
-import todo.javier.mera.todolist.model.TodoListItem;
+import todo.javier.mera.todolist.model.TodoListTask;
 
 /**
  * Created by javie on 12/5/2016.
  */
 
-public class TodoListItemAdapter extends RecyclerAdapter<TodoListItem, TodoListItemViewHolder> {
+public class TodoListTaskAdapter extends RecyclerAdapter<TodoListTask, TodoListItemViewHolder> {
 
-    public TodoListItemAdapter(Fragment fragment) {
+    public TodoListTaskAdapter(Fragment fragment) {
 
         super(fragment, TodoListItemViewHolder.class);
     }
 
     @Override
-    protected TodoListItem getItem(int position) {
+    protected TodoListTask getItem(int position) {
 
         return mItems.get(position);
     }
@@ -36,7 +36,7 @@ public class TodoListItemAdapter extends RecyclerAdapter<TodoListItem, TodoListI
     }
 
     @Override
-    public void addItem(TodoListItem item) {
+    public void addItem(TodoListTask item) {
 
         mItems.add(item);
         notifyItemInserted(getItemCount() - 1);

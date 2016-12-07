@@ -14,7 +14,7 @@ public class TodoList implements Parcelable {
     private long mId;
     private String mTitle;
     private long mCreationDate;
-    private List<TodoListItem> mItems;
+    private List<TodoListTask> mItems;
 
     public TodoList(long id, String title, long creationDate) {
 

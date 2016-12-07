@@ -1,7 +1,5 @@
 package todo.javier.mera.todolist.fragments.dialogs;
 
-import todo.javier.mera.todolist.model.TodoListItem;
-
 /**
  * Created by javie on 12/6/2016.
  */

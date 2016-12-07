@@ -17,7 +17,7 @@ import java.util.List;
 
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.model.TodoList;
-import todo.javier.mera.todolist.model.TodoListItem;
+import todo.javier.mera.todolist.model.TodoListTask;
 import todo.javier.mera.todolist.model.TaskStatus;
 
 /**
@@ -127,12 +127,12 @@ public class DatabaseTest {
 
         mDataSource.close();
         mDataSource.openReadable();
-        List<TodoListItem> items = mDataSource.readAllTodoListItems(todoListId);
+        List<TodoListTask> items = mDataSource.readTodoListTasks(todoListId);
 
         // Assert
         Assert.assertEquals(expectedSize, items.size());
 
-        TodoListItem item = items.get(0);
+        TodoListTask item = items.get(0);
         Assert.assertEquals(item1Id, item.getItemId());
         Assert.assertEquals(todoListId, item.getTodoListId());
         Assert.assertEquals(description, item.getDescription());

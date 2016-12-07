@@ -10,19 +10,19 @@ import java.util.Date;
 /**
  * Created by javie on 11/29/2016.
  */
-public class TodoListItemTest {
+public class TodoListTaskTest {
 
     private long mExpectedTodolistId = 123;
     private long mExpectedItemId = 321;
     private String mExpectedDescription = "Some task to do";
     private TaskStatus mExpectedStatus = TaskStatus.Created;
     private int mExpectedCreationDate = (int) new Date().getTime();
-    private TodoListItem mItem;
+    private TodoListTask mItem;
 
     @Before
     public void setUp() throws Exception {
 
-        mItem = new TodoListItem(
+        mItem = new TodoListTask(
             mExpectedItemId,
             mExpectedTodolistId,
             mExpectedDescription,

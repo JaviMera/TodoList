@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import todo.javier.mera.todolist.model.TodoList;
-import todo.javier.mera.todolist.model.TodoListItem;
+import todo.javier.mera.todolist.model.TodoListTask;
 import todo.javier.mera.todolist.model.TaskStatus;
 
 /**
@@ -139,9 +139,9 @@ public class TodoListDataSource {
         return newId;
     }
 
-    public List<TodoListItem> readAllTodoListItems(long todoListId) {
+    public List<TodoListTask> readTodoListTasks(long todoListId) {
 
-        List<TodoListItem> items = new LinkedList<>();
+        List<TodoListTask> items = new LinkedList<>();
 
         Cursor cursor = mDb.query(
             TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
@@ -172,7 +172,7 @@ public class TodoListDataSource {
                 int columnIndex = cursor.getColumnIndex(TodoListSQLiteHelper.COLUMN_ITEMS_TIMESTAMP);
                 long creationDate = cursor.getLong(columnIndex);
 
-                TodoListItem item = new TodoListItem(itemId, id, description, status, creationDate);
+                TodoListTask item = new TodoListTask(itemId, id, description, status, creationDate);
                 items.add(item);
             }while(cursor.moveToNext());
         }
