@@ -20,7 +20,7 @@ public class FragmentHelper {
 
         mManager
             .beginTransaction()
-            .replace(containerId, fragment)
+            .replace(containerId, fragment, "fragment_recycler")
             .commit();
     }
 
@@ -28,8 +28,13 @@ public class FragmentHelper {
 
         mManager
             .beginTransaction()
-            .replace(containerId, fragment)
+            .replace(containerId, fragment, "fragment_recycler")
             .addToBackStack(name)
             .commit();
+    }
+
+    public Fragment findFragment(String tag) {
+
+        return mManager.findFragmentByTag(tag);
     }
 }

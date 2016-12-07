@@ -187,4 +187,17 @@ public abstract class FragmentRecycler<T extends Removable> extends Fragment
         int lastPosition = adapter.getItemCount();
         mRecyclerView.smoothScrollToPosition(lastPosition);
     }
+
+    public boolean isRemovingItems() {
+
+        return mIsRemovingItems;
+    }
+
+    public void clearRemovableItems() {
+
+        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+        adapter.clearRemovableItems();
+        mIsRemovingItems = false;
+        mParent.invalidateOptionsMenu();
+    }
 }

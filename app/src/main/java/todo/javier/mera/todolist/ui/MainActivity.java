@@ -7,10 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import todo.javier.mera.todolist.R;
+import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.fragments.FragmentTodoLists;
 import todo.javier.mera.todolist.fragments.FragmentTasks;
 import todo.javier.mera.todolist.model.TodoList;
@@ -41,6 +43,19 @@ public class MainActivity extends AppCompatActivity
 
         Fragment fragment = FragmentTodoLists.newInstance();
         mFragmentHelper.replace(R.id.fragmentContainer, fragment);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment("fragment_recycler");
+        if(fragment.isRemovingItems()) {
+
+            fragment.clearRemovableItems();
+            return;
+        }
+
+        super.onBackPressed();
     }
 
     @Override

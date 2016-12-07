@@ -52,6 +52,16 @@ public abstract class RecyclerAdapter<T extends Removable, H extends ViewHolderB
         notifyItemChanged(itemLongClicked);
     }
 
+    public void clearRemovableItems() {
+
+        for(int i = 0 ; i < mItems.size() ; i++) {
+
+            mItems.get(i).setCanRemove(false);
+        }
+
+        notifyItemRangeChanged(0, mItems.size());
+    }
+
     public RecyclerAdapter(Fragment fragment, Class<H> holderType) {
 
         mFragment = fragment;
