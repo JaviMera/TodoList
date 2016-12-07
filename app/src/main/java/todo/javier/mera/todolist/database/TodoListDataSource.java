@@ -49,20 +49,20 @@ public class TodoListDataSource {
         return mDb.isOpen();
     }
 
-    public long createTodoList(String todoListTitle, long creationDate) {
+    public TodoList createTodoList(String title, long creationDate) {
 
         mDb.beginTransaction();
 
         ContentValues todoListValues = new ContentValues();
-        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME, todoListTitle);
+        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME, title);
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_TIMESTAMP, creationDate);
 
-        long id = mDb.insert(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, todoListValues);
+        long newId = mDb.insert(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, todoListValues);
 
         mDb.setTransactionSuccessful();
         mDb.endTransaction();
 
-        return id;
+        return new TodoList(newId, title, creationDate);
     }
 
     public List<TodoList> readTodoLists() {
@@ -122,7 +122,7 @@ public class TodoListDataSource {
         mDb.delete(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, null);
     }
 
-    public long createTodoListItem(long todoListId, String description, TaskStatus status, long timeStamp) {
+    public TodoListTask createTodoListTask(long todoListId, String description, TaskStatus status, long timeStamp) {
 
         mDb.beginTransaction();
 
@@ -136,7 +136,8 @@ public class TodoListDataSource {
 
         mDb.setTransactionSuccessful();
         mDb.endTransaction();
-        return newId;
+
+        return new TodoListTask(newId, todoListId, description, status, timeStamp);
     }
 
     public List<TodoListTask> readTodoListTasks(long todoListId) {

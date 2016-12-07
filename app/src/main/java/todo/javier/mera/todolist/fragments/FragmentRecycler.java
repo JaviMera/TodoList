@@ -3,6 +3,7 @@ package todo.javier.mera.todolist.fragments;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,20 +13,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
+import todo.javier.mera.todolist.adapters.TodolistAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
+import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogListener;
 import todo.javier.mera.todolist.ui.MainActivity;
 
 /**
  * Created by javie on 12/5/2016.
  */
 
-public abstract class FragmentRecycler extends Fragment
-    implements FragmentRecyclerView{
+public abstract class FragmentRecycler<T> extends Fragment
+    implements FragmentRecyclerView, FragmentDialogListener{
 
     private FragmentRecyclerPresenter mPresenter;
 
@@ -34,6 +39,8 @@ public abstract class FragmentRecycler extends Fragment
     protected abstract int getLayout();
     protected abstract String getTitle();
     protected abstract RecyclerView.LayoutManager getLayoutManager(Context context);
+    protected abstract T createItem(TodoListDataSource source, String name);
+    protected abstract List<T> getAllItems(TodoListDataSource source);
 
     protected @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
@@ -59,6 +66,18 @@ public abstract class FragmentRecycler extends Fragment
         mPresenter.setAdapter(this);
         mPresenter.setLayoutManager(mParent);
         mPresenter.setFixedSize(true);
+
+        TodoListDataSource source = new TodoListDataSource(mParent);
+
+            source.openReadable();
+            List<T> items = getAllItems(source);
+            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+            for(T task : items) {
+
+                adapter.addItem(task);
+            }
+            source.close();
+
         return view;
     }
 
@@ -90,6 +109,27 @@ public abstract class FragmentRecycler extends Fragment
         mRecyclerView.setHasFixedSize(isFixed);
     }
 
+    @Override
+    public void onAddItem(final String title) {
+
+        scrollToLastPosition();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                scrollToLastPosition();
+                TodoListDataSource source = new TodoListDataSource(mParent);
+                source.openWriteable();
+                T item = createItem(source, title);
+
+                RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+                adapter.addItem(item);
+                source.close();
+            }
+        }, 1000);
+    }
+
     protected int getOrientation(Context context) {
 
         if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -98,5 +138,12 @@ public abstract class FragmentRecycler extends Fragment
         }
 
         return LinearLayoutManager.VERTICAL;
+    }
+
+    private void scrollToLastPosition() {
+
+        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+        int lastPosition = adapter.getItemCount();
+        mRecyclerView.smoothScrollToPosition(lastPosition);
     }
 }

@@ -2,23 +2,18 @@ package todo.javier.mera.todolist.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
 import java.util.Date;
 import java.util.List;
 
-import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
@@ -34,8 +29,7 @@ import todo.javier.mera.todolist.model.TaskStatus;
  * Created by javie on 12/2/2016.
  */
 
-public class FragmentTasks extends FragmentRecycler
-    implements FragmentDialogListener {
+public class FragmentTasks extends FragmentRecycler<TodoListTask> {
 
     public static final String TODO_LISt = "TODO_LISt";
     private TodoList mTodoList;
@@ -63,34 +57,6 @@ public class FragmentTasks extends FragmentRecycler
         super.onCreate(savedInstanceState);
 
         mTodoList = getArguments().getParcelable(TODO_LISt);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        setItemAnimator(new FadeInUpAnimator(new DecelerateInterpolator()));
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                TodoListDataSource source = new TodoListDataSource(mParent);
-
-                source.openReadable();
-                List<TodoListTask> items = source.readTodoListTasks(mTodoList.getId());
-                TodoListTaskAdapter adapter = (TodoListTaskAdapter) mRecyclerView.getAdapter();
-                for(TodoListTask task : items) {
-
-                    adapter.addItem(task);
-                }
-                source.close();
-            }
-        },
-        500);
-
-        return view;
     }
 
     @Override
@@ -135,30 +101,22 @@ public class FragmentTasks extends FragmentRecycler
     }
 
     @Override
-    public void onAddItem(String title) {
+    protected List<TodoListTask> getAllItems(TodoListDataSource source) {
+
+        return source.readTodoListTasks(mTodoList.getId());
+    }
+
+    @Override
+    protected TodoListTask createItem(TodoListDataSource source, String name) {
 
         long creationDate = new Date().getTime();
         TaskStatus status = TaskStatus.Created;
 
-        TodoListDataSource source = new TodoListDataSource(mParent);
-        source.openWriteable();
-
-        long newId = source.createTodoListItem(
-                mTodoList.getId(),
-                title,
-                status,
-                creationDate
+        return source.createTodoListTask(
+            mTodoList.getId(),
+            name,
+            status,
+            creationDate
         );
-        source.close();
-
-        setItemAnimator(new FadeInUpAnimator(new DecelerateInterpolator()));
-
-        TodoListTaskAdapter adapter = (TodoListTaskAdapter) mRecyclerView.getAdapter();
-        adapter.addItem(new TodoListTask(
-                newId,
-                mTodoList.getId(),
-                title,
-                status,
-                creationDate));
     }
 }

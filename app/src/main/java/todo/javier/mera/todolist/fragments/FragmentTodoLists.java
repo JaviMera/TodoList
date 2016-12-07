@@ -30,10 +30,11 @@ import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogListener;
 import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTodoList;
 import todo.javier.mera.todolist.model.TodoList;
 
-public class FragmentTodoLists extends FragmentRecycler
-    implements TodoListListener, FragmentDialogListener {
+public class FragmentTodoLists extends FragmentRecycler<TodoList>
+    implements TodoListListener {
 
-    public static final int ANIM_DELAY = 1000;
+    private long mNewId;
+    private long mCreationDate;
 
     public static FragmentTodoLists newInstance() {
 
@@ -65,31 +66,23 @@ public class FragmentTodoLists extends FragmentRecycler
         return new LinearLayoutManager(context, orientation, false);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    protected TodoList createItem(TodoListDataSource source, String name) {
 
-        View view = super.onCreateView(inflater, container, savedInstanceState);
+        setItemAnimator(new FlipInTopXAnimator());
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        long creationDate = new Date().getTime();
 
-                TodoListDataSource source = new TodoListDataSource(mParent);
-                source.openReadable();
-                List<TodoList> todoLists = source.readTodoLists();
-                TodolistAdapter adapter = (TodolistAdapter) mRecyclerView.getAdapter();
-                for(TodoList tl : todoLists) {
+        return source.createTodoList(
+            name,
+            creationDate
+        );
+    }
 
-                    adapter.addItem(tl);
-                }
+    @Override
+    protected List<TodoList> getAllItems(TodoListDataSource source) {
 
-                source.close();
-            }
-        },
-        200);
-
-        return view;
+        return source.readTodoLists();
     }
 
     @Override
@@ -107,13 +100,6 @@ public class FragmentTodoLists extends FragmentRecycler
         dialogTodoList.show(mParent.getSupportFragmentManager(), "dialog_todolists");
     }
 
-    private void scrollToLastPosition() {
-
-        TodolistAdapter adapter = (TodolistAdapter) mRecyclerView.getAdapter();
-        int lastPosition = adapter.getItemCount();
-        mRecyclerView.smoothScrollToPosition(lastPosition);
-    }
-
     private void addTodoList(TodoList todoList) {
 
         TodolistAdapter adapter = (TodolistAdapter) mRecyclerView.getAdapter();
@@ -124,38 +110,6 @@ public class FragmentTodoLists extends FragmentRecycler
     public void onTodoListClick(TodoList todoList) {
 
         mParent.showFragmentTodoList(todoList);
-    }
-
-    @Override
-    public void onAddItem(final String title) {
-
-        scrollToLastPosition();
-        // Wait 200ms after the keyboard has been manually closed.
-        // This gives a friendlier animation when the user is adding an item to the recycler view
-        // and half of the screen is being blocked by the keyboard.
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                scrollToLastPosition();
-
-                setItemAnimator(new FlipInTopXAnimator());
-
-                TodoListDataSource dataSource = new TodoListDataSource(mParent);
-                long creationDate = new Date().getTime();
-
-                dataSource.openWriteable();
-                long newId = dataSource.createTodoList(
-                    title,
-                    creationDate
-                );
-
-                TodoList todoList = new TodoList(newId, title, creationDate);
-                addTodoList(todoList);
-                dataSource.close();
-            }
-        },
-        ANIM_DELAY);
     }
 }
 

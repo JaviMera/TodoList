@@ -101,7 +101,7 @@ public class DatabaseTest {
         mDataSource.openWriteable();
 
         long todoListId = mDataSource.createTodoList(todoListTitle, todoListCreationDate);
-        long newId = mDataSource.createTodoListItem(todoListId, description, status, timeStamp);
+        long newId = mDataSource.createTodoListTask(todoListId, description, status, timeStamp);
 
         // Assert
         Assert.assertTrue(newId > -1);
@@ -123,7 +123,7 @@ public class DatabaseTest {
         mDataSource.openWriteable();
 
         long todoListId = mDataSource.createTodoList(todoListTitle, todoListCreationDate);
-        long item1Id = mDataSource.createTodoListItem(todoListId, description, status, timeStamp);
+        long item1Id = mDataSource.createTodoListTask(todoListId, description, status, timeStamp);
 
         mDataSource.close();
         mDataSource.openReadable();

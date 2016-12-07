@@ -35,10 +35,10 @@ public class TodoListTaskAdapter extends RecyclerAdapter<TodoListTask, TodoListI
         return R.layout.task_item;
     }
 
-    @Override
-    public void addItem(TodoListTask item) {
-
-        mItems.add(item);
-        notifyItemInserted(getItemCount() - 1);
-    }
+//    @Override
+//    public void addItem(TodoListTask item) {
+//
+//        mItems.add(item);
+//        notifyItemInserted(getItemCount() - 1);
+//    }
 }

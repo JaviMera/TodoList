@@ -27,8 +27,11 @@ public abstract class RecyclerAdapter<T, H extends ViewHolderBase<T>> extends Re
     protected abstract void removeItem(int position);
     protected abstract int getLayout();
 
-    public abstract void addItem(T item);
+    public void addItem(T item) {
 
+        mItems.add(item);
+        notifyItemInserted(mItems.size() - 1);
+    }
 
     public RecyclerAdapter(Fragment fragment, Class<H> holderType) {
 
