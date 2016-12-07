@@ -23,6 +23,12 @@ public class FragmentDialogTask extends FragmentDialogBase {
     }
 
     @Override
+    protected String getHintError() {
+
+        return "task description can't be blank";
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mListener = (FragmentTasks)getTargetFragment();

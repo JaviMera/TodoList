@@ -23,6 +23,12 @@ public class FragmentDialogTodoList extends FragmentDialogBase {
     }
 
     @Override
+    protected String getHintError() {
+
+        return "To-do list name can't be blank";
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 

@@ -16,8 +16,4 @@ public interface FragmentRecyclerView {
     void setItemAnimator(RecyclerView.ItemAnimator animator);
     void setLayoutManager(Context context);
     void setFixedSize(boolean isFixed);
-//    void updateEditTextHintColor(Context context, int colorId);
-//    void updateEditText(String text);
-//    void updateEditTextHint(String text);
-//    void startEditTextAnim(Animation anim);
 }

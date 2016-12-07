@@ -25,16 +25,18 @@ import todo.javier.mera.todolist.ui.MainActivity;
  * Created by javie on 12/6/2016.
  */
 
-public abstract class FragmentDialogBase extends DialogFragment {
+public abstract class FragmentDialogBase extends DialogFragment
+    implements DialogFragmentView {
 
     private MainActivity mParent;
     private Animation mShakeAnimation;
+    private DialogFragmentPresenter mPresenter;
 
     protected FragmentDialogListener mListener;
-    private String mErrorText;
 
     protected abstract String getTitle();
     protected abstract String getHint();
+    protected abstract String getHintError();
 
     @BindView(R.id.dialogTitleView)
     TextView mTitleView;
@@ -52,7 +54,6 @@ public abstract class FragmentDialogBase extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mShakeAnimation = AnimationUtils.loadAnimation(mParent, R.anim.shake);
-        mErrorText = mParent.getString(R.string.dialog_todo_list_hint_error);
     }
 
     @NonNull
@@ -65,8 +66,12 @@ public abstract class FragmentDialogBase extends DialogFragment {
 
         ButterKnife.bind(this, view);
 
-        mTitleView.setText(getTitle());
-        mNameEditText.setHint(getHint());
+        mPresenter = new DialogFragmentPresenter(this);
+        mPresenter.setDialogTitle(getTitle());
+        mPresenter.updateEditTextHint(getHint());
+
+        int colorId = ContextCompat.getColor(mParent, android.R.color.darker_gray);
+        mPresenter.updateEditTextHintColor(colorId);
 
         return dialogBuilder.create();
     }
@@ -91,18 +96,45 @@ public abstract class FragmentDialogBase extends DialogFragment {
     @OnClick(R.id.addTaskView)
     public void onAddClick(View view) {
 
+        // Check if the user has not entered a description
         if(mNameEditText.getText().toString().isEmpty()) {
 
-            mNameEditText.setHint(mErrorText);
+            // If the edit text is empty, then show the user the error
+            mPresenter.updateEditTextHint(getHintError());
 
             int hintColor = ContextCompat.getColor(mParent, android.R.color.holo_red_light);
-            mNameEditText.setHintTextColor(hintColor);
-            mNameEditText.startAnimation(mShakeAnimation);
+            mPresenter.updateEditTextHintColor(hintColor);
+            mPresenter.startEditTextAnimation(mShakeAnimation);
         }
         else {
 
+            // If edit text contains text, then add it and close the dialog
             mListener.onAddItem(mNameEditText.getText().toString());
             dismiss();
         }
+    }
+
+    @Override
+    public void setDialogTitle(String title) {
+
+        mTitleView.setText(title);
+    }
+
+    @Override
+    public void updateEditTextHintColor(int colorId) {
+
+        mNameEditText.setHintTextColor(colorId);
+    }
+
+    @Override
+    public void updateEditTextHint(String text) {
+
+        mNameEditText.setHint(text);
+    }
+
+    @Override
+    public void startEditTextAnim(Animation anim) {
+
+        mNameEditText.startAnimation(anim);
     }
 }
