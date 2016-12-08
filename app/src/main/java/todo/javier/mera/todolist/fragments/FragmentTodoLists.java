@@ -2,31 +2,27 @@ package todo.javier.mera.todolist.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.EditText;
 
 import java.util.Date;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.OnClick;
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInRightAnimator;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.TodolistAdapter;
-import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogListener;
+import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTask;
 import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTodoList;
 import todo.javier.mera.todolist.model.TodoList;
 
@@ -59,6 +55,51 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        inflater.inflate(R.menu.fragment_todo_list_menu, menu);
+
+        if(mIsRemovingItems) {
+
+            menu.findItem(R.id.action_delete_task).setVisible(true);
+        }
+        else {
+
+            menu.findItem(R.id.action_delete_task).setVisible(false);
+        }
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mIsRemovingItems = false;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+
+            case R.id.action_delete_task:
+
+                setItemAnimator(new SlideInRightAnimator());
+                removeItems();
+
+                mIsRemovingItems = false;
+                mParent.invalidateOptionsMenu();
+
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
+    }
+
+    @Override
     protected RecyclerView.LayoutManager getLayoutManager(Context context) {
 
         int orientation = getOrientation(context);
@@ -82,13 +123,6 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
     protected List<TodoList> getAllItems(TodoListDataSource source) {
 
         return source.readTodoLists();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-        inflater.inflate(R.menu.fragment_home_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
