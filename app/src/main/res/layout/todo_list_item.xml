@@ -6,10 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="15dp"
-    android:layout_gravity="center"
-    android:clickable="true"
-    android:focusable="true"
-    android:background="?android:attr/selectableItemBackground">
+    android:layout_gravity="center">
 
     <TextView
         android:id="@+id/todoTitleView"
@@ -17,9 +14,10 @@
         tools:text="This is a todo list title"/>
 
     <LinearLayout
+        android:id="@+id/bodyLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/item_body_background"
+        android:background="@drawable/body_background"
         android:orientation="vertical">
 
         <TextView

@@ -9,27 +9,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import todo.javier.mera.todolist.R;
+import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.fragments.FragmentTasks;
 import todo.javier.mera.todolist.model.TodoListTask;
 
 /**
  * Created by javie on 12/5/2016.
  */
-public class TodoListTaskViewHolder extends ViewHolderBase<TodoListTask> implements View.OnClickListener, View.OnLongClickListener {
+public class TodoListTaskViewHolder extends ViewHolderBase<TodoListTask>
+    implements View.OnClickListener, View.OnLongClickListener {
 
-    private FragmentTasks mParent;
+    private FragmentRecycler mParent;
 
     private LinearLayout mLayout;
     private TextView mDescription;
-    private final int mRemovableColor;
-    private final int mNonRemovableColor;
+    protected final int mRemovableColor;
+    protected final int mNonRemovableColor;
 
-    TodoListTaskViewHolder(View itemView, FragmentTasks fragment) {
+    TodoListTaskViewHolder(View itemView, FragmentRecycler fragment) {
         super(itemView);
-
         mParent = fragment;
-        mRemovableColor = ContextCompat.getColor(mParent.getActivity(), R.color.remove_item_color);
-        mNonRemovableColor = ContextCompat.getColor(mParent.getActivity(), android.R.color.transparent);
+
+        mRemovableColor = ContextCompat.getColor(fragment.getActivity(), R.color.remove_item_color);
+        mNonRemovableColor = ContextCompat.getColor(fragment.getActivity(), android.R.color.transparent);
     }
 
     @Override

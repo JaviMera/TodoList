@@ -30,8 +30,7 @@ import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogListener;
 import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTodoList;
 import todo.javier.mera.todolist.model.TodoList;
 
-public class FragmentTodoLists extends FragmentRecycler<TodoList>
-    implements TodoListListener {
+public class FragmentTodoLists extends FragmentRecycler<TodoList> {
 
     private long mNewId;
     private long mCreationDate;
@@ -92,6 +91,12 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList>
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @Override
+    protected void showItem(TodoList item) {
+
+        mParent.showFragmentTodoList(item);
+    }
+
     @OnClick(R.id.fab)
     public void onAddListButtonClick(View view) {
 
@@ -104,12 +109,6 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList>
 
         TodolistAdapter adapter = (TodolistAdapter) mRecyclerView.getAdapter();
         adapter.addItem(todoList);
-    }
-
-    @Override
-    public void onTodoListClick(TodoList todoList) {
-
-        mParent.showFragmentTodoList(todoList);
     }
 }
 

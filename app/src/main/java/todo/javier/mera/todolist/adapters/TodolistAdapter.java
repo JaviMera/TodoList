@@ -17,12 +17,6 @@ public class TodolistAdapter extends RecyclerAdapter<TodoList, TodolistViewHolde
     }
 
     @Override
-    public TodoList getItem(int position) {
-
-        return mItems.get(position);
-    }
-
-    @Override
     protected void removeItem(int position) {
 
         mItems.remove(position);

@@ -47,6 +47,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     protected abstract RecyclerView.LayoutManager getLayoutManager(Context context);
     protected abstract T createItem(TodoListDataSource source, String name);
     protected abstract List<T> getAllItems(TodoListDataSource source);
+    protected abstract void showItem(T item);
 
     protected @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
@@ -156,9 +157,10 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     @Override
     public void onClick(int position) {
 
+        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+
         if(mIsRemovingItems) {
 
-            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
             adapter.setRemovable(position);
 
             int count = adapter.getRemovableCount();
@@ -167,6 +169,11 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 mIsRemovingItems = false;
                 mParent.invalidateOptionsMenu();
             }
+        }
+        else {
+
+            T item = (T) adapter.getItem(position);
+            showItem(item);
         }
     }
 

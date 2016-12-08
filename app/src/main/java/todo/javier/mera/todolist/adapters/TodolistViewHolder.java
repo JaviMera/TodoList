@@ -1,52 +1,84 @@
 package todo.javier.mera.todolist.adapters;
 
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.Locale;
 
 import todo.javier.mera.todolist.R;
-import todo.javier.mera.todolist.fragments.TodoListListener;
+import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.model.TodoList;
 
-public class TodolistViewHolder extends ViewHolderBase<TodoList> implements View.OnClickListener{
+public class TodolistViewHolder extends ViewHolderBase<TodoList>
+    implements View.OnClickListener, View.OnLongClickListener{
 
-    private final TodoListListener mListener;
-    private TodoList mTodoList;
+    private FragmentRecycler mParent;
+    private LinearLayout mLayout;
     private TextView mTodolistTitle;
     private TextView mTotalitems;
     private TextView mCompletedItems;
     private TextView mIncompleItems;
+    private Drawable mTitleRemoveDrawable;
+    private Drawable mTitleDrawable;
+    private Drawable mBodyRemoveDrawable;
+    private Drawable mBodyDrawable;
 
-    public TodolistViewHolder(TodoListListener listener, View itemView) {
+    public TodolistViewHolder(FragmentRecycler fragment, View itemView) {
         super(itemView);
 
-        mListener = listener;
+        mParent = fragment;
+        mTitleRemoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_remove_background);
+        mTitleDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_background);
+        mBodyRemoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_remove_background);
+        mBodyDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_background);
     }
 
     @Override
     public void bind(TodoList item) {
 
-        mTodoList = item;
-        mTodolistTitle.setText(mTodoList.getTitle());
-        mTotalitems.setText(String.format(Locale.ENGLISH, "%d items...", mTodoList.getItemsCount()));
-        mCompletedItems.setText(String.format(Locale.ENGLISH, "%d Completed Items", mTodoList.getCompletedItems()));
-        mIncompleItems.setText(String.format(Locale.ENGLISH, "%d Incomplete Items", mTodoList.getIncompleteItems()));
+        mTodolistTitle.setText(item.getTitle());
+        mTotalitems.setText(String.format(Locale.ENGLISH, "%d items...", item.getItemsCount()));
+        mCompletedItems.setText(String.format(Locale.ENGLISH, "%d Completed Items", item.getCompletedItems()));
+        mIncompleItems.setText(String.format(Locale.ENGLISH, "%d Incomplete Items", item.getIncompleteItems()));
+
+        if(item.getCanRemove()) {
+
+            mTodolistTitle.setBackground(mTitleRemoveDrawable);
+            mLayout.setBackground(mBodyRemoveDrawable);
+        }
+        else {
+
+            mTodolistTitle.setBackground(mTitleDrawable);
+            mLayout.setBackground(mBodyDrawable);
+        }
     }
 
     @Override
     protected void setViews() {
 
+        mLayout = (LinearLayout) itemView.findViewById(R.id.bodyLayout);
         mTodolistTitle = (TextView) itemView.findViewById(R.id.todoTitleView);
         mTotalitems = (TextView) itemView.findViewById(R.id.totalItemsText);
         mCompletedItems = (TextView) itemView.findViewById(R.id.completedItemsText);
         mIncompleItems = (TextView) itemView.findViewById(R.id.incompletedItemsText);
+
         itemView.setOnClickListener(this);
+        itemView.setOnLongClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
 
-        mListener.onTodoListClick(mTodoList);
+        mParent.onClick(getLayoutPosition());
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+
+        mParent.onLongClick(getLayoutPosition());
+        return true;
     }
 }

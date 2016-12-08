@@ -146,4 +146,10 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
             creationDate
         );
     }
+
+    @Override
+    protected void showItem(TodoListTask item) {
+
+        // Todo: add behavior to handle a regular task click
+    }
 }

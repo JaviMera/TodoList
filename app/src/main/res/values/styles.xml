@@ -42,7 +42,7 @@
         <item name="android:padding">@dimen/item_title_pad</item>
         <item name="android:textSize">@dimen/item_title_size</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:background">@drawable/item_title_background</item>
+        <item name="android:background">@drawable/title_background</item>
         <item name="android:gravity">center</item>
     </style>
 

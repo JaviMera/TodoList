@@ -17,12 +17,6 @@ public class TodoListTaskAdapter extends RecyclerAdapter<TodoListTask, TodoListT
     }
 
     @Override
-    protected TodoListTask getItem(int position) {
-
-        return mItems.get(position);
-    }
-
-    @Override
     protected void removeItem(int position) {
 
         mItems.remove(position);
