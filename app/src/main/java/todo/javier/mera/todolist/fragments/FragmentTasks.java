@@ -9,12 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInRightAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.ItemLongClickListener;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
@@ -79,11 +81,21 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
         switch(item.getItemId()) {
 
             case R.id.action_add_task:
+                setItemAnimator(new FadeInDownAnimator());
                 DialogFragment dialogFragment = new FragmentDialogTask();
                 dialogFragment.setTargetFragment(this, 1);
                 dialogFragment.show(mParent.getSupportFragmentManager(), "dialog_task");
                 break;
 
+            case R.id.action_delete_task:
+
+                setItemAnimator(new SlideInRightAnimator());
+                removeItems();
+
+                mIsRemovingItems = false;
+                mParent.invalidateOptionsMenu();
+
+                break;
             default:
             return super.onOptionsItemSelected(item);
         }

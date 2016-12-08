@@ -9,9 +9,8 @@ import java.util.List;
 /**
  * Created by Javier on 11/28/2016.
  */
-public class TodoList extends Removable implements Parcelable {
+public class TodoList extends ItemBase implements Parcelable {
 
-    private long mId;
     private String mTitle;
     private long mCreationDate;
     private List<TodoListTask> mItems;
@@ -57,11 +56,6 @@ public class TodoList extends Removable implements Parcelable {
     public int getIncompleteItems() {
 
         return 0;
-    }
-
-    public long getId() {
-
-        return mId;
     }
 
     @Override

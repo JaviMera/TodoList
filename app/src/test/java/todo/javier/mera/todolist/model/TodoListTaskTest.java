@@ -43,7 +43,7 @@ public class TodoListTaskTest {
     public void getItemId() throws Exception {
 
         // Assert
-        Assert.assertEquals(mExpectedItemId, mItem.getItemId());
+        Assert.assertEquals(mExpectedItemId, mItem.getId());
     }
 
     @Test

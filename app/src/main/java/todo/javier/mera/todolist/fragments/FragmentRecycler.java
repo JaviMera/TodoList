@@ -8,13 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -24,18 +23,17 @@ import todo.javier.mera.todolist.adapters.ItemLongClickListener;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogListener;
-import todo.javier.mera.todolist.model.Removable;
+import todo.javier.mera.todolist.model.ItemBase;
+import todo.javier.mera.todolist.model.TodoListTask;
 import todo.javier.mera.todolist.ui.MainActivity;
 
 /**
  * Created by javie on 12/5/2016.
  */
 
-public abstract class FragmentRecycler<T extends Removable> extends Fragment
+public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     implements FragmentRecyclerView,
-    FragmentDialogListener,
-    ItemClickListener,
-    ItemLongClickListener{
+    FragmentDialogListener, ItemLongClickListener, ItemClickListener {
 
     private FragmentRecyclerPresenter mPresenter;
 
@@ -87,7 +85,6 @@ public abstract class FragmentRecycler<T extends Removable> extends Fragment
 
         return view;
     }
-
 
     @Override
     public void setAdapter(Fragment context) {
@@ -169,6 +166,23 @@ public abstract class FragmentRecycler<T extends Removable> extends Fragment
 
             Toast.makeText(mParent, "cant remove", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void removeItems() {
+
+        TodoListDataSource source = new TodoListDataSource(mParent);
+        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+        List<T> itemsToRemove = adapter.getRemovableItems();
+
+        source.openWriteable();
+        int removedCount = source.removeTodoListTask(itemsToRemove.toArray(new TodoListTask[itemsToRemove.size()]));
+
+        if(removedCount > 0){
+
+            adapter.removeItems(itemsToRemove);
+        }
+
+        source.close();
     }
 
     protected int getOrientation(Context context) {

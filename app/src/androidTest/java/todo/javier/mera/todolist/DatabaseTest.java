@@ -103,7 +103,7 @@ public class DatabaseTest {
         TodoListTask task = mDataSource.createTodoListTask(todoList.getId(), description, status, timeStamp);
 
         // Assert
-        Assert.assertTrue(task.getItemId() > -1);
+        Assert.assertTrue(task.getId() > -1);
     }
 
     @Test
@@ -132,7 +132,7 @@ public class DatabaseTest {
         Assert.assertEquals(expectedSize, items.size());
 
         TodoListTask item = items.get(0);
-        Assert.assertEquals(expectedTask.getItemId(), item.getItemId());
+        Assert.assertEquals(expectedTask.getId(), item.getId());
         Assert.assertEquals(expectedTask.getTodoListId(), item.getTodoListId());
         Assert.assertEquals(expectedTask.getDescription(), item.getDescription());
         Assert.assertEquals(expectedTask.getCreationDate(), item.getCreationDate());
@@ -161,7 +161,7 @@ public class DatabaseTest {
 
         mDataSource.openWriteable();
 
-        int expectedRowCount = mDataSource.removeTodoListTask(expectedTask.getItemId());
+        int expectedRowCount = mDataSource.removeTodoListTask(expectedTask);
 
         // Assert
         Assert.assertEquals(expectedRowCount, 1);

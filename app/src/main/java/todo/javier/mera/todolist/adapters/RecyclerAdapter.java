@@ -9,23 +9,20 @@ import android.view.ViewGroup;
 import java.util.LinkedList;
 import java.util.List;
 
-import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.fragments.FragmentTasks;
 import todo.javier.mera.todolist.fragments.TodoListListener;
-import todo.javier.mera.todolist.model.Removable;
-import todo.javier.mera.todolist.model.TodoListTask;
+import todo.javier.mera.todolist.model.ItemBase;
 
 /**
  * Created by javie on 11/29/2016.
  */
 
-public abstract class RecyclerAdapter<T extends Removable, H extends ViewHolderBase<T>> extends RecyclerView.Adapter<H>
+public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBase<T>> extends RecyclerView.Adapter<H>
 
     {
 
     protected final Fragment mFragment;
     private final Class<H> mHolderType;
-    private boolean mCanDelete;
 
     protected List<T> mItems;
 
@@ -113,5 +110,33 @@ public abstract class RecyclerAdapter<T extends Removable, H extends ViewHolderB
         }
 
         return count;
+    }
+
+    public List getRemovableItems() {
+
+        List<T> items = new LinkedList<>();
+
+        for(T item : mItems) {
+
+            if(item.getCanRemove()) {
+
+                items.add(item);
+            }
+        }
+
+        return items;
+    }
+
+    public void removeItems(List<T> itemsToRemove) {
+
+        for(T item : itemsToRemove) {
+
+            int position = mItems.indexOf(item);
+            if(position != -1) {
+
+                mItems.remove(position);
+                notifyItemRemoved(position);
+            }
+        }
     }
 }

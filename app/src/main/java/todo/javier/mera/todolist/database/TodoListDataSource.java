@@ -180,12 +180,25 @@ public class TodoListDataSource {
         return items;
     }
 
-    public int removeTodoListTask(long itemId) {
+    public int removeTodoListTask(TodoListTask... tasks) {
+
+        String ids = "";
+
+        for(int i = 0 ; i < tasks.length ; i++) {
+
+            if(i == tasks.length - 1) {
+                ids += tasks[i].getId();
+            }
+            else {
+
+                ids += tasks[i].getId() + ",";
+            }
+        }
 
         return mDb.delete(
             TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
-            BaseColumns._ID + "=?",
-            new String[]{String.valueOf(itemId)}
+            BaseColumns._ID + " IN (" + ids + ")",
+            null
         );
     }
 }
