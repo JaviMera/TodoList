@@ -1,9 +1,12 @@
 package todo.javier.mera.todolist.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by javie on 11/29/2016.
  */
-public class TodoListTask extends ItemBase {
+public class TodoListTask extends ItemBase implements Parcelable {
 
     private long mTodoListId;
     private String mDescription;
@@ -20,6 +23,25 @@ public class TodoListTask extends ItemBase {
         mCreationDate = creationDate;
         setCanRemove(canRemove);
     }
+
+    protected TodoListTask(Parcel in) {
+        mTodoListId = in.readLong();
+        mDescription = in.readString();
+        mCreationDate = in.readLong();
+        mStatus = TaskStatus.values()[in.readInt()];
+    }
+
+    public static final Creator<TodoListTask> CREATOR = new Creator<TodoListTask>() {
+        @Override
+        public TodoListTask createFromParcel(Parcel in) {
+            return new TodoListTask(in);
+        }
+
+        @Override
+        public TodoListTask[] newArray(int size) {
+            return new TodoListTask[size];
+        }
+    };
 
     public String getDescription() {
 
@@ -43,5 +65,18 @@ public class TodoListTask extends ItemBase {
     public long getCreationDate() {
 
         return mCreationDate;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(mTodoListId);
+        parcel.writeString(mDescription);
+        parcel.writeLong(mCreationDate);
+        parcel.writeInt(mStatus.ordinal());
     }
 }

@@ -40,18 +40,18 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     FragmentDialogListener, ItemLongClickListener, ItemClickListener {
 
     private FragmentRecyclerPresenter mPresenter;
+    private boolean mIsRemovingItems;
 
     protected MainActivity mParent;
-    protected boolean mIsRemovingItems;
 
     protected abstract RecyclerAdapter getAdapter();
     protected abstract String getTitle();
     protected abstract RecyclerView.LayoutManager getLayoutManager(Context context);
     protected abstract T createItem(TodoListDataSource source, String name);
-    protected abstract List<T> getAllItems(TodoListDataSource source);
+    protected abstract List<T> getAllItems();
     protected abstract void showItem(T item);
     protected abstract int getDeleteTitle();
-    protected abstract int removeItems(TodoListDataSource source, List<T> itemsToRemove);
+    protected abstract int removeItems(List<T> itemsToRemove);
 
     protected @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
@@ -60,6 +60,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         super.onCreate(savedInstanceState);
 
         mParent = (MainActivity) getActivity();
+        mIsRemovingItems = false;
         setHasOptionsMenu(true);
     }
 
@@ -84,13 +85,9 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
             @Override
             public void run() {
 
-            TodoListDataSource source = new TodoListDataSource(mParent);
-
-                source.openReadable();
-                List<T> items = getAllItems(source);
-                RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-                adapter.addItems(items);
-                source.close();
+            List<T> items = getAllItems();
+            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+            adapter.addItems(items);
             }
         }, 500);
 
@@ -131,12 +128,10 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 else {
 
                     setItemAnimator(new SlideInRightAnimator());
-                    TodoListDataSource source = new TodoListDataSource(mParent);
                     RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
                     List<T> itemsToRemove = adapter.getRemovableItems();
 
-                    source.openWriteable();
-                    int removedCount =  removeItems(source, itemsToRemove);
+                    int removedCount = removeItems(itemsToRemove);
 
                     if(removedCount > 0){
 
@@ -150,8 +145,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                                 "Something went wrong in deleting tasks", Toast.LENGTH_SHORT)
                             .show();
                     }
-
-                    source.close();
 
                     mIsRemovingItems = false;
                 }

@@ -149,7 +149,6 @@ public class DatabaseTest {
         String description = "first task";
         TaskStatus status = TaskStatus.Created;
         long timeStamp = new Date().getTime();
-        int expectedSize = 1;
 
         // Act
         mDataSource.openWriteable();
@@ -157,13 +156,34 @@ public class DatabaseTest {
         TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate);
         TodoListTask expectedTask = mDataSource.createTodoListTask(todoList.getId(), description, status, timeStamp);
 
-        mDataSource.close();
-
-        mDataSource.openWriteable();
-
-        int expectedRowCount = mDataSource.removeTodoListTask(expectedTask);
+        int expectedRowCount = mDataSource.removeTodoListTasks(expectedTask);
 
         // Assert
         Assert.assertEquals(expectedRowCount, 1);
+    }
+
+    @Test
+    public void dbShouldRemoveTodoListAndTasks() throws Exception {
+
+        // Arrange
+        String todoListTitle = "My List";
+        long todoListCreationDate = new Date().getTime();
+
+        String description = "first task";
+        TaskStatus status = TaskStatus.Created;
+        long timeStamp = new Date().getTime();
+
+        // Act
+        mDataSource.openWriteable();
+        TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate);
+        TodoListTask expectedTask = mDataSource.createTodoListTask(todoList.getId(), description, status, timeStamp);
+
+        int expectedRowCount = mDataSource.removeTodoLists(new TodoList[]{todoList});
+        mDataSource.close();
+        mDataSource.openReadable();
+        List<TodoListTask> tasks = mDataSource.readTodoListTasks(todoList.getId());
+
+        Assert.assertTrue(tasks.isEmpty());
+        Assert.assertTrue(expectedRowCount > -1);
     }
 }

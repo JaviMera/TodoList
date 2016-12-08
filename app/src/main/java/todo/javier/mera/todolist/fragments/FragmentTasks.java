@@ -6,26 +6,19 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
+import android.view.ViewGroup;
 
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.OnClick;
-import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
-import jp.wasabeef.recyclerview.animators.SlideInRightAnimator;
 import todo.javier.mera.todolist.R;
-import todo.javier.mera.todolist.adapters.ItemLongClickListener;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TodoListTaskAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTask;
-import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTodoList;
 import todo.javier.mera.todolist.model.TodoList;
 import todo.javier.mera.todolist.model.TodoListTask;
 import todo.javier.mera.todolist.model.TaskStatus;
@@ -54,7 +47,6 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
         super.onCreate(savedInstanceState);
 
         mTodoList = getArguments().getParcelable(TODO_LISt);
-        mIsRemovingItems = false;
     }
 
     @Override
@@ -64,10 +56,16 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
     }
 
     @Override
-    protected int removeItems(TodoListDataSource source, List<TodoListTask> itemsToRemove) {
+    protected int removeItems(List<TodoListTask> itemsToRemove) {
 
+        TodoListDataSource source = new TodoListDataSource(mParent);
+
+        source.openWriteable();
         TodoListTask[] items = itemsToRemove.toArray(new TodoListTask[itemsToRemove.size()]);
-        return source.removeTodoListTask(items);
+        int affectedRows = source.removeTodoListTasks(items);
+        source.close();
+
+        return affectedRows;
     }
 
     @OnClick(R.id.fab)
@@ -97,9 +95,9 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
     }
 
     @Override
-    protected List<TodoListTask> getAllItems(TodoListDataSource source) {
+    protected List<TodoListTask> getAllItems() {
 
-        return source.readTodoListTasks(mTodoList.getId());
+        return mTodoList.getTasks();
     }
 
     @Override

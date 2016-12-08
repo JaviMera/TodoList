@@ -48,14 +48,6 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
         return "Home";
     }
 
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        mIsRemovingItems = false;
-    }
-
     @Override
     protected int getDeleteTitle() {
 
@@ -63,9 +55,16 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
     }
 
     @Override
-    protected int removeItems(TodoListDataSource source, List<TodoList> itemsToRemove) {
+    protected int removeItems(List<TodoList> itemsToRemove) {
 
-        return -1;
+        TodoListDataSource source = new TodoListDataSource(mParent);
+        source.openWriteable();
+
+        TodoList[] items = itemsToRemove.toArray(new TodoList[itemsToRemove.size()]);
+        int affectedRows = source.removeTodoLists(items);
+
+        source.close();
+        return affectedRows;
     }
 
     @Override
@@ -89,9 +88,14 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
     }
 
     @Override
-    protected List<TodoList> getAllItems(TodoListDataSource source) {
+    protected List<TodoList> getAllItems() {
 
-        return source.readTodoLists();
+        TodoListDataSource source = new TodoListDataSource(mParent);
+        source.openReadable();
+        List<TodoList> todoLists = source.readTodoLists();
+        source.close();
+
+        return todoLists;
     }
 
     @Override
@@ -106,12 +110,6 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
         FragmentDialogTodoList dialogTodoList = new FragmentDialogTodoList();
         dialogTodoList.setTargetFragment(this, 1);
         dialogTodoList.show(mParent.getSupportFragmentManager(), "dialog_todolists");
-    }
-
-    private void addTodoList(TodoList todoList) {
-
-        TodolistAdapter adapter = (TodolistAdapter) mRecyclerView.getAdapter();
-        adapter.addItem(todoList);
     }
 }
 

@@ -25,6 +25,8 @@ public class TodoList extends ItemBase implements Parcelable {
 
     protected TodoList(Parcel in) {
         mTitle = in.readString();
+        mCreationDate = in.readLong();
+        mItems = in.createTypedArrayList(TodoListTask.CREATOR);
     }
 
     public static final Creator<TodoList> CREATOR = new Creator<TodoList>() {
@@ -58,6 +60,21 @@ public class TodoList extends ItemBase implements Parcelable {
         return 0;
     }
 
+    public long getCreationDate() {
+
+        return mCreationDate;
+    }
+
+    public List<TodoListTask> getTasks() {
+
+        return mItems;
+    }
+
+    public void setItems(List<TodoListTask> items) {
+
+        mItems = new LinkedList<>(items);
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -66,10 +83,7 @@ public class TodoList extends ItemBase implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(mTitle);
-    }
-
-    public long getCreationDate() {
-
-        return mCreationDate;
+        parcel.writeLong(mCreationDate);
+        parcel.writeTypedList(mItems);
     }
 }

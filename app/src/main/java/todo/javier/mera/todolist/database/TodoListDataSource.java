@@ -88,6 +88,9 @@ public class TodoListDataSource {
                 long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_TIMESTAMP);
 
                 TodoList todoList = new TodoList(id, name, creationDate);
+
+                List<TodoListTask> tasks = readTodoListTasks(id);
+                todoList.setItems(tasks);
                 todoLists.add(todoList);
 
             }while(cursor.moveToNext());
@@ -180,7 +183,25 @@ public class TodoListDataSource {
         return items;
     }
 
-    public int removeTodoListTask(TodoListTask... tasks) {
+    public int removeTodoLists(TodoList... lists) {
+
+        int rowsAffected = 0;
+        for(TodoList tl : lists) {
+
+            List<TodoListTask> tasks = readTodoListTasks(tl.getId());
+            removeTodoListTasks(tasks.toArray(new TodoListTask[tasks.size()]));
+
+            rowsAffected += mDb.delete(
+                TodoListSQLiteHelper.TABLE_TODO_LISTS,
+                BaseColumns._ID + "=?",
+                new String []{String.valueOf(tl.getId())}
+            );
+        }
+
+        return rowsAffected;
+    }
+
+    public int removeTodoListTasks(TodoListTask... tasks) {
 
         String ids = "";
 
