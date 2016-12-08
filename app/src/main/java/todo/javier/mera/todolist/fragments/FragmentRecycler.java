@@ -121,6 +121,13 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
             case R.id.action_delete:
 
+                RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+                if(adapter.getItemCount() == 0) {
+
+                    Toast.makeText(mParent, "You have no items to delete.", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
                 if(!mIsRemovingItems) {
 
                     mIsRemovingItems = true;
@@ -128,7 +135,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 else {
 
                     setItemAnimator(new SlideInRightAnimator());
-                    RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+                    adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
                     List<T> itemsToRemove = adapter.getRemovableItems();
 
                     int removedCount = removeItems(itemsToRemove);
