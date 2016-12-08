@@ -6,22 +6,21 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.Date;
 import java.util.List;
 
 import butterknife.OnClick;
+import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TodoListTaskAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTask;
+import todo.javier.mera.todolist.model.TaskStatus;
 import todo.javier.mera.todolist.model.TodoList;
 import todo.javier.mera.todolist.model.TodoListTask;
-import todo.javier.mera.todolist.model.TaskStatus;
 
 /**
  * Created by javie on 12/2/2016.
@@ -102,6 +101,8 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
 
     @Override
     protected TodoListTask createItem(TodoListDataSource source, String name) {
+
+        setItemAnimator(new FadeInUpAnimator());
 
         long creationDate = new Date().getTime();
         TaskStatus status = TaskStatus.Created;
