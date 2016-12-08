@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -107,6 +108,7 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
 
+        Toast.makeText(mFragment.getActivity(), "move", Toast.LENGTH_SHORT).show();
         if(fromPosition < toPosition) {
 
             for(int i = fromPosition ; i < toPosition ; i++) {
@@ -129,24 +131,33 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
     @Override
     public void onItemDismiss(int position) {
 
+        Toast.makeText(mFragment.getActivity(), "Dismiss", Toast.LENGTH_SHORT).show();
         mItems.remove(position);
         notifyItemRemoved(position);
     }
 
-    public int getRemovableCount() {
+    @Override
+    public void onItemDropped(int position) {
 
-    int count = 0;
-
-    for(T item : mItems) {
-
-        if(item.getCanRemove()) {
-
-            count++;
-        }
+        T item = getItem(position);
+        item.setMoving(false);
+        notifyItemChanged(position);
     }
 
-    return count;
-}
+    public int getRemovableCount() {
+
+        int count = 0;
+
+        for(T item : mItems) {
+
+            if(item.getCanRemove()) {
+
+                count++;
+            }
+        }
+
+        return count;
+    }
 
     public List getRemovableItems() {
 
@@ -180,5 +191,12 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
 
         mItems.addAll(items);
         notifyItemRangeInserted(0, mItems.size());
+    }
+
+    public void changeItemColor(int position) {
+
+        T item = getItem(position);
+        item.setMoving(true);
+        notifyItemChanged(position);
     }
 }

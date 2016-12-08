@@ -227,6 +227,9 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
     @Override
     public void onLongClick(int position) {
+
+        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+        adapter.changeItemColor(position);
     }
 
     @Override

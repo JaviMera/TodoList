@@ -25,6 +25,8 @@ public class TodolistViewHolder extends ViewHolderBase<TodoList>
     private Drawable mTitleDrawable;
     private Drawable mBodyRemoveDrawable;
     private Drawable mBodyDrawable;
+    private Drawable mBodyMoveDrawable;
+    private Drawable mTitleMoveDrawable;
 
     public TodolistViewHolder(FragmentRecycler fragment, View itemView) {
         super(itemView);
@@ -32,8 +34,11 @@ public class TodolistViewHolder extends ViewHolderBase<TodoList>
         mParent = fragment;
         mTitleRemoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_remove_background);
         mTitleDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_background);
+        mTitleMoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_move_background);
         mBodyRemoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_remove_background);
         mBodyDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_background);
+        mBodyMoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_move_background);
+
     }
 
     @Override
@@ -44,7 +49,12 @@ public class TodolistViewHolder extends ViewHolderBase<TodoList>
         mCompletedItems.setText(String.format(Locale.ENGLISH, "%d Completed Items", item.getCompletedItems()));
         mIncompleItems.setText(String.format(Locale.ENGLISH, "%d Incomplete Items", item.getIncompleteItems()));
 
-        if(item.getCanRemove()) {
+        if(item.isMoving()) {
+
+            mTodolistTitle.setBackground(mTitleMoveDrawable);
+            mLayout.setBackground(mBodyMoveDrawable);
+        }
+        else if(item.getCanRemove()) {
 
             mTodolistTitle.setBackground(mTitleRemoveDrawable);
             mLayout.setBackground(mBodyRemoveDrawable);

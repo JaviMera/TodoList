@@ -7,6 +7,8 @@ public abstract class ItemBase {
 
     protected long mId;
     private boolean mCanRemove;
+    private boolean mIsMoving;
+
     public void setCanRemove(boolean canRemove){
 
         mCanRemove = canRemove;
@@ -17,16 +19,18 @@ public abstract class ItemBase {
         return mCanRemove;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-
-        ItemBase otherItem = (ItemBase) obj;
-
-        return mId == otherItem.getId();
-    }
-
     public long getId() {
 
         return mId;
+    }
+
+    public void setMoving(boolean isMoving) {
+
+        mIsMoving = isMoving;
+    }
+
+    public boolean isMoving() {
+
+        return mIsMoving;
     }
 }

@@ -1,6 +1,7 @@
 package todo.javier.mera.todolist.adapters;
 
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,6 +26,7 @@ public class TodoListTaskViewHolder extends ViewHolderBase<TodoListTask>
     private TextView mDescription;
     protected final int mRemovableColor;
     protected final int mNonRemovableColor;
+    private final int mMovingColor;
 
     TodoListTaskViewHolder(View itemView, FragmentRecycler fragment) {
         super(itemView);
@@ -32,6 +34,7 @@ public class TodoListTaskViewHolder extends ViewHolderBase<TodoListTask>
 
         mRemovableColor = ContextCompat.getColor(fragment.getActivity(), R.color.remove_item_color);
         mNonRemovableColor = ContextCompat.getColor(fragment.getActivity(), android.R.color.transparent);
+        mMovingColor = ContextCompat.getColor(fragment.getActivity(), R.color.move_item_color);
     }
 
     @Override
@@ -39,7 +42,11 @@ public class TodoListTaskViewHolder extends ViewHolderBase<TodoListTask>
 
         mDescription.setText(item.getDescription());
 
-        if(item.getCanRemove()) {
+        if(item.isMoving()) {
+
+            mLayout.setBackgroundColor(mMovingColor);
+        }
+        else if(item.getCanRemove()) {
 
             mLayout.setBackgroundColor(mRemovableColor);
         }
