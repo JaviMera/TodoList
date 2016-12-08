@@ -48,6 +48,14 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
         mTodoList = getArguments().getParcelable(TODO_LISt);
     }
 
+    @OnClick(R.id.fab)
+    public void onAddListButtonClick(View view) {
+
+        DialogFragment dialogFragment = new FragmentDialogTask();
+        dialogFragment.setTargetFragment(this, 1);
+        dialogFragment.show(mParent.getSupportFragmentManager(), "dialog_task");
+    }
+
     @Override
     protected int getDeleteTitle() {
 
@@ -65,14 +73,6 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
         source.close();
 
         return affectedRows;
-    }
-
-    @OnClick(R.id.fab)
-    public void onAddListButtonClick(View view) {
-
-        DialogFragment dialogFragment = new FragmentDialogTask();
-        dialogFragment.setTargetFragment(this, 1);
-        dialogFragment.show(mParent.getSupportFragmentManager(), "dialog_task");
     }
 
     @Override

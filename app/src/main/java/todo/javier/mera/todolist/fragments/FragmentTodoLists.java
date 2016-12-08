@@ -36,6 +36,14 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
         return new FragmentTodoLists();
     }
 
+    @OnClick(R.id.fab)
+    public void onAddListButtonClick(View view) {
+
+        FragmentDialogTodoList dialogTodoList = new FragmentDialogTodoList();
+        dialogTodoList.setTargetFragment(this, 1);
+        dialogTodoList.show(mParent.getSupportFragmentManager(), "dialog_todolists");
+    }
+
     @Override
     protected RecyclerAdapter getAdapter() {
 
@@ -102,14 +110,6 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
     protected void showItem(TodoList item) {
 
         mParent.showFragmentTodoList(item);
-    }
-
-    @OnClick(R.id.fab)
-    public void onAddListButtonClick(View view) {
-
-        FragmentDialogTodoList dialogTodoList = new FragmentDialogTodoList();
-        dialogTodoList.setTargetFragment(this, 1);
-        dialogTodoList.show(mParent.getSupportFragmentManager(), "dialog_todolists");
     }
 }
 
