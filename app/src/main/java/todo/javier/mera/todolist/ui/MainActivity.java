@@ -68,24 +68,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void hideKeyboard() {
-
-        // Hide the keyboard when adding a list
-        // If not hidden, it interferes with updating the recycler view and sometimes the added
-        // item is not drawn on the screen
-        InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
-        View view = getCurrentFocus();
-        if(view != null) {
-
-            manager.hideSoftInputFromWindow(
-                view.getWindowToken(),
-                0
-            );
-        }
-    }
-
-    @Override
     public void showFragmentTodoList(TodoList todoList) {
 
         Fragment fragment = FragmentTasks.newInstance(todoList);

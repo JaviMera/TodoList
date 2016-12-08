@@ -147,6 +147,12 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                     adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
                     List<T> itemsToRemove = adapter.getRemovableItems();
 
+                    if(itemsToRemove.isEmpty()) {
+
+                        Toast.makeText(mParent, "No items selected.", Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+
                     int removedCount = removeItems(itemsToRemove);
 
                     if(removedCount > 0){
@@ -227,6 +233,12 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
     @Override
     public void onLongClick(int position) {
+
+        // Don't allow the user to drag items while they are selecting items to be removed.
+        if(mIsRemovingItems) {
+
+            return;
+        }
 
         RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
         adapter.changeItemColor(position);
