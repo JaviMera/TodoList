@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,8 +19,9 @@ import todo.javier.mera.todolist.model.ItemBase;
  * Created by javie on 11/29/2016.
  */
 
-public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBase<T>> extends RecyclerView.Adapter<H>
-
+public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBase<T>>
+    extends RecyclerView.Adapter<H>
+    implements ItemTouchHelperAdapter
     {
 
     protected final Fragment mFragment;
@@ -102,20 +104,49 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         holder.bind(mItems.get(position));
     }
 
-    public int getRemovableCount() {
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
 
-        int count = 0;
+        if(fromPosition < toPosition) {
 
-        for(T item : mItems) {
+            for(int i = fromPosition ; i < toPosition ; i++) {
 
-            if(item.getCanRemove()) {
+                Collections.swap(mItems, i, i + 1);
+            }
+        }
+        else {
 
-                count++;
+            for(int i = fromPosition ; i > toPosition ; i--) {
+
+                Collections.swap(mItems, i, i - 1);
             }
         }
 
-        return count;
+        notifyItemMoved(fromPosition, toPosition);
+        return true;
     }
+
+    @Override
+    public void onItemDismiss(int position) {
+
+        mItems.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public int getRemovableCount() {
+
+    int count = 0;
+
+    for(T item : mItems) {
+
+        if(item.getCanRemove()) {
+
+            count++;
+        }
+    }
+
+    return count;
+}
 
     public List getRemovableItems() {
 

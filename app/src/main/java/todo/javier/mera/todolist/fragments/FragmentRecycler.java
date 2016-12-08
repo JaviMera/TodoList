@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,7 +26,9 @@ import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInRightAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.ItemLongClickListener;
+import todo.javier.mera.todolist.adapters.ItemTouchHelperAdapter;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
+import todo.javier.mera.todolist.adapters.SimpleItemTouchHelperCallback;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogListener;
 import todo.javier.mera.todolist.model.ItemBase;
@@ -80,6 +83,11 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         mPresenter.setFixedSize(true);
 
         mPresenter.setItemAnimator(new FadeInDownAnimator(new LinearOutSlowInInterpolator()));
+
+        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        ItemTouchHelper helper = new ItemTouchHelper(callback);
+        helper.attachToRecyclerView(mRecyclerView);
 
         new Handler().postDelayed(new Runnable() {
             @Override
