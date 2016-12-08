@@ -1,8 +1,10 @@
 package todo.javier.mera.todolist.ui;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity
         if(fragment.isRemovingItems()) {
 
             fragment.clearRemovableItems();
+            updateToolbarBackground(R.color.colorPrimary);
             return;
         }
 
@@ -91,5 +94,12 @@ public class MainActivity extends AppCompatActivity
             fragment,
             null
         );
+    }
+
+    @Override
+    public void updateToolbarBackground(int color) {
+
+        Drawable newDrawable = ContextCompat.getDrawable(this, color);
+        mToolBar.setBackground(newDrawable);
     }
 }

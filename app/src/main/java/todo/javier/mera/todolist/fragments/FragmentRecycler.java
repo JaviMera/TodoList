@@ -131,6 +131,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 if(!mIsRemovingItems) {
 
                     mIsRemovingItems = true;
+                    mParent.updateToolbarBackground(R.color.remove_item_color);
                 }
                 else {
 
@@ -143,6 +144,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                     if(removedCount > 0){
 
                         adapter.removeItems(itemsToRemove);
+                        mParent.updateToolbarBackground(R.color.colorPrimary);
                     }
                     else {
 
@@ -233,6 +235,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
                 mIsRemovingItems = false;
                 mParent.invalidateOptionsMenu();
+                mParent.updateToolbarBackground(R.color.colorPrimary);
             }
         }
         else {

@@ -12,4 +12,5 @@ public interface ActivityView {
     void hideKeyboard();
     void setToolbarTitle(String text);
     void showFragmentTodoList(TodoList todoList);
+    void updateToolbarBackground(int color);
 }
