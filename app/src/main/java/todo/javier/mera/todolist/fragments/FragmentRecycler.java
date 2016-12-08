@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,11 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.ItemLongClickListener;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
@@ -72,16 +73,21 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         mPresenter.setLayoutManager(mParent);
         mPresenter.setFixedSize(true);
 
-        TodoListDataSource source = new TodoListDataSource(mParent);
+        mPresenter.setItemAnimator(new FadeInDownAnimator(new LinearOutSlowInInterpolator()));
 
-            source.openReadable();
-            List<T> items = getAllItems(source);
-            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-            for(T task : items) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-                adapter.addItem(task);
+                TodoListDataSource source = new TodoListDataSource(mParent);
+
+                    source.openReadable();
+                    List<T> items = getAllItems(source);
+                    RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+                    adapter.addItems(items);
+                    source.close();
             }
-            source.close();
+        }, 500);
 
         return view;
     }
@@ -161,10 +167,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 mIsRemovingItems = false;
                 mParent.invalidateOptionsMenu();
             }
-        }
-        else {
-
-            Toast.makeText(mParent, "cant remove", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -139,4 +139,10 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
             }
         }
     }
+
+    public void addItems(List<T> items) {
+
+        mItems.addAll(items);
+        notifyItemRangeInserted(0, mItems.size());
+    }
 }
