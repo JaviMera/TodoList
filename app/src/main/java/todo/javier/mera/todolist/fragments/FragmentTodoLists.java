@@ -43,33 +43,11 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
     }
 
     @Override
-    protected int getLayout() {
-
-        return R.layout.fragment_todo_lists;
-    }
-
-    @Override
     protected String getTitle() {
 
         return "Home";
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-        inflater.inflate(R.menu.fragment_todo_list_menu, menu);
-
-        if(mIsRemovingItems) {
-
-            menu.findItem(R.id.action_delete_task).setVisible(true);
-        }
-        else {
-
-            menu.findItem(R.id.action_delete_task).setVisible(false);
-        }
-
-        super.onCreateOptionsMenu(menu, inflater);
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,24 +57,15 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    protected int getDeleteTitle() {
 
-        switch(item.getItemId()) {
+        return R.string.menu_delete_todolist;
+    }
 
-            case R.id.action_delete_task:
+    @Override
+    protected int removeItems(TodoListDataSource source, List<TodoList> itemsToRemove) {
 
-                setItemAnimator(new SlideInRightAnimator());
-                removeItems();
-
-                mIsRemovingItems = false;
-                mParent.invalidateOptionsMenu();
-
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-        return true;
+        return -1;
     }
 
     @Override

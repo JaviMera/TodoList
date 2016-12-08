@@ -4,16 +4,10 @@
     tools:context="todo.javier.mera.todolist.ui.MainActivity">
 
     <item
-        android:id="@+id/action_add_task"
-        android:title="@string/menu_add_task"
+        android:id="@+id/action_delete"
+        android:title="@string/menu_delete_task"
         app:showAsAction="never"
-        android:orderInCategory="100"
-        />
-    <item
-        android:id="@+id/action_delete_task"
-        android:title=""
-        app:showAsAction="ifRoom"
-        android:orderInCategory="100"
+        android:orderInCategory="101"
         android:icon="@android:drawable/ic_menu_delete"
         />
 </menu>

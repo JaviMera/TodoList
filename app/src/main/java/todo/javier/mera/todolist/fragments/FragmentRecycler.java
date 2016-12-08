@@ -10,6 +10,9 @@ import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -19,13 +22,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInRightAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.ItemLongClickListener;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogListener;
 import todo.javier.mera.todolist.model.ItemBase;
-import todo.javier.mera.todolist.model.TodoListTask;
 import todo.javier.mera.todolist.ui.MainActivity;
 
 /**
@@ -42,12 +45,13 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     protected boolean mIsRemovingItems;
 
     protected abstract RecyclerAdapter getAdapter();
-    protected abstract int getLayout();
     protected abstract String getTitle();
     protected abstract RecyclerView.LayoutManager getLayoutManager(Context context);
     protected abstract T createItem(TodoListDataSource source, String name);
     protected abstract List<T> getAllItems(TodoListDataSource source);
     protected abstract void showItem(T item);
+    protected abstract int getDeleteTitle();
+    protected abstract int removeItems(TodoListDataSource source, List<T> itemsToRemove);
 
     protected @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
@@ -63,7 +67,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(getLayout(), container, false);
+        View view = inflater.inflate(R.layout.fragment_recycler, container, false);
 
         ButterKnife.bind(this, view);
         mPresenter = new FragmentRecyclerPresenter(this);
@@ -80,18 +84,88 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
             @Override
             public void run() {
 
-                TodoListDataSource source = new TodoListDataSource(mParent);
+            TodoListDataSource source = new TodoListDataSource(mParent);
 
-                    source.openReadable();
-                    List<T> items = getAllItems(source);
-                    RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-                    adapter.addItems(items);
-                    source.close();
+                source.openReadable();
+                List<T> items = getAllItems(source);
+                RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+                adapter.addItems(items);
+                source.close();
             }
         }, 500);
 
         return view;
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        inflater.inflate(R.menu.fragment_recycler_menu, menu);
+        MenuItem deleteItem = menu.findItem(R.id.action_delete);
+        deleteItem.setTitle(getDeleteTitle());
+
+        if(mIsRemovingItems) {
+
+            deleteItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        }
+        else {
+
+            deleteItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        }
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+
+            case R.id.action_delete:
+
+                if(!mIsRemovingItems) {
+
+                    mIsRemovingItems = true;
+                }
+                else {
+
+                    setItemAnimator(new SlideInRightAnimator());
+                    TodoListDataSource source = new TodoListDataSource(mParent);
+                    RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+                    List<T> itemsToRemove = adapter.getRemovableItems();
+
+                    source.openWriteable();
+                    int removedCount =  removeItems(source, itemsToRemove);
+
+                    if(removedCount > 0){
+
+                        adapter.removeItems(itemsToRemove);
+                    }
+                    else {
+
+                        Toast
+                            .makeText(
+                                mParent,
+                                "Something went wrong in deleting tasks", Toast.LENGTH_SHORT)
+                            .show();
+                    }
+
+                    source.close();
+
+                    mIsRemovingItems = false;
+                }
+
+                mParent.invalidateOptionsMenu();
+
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
+    }
+
 
     @Override
     public void setAdapter(Fragment context) {
@@ -143,15 +217,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
     @Override
     public void onLongClick(int position) {
-
-        if(!mIsRemovingItems) {
-
-            mIsRemovingItems = true;
-            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-            adapter.setRemovable(position);
-
-            mParent.invalidateOptionsMenu();
-        }
     }
 
     @Override
@@ -175,23 +240,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
             T item = (T) adapter.getItem(position);
             showItem(item);
         }
-    }
-
-    public void removeItems() {
-
-        TodoListDataSource source = new TodoListDataSource(mParent);
-        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-        List<T> itemsToRemove = adapter.getRemovableItems();
-
-        source.openWriteable();
-        int removedCount = source.removeTodoListTask(itemsToRemove.toArray(new TodoListTask[itemsToRemove.size()]));
-
-        if(removedCount > 0){
-
-            adapter.removeItems(itemsToRemove);
-        }
-
-        source.close();
     }
 
     protected int getOrientation(Context context) {

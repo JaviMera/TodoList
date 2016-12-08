@@ -20,7 +20,7 @@ import todo.javier.mera.todolist.model.TodoList;
 public class MainActivity extends AppCompatActivity
     implements ActivityView {
 
-    public static final String FRAGMENT_HOME_TAG = "fragment_todo_lists";
+    public static final String FRAGMENT_HOME_TAG = "fragment_recycler";
     private static final String FRAGMENT_TODO_LIST = "fragment_tasks";
 
     private FragmentHelper mFragmentHelper;

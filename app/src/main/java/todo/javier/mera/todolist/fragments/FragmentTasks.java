@@ -9,12 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInRightAnimator;
 import todo.javier.mera.todolist.R;
@@ -23,6 +25,7 @@ import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TodoListTaskAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTask;
+import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTodoList;
 import todo.javier.mera.todolist.model.TodoList;
 import todo.javier.mera.todolist.model.TodoListTask;
 import todo.javier.mera.todolist.model.TaskStatus;
@@ -47,26 +50,6 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-        inflater.inflate(R.menu.fragment_task_menu, menu);
-
-        if(mIsRemovingItems) {
-
-            menu.findItem(R.id.action_add_task).setVisible(false);
-            menu.findItem(R.id.action_delete_task).setVisible(true);
-        }
-        else {
-
-            menu.findItem(R.id.action_add_task).setVisible(true);
-            menu.findItem(R.id.action_delete_task).setVisible(false);
-        }
-
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -74,45 +57,31 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
         mIsRemovingItems = false;
     }
 
+    @Override
+    protected int getDeleteTitle() {
+
+        return R.string.menu_delete_task;
+    }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    protected int removeItems(TodoListDataSource source, List<TodoListTask> itemsToRemove) {
 
-        switch(item.getItemId()) {
+        TodoListTask[] items = itemsToRemove.toArray(new TodoListTask[itemsToRemove.size()]);
+        return source.removeTodoListTask(items);
+    }
 
-            case R.id.action_add_task:
-                setItemAnimator(new FadeInDownAnimator());
-                DialogFragment dialogFragment = new FragmentDialogTask();
-                dialogFragment.setTargetFragment(this, 1);
-                dialogFragment.show(mParent.getSupportFragmentManager(), "dialog_task");
-                break;
+    @OnClick(R.id.fab)
+    public void onAddListButtonClick(View view) {
 
-            case R.id.action_delete_task:
-
-                setItemAnimator(new SlideInRightAnimator());
-                removeItems();
-
-                mIsRemovingItems = false;
-                mParent.invalidateOptionsMenu();
-
-                break;
-            default:
-            return super.onOptionsItemSelected(item);
-        }
-
-        return true;
+        DialogFragment dialogFragment = new FragmentDialogTask();
+        dialogFragment.setTargetFragment(this, 1);
+        dialogFragment.show(mParent.getSupportFragmentManager(), "dialog_task");
     }
 
     @Override
     protected RecyclerAdapter getAdapter() {
 
         return new TodoListTaskAdapter(this);
-    }
-
-    @Override
-    protected int getLayout() {
-
-        return R.layout.fragment_tasks;
     }
 
     @Override
