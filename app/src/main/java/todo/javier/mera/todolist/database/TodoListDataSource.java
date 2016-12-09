@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
-import android.provider.SyncStateContract;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -50,21 +49,22 @@ public class TodoListDataSource {
         return mDb.isOpen();
     }
 
-    public TodoList createTodoList(String title, long creationDate, int position) {
+    public TodoList createTodoList(String title, long creationDate, long dueDate, int position) {
 
         mDb.beginTransaction();
 
         ContentValues todoListValues = new ContentValues();
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION, position);
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME, title);
-        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_TIMESTAMP, creationDate);
+        todoListValues.put(TodoListSQLiteHelper.COLUMN_CREATION_DATE, creationDate);
+        todoListValues.put(TodoListSQLiteHelper.COLUMN_DUE_DATE, dueDate);
 
         long newId = mDb.insert(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, todoListValues);
 
         mDb.setTransactionSuccessful();
         mDb.endTransaction();
 
-        return new TodoList(newId, title, creationDate, position);
+        return new TodoList(newId, title, creationDate, dueDate, position);
     }
 
     public List<TodoList> readTodoLists() {
@@ -76,7 +76,8 @@ public class TodoListDataSource {
                 BaseColumns._ID,
                 TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION,
                 TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME,
-                TodoListSQLiteHelper.COLUMN_TODO_LIST_TIMESTAMP},
+                TodoListSQLiteHelper.COLUMN_CREATION_DATE,
+                TodoListSQLiteHelper.COLUMN_DUE_DATE},
             null,
             null,
             null,
@@ -92,9 +93,10 @@ public class TodoListDataSource {
                 int id = getInt(cursor, BaseColumns._ID);
                 int position = getInt(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION);
                 String name = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME);
-                long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_TIMESTAMP);
+                long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_CREATION_DATE);
+                long dueDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_DUE_DATE);
 
-                TodoList todoList = new TodoList(id, name, creationDate, position);
+                TodoList todoList = new TodoList(id, name, creationDate, dueDate, position);
 
                 List<TodoListTask> tasks = readTodoListTasks(id);
                 todoList.setItems(tasks);

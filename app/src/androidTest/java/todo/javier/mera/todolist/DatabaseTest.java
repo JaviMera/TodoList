@@ -62,10 +62,16 @@ public class DatabaseTest {
         // Arrange
         String expectedTitle = "My List";
         long expectedCreationDate = new Date().getTime();
+        long expectedDueDate = new Date().getTime();
+        int expectedPosition = 0;
 
         // Act
         mDataSource.openWriteable();
-        TodoList todoList = mDataSource.createTodoList(expectedTitle, expectedCreationDate, 0);
+        TodoList todoList = mDataSource.createTodoList(
+            expectedTitle,
+            expectedCreationDate,
+            expectedDueDate,
+            expectedPosition);
 
         // Assert
         Assert.assertTrue(todoList.getId() > -1);
@@ -77,15 +83,27 @@ public class DatabaseTest {
         // Arrange
         String expectedTitle = "My List";
         long expectedCreationDate = new Date().getTime();
+        long expectedDueDate = new Date().getTime();
+        int expectedPosition = 0;
 
         // Act
+        mDataSource.openWriteable();
+        mDataSource.createTodoList(
+            expectedTitle,
+            expectedCreationDate,
+            expectedDueDate,
+            expectedPosition);
+
+        mDataSource.close();
         mDataSource.openReadable();
-        TodoList todoList = mDataSource.createTodoList(expectedTitle, expectedCreationDate, 0);
+
+        TodoList todoList = mDataSource.readTodoLists().get(0);
 
         // Assert
         Assert.assertNotNull(todoList);
         Assert.assertEquals(expectedTitle, todoList.getTitle());
         Assert.assertEquals(expectedCreationDate, todoList.getCreationDate());
+        Assert.assertEquals(expectedDueDate, todoList.getDueDate());
     }
 
     @Test
@@ -94,15 +112,15 @@ public class DatabaseTest {
         // Arrange
         String todoListTitle = "My Other list";
         long todoListCreationDate = new Date().getTime();
+        long dueDate = new Date().getTime();
 
         String description = "first task";
         TaskStatus status = TaskStatus.Created;
         long timeStamp = new Date().getTime();
-
         // Act
         mDataSource.openWriteable();
 
-        TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate, 0);
+        TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate, dueDate, 0);
 
         int position = 0;
         TodoListTask task = mDataSource.createTodoListTask(todoList.getId(), position, description, status, timeStamp);
@@ -117,19 +135,25 @@ public class DatabaseTest {
         // Arrange
         String todoListTitle = "My Other list";
         long todoListCreationDate = new Date().getTime();
+        long dueDate = new Date().getTime();
 
         String description = "first task";
         TaskStatus status = TaskStatus.Created;
-        long timeStamp = new Date().getTime();
+        long creationDate = new Date().getTime();
         int expectedSize = 1;
 
         // Act
         mDataSource.openWriteable();
 
-        TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate, 0);
+        TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate, dueDate, 0);
 
         int position = 2;
-        TodoListTask expectedTask = mDataSource.createTodoListTask(todoList.getId(), position, description, status, timeStamp);
+        TodoListTask expectedTask = mDataSource.createTodoListTask(
+            todoList.getId(),
+            position,
+            description,
+            status,
+            creationDate);
 
         mDataSource.close();
         mDataSource.openReadable();
@@ -143,7 +167,7 @@ public class DatabaseTest {
         Assert.assertEquals(expectedTask.getTodoListId(), item.getTodoListId());
         Assert.assertEquals(position, item.getPosition());
         Assert.assertEquals(expectedTask.getDescription(), item.getDescription());
-        Assert.assertEquals(expectedTask.getCreationDate(), item.getCreationDate());
+        Assert.assertEquals(expectedTask.getCreationDate(), item.getCreationDate());;
         Assert.assertEquals(expectedTask.getStatus(), item.getStatus());
     }
 
@@ -153,10 +177,11 @@ public class DatabaseTest {
         // Arrange
         String title = "Some list";
         long creationDate = new Date().getTime();
+        long dueDate = new Date().getTime();
 
         // Act
         mDataSource.openWriteable();
-        TodoList todoList = mDataSource.createTodoList(title, creationDate, 0);
+        TodoList todoList = mDataSource.createTodoList(title, creationDate, dueDate,  0);
 
         int position = 3;
         todoList.setPosition(position);
@@ -204,6 +229,7 @@ public class DatabaseTest {
         // Arrange
         String todoListTitle = "My Other list";
         long todoListCreationDate = new Date().getTime();
+        long dueDate = new Date().getTime();
 
         String description = "first task";
         TaskStatus status = TaskStatus.Created;
@@ -212,7 +238,7 @@ public class DatabaseTest {
         // Act
         mDataSource.openWriteable();
 
-        TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate, 0);
+        TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate,dueDate, 0);
 
         int position = 0;
         TodoListTask expectedTask = mDataSource.createTodoListTask(todoList.getId(), position, description, status, timeStamp);
@@ -229,6 +255,7 @@ public class DatabaseTest {
         // Arrange
         String todoListTitle = "My List";
         long todoListCreationDate = new Date().getTime();
+        long dueDate = new Date().getTime();
 
         String description = "first task";
         TaskStatus status = TaskStatus.Created;
@@ -236,7 +263,7 @@ public class DatabaseTest {
 
         // Act
         mDataSource.openWriteable();
-        TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate, 0);
+        TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate,dueDate, 0);
 
         int position = 0;
         TodoListTask expectedTask = mDataSource.createTodoListTask(todoList.getId(), position, description, status, timeStamp);

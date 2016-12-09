@@ -13,14 +13,16 @@ public class TodoList extends ItemBase implements Parcelable {
 
     private String mTitle;
     private long mCreationDate;
+    private long mDueDate;
     private List<TodoListTask> mItems;
 
-    public TodoList(long id, String title, long creationDate, int position) {
+    public TodoList(long id, String title, long creationDate, long dueDate, int position) {
 
         mId = id;
         mPosition = position;
         mTitle = title;
         mCreationDate = creationDate;
+        mDueDate = dueDate;
         mItems = new LinkedList<>();
     }
 
@@ -76,5 +78,10 @@ public class TodoList extends ItemBase implements Parcelable {
         parcel.writeString(mTitle);
         parcel.writeLong(mCreationDate);
         parcel.writeTypedList(mItems);
+    }
+
+    public long getDueDate() {
+
+        return mDueDate;
     }
 }

@@ -22,9 +22,6 @@ import todo.javier.mera.todolist.model.TodoListTask;
 
 public class FragmentTodoLists extends FragmentRecycler<TodoList> {
 
-    private long mNewId;
-    private long mCreationDate;
-
     public static FragmentTodoLists newInstance() {
 
         return new FragmentTodoLists();
@@ -108,6 +105,7 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
 
         return source.createTodoList(
             name,
+            creationDate,
             creationDate,
             position
         );

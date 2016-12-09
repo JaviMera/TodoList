@@ -19,6 +19,7 @@ public class TodoListTaskTest {
     private int mExpectedCreationDate = (int) new Date().getTime();
     private TodoListTask mItem;
     private boolean mExpectedCanRemove = false;
+    private int mExpectedPosition;
 
     @Before
     public void setUp() throws Exception {
@@ -26,7 +27,8 @@ public class TodoListTaskTest {
         mItem = new TodoListTask(
             mExpectedItemId,
             mExpectedTodolistId,
-                position, mExpectedDescription,
+            mExpectedPosition,
+            mExpectedDescription,
             mExpectedStatus,
             mExpectedCreationDate,
             mExpectedCanRemove);
