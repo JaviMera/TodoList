@@ -233,20 +233,10 @@ public class TodoListDataSource {
         );
     }
 
-    public int updateTask(long id, ContentValues newValues) {
+    public int update(String tableName, long id, ContentValues values){
 
         return mDb.update(
-            TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
-            newValues,
-            BaseColumns._ID + "=?",
-            new String[]{String.valueOf(id)}
-        );
-    }
-
-    public int updateTodoList(long id, ContentValues values) {
-
-        return mDb.update(
-            TodoListSQLiteHelper.TABLE_TODO_LISTS,
+            tableName,
             values,
             BaseColumns._ID + "=?",
             new String[]{String.valueOf(id)}

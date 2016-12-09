@@ -134,7 +134,13 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
         for(TodoListTask task : items) {
 
             values.put(TodoListSQLiteHelper.COLUMN_ITEMS_POSITION, task.getPosition());
-            source.updateTask(task.getId(), values);
+
+            source.update(
+                TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
+                task.getId(),
+                values
+            );
+
             values.clear();
         }
 

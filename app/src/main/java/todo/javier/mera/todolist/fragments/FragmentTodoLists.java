@@ -79,7 +79,13 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
         for(TodoList todoList : items) {
 
             values.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION, todoList.getPosition());
-            source.updateTodoList(todoList.getId(), values);
+
+            source.update(
+                TodoListSQLiteHelper.TABLE_TODO_LISTS,
+                todoList.getId(),
+                values
+            );
+
             values.clear();
         }
 

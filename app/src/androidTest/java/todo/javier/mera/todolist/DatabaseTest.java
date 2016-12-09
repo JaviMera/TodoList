@@ -42,7 +42,7 @@ public class DatabaseTest {
     @After
     public void tearDown() throws Exception {
 
-//        mDataSource.clear();
+        mDataSource.clear();
         mDataSource.close();
     }
 
@@ -162,7 +162,7 @@ public class DatabaseTest {
         todoList.setPosition(position);
         ContentValues values = new ContentValues();
         values.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION, todoList.getPosition());
-        int affectedRow = mDataSource.updateTodoList(todoList.getId(), values);
+        int affectedRow = mDataSource.update(TodoListSQLiteHelper.TABLE_TODO_LISTS,todoList.getId(), values);
 
         TodoList list = mDataSource.readTodoLists().get(0);
 
@@ -189,7 +189,7 @@ public class DatabaseTest {
 
         ContentValues values = new ContentValues();
         values.put(TodoListSQLiteHelper.COLUMN_ITEMS_POSITION, newPosition);
-        int rowsAffected = mDataSource.updateTask(expectedTask.getId(), values);
+        int rowsAffected = mDataSource.update(TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,expectedTask.getId(), values);
 
         TodoListTask task = mDataSource.readTodoListTasks(todoListId).get(0);
 
