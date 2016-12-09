@@ -26,7 +26,7 @@ public class TodoListTaskTest {
         mItem = new TodoListTask(
             mExpectedItemId,
             mExpectedTodolistId,
-            mExpectedDescription,
+                position, mExpectedDescription,
             mExpectedStatus,
             mExpectedCreationDate,
             mExpectedCanRemove);

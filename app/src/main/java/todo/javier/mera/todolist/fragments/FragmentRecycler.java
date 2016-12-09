@@ -50,7 +50,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     protected abstract RecyclerAdapter getAdapter();
     protected abstract String getTitle();
     protected abstract RecyclerView.LayoutManager getLayoutManager(Context context);
-    protected abstract T createItem(TodoListDataSource source, String name);
+    protected abstract T createItem(TodoListDataSource source, String name, int itemCount);
     protected abstract List<T> getAllItems();
     protected abstract void showItem(T item);
     protected abstract int getDeleteTitle();
@@ -220,11 +220,12 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
             public void run() {
 
             scrollToLastPosition();
+            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+
             TodoListDataSource source = new TodoListDataSource(mParent);
             source.openWriteable();
-            T item = createItem(source, title);
+            T item = createItem(source, title, adapter.getItemCount());
 
-            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
             adapter.addItem(item);
             source.close();
             }

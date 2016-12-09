@@ -100,7 +100,7 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
     }
 
     @Override
-    protected TodoListTask createItem(TodoListDataSource source, String name) {
+    protected TodoListTask createItem(TodoListDataSource source, String name, int position) {
 
         setItemAnimator(new FadeInUpAnimator());
 
@@ -109,6 +109,7 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
 
         return source.createTodoListTask(
             mTodoList.getId(),
+            position,
             name,
             status,
             creationDate

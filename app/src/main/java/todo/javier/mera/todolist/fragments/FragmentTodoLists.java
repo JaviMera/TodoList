@@ -1,28 +1,19 @@
 package todo.javier.mera.todolist.fragments;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 
 import java.util.Date;
 import java.util.List;
 
 import butterknife.OnClick;
-import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
-import jp.wasabeef.recyclerview.animators.SlideInRightAnimator;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.TodolistAdapter;
-import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTask;
 import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTodoList;
 import todo.javier.mera.todolist.model.TodoList;
 
@@ -83,7 +74,7 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
     }
 
     @Override
-    protected TodoList createItem(TodoListDataSource source, String name) {
+    protected TodoList createItem(TodoListDataSource source, String name, int itemCount) {
 
         setItemAnimator(new FlipInTopXAnimator());
 

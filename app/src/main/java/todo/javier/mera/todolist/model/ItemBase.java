@@ -8,6 +8,7 @@ public abstract class ItemBase {
     protected long mId;
     private boolean mCanRemove;
     private boolean mIsMoving;
+    protected int mPosition;
 
     public void setCanRemove(boolean canRemove){
 
@@ -32,5 +33,13 @@ public abstract class ItemBase {
     public boolean isMoving() {
 
         return mIsMoving;
+    }
+
+    public int getPosition() {
+        return mPosition;
+    }
+
+    public void setPosition(int mPosition) {
+        this.mPosition = mPosition;
     }
 }

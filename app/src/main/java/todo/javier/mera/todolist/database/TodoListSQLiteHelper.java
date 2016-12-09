@@ -12,7 +12,7 @@ import android.provider.BaseColumns;
 public class TodoListSQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "todo_lists.db";
-    private static final int DB_VERSION = 4;
+    private static final int DB_VERSION = 5;
 
     public static final String TABLE_TODO_LISTS = "TODO_LISTS";
     public static final String COLUMN_TODO_LIST_NAME = "NAME";
@@ -27,6 +27,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_TODO_LIST_ITEMS = "TODO_LIST_ITEMS";
     public static final String COLUMN_ITEMS_FOREIGN_KEY = "TODO_LIST_ID";
+    public static final String COLUMN_ITEMS_POSITION = "POSITION";
     public static final String COLUMN_ITEMS_DESCRIPTION = "DESCRIPTION";
     public static final String COLUMN_ITEMS_COMPLETED = "COMPLETED";
     public static final String COLUMN_ITEMS_TIMESTAMP = "TIMESTAMP";
@@ -35,6 +36,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
         + "("
         + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
         + COLUMN_ITEMS_FOREIGN_KEY + " INTEGER, "
+        + COLUMN_ITEMS_POSITION + " INTEGER, "
         + COLUMN_ITEMS_DESCRIPTION + " TEXT, "
         + COLUMN_ITEMS_COMPLETED + " INTEGER, "
         + COLUMN_ITEMS_TIMESTAMP +  " INTEGER, "
@@ -61,9 +63,11 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
             case 1:
             case 2:
             case 3:
+            case 4:
                 sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO_LIST_ITEMS);
                 sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO_LISTS);
                 onCreate(sqLiteDatabase);
+                break;
         }
     }
 }

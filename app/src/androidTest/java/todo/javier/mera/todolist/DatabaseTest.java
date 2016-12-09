@@ -1,5 +1,6 @@
 package todo.javier.mera.todolist;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.LargeTest;
@@ -13,9 +14,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import todo.javier.mera.todolist.database.TodoListDataSource;
+import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.model.TodoList;
 import todo.javier.mera.todolist.model.TodoListTask;
 import todo.javier.mera.todolist.model.TaskStatus;
@@ -100,7 +103,9 @@ public class DatabaseTest {
         mDataSource.openWriteable();
 
         TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate);
-        TodoListTask task = mDataSource.createTodoListTask(todoList.getId(), description, status, timeStamp);
+
+        int position = 0;
+        TodoListTask task = mDataSource.createTodoListTask(todoList.getId(), position, description, status, timeStamp);
 
         // Assert
         Assert.assertTrue(task.getId() > -1);
@@ -122,7 +127,9 @@ public class DatabaseTest {
         mDataSource.openWriteable();
 
         TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate);
-        TodoListTask expectedTask = mDataSource.createTodoListTask(todoList.getId(), description, status, timeStamp);
+
+        int position = 2;
+        TodoListTask expectedTask = mDataSource.createTodoListTask(todoList.getId(), position, description, status, timeStamp);
 
         mDataSource.close();
         mDataSource.openReadable();
@@ -134,9 +141,37 @@ public class DatabaseTest {
         TodoListTask item = items.get(0);
         Assert.assertEquals(expectedTask.getId(), item.getId());
         Assert.assertEquals(expectedTask.getTodoListId(), item.getTodoListId());
+        Assert.assertEquals(position, item.getPosition());
         Assert.assertEquals(expectedTask.getDescription(), item.getDescription());
         Assert.assertEquals(expectedTask.getCreationDate(), item.getCreationDate());
         Assert.assertEquals(expectedTask.getStatus(), item.getStatus());
+    }
+
+    @Test
+    public void dbShouldUpdateTodoListTask() throws Exception {
+
+        // Arrange
+        long todoListId = 2;
+        int position = 0;
+        String description = "harambe";
+        TaskStatus status = TaskStatus.Created;
+        long timeStamp = new Date().getTime();
+
+        // Act
+        mDataSource.openWriteable();
+        TodoListTask expectedTask = mDataSource.createTodoListTask(todoListId,position, description, status, timeStamp);
+
+        int newPosition = 2;
+
+        ContentValues values = new ContentValues();
+        values.put(TodoListSQLiteHelper.COLUMN_ITEMS_POSITION, newPosition);
+        int rowsAffected = mDataSource.updateTask(expectedTask.getId(), values);
+
+        TodoListTask task = mDataSource.readTodoListTasks(todoListId).get(0);
+
+        // Assert
+        Assert.assertTrue(rowsAffected > 0);
+        Assert.assertEquals(newPosition, task.getPosition());
     }
 
     @Test
@@ -154,7 +189,9 @@ public class DatabaseTest {
         mDataSource.openWriteable();
 
         TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate);
-        TodoListTask expectedTask = mDataSource.createTodoListTask(todoList.getId(), description, status, timeStamp);
+
+        int position = 0;
+        TodoListTask expectedTask = mDataSource.createTodoListTask(todoList.getId(), position, description, status, timeStamp);
 
         int expectedRowCount = mDataSource.removeTodoListTasks(expectedTask);
 
@@ -176,7 +213,9 @@ public class DatabaseTest {
         // Act
         mDataSource.openWriteable();
         TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate);
-        TodoListTask expectedTask = mDataSource.createTodoListTask(todoList.getId(), description, status, timeStamp);
+
+        int position = 0;
+        TodoListTask expectedTask = mDataSource.createTodoListTask(todoList.getId(), position, description, status, timeStamp);
 
         int expectedRowCount = mDataSource.removeTodoLists(new TodoList[]{todoList});
         mDataSource.close();

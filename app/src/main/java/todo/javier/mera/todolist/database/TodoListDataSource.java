@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+import android.provider.SyncStateContract;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -125,12 +126,13 @@ public class TodoListDataSource {
         mDb.delete(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, null);
     }
 
-    public TodoListTask createTodoListTask(long todoListId, String description, TaskStatus status, long timeStamp) {
+    public TodoListTask createTodoListTask(long todoListId, int position, String description, TaskStatus status, long timeStamp) {
 
         mDb.beginTransaction();
 
         ContentValues itemValues = new ContentValues();
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_FOREIGN_KEY, todoListId);
+        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_POSITION, position);
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION, description);
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED, status.ordinal());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_TIMESTAMP, timeStamp);
@@ -140,7 +142,7 @@ public class TodoListDataSource {
         mDb.setTransactionSuccessful();
         mDb.endTransaction();
 
-        return new TodoListTask(newId, todoListId, description, status, timeStamp, false);
+        return new TodoListTask(newId, todoListId, position, description, status, timeStamp, false);
     }
 
     public List<TodoListTask> readTodoListTasks(long todoListId) {
@@ -152,6 +154,7 @@ public class TodoListDataSource {
             new String[]{
                 BaseColumns._ID,
                 TodoListSQLiteHelper.COLUMN_ITEMS_FOREIGN_KEY,
+                TodoListSQLiteHelper.COLUMN_ITEMS_POSITION,
                 TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION,
                 TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED,
                 TodoListSQLiteHelper.COLUMN_ITEMS_TIMESTAMP
@@ -169,6 +172,7 @@ public class TodoListDataSource {
 
                 int itemId = getInt(cursor, BaseColumns._ID);
                 int id = getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_FOREIGN_KEY);
+                int position = getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_POSITION);
                 String description = getString(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION);
                 TaskStatus status = TaskStatus.values()[
                     getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED)];
@@ -176,7 +180,7 @@ public class TodoListDataSource {
                 int columnIndex = cursor.getColumnIndex(TodoListSQLiteHelper.COLUMN_ITEMS_TIMESTAMP);
                 long creationDate = cursor.getLong(columnIndex);
 
-                TodoListTask item = new TodoListTask(itemId, id, description, status, creationDate, false);
+                TodoListTask item = new TodoListTask(itemId, id, position, description, status, creationDate, false);
                 items.add(item);
             }while(cursor.moveToNext());
         }
@@ -220,6 +224,19 @@ public class TodoListDataSource {
             TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
             BaseColumns._ID + " IN (" + ids + ")",
             null
+        );
+    }
+
+    public int updateTask(long id, ContentValues newValues) {
+
+        ContentValues values = new ContentValues();
+        values.putAll(newValues);
+
+        return mDb.update(
+            TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
+            values,
+            BaseColumns._ID + "=?",
+            new String[]{String.valueOf(id)}
         );
     }
 }

@@ -13,11 +13,12 @@ public class TodoListTask extends ItemBase implements Parcelable {
     private TaskStatus mStatus;
     private long mCreationDate;
 
-    public TodoListTask(long itemId, long todoListId, String description, TaskStatus status,
-        long creationDate, boolean canRemove) {
+    public TodoListTask(long itemId, long todoListId, int position, String description, TaskStatus status,
+                        long creationDate, boolean canRemove) {
 
         mId = itemId;
         mTodoListId = todoListId;
+        mPosition = position;
         mDescription = description;
         mStatus = status;
         mCreationDate = creationDate;
