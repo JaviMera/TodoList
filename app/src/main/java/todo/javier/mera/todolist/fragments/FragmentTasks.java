@@ -3,6 +3,7 @@ package todo.javier.mera.todolist.fragments;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TodoListTaskAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
+import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogListener;
 import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTask;
 import todo.javier.mera.todolist.model.TaskStatus;
 import todo.javier.mera.todolist.model.TodoList;
@@ -28,7 +30,8 @@ import todo.javier.mera.todolist.model.TodoListTask;
  * Created by javie on 12/2/2016.
  */
 
-public class FragmentTasks extends FragmentRecycler<TodoListTask> {
+public class FragmentTasks extends FragmentRecycler<TodoListTask>
+    implements FragmentDialogListener {
 
     public static final String TODO_LISt = "TODO_LISt";
     private TodoList mTodoList;
@@ -53,7 +56,7 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
     @OnClick(R.id.fab)
     public void onAddListButtonClick(View view) {
 
-        DialogFragment dialogFragment = new FragmentDialogTask();
+        FragmentDialogTask dialogFragment = new FragmentDialogTask();
         dialogFragment.setTargetFragment(this, 1);
         dialogFragment.show(mParent.getSupportFragmentManager(), "dialog_task");
     }
@@ -102,23 +105,6 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
     }
 
     @Override
-    protected TodoListTask createItem(TodoListDataSource source, String name, int position) {
-
-        setItemAnimator(new FadeInUpAnimator());
-
-        long creationDate = new Date().getTime();
-        TaskStatus status = TaskStatus.Created;
-
-        return source.createTodoListTask(
-            mTodoList.getId(),
-            position,
-            name,
-            status,
-            creationDate
-        );
-    }
-
-    @Override
     protected void showItem(TodoListTask item) {
 
         // Todo: add behavior to handle a regular task click
@@ -145,5 +131,38 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
         }
 
         source.close();
+    }
+
+    @Override
+    public void onAddItem(final String title) {
+
+        scrollToLastPosition();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                scrollToLastPosition();
+                RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+
+                TodoListDataSource source = new TodoListDataSource(mParent);
+                source.openWriteable();
+                setItemAnimator(new FadeInUpAnimator());
+
+                long creationDate = new Date().getTime();
+                TaskStatus status = TaskStatus.Created;
+
+                TodoListTask item = source.createTodoListTask(
+                    mTodoList.getId(),
+                    adapter.getItemCount(),
+                    title,
+                    status,
+                    creationDate
+                );
+
+                adapter.addItem(item);
+                source.close();
+            }
+        }, 1000);
     }
 }

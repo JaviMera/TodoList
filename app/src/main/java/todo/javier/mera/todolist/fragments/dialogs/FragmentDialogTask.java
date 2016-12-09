@@ -1,7 +1,11 @@
 package todo.javier.mera.todolist.fragments.dialogs;
 
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
 
+import butterknife.OnClick;
+import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentTasks;
 
 /**
@@ -9,6 +13,8 @@ import todo.javier.mera.todolist.fragments.FragmentTasks;
  */
 
 public class FragmentDialogTask extends FragmentDialogBase {
+
+    private FragmentDialogListener mListener;
 
     @Override
     protected String getTitle() {
@@ -29,8 +35,26 @@ public class FragmentDialogTask extends FragmentDialogBase {
     }
 
     @Override
+    protected View getDialogView() {
+
+        View view = LayoutInflater.from(mParent).inflate(R.layout.fragment_dialog, null);
+        return view;
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mListener = (FragmentTasks)getTargetFragment();
+    }
+
+    @OnClick(R.id.addTaskView)
+    public void onAddClick() {
+
+        if(canDismiss()) {
+
+            // If edit text contains text, then add it and close the dialog
+            mListener.onAddItem(mNameEditText.getText().toString());
+            dismiss();
+        }
     }
 }

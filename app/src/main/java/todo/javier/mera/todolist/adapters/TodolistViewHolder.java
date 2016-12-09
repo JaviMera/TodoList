@@ -21,6 +21,7 @@ public class TodolistViewHolder extends ViewHolderBase<TodoList>
     private TextView mTodolistTitle;
     private TextView mTotalitems;
     private TextView mCreationDate;
+    private TextView mDueDate;
     private Drawable mTitleRemoveDrawable;
     private Drawable mTitleDrawable;
     private Drawable mBodyRemoveDrawable;
@@ -38,7 +39,6 @@ public class TodolistViewHolder extends ViewHolderBase<TodoList>
         mBodyRemoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_remove_background);
         mBodyDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_background);
         mBodyMoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_move_background);
-
     }
 
     @Override
@@ -50,6 +50,8 @@ public class TodolistViewHolder extends ViewHolderBase<TodoList>
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyy");
 
         mCreationDate.setText(dateFormat.format(item.getCreationDate()));
+        mDueDate.setText(dateFormat.format(item.getDueDate()));
+
         if(item.isMoving()) {
 
             mTodolistTitle.setBackground(mTitleMoveDrawable);
@@ -74,6 +76,7 @@ public class TodolistViewHolder extends ViewHolderBase<TodoList>
         mTodolistTitle = (TextView) itemView.findViewById(R.id.todoTitleView);
         mTotalitems = (TextView) itemView.findViewById(R.id.totalItemsText);
         mCreationDate = (TextView) itemView.findViewById(R.id.creationDateView);
+        mDueDate = (TextView) itemView.findViewById(R.id.dueDateView);
 
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/dialogTitleView"
+        style="@style/DialogTitle"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Name:"
+            android:layout_gravity="center"
+            android:textSize="@dimen/item_body_size_portrait"
+            android:padding="@dimen/item_body_pad_portrait"
+            android:textColor="@color/colorSecondary"/>
+
+        <EditText
+            android:id="@+id/taskEditTextView"
+            android:layout_width="0dp"
+            android:layout_weight="2.5"
+            android:layout_gravity="center"
+            style="@style/DialogEditText" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:text="@string/item_body_due_date_text"
+            android:textSize="@dimen/item_body_size_portrait"
+            android:padding="@dimen/item_body_pad_portrait"
+            android:textColor="@color/colorSecondary"/>
+
+        <Button
+            android:id="@+id/datePickerButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.5"
+            android:layout_margin="15dp"
+            android:text="-- / -- / -----"
+            android:textSize="25sp"
+            android:textColor="@color/colorPrimary"
+            android:background="@color/colorSecondary"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/cancelTaskView"
+            style="@style/CancelButton"/>
+
+        <Button
+            android:id="@+id/addTaskView"
+            style="@style/AddButton"/>
+    </LinearLayout>
+</LinearLayout>

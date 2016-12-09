@@ -2,6 +2,7 @@ package todo.javier.mera.todolist.fragments;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,10 +18,14 @@ import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.TodolistAdapter;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTodoList;
+import todo.javier.mera.todolist.fragments.dialogs.TodoListDialogListener;
 import todo.javier.mera.todolist.model.TodoList;
 import todo.javier.mera.todolist.model.TodoListTask;
 
-public class FragmentTodoLists extends FragmentRecycler<TodoList> {
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+
+public class FragmentTodoLists extends FragmentRecycler<TodoList>
+    implements TodoListDialogListener {
 
     public static FragmentTodoLists newInstance() {
 
@@ -97,21 +102,6 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
     }
 
     @Override
-    protected TodoList createItem(TodoListDataSource source, String name, int position) {
-
-        setItemAnimator(new FlipInTopXAnimator());
-
-        long creationDate = new Date().getTime();
-
-        return source.createTodoList(
-            name,
-            creationDate,
-            creationDate,
-            position
-        );
-    }
-
-    @Override
     protected List<TodoList> getAllItems() {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
@@ -126,6 +116,40 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
     protected void showItem(TodoList item) {
 
         mParent.showFragmentTodoList(item);
+    }
+
+    @Override
+    public void onCreateTodoList(final String name, Date dueDate) {
+
+        scrollToLastPosition();
+        final long creationDate = new Date().getTime();
+        final long date = dueDate.getTime();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                scrollToLastPosition();
+                RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+
+                TodoListDataSource source = new TodoListDataSource(mParent);
+                source.openWriteable();
+
+                setItemAnimator(new FlipInTopXAnimator());
+
+
+
+                TodoList item = source.createTodoList(
+                        name,
+                        creationDate,
+                        date,
+                        adapter.getItemCount()
+                );
+
+                adapter.addItem(item);
+                source.close();
+            }
+        }, 1000);
     }
 }
 

@@ -28,15 +28,14 @@ import todo.javier.mera.todolist.ui.MainActivity;
 public abstract class FragmentDialogBase extends DialogFragment
     implements DialogFragmentView {
 
-    private MainActivity mParent;
-    private Animation mShakeAnimation;
-    private DialogFragmentPresenter mPresenter;
-
-    protected FragmentDialogListener mListener;
+    protected MainActivity mParent;
+    protected DialogFragmentPresenter mPresenter;
+    protected Animation mShakeAnimation;
 
     protected abstract String getTitle();
     protected abstract String getHint();
     protected abstract String getHintError();
+    protected abstract View getDialogView();
 
     @BindView(R.id.dialogTitleView)
     TextView mTitleView;
@@ -60,7 +59,7 @@ public abstract class FragmentDialogBase extends DialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        View view = LayoutInflater.from(mParent).inflate(R.layout.fragment_dialog, null);
+        View view = getDialogView();
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mParent);
         dialogBuilder.setView(view);
 
@@ -75,6 +74,9 @@ public abstract class FragmentDialogBase extends DialogFragment
 
         return dialogBuilder.create();
     }
+
+
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -93,10 +95,8 @@ public abstract class FragmentDialogBase extends DialogFragment
         dismiss();
     }
 
-    @OnClick(R.id.addTaskView)
-    public void onAddClick(View view) {
+    protected boolean canDismiss() {
 
-        // Check if the user has not entered a description
         if(mNameEditText.getText().toString().isEmpty()) {
 
             // If the edit text is empty, then show the user the error
@@ -105,13 +105,11 @@ public abstract class FragmentDialogBase extends DialogFragment
             int hintColor = ContextCompat.getColor(mParent, android.R.color.holo_red_light);
             mPresenter.updateEditTextHintColor(hintColor);
             mPresenter.startEditTextAnimation(mShakeAnimation);
-        }
-        else {
 
-            // If edit text contains text, then add it and close the dialog
-            mListener.onAddItem(mNameEditText.getText().toString());
-            dismiss();
+            return false;
         }
+
+        return true;
     }
 
     @Override

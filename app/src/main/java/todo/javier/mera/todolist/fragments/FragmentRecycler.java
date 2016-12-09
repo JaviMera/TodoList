@@ -40,7 +40,6 @@ import todo.javier.mera.todolist.ui.MainActivity;
 
 public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     implements FragmentRecyclerView,
-    FragmentDialogListener,
     ItemLongClickListener,
     ItemClickListener,
     ItemsListener<T> {
@@ -53,7 +52,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     protected abstract RecyclerAdapter getAdapter();
     protected abstract String getTitle();
     protected abstract RecyclerView.LayoutManager getLayoutManager(Context context);
-    protected abstract T createItem(TodoListDataSource source, String name, int itemCount);
     protected abstract List<T> getAllItems();
     protected abstract void showItem(T item);
     protected abstract int getDeleteTitle();
@@ -215,28 +213,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     }
 
     @Override
-    public void onAddItem(final String title) {
-
-        scrollToLastPosition();
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-            scrollToLastPosition();
-            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-
-            TodoListDataSource source = new TodoListDataSource(mParent);
-            source.openWriteable();
-            T item = createItem(source, title, adapter.getItemCount());
-
-            adapter.addItem(item);
-            source.close();
-            }
-        }, 1000);
-    }
-
-    @Override
     public void onLongClick(int position) {
 
         // Don't allow the user to drag items while they are selecting items to be removed.
@@ -289,7 +265,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         return LinearLayoutManager.VERTICAL;
     }
 
-    private void scrollToLastPosition() {
+    protected void scrollToLastPosition() {
 
         RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
         int lastPosition = adapter.getItemCount();
