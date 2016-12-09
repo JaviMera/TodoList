@@ -1,5 +1,6 @@
 package todo.javier.mera.todolist.fragments;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,8 +15,10 @@ import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.TodolistAdapter;
+import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTodoList;
 import todo.javier.mera.todolist.model.TodoList;
+import todo.javier.mera.todolist.model.TodoListTask;
 
 public class FragmentTodoLists extends FragmentRecycler<TodoList> {
 
@@ -67,6 +70,23 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
     }
 
     @Override
+    protected void updateItems(List<TodoList> items) {
+
+        TodoListDataSource source = new TodoListDataSource(mParent);
+        source.openWriteable();
+
+        ContentValues values = new ContentValues();
+        for(TodoList todoList : items) {
+
+            values.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION, todoList.getPosition());
+            source.updateTodoList(todoList.getId(), values);
+            values.clear();
+        }
+
+        source.close();
+    }
+
+    @Override
     protected RecyclerView.LayoutManager getLayoutManager(Context context) {
 
         int orientation = getOrientation(context);
@@ -74,7 +94,7 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
     }
 
     @Override
-    protected TodoList createItem(TodoListDataSource source, String name, int itemCount) {
+    protected TodoList createItem(TodoListDataSource source, String name, int position) {
 
         setItemAnimator(new FlipInTopXAnimator());
 
@@ -82,7 +102,8 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList> {
 
         return source.createTodoList(
             name,
-            creationDate
+            creationDate,
+            position
         );
     }
 

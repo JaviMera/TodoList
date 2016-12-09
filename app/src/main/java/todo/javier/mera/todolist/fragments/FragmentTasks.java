@@ -1,5 +1,6 @@
 package todo.javier.mera.todolist.fragments;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TodoListTaskAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
+import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTask;
 import todo.javier.mera.todolist.model.TaskStatus;
 import todo.javier.mera.todolist.model.TodoList;
@@ -120,5 +122,22 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask> {
     protected void showItem(TodoListTask item) {
 
         // Todo: add behavior to handle a regular task click
+    }
+
+    @Override
+    protected void updateItems(List<TodoListTask> items) {
+
+        TodoListDataSource source = new TodoListDataSource(mParent);
+        source.openWriteable();
+
+        ContentValues values = new ContentValues();
+        for(TodoListTask task : items) {
+
+            values.put(TodoListSQLiteHelper.COLUMN_ITEMS_POSITION, task.getPosition());
+            source.updateTask(task.getId(), values);
+            values.clear();
+        }
+
+        source.close();
     }
 }

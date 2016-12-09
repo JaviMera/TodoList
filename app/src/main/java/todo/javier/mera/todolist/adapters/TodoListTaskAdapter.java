@@ -3,6 +3,7 @@ package todo.javier.mera.todolist.adapters;
 import android.support.v4.app.Fragment;
 
 import todo.javier.mera.todolist.R;
+import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.model.TodoListTask;
 
 /**
@@ -11,7 +12,7 @@ import todo.javier.mera.todolist.model.TodoListTask;
 
 public class TodoListTaskAdapter extends RecyclerAdapter<TodoListTask, TodoListTaskViewHolder> {
 
-    public TodoListTaskAdapter(Fragment fragment) {
+    public TodoListTaskAdapter(FragmentRecycler fragment) {
 
         super(fragment, TodoListTaskViewHolder.class);
     }

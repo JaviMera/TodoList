@@ -12,15 +12,17 @@ import android.provider.BaseColumns;
 public class TodoListSQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "todo_lists.db";
-    private static final int DB_VERSION = 5;
+    private static final int DB_VERSION = 6;
 
     public static final String TABLE_TODO_LISTS = "TODO_LISTS";
     public static final String COLUMN_TODO_LIST_NAME = "NAME";
     public static final String COLUMN_TODO_LIST_TIMESTAMP = "TIMESTAMP";
+    public static final String COLUMN_TODO_LIST_POSITION = "POSITION";
     private String CREATE_TODO_LISTS = "CREATE TABLE "
         + TABLE_TODO_LISTS
         + "("
         + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+        + COLUMN_TODO_LIST_POSITION + " INTEGER, "
         + COLUMN_TODO_LIST_NAME + " TEXT, "
         + COLUMN_TODO_LIST_TIMESTAMP + " INTEGER"
         + ")";
@@ -64,6 +66,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
             case 2:
             case 3:
             case 4:
+            case 5:
                 sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO_LIST_ITEMS);
                 sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO_LISTS);
                 onCreate(sqLiteDatabase);

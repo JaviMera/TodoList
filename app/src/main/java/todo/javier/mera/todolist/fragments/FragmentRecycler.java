@@ -40,7 +40,10 @@ import todo.javier.mera.todolist.ui.MainActivity;
 
 public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     implements FragmentRecyclerView,
-    FragmentDialogListener, ItemLongClickListener, ItemClickListener {
+    FragmentDialogListener,
+    ItemLongClickListener,
+    ItemClickListener,
+    ItemsListener<T> {
 
     private FragmentRecyclerPresenter mPresenter;
     private boolean mIsRemovingItems;
@@ -55,6 +58,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     protected abstract void showItem(T item);
     protected abstract int getDeleteTitle();
     protected abstract int removeItems(List<T> itemsToRemove);
+    protected abstract void updateItems(List<T> items);
 
     protected @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
@@ -267,6 +271,12 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
             T item = (T) adapter.getItem(position);
             showItem(item);
         }
+    }
+
+    @Override
+    public void onItemsUpdate(List<T> items) {
+
+        updateItems(items);
     }
 
     protected int getOrientation(Context context) {

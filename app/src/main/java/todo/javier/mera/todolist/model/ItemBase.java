@@ -39,7 +39,8 @@ public abstract class ItemBase {
         return mPosition;
     }
 
-    public void setPosition(int mPosition) {
-        this.mPosition = mPosition;
+    public void setPosition(int position) {
+
+        mPosition = position;
     }
 }

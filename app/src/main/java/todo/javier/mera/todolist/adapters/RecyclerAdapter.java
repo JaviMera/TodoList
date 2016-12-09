@@ -25,7 +25,7 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
     implements ItemTouchHelperAdapter
     {
 
-    protected final Fragment mFragment;
+    protected final FragmentRecycler mFragment;
     private final Class<H> mHolderType;
 
     protected List<T> mItems;
@@ -41,6 +41,7 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
     public void addItem(T item) {
 
         mItems.add(item);
+        item.setPosition(mItems.size() - 1);
         notifyItemInserted(mItems.size() - 1);
     }
 
@@ -67,7 +68,7 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         notifyItemRangeChanged(0, mItems.size());
     }
 
-    public RecyclerAdapter(Fragment fragment, Class<H> holderType) {
+    public RecyclerAdapter(FragmentRecycler fragment, Class<H> holderType) {
 
         mFragment = fragment;
         mHolderType = holderType;
@@ -83,11 +84,11 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
 
         if(mHolderType.equals(TodolistViewHolder.class)) {
 
-            return (H) new TodolistViewHolder((FragmentRecycler) mFragment, view);
+            return (H) new TodolistViewHolder(mFragment, view);
         }
         else if(mHolderType.equals(TodoListTaskViewHolder.class)) {
 
-            return (H) new TodoListTaskViewHolder(view, (FragmentRecycler) mFragment);
+            return (H) new TodoListTaskViewHolder(view, mFragment);
         }
 
         return null;
@@ -113,6 +114,8 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
 
             for(int i = fromPosition ; i < toPosition ; i++) {
 
+                mItems.get(i).setPosition(i+1);
+                mItems.get(i+1).setPosition(i);
                 Collections.swap(mItems, i, i + 1);
             }
         }
@@ -120,6 +123,8 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
 
             for(int i = fromPosition ; i > toPosition ; i--) {
 
+                mItems.get(i).setPosition(i-1);
+                mItems.get(i-1).setPosition(i);
                 Collections.swap(mItems, i, i - 1);
             }
         }
@@ -131,7 +136,6 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
     @Override
     public void onItemDismiss(int position) {
 
-        Toast.makeText(mFragment.getActivity(), "Dismiss", Toast.LENGTH_SHORT).show();
         mItems.remove(position);
         notifyItemRemoved(position);
     }
@@ -142,6 +146,7 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         T item = getItem(position);
         item.setMoving(false);
         notifyItemChanged(position);
+        mFragment.onItemsUpdate(mItems);
     }
 
     public int getRemovableCount() {

@@ -50,11 +50,12 @@ public class TodoListDataSource {
         return mDb.isOpen();
     }
 
-    public TodoList createTodoList(String title, long creationDate) {
+    public TodoList createTodoList(String title, long creationDate, int position) {
 
         mDb.beginTransaction();
 
         ContentValues todoListValues = new ContentValues();
+        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION, position);
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME, title);
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_TIMESTAMP, creationDate);
 
@@ -63,7 +64,7 @@ public class TodoListDataSource {
         mDb.setTransactionSuccessful();
         mDb.endTransaction();
 
-        return new TodoList(newId, title, creationDate);
+        return new TodoList(newId, title, creationDate, position);
     }
 
     public List<TodoList> readTodoLists() {
@@ -71,12 +72,16 @@ public class TodoListDataSource {
         Cursor cursor = mDb.query(
 
             TodoListSQLiteHelper.TABLE_TODO_LISTS,
-            new String[] {BaseColumns._ID, TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME, TodoListSQLiteHelper.COLUMN_TODO_LIST_TIMESTAMP},
+            new String[] {
+                BaseColumns._ID,
+                TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION,
+                TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME,
+                TodoListSQLiteHelper.COLUMN_TODO_LIST_TIMESTAMP},
             null,
             null,
             null,
             null,
-            null
+            TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION + " ASC"
         );
 
         List<TodoList> todoLists = new LinkedList<>();
@@ -85,10 +90,11 @@ public class TodoListDataSource {
             do {
 
                 int id = getInt(cursor, BaseColumns._ID);
+                int position = getInt(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION);
                 String name = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME);
                 long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_TIMESTAMP);
 
-                TodoList todoList = new TodoList(id, name, creationDate);
+                TodoList todoList = new TodoList(id, name, creationDate, position);
 
                 List<TodoListTask> tasks = readTodoListTasks(id);
                 todoList.setItems(tasks);
@@ -163,7 +169,7 @@ public class TodoListDataSource {
             new String[]{String.valueOf(todoListId)},
             null,
             null,
-            null
+            TodoListSQLiteHelper.COLUMN_ITEMS_POSITION + " ASC"
         );
 
         if(cursor.moveToFirst()) {
@@ -229,11 +235,18 @@ public class TodoListDataSource {
 
     public int updateTask(long id, ContentValues newValues) {
 
-        ContentValues values = new ContentValues();
-        values.putAll(newValues);
-
         return mDb.update(
             TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
+            newValues,
+            BaseColumns._ID + "=?",
+            new String[]{String.valueOf(id)}
+        );
+    }
+
+    public int updateTodoList(long id, ContentValues values) {
+
+        return mDb.update(
+            TodoListSQLiteHelper.TABLE_TODO_LISTS,
             values,
             BaseColumns._ID + "=?",
             new String[]{String.valueOf(id)}

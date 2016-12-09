@@ -42,7 +42,7 @@ public class DatabaseTest {
     @After
     public void tearDown() throws Exception {
 
-        mDataSource.clear();
+//        mDataSource.clear();
         mDataSource.close();
     }
 
@@ -65,7 +65,7 @@ public class DatabaseTest {
 
         // Act
         mDataSource.openWriteable();
-        TodoList todoList = mDataSource.createTodoList(expectedTitle, expectedCreationDate);
+        TodoList todoList = mDataSource.createTodoList(expectedTitle, expectedCreationDate, 0);
 
         // Assert
         Assert.assertTrue(todoList.getId() > -1);
@@ -80,7 +80,7 @@ public class DatabaseTest {
 
         // Act
         mDataSource.openReadable();
-        TodoList todoList = mDataSource.createTodoList(expectedTitle, expectedCreationDate);
+        TodoList todoList = mDataSource.createTodoList(expectedTitle, expectedCreationDate, 0);
 
         // Assert
         Assert.assertNotNull(todoList);
@@ -102,7 +102,7 @@ public class DatabaseTest {
         // Act
         mDataSource.openWriteable();
 
-        TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate);
+        TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate, 0);
 
         int position = 0;
         TodoListTask task = mDataSource.createTodoListTask(todoList.getId(), position, description, status, timeStamp);
@@ -126,7 +126,7 @@ public class DatabaseTest {
         // Act
         mDataSource.openWriteable();
 
-        TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate);
+        TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate, 0);
 
         int position = 2;
         TodoListTask expectedTask = mDataSource.createTodoListTask(todoList.getId(), position, description, status, timeStamp);
@@ -145,6 +145,30 @@ public class DatabaseTest {
         Assert.assertEquals(expectedTask.getDescription(), item.getDescription());
         Assert.assertEquals(expectedTask.getCreationDate(), item.getCreationDate());
         Assert.assertEquals(expectedTask.getStatus(), item.getStatus());
+    }
+
+    @Test
+    public void dbShuoldUpdateTodoList() throws Exception {
+
+        // Arrange
+        String title = "Some list";
+        long creationDate = new Date().getTime();
+
+        // Act
+        mDataSource.openWriteable();
+        TodoList todoList = mDataSource.createTodoList(title, creationDate, 0);
+
+        int position = 3;
+        todoList.setPosition(position);
+        ContentValues values = new ContentValues();
+        values.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION, todoList.getPosition());
+        int affectedRow = mDataSource.updateTodoList(todoList.getId(), values);
+
+        TodoList list = mDataSource.readTodoLists().get(0);
+
+        // Assert
+        Assert.assertTrue(affectedRow > 0);
+        Assert.assertEquals(position, list.getPosition());
     }
 
     @Test
@@ -188,7 +212,7 @@ public class DatabaseTest {
         // Act
         mDataSource.openWriteable();
 
-        TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate);
+        TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate, 0);
 
         int position = 0;
         TodoListTask expectedTask = mDataSource.createTodoListTask(todoList.getId(), position, description, status, timeStamp);
@@ -212,7 +236,7 @@ public class DatabaseTest {
 
         // Act
         mDataSource.openWriteable();
-        TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate);
+        TodoList todoList = mDataSource.createTodoList(todoListTitle, todoListCreationDate, 0);
 
         int position = 0;
         TodoListTask expectedTask = mDataSource.createTodoListTask(todoList.getId(), position, description, status, timeStamp);
