@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import todo.javier.mera.todolist.R;
@@ -19,8 +20,7 @@ public class TodolistViewHolder extends ViewHolderBase<TodoList>
     private LinearLayout mLayout;
     private TextView mTodolistTitle;
     private TextView mTotalitems;
-    private TextView mCompletedItems;
-    private TextView mIncompleItems;
+    private TextView mCreationDate;
     private Drawable mTitleRemoveDrawable;
     private Drawable mTitleDrawable;
     private Drawable mBodyRemoveDrawable;
@@ -46,9 +46,10 @@ public class TodolistViewHolder extends ViewHolderBase<TodoList>
 
         mTodolistTitle.setText(item.getTitle());
         mTotalitems.setText(String.format(Locale.ENGLISH, "%d items...", item.getItemsCount()));
-        mCompletedItems.setText(String.format(Locale.ENGLISH, "%d Completed Items", item.getCompletedItems()));
-        mIncompleItems.setText(String.format(Locale.ENGLISH, "%d Incomplete Items", item.getIncompleteItems()));
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyy");
+
+        mCreationDate.setText(dateFormat.format(item.getCreationDate()));
         if(item.isMoving()) {
 
             mTodolistTitle.setBackground(mTitleMoveDrawable);
@@ -72,8 +73,7 @@ public class TodolistViewHolder extends ViewHolderBase<TodoList>
         mLayout = (LinearLayout) itemView.findViewById(R.id.bodyLayout);
         mTodolistTitle = (TextView) itemView.findViewById(R.id.todoTitleView);
         mTotalitems = (TextView) itemView.findViewById(R.id.totalItemsText);
-        mCompletedItems = (TextView) itemView.findViewById(R.id.completedItemsText);
-        mIncompleItems = (TextView) itemView.findViewById(R.id.incompletedItemsText);
+        mCreationDate = (TextView) itemView.findViewById(R.id.creationDateView);
 
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);

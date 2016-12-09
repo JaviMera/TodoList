@@ -108,30 +108,6 @@ public class TodoListDataSource {
         return todoLists;
     }
 
-    private int getInt(Cursor cursor, String columnName) {
-
-        int columnIndex = cursor.getColumnIndex(columnName);
-        return cursor.getInt(columnIndex);
-    }
-
-    private String getString(Cursor cursor, String columnName) {
-
-        int columnIndex = cursor.getColumnIndex(columnName);
-        return cursor.getString(columnIndex);
-    }
-
-    private long getLong(Cursor cursor, String columnName) {
-
-        int columnIndex = cursor.getColumnIndex(columnName);
-        return cursor.getLong(columnIndex);
-    }
-
-    public void clear() {
-
-        mDb.delete(TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS, null, null);
-        mDb.delete(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, null);
-    }
-
     public TodoListTask createTodoListTask(long todoListId, int position, String description, TaskStatus status, long timeStamp) {
 
         mDb.beginTransaction();
@@ -242,4 +218,29 @@ public class TodoListDataSource {
             new String[]{String.valueOf(id)}
         );
     }
+
+    public void clear() {
+
+        mDb.delete(TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS, null, null);
+        mDb.delete(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, null);
+    }
+
+    private int getInt(Cursor cursor, String columnName) {
+
+        int columnIndex = cursor.getColumnIndex(columnName);
+        return cursor.getInt(columnIndex);
+    }
+
+    private String getString(Cursor cursor, String columnName) {
+
+        int columnIndex = cursor.getColumnIndex(columnName);
+        return cursor.getString(columnIndex);
+    }
+
+    private long getLong(Cursor cursor, String columnName) {
+
+        int columnIndex = cursor.getColumnIndex(columnName);
+        return cursor.getLong(columnIndex);
+    }
+
 }

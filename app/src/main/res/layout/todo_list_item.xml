@@ -20,20 +20,69 @@
         android:background="@drawable/body_background"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/totalItemsText"
-            style="@style/TodoListBodyPortrait"
-            tools:text="0 Total Items..."/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/completedItemsText"
-            style="@style/TodoListBodyPortrait"
-            tools:text="0 Completed Items"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/colorSecondary"
+                style="@style/TodoListBodyPortrait"
+                android:text="@string/item_body_tasks_text"/>
 
-        <TextView
-            android:id="@+id/incompletedItemsText"
-            style="@style/TodoListBodyPortrait"
-            tools:text="0 Incompleted Items"/>
+            <TextView
+                android:id="@+id/totalItemsText"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:textColor="@color/colorPrimary"
+                style="@style/TodoListBodyPortrait"
+                tools:text="43"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/colorSecondary"
+                style="@style/TodoListBodyPortrait"
+                android:text="@string/item_body_created_text"/>
+
+            <TextView
+                android:id="@+id/creationDateView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/item_body_size_portrait"
+                android:padding="@dimen/item_body_pad_portrait"
+                tools:text="12/8/2016"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/colorSecondary"
+                style="@style/TodoListBodyPortrait"
+                android:text="@string/item_body_due_date_text"/>
+
+            <TextView
+                android:id="@+id/dueDateView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/item_body_size_portrait"
+                android:padding="@dimen/item_body_pad_portrait"
+                tools:text="12/30/2016"/>
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

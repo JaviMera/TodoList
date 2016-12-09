@@ -14,4 +14,7 @@
     <string name="dialog_add_text">Add</string>
     <string name="menu_delete_todolist">Delete To-do(s)</string>
     <string name="menu_delete_task">Delete task(s)</string>
+    <string name="item_body_tasks_text">Tasks:</string>
+    <string name="item_body_created_text">Created:</string>
+    <string name="item_body_due_date_text">Due by:</string>
 </resources>

@@ -2,6 +2,7 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorSecondary">#8895DC</color>
     <color name="colorAccent">#FF4081</color>
     <color name="remove_item_color">#FFB8B8</color>
     <color name="title_remove_color">#FF2929</color>

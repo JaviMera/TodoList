@@ -51,16 +51,6 @@ public class TodoList extends ItemBase implements Parcelable {
         return mItems.size();
     }
 
-    public int getCompletedItems() {
-
-        return 0;
-    }
-
-    public int getIncompleteItems() {
-
-        return 0;
-    }
-
     public long getCreationDate() {
 
         return mCreationDate;
