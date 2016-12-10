@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.model.Task;
@@ -25,6 +27,9 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
 
     @Override
     public void bind(final Task item) {
+
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        mDueDate.setText(format.format(item.getDueDate()));
 
         mDescription.setText(item.getDescription());
 
