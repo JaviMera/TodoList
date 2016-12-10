@@ -6,41 +6,43 @@ import android.os.Parcelable;
 /**
  * Created by javie on 11/29/2016.
  */
-public class TodoListTask extends ItemBase implements Parcelable {
+public class Task extends ItemBase implements Parcelable {
 
     private long mTodoListId;
     private String mDescription;
     private TaskStatus mStatus;
     private long mCreationDate;
 
-    public TodoListTask(long itemId, long todoListId, int position, String description, TaskStatus status,
-                        long creationDate, boolean canRemove) {
+    public Task(long itemId, long todoListId, int position, String description, TaskStatus status,
+                long creationDate) {
 
-        mId = itemId;
+        super(itemId, position, false);
+
         mTodoListId = todoListId;
-        mPosition = position;
         mDescription = description;
         mStatus = status;
         mCreationDate = creationDate;
-        setCanRemove(canRemove);
     }
 
-    protected TodoListTask(Parcel in) {
+    private Task(Parcel in) {
+
+        super(in);
+
         mTodoListId = in.readLong();
         mDescription = in.readString();
         mCreationDate = in.readLong();
         mStatus = TaskStatus.values()[in.readInt()];
     }
 
-    public static final Creator<TodoListTask> CREATOR = new Creator<TodoListTask>() {
+    public static final Creator<Task> CREATOR = new Creator<Task>() {
         @Override
-        public TodoListTask createFromParcel(Parcel in) {
-            return new TodoListTask(in);
+        public Task createFromParcel(Parcel in) {
+            return new Task(in);
         }
 
         @Override
-        public TodoListTask[] newArray(int size) {
-            return new TodoListTask[size];
+        public Task[] newArray(int size) {
+            return new Task[size];
         }
     };
 

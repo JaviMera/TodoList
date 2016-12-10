@@ -1,16 +1,14 @@
 package todo.javier.mera.todolist.adapters;
 
-import android.support.v4.app.Fragment;
-
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
-import todo.javier.mera.todolist.model.TodoListTask;
+import todo.javier.mera.todolist.model.Task;
 
 /**
  * Created by javie on 12/5/2016.
  */
 
-public class TodoListTaskAdapter extends RecyclerAdapter<TodoListTask, TodoListTaskViewHolder> {
+public class TodoListTaskAdapter extends RecyclerAdapter<Task, TodoListTaskViewHolder> {
 
     public TodoListTaskAdapter(FragmentRecycler fragment) {
 

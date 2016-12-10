@@ -17,25 +17,22 @@ import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.TodolistAdapter;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
-import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTodoList;
-import todo.javier.mera.todolist.fragments.dialogs.TodoListDialogListener;
+import todo.javier.mera.todolist.fragments.dialogs.DialogTodoList;
+import todo.javier.mera.todolist.fragments.dialogs.DialogTodoListListener;
 import todo.javier.mera.todolist.model.TodoList;
-import todo.javier.mera.todolist.model.TodoListTask;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+public class FragmentTodoList extends FragmentRecycler<TodoList>
+    implements DialogTodoListListener {
 
-public class FragmentTodoLists extends FragmentRecycler<TodoList>
-    implements TodoListDialogListener {
+    public static FragmentTodoList newInstance() {
 
-    public static FragmentTodoLists newInstance() {
-
-        return new FragmentTodoLists();
+        return new FragmentTodoList();
     }
 
     @OnClick(R.id.fab)
     public void onAddListButtonClick(View view) {
 
-        FragmentDialogTodoList dialogTodoList = new FragmentDialogTodoList();
+        DialogTodoList dialogTodoList = new DialogTodoList();
         dialogTodoList.setTargetFragment(this, 1);
         dialogTodoList.show(mParent.getSupportFragmentManager(), "dialog_todolists");
     }
@@ -126,28 +123,29 @@ public class FragmentTodoLists extends FragmentRecycler<TodoList>
         final long date = dueDate.getTime();
 
         new Handler().postDelayed(new Runnable() {
+
             @Override
             public void run() {
 
-                scrollToLastPosition();
-                RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+            scrollToLastPosition();
+            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
 
-                TodoListDataSource source = new TodoListDataSource(mParent);
-                source.openWriteable();
+            TodoListDataSource source = new TodoListDataSource(mParent);
+            source.openWriteable();
 
-                setItemAnimator(new FlipInTopXAnimator());
+            setItemAnimator(new FlipInTopXAnimator());
 
 
 
-                TodoList item = source.createTodoList(
-                        name,
-                        creationDate,
-                        date,
-                        adapter.getItemCount()
-                );
+            TodoList item = source.createTodoList(
+                    name,
+                    creationDate,
+                    date,
+                    adapter.getItemCount()
+            );
 
-                adapter.addItem(item);
-                source.close();
+            adapter.addItem(item);
+            source.close();
             }
         }, 1000);
     }

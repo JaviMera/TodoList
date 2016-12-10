@@ -6,7 +6,7 @@ import android.view.animation.Animation;
 /**
  * Created by javie on 12/6/2016.
  */
-public interface DialogFragmentView {
+public interface DialogBaseView {
 
     void updateEditTextHintColor(int colorId);
     void updateEditTextHint(String text);

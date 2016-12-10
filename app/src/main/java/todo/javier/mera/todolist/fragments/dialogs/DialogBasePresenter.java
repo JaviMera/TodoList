@@ -5,11 +5,11 @@ import android.view.animation.Animation;
 /**
  * Created by javie on 12/6/2016.
  */
-public class DialogFragmentPresenter {
+public class DialogBasePresenter {
 
-    private DialogFragmentView mView;
+    private DialogBaseView mView;
 
-    public DialogFragmentPresenter(DialogFragmentView view) {
+    public DialogBasePresenter(DialogBaseView view) {
 
         mView = view;
     }

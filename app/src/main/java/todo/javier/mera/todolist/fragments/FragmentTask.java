@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -20,25 +19,25 @@ import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TodoListTaskAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
-import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogListener;
-import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogTask;
+import todo.javier.mera.todolist.fragments.dialogs.DialogTaskListener;
+import todo.javier.mera.todolist.fragments.dialogs.DialogTask;
 import todo.javier.mera.todolist.model.TaskStatus;
 import todo.javier.mera.todolist.model.TodoList;
-import todo.javier.mera.todolist.model.TodoListTask;
+import todo.javier.mera.todolist.model.Task;
 
 /**
  * Created by javie on 12/2/2016.
  */
 
-public class FragmentTasks extends FragmentRecycler<TodoListTask>
-    implements FragmentDialogListener {
+public class FragmentTask extends FragmentRecycler<Task>
+    implements DialogTaskListener {
 
     public static final String TODO_LISt = "TODO_LISt";
     private TodoList mTodoList;
 
-    public static FragmentTasks newInstance(TodoList todoList) {
+    public static FragmentTask newInstance(TodoList todoList) {
 
-        FragmentTasks fragment = new FragmentTasks();
+        FragmentTask fragment = new FragmentTask();
         Bundle bundle = new Bundle();
         bundle.putParcelable(TODO_LISt, todoList);
 
@@ -56,7 +55,7 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask>
     @OnClick(R.id.fab)
     public void onAddListButtonClick(View view) {
 
-        FragmentDialogTask dialogFragment = new FragmentDialogTask();
+        DialogTask dialogFragment = new DialogTask();
         dialogFragment.setTargetFragment(this, 1);
         dialogFragment.show(mParent.getSupportFragmentManager(), "dialog_task");
     }
@@ -68,12 +67,12 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask>
     }
 
     @Override
-    protected int removeItems(List<TodoListTask> itemsToRemove) {
+    protected int removeItems(List<Task> itemsToRemove) {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
 
         source.openWriteable();
-        TodoListTask[] items = itemsToRemove.toArray(new TodoListTask[itemsToRemove.size()]);
+        Task[] items = itemsToRemove.toArray(new Task[itemsToRemove.size()]);
         int affectedRows = source.removeTodoListTasks(items);
         source.close();
 
@@ -99,25 +98,25 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask>
     }
 
     @Override
-    protected List<TodoListTask> getAllItems() {
+    protected List<Task> getAllItems() {
 
         return mTodoList.getTasks();
     }
 
     @Override
-    protected void showItem(TodoListTask item) {
+    protected void showItem(Task item) {
 
         // Todo: add behavior to handle a regular task click
     }
 
     @Override
-    protected void updateItems(List<TodoListTask> items) {
+    protected void updateItems(List<Task> items) {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
         source.openWriteable();
 
         ContentValues values = new ContentValues();
-        for(TodoListTask task : items) {
+        for(Task task : items) {
 
             values.put(TodoListSQLiteHelper.COLUMN_ITEMS_POSITION, task.getPosition());
 
@@ -134,7 +133,7 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask>
     }
 
     @Override
-    public void onAddItem(final String title) {
+    public void onCreatedTask(final String title) {
 
         scrollToLastPosition();
 
@@ -152,7 +151,7 @@ public class FragmentTasks extends FragmentRecycler<TodoListTask>
                 long creationDate = new Date().getTime();
                 TaskStatus status = TaskStatus.Created;
 
-                TodoListTask item = source.createTodoListTask(
+                Task item = source.createTodoListTask(
                     mTodoList.getId(),
                     adapter.getItemCount(),
                     title,

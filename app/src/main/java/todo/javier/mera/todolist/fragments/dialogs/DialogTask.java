@@ -6,15 +6,15 @@ import android.view.View;
 
 import butterknife.OnClick;
 import todo.javier.mera.todolist.R;
-import todo.javier.mera.todolist.fragments.FragmentTasks;
+import todo.javier.mera.todolist.fragments.FragmentTask;
 
 /**
  * Created by javie on 12/6/2016.
  */
 
-public class FragmentDialogTask extends FragmentDialogBase {
+public class DialogTask extends DialogBase {
 
-    private FragmentDialogListener mListener;
+    private DialogTaskListener mListener;
 
     @Override
     protected String getTitle() {
@@ -44,7 +44,7 @@ public class FragmentDialogTask extends FragmentDialogBase {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mListener = (FragmentTasks)getTargetFragment();
+        mListener = (FragmentTask)getTargetFragment();
     }
 
     @OnClick(R.id.addTaskView)
@@ -53,7 +53,7 @@ public class FragmentDialogTask extends FragmentDialogBase {
         if(canDismiss()) {
 
             // If edit text contains text, then add it and close the dialog
-            mListener.onAddItem(mNameEditText.getText().toString());
+            mListener.onCreatedTask(mNameEditText.getText().toString());
             dismiss();
         }
     }

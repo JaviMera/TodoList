@@ -1,23 +1,18 @@
 package todo.javier.mera.todolist.adapters;
 
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
-import todo.javier.mera.todolist.fragments.FragmentTasks;
-import todo.javier.mera.todolist.model.TodoListTask;
+import todo.javier.mera.todolist.model.Task;
 
 /**
  * Created by javie on 12/5/2016.
  */
-public class TodoListTaskViewHolder extends ViewHolderBase<TodoListTask>
+public class TodoListTaskViewHolder extends ViewHolderBase<Task>
     implements View.OnClickListener, View.OnLongClickListener {
 
     private FragmentRecycler mParent;
@@ -38,7 +33,7 @@ public class TodoListTaskViewHolder extends ViewHolderBase<TodoListTask>
     }
 
     @Override
-    public void bind(final TodoListTask item) {
+    public void bind(final Task item) {
 
         mDescription.setText(item.getDescription());
 

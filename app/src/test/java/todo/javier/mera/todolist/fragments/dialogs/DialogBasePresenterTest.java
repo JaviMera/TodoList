@@ -13,17 +13,17 @@ import org.mockito.runners.MockitoJUnitRunner;
  * Created by javie on 12/6/2016.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class DialogFragmentPresenterTest {
+public class DialogBasePresenterTest {
 
     @Mock
-    public DialogFragmentView mView;
+    public DialogBaseView mView;
 
-    private DialogFragmentPresenter mPresenter;
+    private DialogBasePresenter mPresenter;
 
     @Before
     public void setUp() throws Exception {
 
-        mPresenter = new DialogFragmentPresenter(mView);
+        mPresenter = new DialogBasePresenter(mView);
     }
 
     @Test

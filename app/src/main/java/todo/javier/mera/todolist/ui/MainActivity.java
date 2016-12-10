@@ -1,22 +1,18 @@
 package todo.javier.mera.todolist.ui;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
-import todo.javier.mera.todolist.fragments.FragmentTodoLists;
-import todo.javier.mera.todolist.fragments.FragmentTasks;
+import todo.javier.mera.todolist.fragments.FragmentTodoList;
+import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class MainActivity extends AppCompatActivity
@@ -43,7 +39,7 @@ public class MainActivity extends AppCompatActivity
 
         setSupportActionBar(mToolBar);
 
-        Fragment fragment = FragmentTodoLists.newInstance();
+        Fragment fragment = FragmentTodoList.newInstance();
         mFragmentHelper.replace(R.id.fragmentContainer, fragment);
     }
 
@@ -70,7 +66,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void showFragmentTodoList(TodoList todoList) {
 
-        Fragment fragment = FragmentTasks.newInstance(todoList);
+        Fragment fragment = FragmentTask.newInstance(todoList);
         mFragmentHelper.replaceWithBackStack(
             R.id.fragmentContainer,
             fragment,

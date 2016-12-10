@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import todo.javier.mera.todolist.model.TodoList;
-import todo.javier.mera.todolist.model.TodoListTask;
+import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TaskStatus;
 
 /**
@@ -98,7 +98,7 @@ public class TodoListDataSource {
 
                 TodoList todoList = new TodoList(id, name, creationDate, dueDate, position);
 
-                List<TodoListTask> tasks = readTodoListTasks(id);
+                List<Task> tasks = readTodoListTasks(id);
                 todoList.setItems(tasks);
                 todoLists.add(todoList);
 
@@ -110,7 +110,7 @@ public class TodoListDataSource {
         return todoLists;
     }
 
-    public TodoListTask createTodoListTask(long todoListId, int position, String description, TaskStatus status, long timeStamp) {
+    public Task createTodoListTask(long todoListId, int position, String description, TaskStatus status, long timeStamp) {
 
         mDb.beginTransaction();
 
@@ -126,12 +126,12 @@ public class TodoListDataSource {
         mDb.setTransactionSuccessful();
         mDb.endTransaction();
 
-        return new TodoListTask(newId, todoListId, position, description, status, timeStamp, false);
+        return new Task(newId, todoListId, position, description, status, timeStamp);
     }
 
-    public List<TodoListTask> readTodoListTasks(long todoListId) {
+    public List<Task> readTodoListTasks(long todoListId) {
 
-        List<TodoListTask> items = new LinkedList<>();
+        List<Task> items = new LinkedList<>();
 
         Cursor cursor = mDb.query(
             TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
@@ -164,7 +164,7 @@ public class TodoListDataSource {
                 int columnIndex = cursor.getColumnIndex(TodoListSQLiteHelper.COLUMN_ITEMS_TIMESTAMP);
                 long creationDate = cursor.getLong(columnIndex);
 
-                TodoListTask item = new TodoListTask(itemId, id, position, description, status, creationDate, false);
+                Task item = new Task(itemId, id, position, description, status, creationDate);
                 items.add(item);
             }while(cursor.moveToNext());
         }
@@ -176,8 +176,8 @@ public class TodoListDataSource {
         int rowsAffected = 0;
         for(TodoList tl : lists) {
 
-            List<TodoListTask> tasks = readTodoListTasks(tl.getId());
-            removeTodoListTasks(tasks.toArray(new TodoListTask[tasks.size()]));
+            List<Task> tasks = readTodoListTasks(tl.getId());
+            removeTodoListTasks(tasks.toArray(new Task[tasks.size()]));
 
             rowsAffected += mDb.delete(
                 TodoListSQLiteHelper.TABLE_TODO_LISTS,
@@ -189,7 +189,7 @@ public class TodoListDataSource {
         return rowsAffected;
     }
 
-    public int removeTodoListTasks(TodoListTask... tasks) {
+    public int removeTodoListTasks(Task... tasks) {
 
         String ids = "";
 

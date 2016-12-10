@@ -26,11 +26,8 @@ import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInRightAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.ItemLongClickListener;
-import todo.javier.mera.todolist.adapters.ItemTouchHelperAdapter;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.SimpleItemTouchHelperCallback;
-import todo.javier.mera.todolist.database.TodoListDataSource;
-import todo.javier.mera.todolist.fragments.dialogs.FragmentDialogListener;
 import todo.javier.mera.todolist.model.ItemBase;
 import todo.javier.mera.todolist.ui.MainActivity;
 

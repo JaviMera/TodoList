@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -25,11 +24,11 @@ import todo.javier.mera.todolist.ui.MainActivity;
  * Created by javie on 12/6/2016.
  */
 
-public abstract class FragmentDialogBase extends DialogFragment
-    implements DialogFragmentView {
+public abstract class DialogBase extends DialogFragment
+    implements DialogBaseView {
 
     protected MainActivity mParent;
-    protected DialogFragmentPresenter mPresenter;
+    protected DialogBasePresenter mPresenter;
     protected Animation mShakeAnimation;
 
     protected abstract String getTitle();
@@ -40,7 +39,7 @@ public abstract class FragmentDialogBase extends DialogFragment
     @BindView(R.id.dialogTitleView)
     TextView mTitleView;
 
-    @BindView(R.id.taskEditTextView)
+    protected @BindView(R.id.taskEditTextView)
     EditText mNameEditText;
 
     @Override
@@ -65,7 +64,7 @@ public abstract class FragmentDialogBase extends DialogFragment
 
         ButterKnife.bind(this, view);
 
-        mPresenter = new DialogFragmentPresenter(this);
+        mPresenter = new DialogBasePresenter(this);
         mPresenter.setDialogTitle(getTitle());
         mPresenter.updateEditTextHint(getHint());
 

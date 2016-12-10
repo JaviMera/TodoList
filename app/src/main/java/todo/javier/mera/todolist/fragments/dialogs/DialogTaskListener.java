@@ -3,7 +3,7 @@ package todo.javier.mera.todolist.fragments.dialogs;
 /**
  * Created by javie on 12/6/2016.
  */
-public interface FragmentDialogListener {
+public interface DialogTaskListener {
 
-    void onAddItem(String title);
+    void onCreatedTask(String title);
 }

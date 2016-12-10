@@ -1,6 +1,5 @@
 package todo.javier.mera.todolist.adapters;
 
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
-import todo.javier.mera.todolist.fragments.FragmentTasks;
-import todo.javier.mera.todolist.fragments.TodoListListener;
 import todo.javier.mera.todolist.model.ItemBase;
 
 /**
