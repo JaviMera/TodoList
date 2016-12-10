@@ -130,7 +130,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    public void onCreatedTask(final String title) {
+    public void onCreatedTask(final String title, final Date dueDate) {
 
         setItemAnimator(new FadeInUpAnimator());
         scrollToLastPosition();
