@@ -15,21 +15,12 @@ import todo.javier.mera.todolist.model.Task;
 public class TodoListTaskViewHolder extends ViewHolderBase<Task>
     implements View.OnClickListener, View.OnLongClickListener {
 
-    private FragmentRecycler mParent;
-
+    private TextView mDueDate;
     private LinearLayout mLayout;
     private TextView mDescription;
-    protected final int mRemovableColor;
-    protected final int mNonRemovableColor;
-    private final int mMovingColor;
 
     TodoListTaskViewHolder(View itemView, FragmentRecycler fragment) {
-        super(itemView);
-        mParent = fragment;
-
-        mRemovableColor = ContextCompat.getColor(fragment.getActivity(), R.color.remove_item_color);
-        mNonRemovableColor = ContextCompat.getColor(fragment.getActivity(), android.R.color.transparent);
-        mMovingColor = ContextCompat.getColor(fragment.getActivity(), R.color.move_item_color);
+        super(itemView, fragment);
     }
 
     @Override
@@ -39,21 +30,25 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
 
         if(item.isMoving()) {
 
-            mLayout.setBackgroundColor(mMovingColor);
+            mDueDate.setBackground(mTitleMoveDrawable);
+            mLayout.setBackground(mBodyMoveDrawable);
         }
         else if(item.getCanRemove()) {
 
-            mLayout.setBackgroundColor(mRemovableColor);
+            mDueDate.setBackground(mTitleRemoveDrawable);
+            mLayout.setBackground(mBodyRemoveDrawable);
         }
         else {
 
-            mLayout.setBackgroundColor(mNonRemovableColor);
+            mDueDate.setBackground(mTitleDrawable);
+            mLayout.setBackground(mBodyDrawable);
         }
     }
 
     @Override
     protected void setViews() {
 
+        mDueDate = (TextView) itemView.findViewById(R.id.dueDateView);
         mLayout = (LinearLayout) itemView.findViewById(R.id.containerLayout);
         mDescription = (TextView) itemView.findViewById(R.id.itemDescriptionView);
 

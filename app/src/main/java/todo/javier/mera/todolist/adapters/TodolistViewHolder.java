@@ -16,28 +16,15 @@ import todo.javier.mera.todolist.model.TodoList;
 public class TodolistViewHolder extends ViewHolderBase<TodoList>
     implements View.OnClickListener, View.OnLongClickListener{
 
-    private FragmentRecycler mParent;
     private LinearLayout mLayout;
     private TextView mTodolistTitle;
     private TextView mTotalitems;
     private TextView mCreationDate;
-    private Drawable mTitleRemoveDrawable;
-    private Drawable mTitleDrawable;
-    private Drawable mBodyRemoveDrawable;
-    private Drawable mBodyDrawable;
-    private Drawable mBodyMoveDrawable;
-    private Drawable mTitleMoveDrawable;
 
     public TodolistViewHolder(FragmentRecycler fragment, View itemView) {
-        super(itemView);
+        super(itemView, fragment);
 
         mParent = fragment;
-        mTitleRemoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_remove_background);
-        mTitleDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_background);
-        mTitleMoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_move_background);
-        mBodyRemoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_remove_background);
-        mBodyDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_background);
-        mBodyMoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_move_background);
     }
 
     @Override

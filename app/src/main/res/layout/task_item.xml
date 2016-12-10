@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/containerLayout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -12,42 +11,41 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:background="@drawable/title_background"
             android:textColor="@android:color/white"
             android:padding="10dp"
             android:textSize="16sp"
             tools:text="Due by 12/12/2016"/>
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/body_background">
+            android:id="@+id/containerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <ImageView
-                android:id="@+id/:itemEditView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_edit"
-                android:scaleType="fitCenter"
-                android:padding="10dp"
-                android:maxHeight="45dp"
-                android:adjustViewBounds="true"/>
+            android:id="@+id/:itemEditView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_edit"
+            android:scaleType="fitCenter"
+            android:padding="10dp"
+            android:maxHeight="45dp"
+            android:adjustViewBounds="true"/>
 
         <TextView
-                android:id="@+id/itemDescriptionView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="16sp"
-                android:layout_gravity="center"
-                tools:text="This is an item"
-                android:padding="10dp"
-                android:maxLines="2"/>
+            android:id="@+id/itemDescriptionView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            tools:text="This is an item"
+            android:padding="10dp"
+            android:maxLines="2"/>
 
         <CheckBox
-                android:id="@+id/itemCheckBoxView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"/>
+            android:id="@+id/itemCheckBoxView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
         </LinearLayout>
 </LinearLayout>
