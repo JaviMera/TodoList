@@ -37,7 +37,7 @@ public class DialogTask extends DialogBase {
     @Override
     protected View getDialogView() {
 
-        View view = LayoutInflater.from(mParent).inflate(R.layout.fragment_dialog, null);
+        View view = LayoutInflater.from(mParent).inflate(R.layout.dialog_base, null);
         return view;
     }
 

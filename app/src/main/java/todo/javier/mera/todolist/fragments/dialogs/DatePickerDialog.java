@@ -39,7 +39,7 @@ public class DatePickerDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         View view = LayoutInflater.from(getActivity()).inflate(
-            R.layout.fragment_date_picker_dialog,
+            R.layout.date_picker_dialog,
             null
         );
 

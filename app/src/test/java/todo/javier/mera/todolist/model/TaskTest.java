@@ -17,56 +17,55 @@ public class TaskTest {
     private String mExpectedDescription = "Some task to do";
     private TaskStatus mExpectedStatus = TaskStatus.Created;
     private int mExpectedCreationDate = (int) new Date().getTime();
-    private Task mItem;
-    private boolean mExpectedCanRemove = false;
-    private int mExpectedPosition;
+    private Task mTask;
+    private int mExpectedPosition = 0;
 
     @Before
     public void setUp() throws Exception {
 
-        mItem = new Task(
+        mTask = new Task(
             mExpectedItemId,
             mExpectedTodolistId,
             mExpectedPosition,
             mExpectedDescription,
             mExpectedStatus,
-            mExpectedCreationDate,
-            mExpectedCanRemove);
+            mExpectedCreationDate
+        );
     }
 
     @Test
     public void getTodoListId() throws Exception {
 
         // Assert
-        Assert.assertEquals(mExpectedTodolistId, mItem.getTodoListId());
+        Assert.assertEquals(mExpectedTodolistId, mTask.getTodoListId());
     }
 
     @Test
     public void getItemId() throws Exception {
 
         // Assert
-        Assert.assertEquals(mExpectedItemId, mItem.getId());
+        Assert.assertEquals(mExpectedItemId, mTask.getId());
     }
 
     @Test
     public void getDescription() throws Exception {
 
         // Assert
-        Assert.assertEquals(mExpectedDescription, mItem.getDescription());
+        Assert.assertEquals(mExpectedDescription, mTask.getDescription());
     }
 
     @Test
     public void getStatus() throws Exception {
 
         // Assert
-        Assert.assertEquals(mExpectedStatus, mItem.getStatus());
+        Assert.assertEquals(mExpectedStatus, mTask.getStatus());
     }
 
     @Test
     public void getCreationDate() throws Exception {
 
         // Assert
-        Assert.assertEquals(mExpectedCreationDate, mItem.getCreationDate());
+        Assert.assertEquals(mExpectedCreationDate, mTask.getCreationDate());
     }
 
     @Test
@@ -76,10 +75,52 @@ public class TaskTest {
         TaskStatus expectedStatus = TaskStatus.Completed;
 
         // Act
-        mItem.update(expectedStatus);
-        TaskStatus actualStatus = mItem.getStatus();
+        mTask.update(expectedStatus);
+        TaskStatus actualStatus = mTask.getStatus();
 
         // Assert
         Assert.assertEquals(expectedStatus, actualStatus);
+    }
+
+    @Test
+    public void getPosition() throws Exception {
+
+        // Assert
+        Assert.assertEquals(mExpectedPosition, mTask.getPosition());
+    }
+
+    @Test
+    public void setPosition() throws Exception {
+
+        // Arrange
+        int expectedPosition = 3;
+
+        // Act
+        mTask.setPosition(expectedPosition);
+        int actualPosition = mTask.getPosition();
+
+        // Assert
+        Assert.assertEquals(expectedPosition, actualPosition);
+    }
+
+    @Test
+    public void getCanRemove() throws Exception {
+
+        // Assert
+        Assert.assertFalse(mTask.getCanRemove());
+    }
+
+    @Test
+    public void setCanRemove() throws Exception {
+
+        // Arrange
+        boolean expectedCanRemove = true;
+
+        // Act
+        mTask.setCanRemove(expectedCanRemove);
+        boolean actualCanRemove = mTask.getCanRemove();
+
+        // Assert
+        Assert.assertTrue(actualCanRemove);
     }
 }

@@ -48,7 +48,7 @@ public class DialogTodoList extends DialogBase
     @Override
     protected View getDialogView() {
 
-        View view = LayoutInflater.from(mParent).inflate(R.layout.fragment_todo_list_dialog, null);
+        View view = LayoutInflater.from(mParent).inflate(R.layout.todo_list_dialog, null);
         ButterKnife.bind(this, view);
 
         return view;
