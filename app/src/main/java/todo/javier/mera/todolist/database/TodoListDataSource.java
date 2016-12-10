@@ -120,6 +120,7 @@ public class TodoListDataSource {
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION, newTask.getDescription());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED, newTask.getStatus().ordinal());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON, newTask.getCreationDate());
+        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE, newTask.getDueDate());
 
         long newId = mDb.insert(TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS, null, itemValues);
 
@@ -143,7 +144,8 @@ public class TodoListDataSource {
                 TodoListSQLiteHelper.COLUMN_ITEMS_POSITION,
                 TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION,
                 TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED,
-                TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON
+                TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON,
+                TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE
                 },
             TodoListSQLiteHelper.COLUMN_TODO_LIST_ID + "=?",
             new String[]{String.valueOf(todoListId)},
@@ -163,10 +165,10 @@ public class TodoListDataSource {
                 TaskStatus status = TaskStatus.values()[
                     getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED)];
 
-                int columnIndex = cursor.getColumnIndex(TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON);
-                long creationDate = cursor.getLong(columnIndex);
+                long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON);
+                long dueDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE);
 
-                Task item = new Task(itemId, id, position, description, status, creationDate);
+                Task item = new Task(itemId, id, position, description, status, creationDate, dueDate);
                 items.add(item);
             }while(cursor.moveToNext());
         }

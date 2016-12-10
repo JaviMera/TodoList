@@ -146,6 +146,7 @@ public class FragmentTask extends FragmentRecycler<Task>
 
                 String id = UUID.randomUUID().toString();
                 long creationDate = new Date().getTime();
+                long date = dueDate.getTime();
                 TaskStatus status = TaskStatus.Created;
 
                 Task newTask = new Task(
@@ -154,7 +155,8 @@ public class FragmentTask extends FragmentRecycler<Task>
                     adapter.getItemCount(),
                     title,
                     status,
-                    creationDate
+                    creationDate,
+                    date
                 );
 
                 long rowId = source.createTodoListTask(newTask);

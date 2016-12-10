@@ -12,9 +12,10 @@ public class Task extends ItemBase implements Parcelable {
     private String mDescription;
     private TaskStatus mStatus;
     private long mCreationDate;
+    private long mDueDate;
 
     public Task(String itemId, String todoListId, int position, String description, TaskStatus status,
-                long creationDate) {
+                long creationDate, long dueDate) {
 
         super(itemId, position, false);
 
@@ -22,6 +23,7 @@ public class Task extends ItemBase implements Parcelable {
         mDescription = description;
         mStatus = status;
         mCreationDate = creationDate;
+        mDueDate = dueDate;
     }
 
     private Task(Parcel in) {
@@ -81,5 +83,10 @@ public class Task extends ItemBase implements Parcelable {
         parcel.writeString(mDescription);
         parcel.writeLong(mCreationDate);
         parcel.writeInt(mStatus.ordinal());
+    }
+
+    public long getDueDate() {
+
+        return mDueDate;
     }
 }

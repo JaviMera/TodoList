@@ -6,19 +6,21 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by javie on 11/29/2016.
  */
 public class TaskTest {
 
-    private long mExpectedTodolistId = 123;
-    private long mExpectedItemId = 321;
+    private String mExpectedTodolistId = UUID.randomUUID().toString();
+    private String mExpectedItemId = UUID.randomUUID().toString();
     private String mExpectedDescription = "Some task to do";
     private TaskStatus mExpectedStatus = TaskStatus.Created;
-    private int mExpectedCreationDate = (int) new Date().getTime();
+    private long mExpectedCreationDate = new Date().getTime();
     private Task mTask;
     private int mExpectedPosition = 0;
+    private long mExpectedDueDate = new Date().getTime();
 
     @Before
     public void setUp() throws Exception {
@@ -29,7 +31,8 @@ public class TaskTest {
             mExpectedPosition,
             mExpectedDescription,
             mExpectedStatus,
-            mExpectedCreationDate
+            mExpectedCreationDate,
+            mExpectedDueDate
         );
     }
 
@@ -66,6 +69,13 @@ public class TaskTest {
 
         // Assert
         Assert.assertEquals(mExpectedCreationDate, mTask.getCreationDate());
+    }
+
+    @Test
+    public void getDueDate() throws Exception {
+
+        // Assert
+        Assert.assertEquals(mExpectedDueDate, mTask.getDueDate());
     }
 
     @Test

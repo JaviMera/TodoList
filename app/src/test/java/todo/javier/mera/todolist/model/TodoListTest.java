@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -14,13 +15,12 @@ import static org.junit.Assert.*;
  */
 public class TodoListTest {
 
-    private long expectedId = 1234;
+    private String expectedId = UUID.randomUUID().toString();
     private String expectedTitle = "Some List";
     private long expectedDate = new Date().getTime();
     private int expectedItemcount = 0;
     private TodoList mTodoList;
     private int expectedPosition = 0;
-    private long mExpectedDueDate = new Date().getTime();
 
     @Before
     public void setUp() throws Exception {
@@ -29,7 +29,6 @@ public class TodoListTest {
             expectedId,
             "Some List",
             expectedDate,
-            mExpectedDueDate,
             expectedPosition
         );
     }
@@ -53,13 +52,6 @@ public class TodoListTest {
 
         // Assert
         Assert.assertEquals(expectedDate, mTodoList.getCreationDate());
-    }
-
-    @Test
-    public void getDueDate() throws Exception {
-
-        // Assert
-        Assert.assertEquals(mExpectedDueDate, mTodoList.getDueDate());
     }
 
     @Test
