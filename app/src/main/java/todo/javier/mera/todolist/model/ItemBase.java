@@ -8,12 +8,12 @@ import android.os.Parcelable;
  */
 public abstract class ItemBase implements Parcelable {
 
-    protected long mId;
+    protected String mId;
     private boolean mCanRemove;
     private boolean mIsMoving;
     protected int mPosition;
 
-    protected ItemBase(long id, int position, boolean canRemove) {
+    protected ItemBase(String id, int position, boolean canRemove) {
 
         mId = id;
         mPosition  = position;
@@ -22,7 +22,7 @@ public abstract class ItemBase implements Parcelable {
 
     public ItemBase(Parcel in) {
 
-        mId = in.readLong();
+        mId = in.readString();
         mPosition = in.readInt();
         mCanRemove = in.readInt() == 1;
     }
@@ -35,7 +35,7 @@ public abstract class ItemBase implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
 
-        parcel.writeLong(mId);
+        parcel.writeString(mId);
         parcel.writeInt(mPosition);
         parcel.writeInt(mCanRemove ? 1 : 0);
     }
@@ -50,7 +50,7 @@ public abstract class ItemBase implements Parcelable {
         return mCanRemove;
     }
 
-    public long getId() {
+    public String getId() {
 
         return mId;
     }

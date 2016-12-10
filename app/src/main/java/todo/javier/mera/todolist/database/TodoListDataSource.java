@@ -29,55 +29,53 @@ public class TodoListDataSource {
         mSqliteHelper = new TodoListSQLiteHelper(context);
     }
 
-    public void openWriteable() {
+    private SQLiteDatabase openWriteable() {
 
-        mDb = mSqliteHelper.getWritableDatabase();
+        return mSqliteHelper.getWritableDatabase();
     }
 
-    public void openReadable() {
+    private SQLiteDatabase openReadable() {
 
-        mDb = mSqliteHelper.getReadableDatabase();
+        return mSqliteHelper.getReadableDatabase();
     }
 
-    public void close() {
+    private void close(SQLiteDatabase db) {
 
-        mDb.close();
+        db.close();
     }
 
-    public boolean isOpen() {
+    public long createTodoList(TodoList newList) {
 
-        return mDb.isOpen();
-    }
-
-    public TodoList createTodoList(String title, long creationDate, long dueDate, int position) {
-
+        mDb = openWriteable();
         mDb.beginTransaction();
 
         ContentValues todoListValues = new ContentValues();
-        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION, position);
-        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME, title);
-        todoListValues.put(TodoListSQLiteHelper.COLUMN_CREATION_DATE, creationDate);
-        todoListValues.put(TodoListSQLiteHelper.COLUMN_DUE_DATE, dueDate);
+        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_ID, newList.getId());
+        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION, newList.getPosition());
+        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME, newList.getTitle());
+        todoListValues.put(TodoListSQLiteHelper.COLUMN_CREATION_DATE, newList.getCreationDate());
 
         long newId = mDb.insert(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, todoListValues);
 
         mDb.setTransactionSuccessful();
         mDb.endTransaction();
+        close(mDb);
 
-        return new TodoList(newId, title, creationDate, dueDate, position);
+        return newId;
     }
 
     public List<TodoList> readTodoLists() {
+
+        mDb = openReadable();
 
         Cursor cursor = mDb.query(
 
             TodoListSQLiteHelper.TABLE_TODO_LISTS,
             new String[] {
-                BaseColumns._ID,
+                TodoListSQLiteHelper.COLUMN_TODO_LIST_ID,
                 TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION,
                 TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME,
-                TodoListSQLiteHelper.COLUMN_CREATION_DATE,
-                TodoListSQLiteHelper.COLUMN_DUE_DATE},
+                TodoListSQLiteHelper.COLUMN_CREATION_DATE},
             null,
             null,
             null,
@@ -90,13 +88,12 @@ public class TodoListDataSource {
 
             do {
 
-                int id = getInt(cursor, BaseColumns._ID);
+                String id = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_ID);
                 int position = getInt(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION);
                 String name = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME);
                 long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_CREATION_DATE);
-                long dueDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_DUE_DATE);
 
-                TodoList todoList = new TodoList(id, name, creationDate, dueDate, position);
+                TodoList todoList = new TodoList(id, name, creationDate, position);
 
                 List<Task> tasks = readTodoListTasks(id);
                 todoList.setItems(tasks);
@@ -106,44 +103,49 @@ public class TodoListDataSource {
         }
 
         cursor.close();
+        close(mDb);
 
         return todoLists;
     }
 
-    public Task createTodoListTask(long todoListId, int position, String description, TaskStatus status, long timeStamp) {
+    public long createTodoListTask(Task newTask) {
 
+        mDb = openWriteable();
         mDb.beginTransaction();
 
         ContentValues itemValues = new ContentValues();
-        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_FOREIGN_KEY, todoListId);
-        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_POSITION, position);
-        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION, description);
-        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED, status.ordinal());
-        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_TIMESTAMP, timeStamp);
+        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_ID, newTask.getId());
+        itemValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_ID, newTask.getTodoListId());
+        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_POSITION, newTask.getPosition());
+        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION, newTask.getDescription());
+        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED, newTask.getStatus().ordinal());
+        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON, newTask.getCreationDate());
 
         long newId = mDb.insert(TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS, null, itemValues);
 
         mDb.setTransactionSuccessful();
         mDb.endTransaction();
+        close(mDb);
 
-        return new Task(newId, todoListId, position, description, status, timeStamp);
+        return newId;
     }
 
-    public List<Task> readTodoListTasks(long todoListId) {
+    public List<Task> readTodoListTasks(String todoListId) {
 
+        mDb = openReadable();
         List<Task> items = new LinkedList<>();
 
         Cursor cursor = mDb.query(
             TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
             new String[]{
-                BaseColumns._ID,
-                TodoListSQLiteHelper.COLUMN_ITEMS_FOREIGN_KEY,
+                TodoListSQLiteHelper.COLUMN_ITEMS_ID,
+                TodoListSQLiteHelper.COLUMN_TODO_LIST_ID,
                 TodoListSQLiteHelper.COLUMN_ITEMS_POSITION,
                 TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION,
                 TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED,
-                TodoListSQLiteHelper.COLUMN_ITEMS_TIMESTAMP
+                TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON
                 },
-            TodoListSQLiteHelper.COLUMN_ITEMS_FOREIGN_KEY + "=?",
+            TodoListSQLiteHelper.COLUMN_TODO_LIST_ID + "=?",
             new String[]{String.valueOf(todoListId)},
             null,
             null,
@@ -154,20 +156,24 @@ public class TodoListDataSource {
 
             do {
 
-                int itemId = getInt(cursor, BaseColumns._ID);
-                int id = getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_FOREIGN_KEY);
+                String itemId = getString(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_ID);
+                String id = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_ID);
                 int position = getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_POSITION);
                 String description = getString(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION);
                 TaskStatus status = TaskStatus.values()[
                     getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED)];
 
-                int columnIndex = cursor.getColumnIndex(TodoListSQLiteHelper.COLUMN_ITEMS_TIMESTAMP);
+                int columnIndex = cursor.getColumnIndex(TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON);
                 long creationDate = cursor.getLong(columnIndex);
 
                 Task item = new Task(itemId, id, position, description, status, creationDate);
                 items.add(item);
             }while(cursor.moveToNext());
         }
+
+        cursor.close();
+        close(mDb);
+
         return items;
     }
 
@@ -179,52 +185,60 @@ public class TodoListDataSource {
             List<Task> tasks = readTodoListTasks(tl.getId());
             removeTodoListTasks(tasks.toArray(new Task[tasks.size()]));
 
+            mDb = openWriteable();
             rowsAffected += mDb.delete(
                 TodoListSQLiteHelper.TABLE_TODO_LISTS,
-                BaseColumns._ID + "=?",
+                TodoListSQLiteHelper.COLUMN_TODO_LIST_ID + "=?",
                 new String []{String.valueOf(tl.getId())}
             );
         }
+
+        close(mDb);
 
         return rowsAffected;
     }
 
     public int removeTodoListTasks(Task... tasks) {
 
-        String ids = "";
+        mDb = openWriteable();
+        int rowsAffected = 0;
 
-        for(int i = 0 ; i < tasks.length ; i++) {
+        for(Task task : tasks) {
 
-            if(i == tasks.length - 1) {
-                ids += tasks[i].getId();
-            }
-            else {
-
-                ids += tasks[i].getId() + ",";
-            }
+            rowsAffected += mDb.delete(
+                TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
+                TodoListSQLiteHelper.COLUMN_ITEMS_ID + "=?",
+                new String[]{task.getId()}
+            );
         }
 
-        return mDb.delete(
-            TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
-            BaseColumns._ID + " IN (" + ids + ")",
-            null
-        );
+        close(mDb);
+        return rowsAffected;
     }
 
-    public int update(String tableName, long id, ContentValues values){
+    public int update(String tableName, String columnName, String id, ContentValues values){
 
-        return mDb.update(
+        mDb = openWriteable();
+
+        int affectedRows = mDb.update(
             tableName,
             values,
-            BaseColumns._ID + "=?",
-            new String[]{String.valueOf(id)}
+            columnName + "=?",
+            new String[]{id}
         );
+
+        close(mDb);
+
+        return affectedRows;
     }
 
     public void clear() {
 
+        mDb = openWriteable();
         mDb.delete(TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS, null, null);
         mDb.delete(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, null);
+
+        close(mDb);
     }
 
     private int getInt(Cursor cursor, String columnName) {

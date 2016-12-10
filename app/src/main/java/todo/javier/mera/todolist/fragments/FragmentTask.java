@@ -11,6 +11,7 @@ import android.view.View;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
@@ -71,10 +72,8 @@ public class FragmentTask extends FragmentRecycler<Task>
 
         TodoListDataSource source = new TodoListDataSource(mParent);
 
-        source.openWriteable();
         Task[] items = itemsToRemove.toArray(new Task[itemsToRemove.size()]);
         int affectedRows = source.removeTodoListTasks(items);
-        source.close();
 
         return affectedRows;
     }
@@ -113,7 +112,6 @@ public class FragmentTask extends FragmentRecycler<Task>
     protected void updateItems(List<Task> items) {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
-        source.openWriteable();
 
         ContentValues values = new ContentValues();
         for(Task task : items) {
@@ -122,19 +120,19 @@ public class FragmentTask extends FragmentRecycler<Task>
 
             source.update(
                 TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
+                TodoListSQLiteHelper.COLUMN_ITEMS_ID,
                 task.getId(),
                 values
             );
 
             values.clear();
         }
-
-        source.close();
     }
 
     @Override
     public void onCreatedTask(final String title) {
 
+        setItemAnimator(new FadeInUpAnimator());
         scrollToLastPosition();
 
         new Handler().postDelayed(new Runnable() {
@@ -145,13 +143,13 @@ public class FragmentTask extends FragmentRecycler<Task>
                 RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
 
                 TodoListDataSource source = new TodoListDataSource(mParent);
-                source.openWriteable();
-                setItemAnimator(new FadeInUpAnimator());
 
+                String id = UUID.randomUUID().toString();
                 long creationDate = new Date().getTime();
                 TaskStatus status = TaskStatus.Created;
 
-                Task item = source.createTodoListTask(
+                Task newTask = new Task(
+                    id,
                     mTodoList.getId(),
                     adapter.getItemCount(),
                     title,
@@ -159,8 +157,12 @@ public class FragmentTask extends FragmentRecycler<Task>
                     creationDate
                 );
 
-                adapter.addItem(item);
-                source.close();
+                long rowId = source.createTodoListTask(newTask);
+
+                if(rowId > -1) {
+
+                    adapter.addItem(newTask);
+                }
             }
         }, 1000);
     }

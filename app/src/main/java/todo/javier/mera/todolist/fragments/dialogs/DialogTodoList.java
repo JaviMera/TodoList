@@ -74,7 +74,7 @@ public class DialogTodoList extends DialogBase
 
         if(canDismiss()) {
 
-            mListener.onCreateTodoList(mNameEditText.getText().toString(), mDueDate);
+            mListener.onCreateTodoList(mNameEditText.getText().toString());
             dismiss();
         }
     }

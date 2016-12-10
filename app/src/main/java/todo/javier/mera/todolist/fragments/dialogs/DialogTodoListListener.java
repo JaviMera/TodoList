@@ -7,5 +7,5 @@ import java.util.Date;
  */
 public interface DialogTodoListListener {
 
-    void onCreateTodoList(String name, Date date);
+    void onCreateTodoList(String name);
 }

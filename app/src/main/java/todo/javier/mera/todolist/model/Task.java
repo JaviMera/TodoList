@@ -8,12 +8,12 @@ import android.os.Parcelable;
  */
 public class Task extends ItemBase implements Parcelable {
 
-    private long mTodoListId;
+    private String mTodoListId;
     private String mDescription;
     private TaskStatus mStatus;
     private long mCreationDate;
 
-    public Task(long itemId, long todoListId, int position, String description, TaskStatus status,
+    public Task(String itemId, String todoListId, int position, String description, TaskStatus status,
                 long creationDate) {
 
         super(itemId, position, false);
@@ -28,7 +28,7 @@ public class Task extends ItemBase implements Parcelable {
 
         super(in);
 
-        mTodoListId = in.readLong();
+        mTodoListId = in.readString();
         mDescription = in.readString();
         mCreationDate = in.readLong();
         mStatus = TaskStatus.values()[in.readInt()];
@@ -61,7 +61,7 @@ public class Task extends ItemBase implements Parcelable {
         mStatus = newStatus;
     }
 
-    public long getTodoListId() {
+    public String getTodoListId() {
         return mTodoListId;
     }
 
@@ -77,7 +77,7 @@ public class Task extends ItemBase implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(mTodoListId);
+        parcel.writeString(mTodoListId);
         parcel.writeString(mDescription);
         parcel.writeLong(mCreationDate);
         parcel.writeInt(mStatus.ordinal());

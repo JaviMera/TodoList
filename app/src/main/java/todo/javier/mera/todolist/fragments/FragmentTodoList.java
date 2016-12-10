@@ -9,6 +9,7 @@ import android.view.View;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
@@ -59,12 +60,10 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     protected int removeItems(List<TodoList> itemsToRemove) {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
-        source.openWriteable();
 
         TodoList[] items = itemsToRemove.toArray(new TodoList[itemsToRemove.size()]);
         int affectedRows = source.removeTodoLists(items);
 
-        source.close();
         return affectedRows;
     }
 
@@ -72,7 +71,6 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     protected void updateItems(List<TodoList> items) {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
-        source.openWriteable();
 
         ContentValues values = new ContentValues();
         for(TodoList todoList : items) {
@@ -81,14 +79,13 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
 
             source.update(
                 TodoListSQLiteHelper.TABLE_TODO_LISTS,
+                TodoListSQLiteHelper.COLUMN_TODO_LIST_ID,
                 todoList.getId(),
                 values
             );
 
             values.clear();
         }
-
-        source.close();
     }
 
     @Override
@@ -102,9 +99,7 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     protected List<TodoList> getAllItems() {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
-        source.openReadable();
         List<TodoList> todoLists = source.readTodoLists();
-        source.close();
 
         return todoLists;
     }
@@ -116,11 +111,11 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     }
 
     @Override
-    public void onCreateTodoList(final String name, Date dueDate) {
+    public void onCreateTodoList(final String name) {
 
         scrollToLastPosition();
+        final String id = UUID.randomUUID().toString();
         final long creationDate = new Date().getTime();
-        final long date = dueDate.getTime();
 
         new Handler().postDelayed(new Runnable() {
 
@@ -131,21 +126,21 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
             RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
 
             TodoListDataSource source = new TodoListDataSource(mParent);
-            source.openWriteable();
 
             setItemAnimator(new FlipInTopXAnimator());
-
-
-
-            TodoList item = source.createTodoList(
-                    name,
-                    creationDate,
-                    date,
-                    adapter.getItemCount()
+            TodoList newList = new TodoList(
+                id,
+                name,
+                creationDate,
+                adapter.getItemCount()
             );
 
-            adapter.addItem(item);
-            source.close();
+            long rowId = source.createTodoList(newList);
+
+            if(rowId != -1 ){
+
+                adapter.addItem(newList);
+            }
             }
         }, 1000);
     }
