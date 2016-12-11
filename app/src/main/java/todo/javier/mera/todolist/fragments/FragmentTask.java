@@ -31,7 +31,9 @@ import todo.javier.mera.todolist.model.Task;
  */
 
 public class FragmentTask extends FragmentRecycler<Task>
-    implements DialogTaskListener {
+    implements
+    DialogTaskListener,
+    ItemTaskListener {
 
     public static final String TODO_LISt = "TODO_LISt";
     private TodoList mTodoList;
@@ -167,5 +169,27 @@ public class FragmentTask extends FragmentRecycler<Task>
                 }
             }
         }, 1000);
+    }
+
+    @Override
+    public void onStatusUpdate(int position, boolean isCompleted) {
+
+        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+        Task item = (Task)adapter.getItem(position);
+        item.setStatus(isCompleted ? TaskStatus.Completed : TaskStatus.Created);
+
+        ContentValues values = new ContentValues();
+        values.put(
+            TodoListSQLiteHelper.COLUMN_ITEMS_STATUS,
+            item.getStatus().ordinal()
+        );
+
+        TodoListDataSource dataSource = new TodoListDataSource(mParent);
+        dataSource.update(
+            TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
+            TodoListSQLiteHelper.COLUMN_ITEMS_ID,
+            item.getId(),
+            values
+        );
     }
 }

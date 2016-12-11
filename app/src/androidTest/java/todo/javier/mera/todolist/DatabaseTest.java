@@ -169,7 +169,7 @@ public class DatabaseTest {
     }
 
     @Test
-    public void dbShouldUpdateTodoListTask() throws Exception {
+    public void dbShouldUpdateTodoListTaskPosition() throws Exception {
 
         // Arrange
         TodoList todoList = createTodoList();
@@ -195,6 +195,31 @@ public class DatabaseTest {
         // Assert
         Assert.assertTrue(rowsAffected > 0);
         Assert.assertEquals(newPosition, task.getPosition());
+    }
+
+    @Test
+    public void dbShouldUpdateTaskStatus() throws Exception {
+
+        // Arrange
+        Task expectedTask = createTask(UUID.randomUUID().toString());
+
+        // Act
+        mDataSource.createTodoListTask(expectedTask);
+        expectedTask.setStatus(TaskStatus.Completed);
+        ContentValues values = new ContentValues();
+        values.put(TodoListSQLiteHelper.COLUMN_ITEMS_STATUS, expectedTask.getStatus().ordinal());
+
+        int rowsAffected = mDataSource.update(
+            TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
+            TodoListSQLiteHelper.COLUMN_ITEMS_ID,
+            expectedTask.getId(),
+            values
+        );
+
+        Task actualTask = mDataSource.readTodoListTasks(expectedTask.getTodoListId()).get(0);
+
+        // Assert
+        Assert.assertEquals(expectedTask.getStatus(), actualTask.getStatus());
     }
 
     @Test

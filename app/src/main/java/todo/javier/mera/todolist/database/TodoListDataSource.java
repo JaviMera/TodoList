@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.BaseColumns;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -118,7 +117,7 @@ public class TodoListDataSource {
         itemValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_ID, newTask.getTodoListId());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_POSITION, newTask.getPosition());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION, newTask.getDescription());
-        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED, newTask.getStatus().ordinal());
+        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_STATUS, newTask.getStatus().ordinal());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON, newTask.getCreationDate());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE, newTask.getDueDate());
 
@@ -143,7 +142,7 @@ public class TodoListDataSource {
                 TodoListSQLiteHelper.COLUMN_TODO_LIST_ID,
                 TodoListSQLiteHelper.COLUMN_ITEMS_POSITION,
                 TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION,
-                TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED,
+                TodoListSQLiteHelper.COLUMN_ITEMS_STATUS,
                 TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON,
                 TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE
                 },
@@ -163,7 +162,7 @@ public class TodoListDataSource {
                 int position = getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_POSITION);
                 String description = getString(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION);
                 TaskStatus status = TaskStatus.values()[
-                    getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_COMPLETED)];
+                    getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_STATUS)];
 
                 long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON);
                 long dueDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE);

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.BaseColumns;
 
 /**
  * Created by javie on 12/4/2016.
@@ -33,7 +32,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ITEMS_ID = "ITEM_ID";
     public static final String COLUMN_ITEMS_POSITION = "POSITION";
     public static final String COLUMN_ITEMS_DESCRIPTION = "DESCRIPTION";
-    public static final String COLUMN_ITEMS_COMPLETED = "COMPLETED";
+    public static final String COLUMN_ITEMS_STATUS = "COMPLETED";
     public static final String COLUMN_ITEMS_CREATED_ON = "CREATED_ON";
     public static final String COLUMN_ITEMS_DUE_DATE = "DUE_DATE";
     private static final String CREATE_TODO_LIST_ITEMS = "CREATE TABLE "
@@ -43,7 +42,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
         + COLUMN_TODO_LIST_ID + " TEXT, "
         + COLUMN_ITEMS_POSITION + " INTEGER, "
         + COLUMN_ITEMS_DESCRIPTION + " TEXT, "
-        + COLUMN_ITEMS_COMPLETED + " INTEGER, "
+        + COLUMN_ITEMS_STATUS + " INTEGER, "
         + COLUMN_ITEMS_CREATED_ON +  " INTEGER, "
         + COLUMN_ITEMS_DUE_DATE + " INTEGER, "
         + "FOREIGN KEY " + "(" + COLUMN_TODO_LIST_ID + ") REFERENCES " + TABLE_TODO_LISTS + "(" + COLUMN_TODO_LIST_ID + ")"

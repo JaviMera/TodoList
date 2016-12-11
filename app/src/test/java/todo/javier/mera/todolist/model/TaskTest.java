@@ -79,13 +79,13 @@ public class TaskTest {
     }
 
     @Test
-    public void setCompleted() throws Exception {
+    public void setStatus() throws Exception {
 
         // Arrange
         TaskStatus expectedStatus = TaskStatus.Completed;
 
         // Act
-        mTask.update(expectedStatus);
+        mTask.setStatus(expectedStatus);
         TaskStatus actualStatus = mTask.getStatus();
 
         // Assert

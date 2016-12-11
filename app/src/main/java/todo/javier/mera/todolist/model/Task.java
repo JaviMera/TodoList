@@ -58,7 +58,7 @@ public class Task extends ItemBase implements Parcelable {
         return mStatus;
     }
 
-    public void update(TaskStatus newStatus) {
+    public void setStatus(TaskStatus newStatus) {
 
         mStatus = newStatus;
     }
