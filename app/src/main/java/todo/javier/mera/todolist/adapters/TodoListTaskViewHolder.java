@@ -1,5 +1,7 @@
 package todo.javier.mera.todolist.adapters;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.CheckBox;
@@ -52,6 +54,7 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
 
         boolean isCompleted = item.getStatus() == TaskStatus.Completed;
         mStatus.setChecked(isCompleted);
+        mCheckMark.setVisibility(isCompleted ? View.VISIBLE : View.INVISIBLE);
 
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -84,7 +87,16 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
                 if(isCompleted) {
 
                     mDueDate.setVisibility(View.INVISIBLE);
+
+                    ObjectAnimator scaleAnimationX = ObjectAnimator.ofFloat(mCheckMark, "scaleX", 0.0f, 1.0f);
+                    ObjectAnimator scaleAnimationY = ObjectAnimator.ofFloat(mCheckMark, "scaleY", 0.0f, 1.0f);
+                    scaleAnimationX.setDuration(300);
+                    scaleAnimationY.setDuration(300);
+                    AnimatorSet scaleUp = new AnimatorSet();
+                    scaleUp.play(scaleAnimationX).with(scaleAnimationY);
                     mCheckMark.setVisibility(View.VISIBLE);
+                    scaleUp.start();
+
                 }
                 else {
 
