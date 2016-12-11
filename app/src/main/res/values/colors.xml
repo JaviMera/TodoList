@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorSecondary">#8895DC</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="remove_item_color">#FFB8B8</color>
-    <color name="title_remove_color">#FF2929</color>
-    <color name="move_item_color">#B8DBEF</color>
-    <color name="title_move_color">#8ABCD9</color>
+    <color name="remove_color_light">#FFB8B8</color>
+    <color name="remove_color_dark">#FF2929</color>
+    <color name="move_color_light">#B8DBEF</color>
+    <color name="move_color_dark">#8ABCD9</color>
 </resources>

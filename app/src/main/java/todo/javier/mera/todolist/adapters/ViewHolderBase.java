@@ -14,28 +14,12 @@ import todo.javier.mera.todolist.fragments.FragmentRecycler;
 public abstract class ViewHolderBase<T> extends RecyclerView.ViewHolder{
 
     protected FragmentRecycler mParent;
-    protected Drawable mTitleRemoveDrawable;
-    protected Drawable mTitleDrawable;
-    protected Drawable mBodyRemoveDrawable;
-    protected Drawable mBodyDrawable;
-    protected Drawable mBodyMoveDrawable;
-    protected Drawable mTitleMoveDrawable;
 
     public abstract void bind(T item);
     protected abstract void setViews();
 
-    public ViewHolderBase(View itemView, FragmentRecycler parent) {
+    public ViewHolderBase(View itemView) {
         super(itemView);
-
         setViews();
-
-        mParent = parent;
-
-        mTitleRemoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_remove_background);
-        mTitleDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_background);
-        mTitleMoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_move_background);
-        mBodyRemoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_remove_background);
-        mBodyDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_background);
-        mBodyMoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_move_background);
     }
 }

@@ -4,48 +4,58 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp">
-
-        <TextView
-            android:id="@+id/dueDateView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="left|center"
-            android:textColor="@android:color/white"
-            android:padding="10dp"
-            android:textSize="16sp"
-            tools:text="Due by 12/12/2016"/>
+    android:layout_marginBottom="10dp">
 
         <LinearLayout
             android:id="@+id/containerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/:itemEditView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_edit"
-            android:scaleType="fitCenter"
-            android:padding="10dp"
-            android:maxHeight="45dp"
-            android:adjustViewBounds="true"/>
+            <CheckBox
+                android:id="@+id/itemCheckBoxView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
 
-        <TextView
-            android:id="@+id/itemDescriptionView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            android:layout_gravity="center"
-            tools:text="This is an item"
-            android:padding="10dp"
-            android:maxLines="2"/>
+            <TextView
+                android:id="@+id/itemDescriptionView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:layout_gravity="center"
+                tools:text="This is an item"
+                android:padding="10dp"
+                android:maxLines="2"/>
 
-        <CheckBox
-            android:id="@+id/itemCheckBoxView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/dueDateView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="right|center"
+                    android:padding="10dp"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    tools:text="12/12/2016"/>
+
+                <ImageView
+                    android:id="@+id/checkMarkView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/btn_check_buttonless_on"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="50dp"/>
+            </FrameLayout>
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary" />
 </LinearLayout>

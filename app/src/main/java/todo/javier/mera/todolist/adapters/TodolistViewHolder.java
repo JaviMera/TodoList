@@ -21,10 +21,24 @@ public class TodolistViewHolder extends ViewHolderBase<TodoList>
     private TextView mTotalitems;
     private TextView mCreationDate;
 
-    public TodolistViewHolder(FragmentRecycler fragment, View itemView) {
-        super(itemView, fragment);
+    private Drawable mTitleRemoveDrawable;
+    private Drawable mTitleDrawable;
+    private Drawable mBodyRemoveDrawable;
+    private Drawable mBodyDrawable;
+    private Drawable mBodyMoveDrawable;
+    private Drawable mTitleMoveDrawable;
+
+    TodolistViewHolder(FragmentRecycler fragment, View itemView) {
+        super(itemView);
 
         mParent = fragment;
+
+        mTitleRemoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_remove_background);
+        mTitleDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_background);
+        mTitleMoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_move_background);
+        mBodyRemoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_remove_background);
+        mBodyDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_background);
+        mBodyMoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_move_background);
     }
 
     @Override

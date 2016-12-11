@@ -138,7 +138,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 if(!mIsRemovingItems) {
 
                     mIsRemovingItems = true;
-                    mParent.updateToolbarBackground(R.color.remove_item_color);
+                    mParent.updateToolbarBackground(R.color.remove_color_light);
                 }
                 else {
 

@@ -1,8 +1,10 @@
 package todo.javier.mera.todolist.adapters;
 
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,41 +29,46 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
     private LinearLayout mLayout;
     private TextView mDescription;
     private CheckBox mStatus;
+    private ImageView mCheckMark;
+
+    private int mNormalColor;
+    private int mRemoveColor;
+    private int mMoveColor;
 
     private ItemTaskListener mTaskListener;
 
     TodoListTaskViewHolder(View itemView, FragmentRecycler fragment) {
-        super(itemView, fragment);
+        super(itemView);
+        mParent = fragment;
+        mTaskListener = (FragmentTask)fragment;
 
-        mTaskListener = (FragmentTask) mParent;
+        mNormalColor = ContextCompat.getColor(mParent.getActivity(), android.R.color.transparent);
+        mRemoveColor = ContextCompat.getColor(mParent.getActivity(), R.color.remove_color_light);
+        mMoveColor = ContextCompat.getColor(mParent.getActivity(), R.color.move_color_light);
     }
 
     @Override
     public void bind(final Task item) {
 
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-        mDueDate.setText("Due by  " + format.format(item.getDueDate()));
-
         boolean isCompleted = item.getStatus() == TaskStatus.Completed;
         mStatus.setChecked(isCompleted);
 
-        mDescription.setText(item.getDescription());
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 
+        mDescription.setText(item.getDescription());
+        mDueDate.setText(format.format(item.getDueDate()));
+
+        int color = mNormalColor;
         if(item.isMoving()) {
 
-            mDueDate.setBackground(mTitleMoveDrawable);
-            mLayout.setBackground(mBodyMoveDrawable);
+            color = mMoveColor;
         }
         else if(item.getCanRemove()) {
 
-            mDueDate.setBackground(mTitleRemoveDrawable);
-            mLayout.setBackground(mBodyRemoveDrawable);
+            color = mRemoveColor;
         }
-        else {
 
-            mDueDate.setBackground(mTitleDrawable);
-            mLayout.setBackground(mBodyDrawable);
-        }
+        mLayout.setBackgroundColor(color);
     }
 
     @Override
@@ -73,12 +80,24 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
             public void onCheckedChanged(CompoundButton compoundButton, boolean isCompleted) {
 
                 mTaskListener.onStatusUpdate(getAdapterPosition(), isCompleted);
+
+                if(isCompleted) {
+
+                    mDueDate.setVisibility(View.INVISIBLE);
+                    mCheckMark.setVisibility(View.VISIBLE);
+                }
+                else {
+
+                    mDueDate.setVisibility(View.VISIBLE);
+                    mCheckMark.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
         mDueDate = (TextView) itemView.findViewById(R.id.dueDateView);
         mLayout = (LinearLayout) itemView.findViewById(R.id.containerLayout);
         mDescription = (TextView) itemView.findViewById(R.id.itemDescriptionView);
+        mCheckMark = (ImageView) itemView.findViewById(R.id.checkMarkView);
 
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
