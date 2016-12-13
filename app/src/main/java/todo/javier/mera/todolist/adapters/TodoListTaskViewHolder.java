@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
@@ -40,6 +42,15 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
 
     private ItemTaskListener mTaskListener;
 
+    private Map<Integer, Integer> mPriorityMap = new LinkedHashMap<Integer, Integer>(){
+        {
+            put(0, R.color.priority_none);
+            put(1, R.color.priority_low);
+            put(2, R.color.priority_medium);
+            put(3, R.color.priority_high);
+        }
+    };
+
     TodoListTaskViewHolder(View itemView, FragmentRecycler fragment) {
         super(itemView);
         mParent = fragment;
@@ -62,11 +73,12 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
         mDescription.setText(item.getDescription());
         mDueDate.setText(format.format(item.getDueDate()));
 
-        if(item.getPriority() == TaskPriority.None) {
+        int priorityColor = ContextCompat.getColor(
+            mParent.getActivity(),
+            mPriorityMap.get(item.getPriority().ordinal())
+        );
 
-            int noneColor = ContextCompat.getColor(mParent.getActivity(), R.color.colorPrimary);
-            mDueDate.setTextColor(noneColor);
-        }
+        mDueDate.setTextColor(priorityColor);
         
         int color = mNormalColor;
         if(item.isMoving()) {

@@ -7,6 +7,7 @@ import android.renderscript.RenderScript;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
 
@@ -98,6 +99,17 @@ public class DialogTask extends DialogBase
         PrioritySpinnerAdapter adapter = new PrioritySpinnerAdapter(mParent, priorites);
         mPrioritySpinner.setAdapter(adapter);
 
+        mPrioritySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mPriority = TaskPriority.values()[i];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         return view;
     }
 
