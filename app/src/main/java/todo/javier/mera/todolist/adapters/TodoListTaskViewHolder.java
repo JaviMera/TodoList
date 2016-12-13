@@ -17,6 +17,7 @@ import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.fragments.ItemTaskListener;
 import todo.javier.mera.todolist.model.Task;
+import todo.javier.mera.todolist.model.TaskPriority;
 import todo.javier.mera.todolist.model.TaskStatus;
 
 /**
@@ -61,6 +62,12 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
         mDescription.setText(item.getDescription());
         mDueDate.setText(format.format(item.getDueDate()));
 
+        if(item.getPriority() == TaskPriority.None) {
+
+            int noneColor = ContextCompat.getColor(mParent.getActivity(), R.color.colorPrimary);
+            mDueDate.setTextColor(noneColor);
+        }
+        
         int color = mNormalColor;
         if(item.isMoving()) {
 

@@ -8,4 +8,8 @@
     <color name="remove_color_dark">#FF2929</color>
     <color name="move_color_light">#B8DBEF</color>
     <color name="move_color_dark">#8ABCD9</color>
+    <color name="priority_high">#E60000</color>
+    <color name="priority_medium">#FFDE00</color>
+    <color name="priority_low">#39EC00</color>
+    <color name="priority_none">#8895DC</color>
 </resources>

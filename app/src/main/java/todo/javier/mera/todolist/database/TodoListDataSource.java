@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.LinkedList;
 import java.util.List;
 
+import todo.javier.mera.todolist.model.TaskPriority;
 import todo.javier.mera.todolist.model.TodoList;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TaskStatus;
@@ -144,7 +145,8 @@ public class TodoListDataSource {
                 TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION,
                 TodoListSQLiteHelper.COLUMN_ITEMS_STATUS,
                 TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON,
-                TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE
+                TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE,
+                TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY
                 },
             TodoListSQLiteHelper.COLUMN_TODO_LIST_ID + "=?",
             new String[]{String.valueOf(todoListId)},
@@ -166,8 +168,9 @@ public class TodoListDataSource {
 
                 long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON);
                 long dueDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE);
+                TaskPriority priority = TaskPriority.values()[getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY)];
 
-                Task item = new Task(itemId, id, position, description, status, creationDate, dueDate);
+                Task item = new Task(itemId, id, position, description, status, creationDate, dueDate, priority);
                 items.add(item);
             }while(cursor.moveToNext());
         }

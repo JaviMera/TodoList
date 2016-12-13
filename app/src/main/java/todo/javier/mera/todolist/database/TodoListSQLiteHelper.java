@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class TodoListSQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "todo_lists.db";
-    private static final int DB_VERSION = 16;
+    private static final int DB_VERSION = 17;
 
     public static final String TABLE_TODO_LISTS = "TODO_LISTS";
     public static final String COLUMN_TODO_LIST_ID = "TODOLIST_ID";
@@ -35,6 +35,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ITEMS_STATUS = "COMPLETED";
     public static final String COLUMN_ITEMS_CREATED_ON = "CREATED_ON";
     public static final String COLUMN_ITEMS_DUE_DATE = "DUE_DATE";
+    public static final String COLUMN_ITEMS_PRIORITY = "PRIORITY";
     private static final String CREATE_TODO_LIST_ITEMS = "CREATE TABLE "
         + TABLE_TODO_LIST_ITEMS
         + "("
@@ -45,6 +46,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
         + COLUMN_ITEMS_STATUS + " INTEGER, "
         + COLUMN_ITEMS_CREATED_ON +  " INTEGER, "
         + COLUMN_ITEMS_DUE_DATE + " INTEGER, "
+        + COLUMN_ITEMS_PRIORITY + " INTEGER, "
         + "FOREIGN KEY " + "(" + COLUMN_TODO_LIST_ID + ") REFERENCES " + TABLE_TODO_LISTS + "(" + COLUMN_TODO_LIST_ID + ")"
         + ")";
 
@@ -70,11 +72,13 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
 
-        if(oldVersion < newVersion) {
 
-            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO_LIST_ITEMS);
-            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO_LISTS);
-            onCreate(sqLiteDatabase);
+        switch(oldVersion) {
+
+            case 16:
+                sqLiteDatabase.execSQL("ALTER TABLE " + TABLE_TODO_LIST_ITEMS + " ADD COLUMN "+ COLUMN_ITEMS_PRIORITY +" INTEGER DEFAULT 0");
+                onCreate(sqLiteDatabase);
+                break;
         }
     }
 }

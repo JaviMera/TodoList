@@ -9,7 +9,7 @@
     <dimen name="zero">0dp</dimen>
     <dimen name="item_title_pad">15dp</dimen>
     <dimen name="item_title_size">18sp</dimen>
-    <dimen name="item_body_pad_portrait">20dp</dimen>
+    <dimen name="item_body_pad_portrait">10dp</dimen>
     <dimen name="item_body_size_portrait">16sp</dimen>
     <dimen name="item_body_pad_land">15dp</dimen>
     <dimen name="item_body_size_land">14sp</dimen>

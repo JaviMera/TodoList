@@ -19,6 +19,7 @@ import java.util.UUID;
 
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
+import todo.javier.mera.todolist.model.TaskPriority;
 import todo.javier.mera.todolist.model.TodoList;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TaskStatus;
@@ -77,7 +78,8 @@ public class DatabaseTest {
             "My Task",
             TaskStatus.Created,
             new Date().getTime(),
-            new Date().getTime()
+            new Date().getTime(),
+            TaskPriority.None
         );
     }
 
@@ -139,6 +141,7 @@ public class DatabaseTest {
         Assert.assertEquals(task.getCreationDate(), item.getCreationDate());;
         Assert.assertEquals(task.getDueDate(), item.getDueDate());
         Assert.assertEquals(task.getStatus(), item.getStatus());
+        Assert.assertEquals(task.getPriority(), item.getPriority());
     }
 
     @Test
@@ -220,6 +223,35 @@ public class DatabaseTest {
 
         // Assert
         Assert.assertEquals(expectedTask.getStatus(), actualTask.getStatus());
+    }
+
+    @Test
+    public void dbShouldUpdateTaskPriority() throws Exception {
+
+        // Arrange
+        Task task = createTask(UUID.randomUUID().toString());
+
+        // Act
+        mDataSource.createTodoListTask(task);
+        TaskPriority newPriority = TaskPriority.High;
+
+        Task expectedTask = mDataSource.readTodoListTasks(task.getTodoListId()).get(0);
+        expectedTask.setPriority(newPriority);
+
+        ContentValues values = new ContentValues();
+        values.put(TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY, expectedTask.getPriority().ordinal());
+
+        mDataSource.update(
+            TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
+            TodoListSQLiteHelper.COLUMN_ITEMS_ID,
+            expectedTask.getId(),
+            values
+        );
+
+        Task actualTask = mDataSource.readTodoListTasks(expectedTask.getTodoListId()).get(0);
+
+        // Assert
+        Assert.assertEquals(expectedTask.getPriority(), actualTask.getPriority());
     }
 
     @Test

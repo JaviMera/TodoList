@@ -50,9 +50,33 @@
             android:layout_weight="2.5"
             android:layout_margin="15dp"
             android:text="-- / -- / -----"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:textColor="@color/colorPrimary"
             android:background="@color/colorSecondary"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Priority:"
+            android:textSize="@dimen/item_body_size_portrait"
+            android:layout_gravity="center"
+            android:padding="@dimen/item_body_pad_portrait"
+            android:textColor="@color/colorSecondary"/>
+
+        <Spinner
+            android:id="@+id/prioritySpinnerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.5"
+            android:layout_gravity="center"
+            android:layout_margin="15dp"/>
+
     </LinearLayout>
 
     <LinearLayout

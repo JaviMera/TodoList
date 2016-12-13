@@ -13,9 +13,17 @@ public class Task extends ItemBase implements Parcelable {
     private TaskStatus mStatus;
     private long mCreationDate;
     private long mDueDate;
+    private TaskPriority mPriority;
 
-    public Task(String itemId, String todoListId, int position, String description, TaskStatus status,
-                long creationDate, long dueDate) {
+    public Task(
+        String itemId,
+        String todoListId,
+        int position,
+        String description,
+        TaskStatus status,
+        long creationDate,
+        long dueDate,
+        TaskPriority priority) {
 
         super(itemId, position, false);
 
@@ -24,6 +32,7 @@ public class Task extends ItemBase implements Parcelable {
         mStatus = status;
         mCreationDate = creationDate;
         mDueDate = dueDate;
+        mPriority = priority;
     }
 
     private Task(Parcel in) {
@@ -34,6 +43,7 @@ public class Task extends ItemBase implements Parcelable {
         mDescription = in.readString();
         mCreationDate = in.readLong();
         mStatus = TaskStatus.values()[in.readInt()];
+        mPriority = TaskPriority.values()[in.readInt()];
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
@@ -83,10 +93,21 @@ public class Task extends ItemBase implements Parcelable {
         parcel.writeString(mDescription);
         parcel.writeLong(mCreationDate);
         parcel.writeInt(mStatus.ordinal());
+        parcel.writeInt(mPriority.ordinal());
     }
 
     public long getDueDate() {
 
         return mDueDate;
+    }
+
+    public TaskPriority getPriority() {
+
+        return mPriority;
+    }
+
+    public void setPriority(TaskPriority newPriority) {
+
+        mPriority = newPriority;
     }
 }

@@ -23,6 +23,7 @@ import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTaskListener;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTask;
+import todo.javier.mera.todolist.model.TaskPriority;
 import todo.javier.mera.todolist.model.TaskStatus;
 import todo.javier.mera.todolist.model.TodoList;
 import todo.javier.mera.todolist.model.Task;
@@ -133,7 +134,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    public void onCreatedTask(final String title, final Date dueDate) {
+    public void onCreatedTask(final String title, final Date dueDate, final TaskPriority priority) {
 
         setItemAnimator(new FadeInUpAnimator());
         scrollToLastPosition();
@@ -159,7 +160,8 @@ public class FragmentTask extends FragmentRecycler<Task>
                     title,
                     status,
                     creationDate,
-                    date
+                    date,
+                    priority
                 );
 
                 long rowId = source.createTodoListTask(newTask);
