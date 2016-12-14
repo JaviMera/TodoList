@@ -5,22 +5,31 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import butterknife.OnClick;
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
+import jp.wasabeef.recyclerview.animators.LandingAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TodoListTaskAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
+import todo.javier.mera.todolist.fragments.dialogs.DialogSort;
+import todo.javier.mera.todolist.fragments.dialogs.DialogSortListener;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTaskListener;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTask;
 import todo.javier.mera.todolist.model.TaskPriority;
@@ -35,7 +44,8 @@ import todo.javier.mera.todolist.model.Task;
 public class FragmentTask extends FragmentRecycler<Task>
     implements
     DialogTaskListener,
-    ItemTaskListener {
+    ItemTaskListener,
+    DialogSortListener{
 
     public static final String TODO_LISt = "TODO_LISt";
     private TodoList mTodoList;
@@ -63,6 +73,38 @@ public class FragmentTask extends FragmentRecycler<Task>
         DialogTask dialogFragment = new DialogTask();
         dialogFragment.setTargetFragment(this, 1);
         dialogFragment.show(mParent.getSupportFragmentManager(), "dialog_task");
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        super.onCreateOptionsMenu(menu, inflater);
+
+        menu
+            .findItem(R.id.action_sort)
+            .setVisible(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+
+            case R.id.action_sort:
+                DialogSort dialogSort = new DialogSort();
+                dialogSort.setTargetFragment(this, 1);
+                dialogSort.show(
+                    mParent.getSupportFragmentManager(),
+                    "sort_dialog"
+                );
+
+                break;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
     }
 
     @Override
@@ -113,7 +155,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    protected void updateItems(List<Task> items) {
+    protected void onUpdatePosition(List<Task> items) {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
 
@@ -134,7 +176,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    public void onCreatedTask(final String title, final Date dueDate, final TaskPriority priority) {
+    public void onCreatedTask(final String taskDescription, final Date taskDuedate, final TaskPriority taskPriority) {
 
         setItemAnimator(new FadeInUpAnimator());
         scrollToLastPosition();
@@ -148,20 +190,19 @@ public class FragmentTask extends FragmentRecycler<Task>
 
                 TodoListDataSource source = new TodoListDataSource(mParent);
 
-                String id = UUID.randomUUID().toString();
-                long creationDate = new Date().getTime();
-                long date = dueDate.getTime();
-                TaskStatus status = TaskStatus.Created;
+                String taskId = UUID.randomUUID().toString();
+                long taskCreationDate = new Date().getTime();
+                TaskStatus taskStatus = TaskStatus.Created;
 
                 Task newTask = new Task(
-                    id,
+                    taskId,
                     mTodoList.getId(),
                     adapter.getItemCount(),
-                    title,
-                    status,
-                    creationDate,
-                    date,
-                    priority
+                    taskDescription,
+                    taskStatus,
+                    taskCreationDate,
+                    taskDuedate.getTime(),
+                    taskPriority
                 );
 
                 long rowId = source.createTodoListTask(newTask);
@@ -175,7 +216,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    public void onStatusUpdate(int position, boolean isCompleted) {
+    public void onUpdateStatus(int position, boolean isCompleted) {
 
         RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
         Task item = (Task)adapter.getItem(position);
@@ -194,5 +235,25 @@ public class FragmentTask extends FragmentRecycler<Task>
             item.getId(),
             values
         );
+    }
+
+    @Override
+    public void onSortSelected(String sortByColumn) {
+
+        setItemAnimator(new FadeInDownAnimator(new LinearOutSlowInInterpolator()));
+
+        TodoListDataSource dataSource = new TodoListDataSource(mParent);
+        final List<Task> tasks = dataSource.readTodoListTasks(mTodoList.getId(), sortByColumn);
+
+        final RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+        adapter.removeAll();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                adapter.addItems(tasks);
+            }
+        }, 500);
     }
 }

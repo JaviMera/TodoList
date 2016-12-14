@@ -7,5 +7,5 @@ import todo.javier.mera.todolist.model.TaskPriority;
  */
 public interface ItemTaskListener {
 
-    void onStatusUpdate(int position, boolean isCompleted);
+    void onUpdateStatus(int position, boolean isCompleted);
 }

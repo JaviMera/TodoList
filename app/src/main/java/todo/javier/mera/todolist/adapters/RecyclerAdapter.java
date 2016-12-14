@@ -201,4 +201,10 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         item.setMoving(true);
         notifyItemChanged(position);
     }
+
+    public void removeAll() {
+
+        mItems.clear();
+        notifyDataSetChanged();
+    }
 }

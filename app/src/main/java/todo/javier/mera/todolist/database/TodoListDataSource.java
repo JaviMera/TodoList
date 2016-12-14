@@ -264,4 +264,52 @@ public class TodoListDataSource {
         return cursor.getLong(columnIndex);
     }
 
+    public List<Task> readTodoListTasks(String todoListId, String sortByColumn) {
+        mDb = openReadable();
+        List<Task> items = new LinkedList<>();
+
+        Cursor cursor = mDb.query(
+                TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
+                new String[]{
+                        TodoListSQLiteHelper.COLUMN_ITEMS_ID,
+                        TodoListSQLiteHelper.COLUMN_TODO_LIST_ID,
+                        TodoListSQLiteHelper.COLUMN_ITEMS_POSITION,
+                        TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION,
+                        TodoListSQLiteHelper.COLUMN_ITEMS_STATUS,
+                        TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON,
+                        TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE,
+                        TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY
+                },
+                TodoListSQLiteHelper.COLUMN_TODO_LIST_ID + "=?",
+                new String[]{String.valueOf(todoListId)},
+                null,
+                null,
+                sortByColumn + " ASC"
+        );
+
+        if(cursor.moveToFirst()) {
+
+            do {
+
+                String itemId = getString(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_ID);
+                String id = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_ID);
+                int position = getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_POSITION);
+                String description = getString(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION);
+                TaskStatus status = TaskStatus.values()[
+                        getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_STATUS)];
+
+                long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON);
+                long dueDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE);
+                TaskPriority priority = TaskPriority.values()[getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY)];
+
+                Task item = new Task(itemId, id, position, description, status, creationDate, dueDate, priority);
+                items.add(item);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+        close(mDb);
+
+        return items;
+    }
 }

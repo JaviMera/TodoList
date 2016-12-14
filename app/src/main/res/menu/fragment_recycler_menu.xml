@@ -10,4 +10,13 @@
         android:orderInCategory="101"
         android:icon="@android:drawable/ic_menu_delete"
         />
+
+    <item
+        android:id="@+id/action_sort"
+        android:title="@string/menu_sort_task"
+        app:showAsAction="never"
+        android:orderInCategory="101"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:visible="false"
+        />
 </menu>

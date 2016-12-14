@@ -3,4 +3,6 @@
     <string name="todo_list_transition_name">todolist</string>
     <string name="dialog_task_title">Enter your new task!</string>
     <string name="menu_delete_task">Delete task(s)</string>
+    <string name="menu_sort_task">sort by</string>
+    <string name="dialog_ok_text">OK</string>
 </resources>

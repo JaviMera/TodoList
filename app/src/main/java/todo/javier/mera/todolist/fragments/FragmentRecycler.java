@@ -53,7 +53,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     protected abstract void showItem(T item);
     protected abstract int getDeleteTitle();
     protected abstract int removeItems(List<T> itemsToRemove);
-    protected abstract void updateItems(List<T> items);
+    protected abstract void onUpdatePosition(List<T> items);
 
     protected @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
@@ -249,7 +249,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     @Override
     public void onItemsUpdate(List<T> items) {
 
-        updateItems(items);
+        onUpdatePosition(items);
     }
 
     protected int getOrientation(Context context) {
