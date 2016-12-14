@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import todo.javier.mera.todolist.R;
-import todo.javier.mera.todolist.model.Priority;
 
 /**
  * Created by javie on 12/12/2016.
@@ -18,30 +17,32 @@ import todo.javier.mera.todolist.model.Priority;
 public class PrioritySpinnerAdapter extends BaseAdapter{
 
     private final Context mContext;
-    private final Priority[] mItems;
+    private final String[] mNames;
+    private final Integer[] mDrawables;
 
-    public PrioritySpinnerAdapter(Context context, Priority[] priorities) {
+    public PrioritySpinnerAdapter(Context context, String[] names, Integer[] drawables) {
 
         mContext = context;
-        mItems = priorities;
+        mNames = names;
+        mDrawables = drawables;
     }
 
     @Override
     public int getCount() {
 
-        return mItems.length;
+        return mNames.length;
     }
 
     @Override
-    public Priority getItem(int position) {
+    public Integer getItem(int position) {
 
-        return mItems[position];
+        return mDrawables[position];
     }
 
     @Override
     public long getItemId(int position) {
 
-        return mItems[position].hashCode();
+        return 0;
     }
 
     @Override
@@ -62,8 +63,7 @@ public class PrioritySpinnerAdapter extends BaseAdapter{
             holder = (ViewHolder) view.getTag();
         }
 
-        Priority priority = mItems[position];
-        holder.mNameTextView.setText(priority.getName());
+        holder.mNameTextView.setText(mNames[position]);
 
         return view;
     }
@@ -87,10 +87,9 @@ public class PrioritySpinnerAdapter extends BaseAdapter{
             holder = (DropdownViewHolder) view.getTag();
         }
 
-        Priority priority = mItems[position];
-        holder.mNameTextView.setText(priority.getName());
+        holder.mNameTextView.setText(mNames[position]);
 
-        Drawable drawable = ContextCompat.getDrawable(mContext, priority.getDrawable());
+        Drawable drawable = ContextCompat.getDrawable(mContext, mDrawables[position]);
         holder.mColorTextView.setBackground(drawable);
 
         return view;

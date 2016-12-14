@@ -11,14 +11,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.fragments.ItemTaskListener;
-import todo.javier.mera.todolist.model.PriorityColors;
+import todo.javier.mera.todolist.model.PriorityUtil;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TaskStatus;
 
@@ -30,8 +28,8 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
     View.OnClickListener,
     View.OnLongClickListener {
 
-    private final ObjectAnimator mScaleAnimationX;
-    private final ObjectAnimator mScaleAnimationY;
+    private final ObjectAnimator mScaleUpX;
+    private final ObjectAnimator mScaleUpY;
 
     private TextView mDueDate;
     private LinearLayout mLayout;
@@ -54,11 +52,11 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
         mRemoveColor = ContextCompat.getColor(mParent.getActivity(), R.color.remove_color_light);
         mMoveColor = ContextCompat.getColor(mParent.getActivity(), R.color.move_color_light);
 
-        mScaleAnimationX = ObjectAnimator
+        mScaleUpX = ObjectAnimator
                 .ofFloat(mCheckMark, "scaleX", 0.0f, 1.0f)
                 .setDuration(300);
 
-        mScaleAnimationY = ObjectAnimator
+        mScaleUpY = ObjectAnimator
                 .ofFloat(mCheckMark, "scaleY", 0.0f, 1.0f)
                 .setDuration(300);
     }
@@ -90,23 +88,23 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isCompleted) {
 
-                mTaskListener.onStatusUpdate(getAdapterPosition(), isCompleted);
+            mTaskListener.onStatusUpdate(getAdapterPosition(), isCompleted);
 
-                if(isCompleted) {
+            if(isCompleted) {
 
-                    setCompleted(true);
+                setCompleted(true);
 
-                    AnimatorSet scaleUp = new AnimatorSet();
-                    scaleUp
-                        .play(mScaleAnimationX)
-                        .with(mScaleAnimationY);
+                AnimatorSet scaleUp = new AnimatorSet();
+                scaleUp
+                    .play(mScaleUpX)
+                    .with(mScaleUpY);
 
-                    scaleUp.start();
-                }
-                else {
+                scaleUp.start();
+            }
+            else {
 
-                    setCompleted(false);
-                }
+                setCompleted(false);
+            }
             }
         });
 
@@ -153,7 +151,7 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
             .getPriority()
             .ordinal();
 
-        int color = PriorityColors
+        int color = PriorityUtil
             .getColor(taskPriority);
 
         return ContextCompat.getColor(

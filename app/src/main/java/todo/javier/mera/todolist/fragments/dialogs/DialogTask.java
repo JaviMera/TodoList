@@ -1,9 +1,7 @@
 package todo.javier.mera.todolist.fragments.dialogs;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.renderscript.RenderScript;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +18,7 @@ import butterknife.OnClick;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.PrioritySpinnerAdapter;
 import todo.javier.mera.todolist.fragments.FragmentTask;
-import todo.javier.mera.todolist.model.Priority;
+import todo.javier.mera.todolist.model.PriorityUtil;
 import todo.javier.mera.todolist.model.TaskPriority;
 
 /**
@@ -28,7 +26,9 @@ import todo.javier.mera.todolist.model.TaskPriority;
  */
 
 public class DialogTask extends DialogBase
-    implements DatePickerListener{
+    implements
+    DatePickerListener,
+    AdapterView.OnItemSelectedListener{
 
     private Date mDueDate;
     private DialogTaskListener mListener;
@@ -77,42 +77,19 @@ public class DialogTask extends DialogBase
         View view = LayoutInflater.from(mParent).inflate(R.layout.task_dialog, null);
         ButterKnife.bind(this, view);
 
-        String[] priorityNames = mParent.getResources().getStringArray(R.array.priority_array);
-        int[] priorityDrawables = new int[]{
+        String[] names = PriorityUtil.getNames();
+        Integer[] drawables = PriorityUtil.getDrawables();
 
-            R.drawable.priority_none_background,
-            R.drawable.priority_low_background,
-            R.drawable.priority_medium_background,
-            R.drawable.priority_high_background
-        };
+        PrioritySpinnerAdapter adapter = new PrioritySpinnerAdapter(
+            mParent,
+            names,
+            drawables
+        );
 
-        Priority[] priorites = new Priority[priorityDrawables.length];
-
-        for(int i = 0 ; i < priorites.length; i++) {
-
-            priorites[i] = new Priority(
-                priorityNames[i],
-                priorityDrawables[i]
-            );
-        }
-
-        PrioritySpinnerAdapter adapter = new PrioritySpinnerAdapter(mParent, priorites);
         mPrioritySpinner.setAdapter(adapter);
-
-        mPrioritySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                mPriority = TaskPriority.values()[position];
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+        mPrioritySpinner.setOnItemSelectedListener(this);
         return view;
     }
-
 
     @OnClick(R.id.addTaskView)
     public void onAddClick() {
@@ -145,5 +122,16 @@ public class DialogTask extends DialogBase
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
         String dateAsString = format.format(mDueDate);
         mDateButton.setText(dateAsString);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+
+        mPriority = TaskPriority.values()[position];
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
