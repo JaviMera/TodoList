@@ -249,6 +249,25 @@ public class FragmentTask extends FragmentRecycler<Task>
         final RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
         adapter.removeAll();
 
+        // Check if user has selected sort by completed
+        if(!sortByColumn.equals(TodoListSQLiteHelper.COLUMN_ITEMS_STATUS)) {
+
+            // If user hasn't selected sort by Completed, then push down all completed tasks to the bottom
+            // as some of them might show up in between other undone tasks.
+            moveCompletedToBottom(tasks);
+        }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+            adapter.addItems(tasks);
+            }
+        }, 500);
+    }
+
+    private void moveCompletedToBottom(List<Task> tasks) {
+
         List<Task> completedTasks = new LinkedList<>();
         for(int i = 0 ; i < tasks.size() ; i++) {
 
@@ -260,12 +279,5 @@ public class FragmentTask extends FragmentRecycler<Task>
 
         tasks.removeAll(completedTasks);
         tasks.addAll(tasks.size(), completedTasks);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                adapter.addItems(tasks);
-            }
-        }, 500);
     }
 }
