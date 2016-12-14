@@ -101,8 +101,8 @@ public class DialogTask extends DialogBase
 
         mPrioritySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPriority = TaskPriority.values()[i];
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                mPriority = TaskPriority.values()[position];
             }
 
             @Override

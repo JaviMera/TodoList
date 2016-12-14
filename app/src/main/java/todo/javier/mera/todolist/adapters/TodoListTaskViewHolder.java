@@ -90,21 +90,23 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isCompleted) {
 
-            mTaskListener.onStatusUpdate(getAdapterPosition(), isCompleted);
+                mTaskListener.onStatusUpdate(getAdapterPosition(), isCompleted);
 
-            if(isCompleted) {
+                if(isCompleted) {
 
-                setCompleted(true);
+                    setCompleted(true);
 
-                AnimatorSet scaleUp = new AnimatorSet();
-                scaleUp.play(mScaleAnimationX).with(mScaleAnimationY);
-                scaleUp.start();
+                    AnimatorSet scaleUp = new AnimatorSet();
+                    scaleUp
+                        .play(mScaleAnimationX)
+                        .with(mScaleAnimationY);
 
-            }
-            else {
+                    scaleUp.start();
+                }
+                else {
 
-                setCompleted(false);
-            }
+                    setCompleted(false);
+                }
             }
         });
 

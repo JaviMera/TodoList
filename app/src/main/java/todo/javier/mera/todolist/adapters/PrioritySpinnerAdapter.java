@@ -2,7 +2,6 @@ package todo.javier.mera.todolist.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.speech.tts.TextToSpeech;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,12 +47,36 @@ public class PrioritySpinnerAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
 
-        PrioritySpinnerViewHolder holder;
+        ViewHolder holder;
 
         if(null == view) {
 
             view = LayoutInflater.from(mContext).inflate(R.layout.priority_item, viewGroup, false);
-            holder = new PrioritySpinnerViewHolder();
+            holder = new ViewHolder();
+            holder.mNameTextView = (TextView) view.findViewById(R.id.priorityTextView);
+
+            view.setTag(holder);
+        }
+        else {
+
+            holder = (ViewHolder) view.getTag();
+        }
+
+        Priority priority = mItems[position];
+        holder.mNameTextView.setText(priority.getName());
+
+        return view;
+    }
+
+    @Override
+    public View getDropDownView(int position, View view, ViewGroup viewGroup) {
+
+        DropdownViewHolder holder;
+
+        if(null == view) {
+
+            view = LayoutInflater.from(mContext).inflate(R.layout.priority_item_dropdown, viewGroup, false);
+            holder = new DropdownViewHolder();
             holder.mNameTextView = (TextView) view.findViewById(R.id.priorityTextView);
             holder.mColorTextView = (TextView) view.findViewById(R.id.colorTextView);
 
@@ -61,7 +84,7 @@ public class PrioritySpinnerAdapter extends BaseAdapter{
         }
         else {
 
-            holder = (PrioritySpinnerViewHolder) view.getTag();
+            holder = (DropdownViewHolder) view.getTag();
         }
 
         Priority priority = mItems[position];
@@ -73,12 +96,12 @@ public class PrioritySpinnerAdapter extends BaseAdapter{
         return view;
     }
 
-    @Override
-    public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        return getView(position, convertView, parent);
+    private static class ViewHolder {
+
+        TextView mNameTextView;
     }
 
-    private static class PrioritySpinnerViewHolder {
+    private static class DropdownViewHolder{
 
         TextView mNameTextView;
         TextView mColorTextView;
