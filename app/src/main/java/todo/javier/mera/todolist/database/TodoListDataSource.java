@@ -284,7 +284,7 @@ public class TodoListDataSource {
                 new String[]{String.valueOf(todoListId)},
                 null,
                 null,
-                sortByColumn + " ASC"
+                sortByColumn + " DESC"
         );
 
         if(cursor.moveToFirst()) {

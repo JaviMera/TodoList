@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -248,6 +249,17 @@ public class FragmentTask extends FragmentRecycler<Task>
         final RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
         adapter.removeAll();
 
+        List<Task> completedTasks = new LinkedList<>();
+        for(int i = 0 ; i < tasks.size() ; i++) {
+
+            if(tasks.get(i).getStatus() == TaskStatus.Completed) {
+
+                completedTasks.add(tasks.get(i));
+            }
+        }
+
+        tasks.removeAll(completedTasks);
+        tasks.addAll(tasks.size(), completedTasks);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
