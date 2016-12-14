@@ -28,8 +28,10 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
     View.OnClickListener,
     View.OnLongClickListener {
 
-    private final ObjectAnimator mScaleUpX;
-    private final ObjectAnimator mScaleUpY;
+    private final ObjectAnimator mCheckMarkScaleX;
+    private final ObjectAnimator mCheckMarkScaleY;
+    private final ObjectAnimator mDueDateScaleX;
+    private final ObjectAnimator mDueDateScaleY;
 
     private TextView mDueDate;
     private LinearLayout mLayout;
@@ -52,13 +54,17 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
         mRemoveColor = ContextCompat.getColor(mParent.getActivity(), R.color.remove_color_light);
         mMoveColor = ContextCompat.getColor(mParent.getActivity(), R.color.move_color_light);
 
-        mScaleUpX = ObjectAnimator
-                .ofFloat(mCheckMark, "scaleX", 0.0f, 1.0f)
-                .setDuration(300);
+        mCheckMarkScaleX = scaleUp(mCheckMark, "scaleX", 0.0f, 1.0f, 300);
+        mCheckMarkScaleY = scaleUp(mCheckMark, "scaleY", 0.0f, 1.0f, 300);
+        mDueDateScaleX = scaleUp(mDueDate, "scaleX", 0.0f, 1.0f, 300);
+        mDueDateScaleY = scaleUp(mDueDate, "scaleY", 0.0f, 1.0f, 300);
+    }
 
-        mScaleUpY = ObjectAnimator
-                .ofFloat(mCheckMark, "scaleY", 0.0f, 1.0f)
-                .setDuration(300);
+    private ObjectAnimator scaleUp(View view, String property, float from, float to, int duration) {
+
+        return ObjectAnimator
+            .ofFloat(view, property, from, to)
+            .setDuration(duration);
     }
 
     @Override
@@ -96,14 +102,21 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
 
                 AnimatorSet scaleUp = new AnimatorSet();
                 scaleUp
-                    .play(mScaleUpX)
-                    .with(mScaleUpY);
+                    .play(mCheckMarkScaleX)
+                    .with(mCheckMarkScaleY);
 
                 scaleUp.start();
             }
             else {
 
                 setCompleted(false);
+
+                AnimatorSet set = new AnimatorSet();
+                set
+                    .play(mDueDateScaleX)
+                    .with(mDueDateScaleY);
+
+                set.start();
             }
             }
         });
