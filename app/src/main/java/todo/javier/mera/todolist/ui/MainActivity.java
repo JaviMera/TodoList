@@ -2,10 +2,17 @@ package todo.javier.mera.todolist.ui;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,14 +23,19 @@ import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class MainActivity extends AppCompatActivity
-    implements ActivityView {
-
-    public static final String FRAGMENT_HOME_TAG = "fragment_recycler";
-    private static final String FRAGMENT_TODO_LIST = "fragment_tasks";
+    implements ActivityView,
+    NavigationView.OnNavigationItemSelectedListener{
 
     private FragmentHelper mFragmentHelper;
+    private ActionBarDrawerToggle mToggle;
 
     @BindView(R.id.toolbar) Toolbar mToolBar;
+
+    @BindView(R.id.navigationView)
+    NavigationView mNavigationView;
+
+    @BindView(R.id.drawerLayout)
+    DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,23 +50,59 @@ public class MainActivity extends AppCompatActivity
         mToolBar.setTitle("");
 
         setSupportActionBar(mToolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mToggle = new ActionBarDrawerToggle(this,
+            mDrawerLayout,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        );
 
         Fragment fragment = FragmentTodoList.newInstance();
         mFragmentHelper.replace(R.id.fragmentContainer, fragment);
     }
 
     @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        mToggle.syncState();
+    }
+
+    @Override
     public void onBackPressed() {
 
-        FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment("fragment_recycler");
-        if(fragment.isRemovingItems()) {
+        if(mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
 
-            fragment.clearRemovableItems();
-            updateToolbarBackground(R.color.colorPrimary);
-            return;
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else {
+
+            FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment("fragment_recycler");
+            if (fragment.isRemovingItems()) {
+
+                fragment.clearRemovableItems();
+                updateToolbarBackground(R.color.colorPrimary);
+                return;
+            }
+            else {
+
+                super.onBackPressed();
+            }
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                break;
         }
 
-        super.onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -79,5 +127,10 @@ public class MainActivity extends AppCompatActivity
 
         Drawable newDrawable = ContextCompat.getDrawable(this, color);
         mToolBar.setBackground(newDrawable);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
     }
 }
