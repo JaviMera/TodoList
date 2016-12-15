@@ -1,19 +1,18 @@
 package todo.javier.mera.todolist.fragments;
 
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -23,7 +22,6 @@ import java.util.UUID;
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
-import jp.wasabeef.recyclerview.animators.LandingAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TodoListTaskAdapter;
@@ -50,6 +48,7 @@ public class FragmentTask extends FragmentRecycler<Task>
 
     public static final String TODO_LISt = "TODO_LISt";
     private TodoList mTodoList;
+    private int mSortSelected;
 
     public static FragmentTask newInstance(TodoList todoList) {
 
@@ -92,7 +91,7 @@ public class FragmentTask extends FragmentRecycler<Task>
         switch(item.getItemId()) {
 
             case R.id.action_sort:
-                DialogSort dialogSort = new DialogSort();
+                DialogSort dialogSort = DialogSort.newInstance(mSortSelected);
                 dialogSort.setTargetFragment(this, 1);
                 dialogSort.show(
                     mParent.getSupportFragmentManager(),
@@ -239,8 +238,9 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    public void onSortSelected(String sortByColumn) {
+    public void onSortSelected(String sortByColumn, int sortSelected) {
 
+        mSortSelected = sortSelected;
         setItemAnimator(new FadeInDownAnimator(new LinearOutSlowInInterpolator()));
 
         TodoListDataSource dataSource = new TodoListDataSource(mParent);

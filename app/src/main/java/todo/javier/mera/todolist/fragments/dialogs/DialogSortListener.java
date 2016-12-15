@@ -6,5 +6,5 @@ package todo.javier.mera.todolist.fragments.dialogs;
 
 public interface DialogSortListener {
 
-    void onSortSelected(String sortByColumn);
+    void onSortSelected(String sortByColumn, int id);
 }
