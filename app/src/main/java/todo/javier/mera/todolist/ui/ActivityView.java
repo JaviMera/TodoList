@@ -12,5 +12,6 @@ public interface ActivityView {
     void setToolbarTitle(String text);
     void showFragmentTodoList(TodoList todoList);
     void updateToolbarBackground(int color);
-    void resetViews();
+    void hideViews();
+    void showViews();
 }

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -137,6 +138,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
                     mIsRemovingItems = true;
                     mParent.updateToolbarBackground(R.color.remove_color_light);
+                    mParent.hideViews();
                 }
                 else {
 
@@ -167,6 +169,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                     }
 
                     mIsRemovingItems = false;
+                    mParent.showViews();
                 }
 
                 mParent.invalidateOptionsMenu();
@@ -273,6 +276,10 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     }
 
     public void clearRemovableItems() {
+
+        // Assign a default animator when the user clears out all selected items to be removed.
+        // This will make the items visually change back to normal without reloading the list.
+        setItemAnimator(new DefaultItemAnimator());
 
         RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
         adapter.clearRemovableItems();

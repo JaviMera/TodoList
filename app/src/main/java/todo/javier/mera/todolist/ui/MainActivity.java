@@ -4,15 +4,9 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -25,8 +19,6 @@ import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.fragments.FragmentTodoList;
 import todo.javier.mera.todolist.fragments.FragmentTask;
-import todo.javier.mera.todolist.fragments.dialogs.DialogTodoList;
-import todo.javier.mera.todolist.fragments.dialogs.DialogTodoListListener;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class MainActivity extends AppCompatActivity
@@ -67,7 +59,7 @@ public class MainActivity extends AppCompatActivity
 
             fragment.clearRemovableItems();
             updateToolbarBackground(R.color.colorPrimary);
-            return;
+            showViews();
         }
         else {
 
@@ -117,11 +109,8 @@ public class MainActivity extends AppCompatActivity
         mToolBar.setBackground(newDrawable);
     }
 
-    @OnClick(R.id.fab)
-    public void onAddListButtonClick(View view) {
-
-        FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment("fragment_recycler");
-        fragment.showAddDialog();
+    @Override
+    public void hideViews() {
 
         ObjectAnimator scaleXDown = ObjectAnimator.ofFloat(mFab, "scaleX", 1.0f, 0.0f);
         ObjectAnimator scaleYDown = ObjectAnimator.ofFloat(mFab, "scaleY", 1.0f, 0.0f);
@@ -131,8 +120,16 @@ public class MainActivity extends AppCompatActivity
         set.start();
     }
 
+    @OnClick(R.id.fab)
+    public void onAddListButtonClick(View view) {
+
+        FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment("fragment_recycler");
+        fragment.showAddDialog();
+        hideViews();
+    }
+
     @Override
-    public void resetViews() {
+    public void showViews() {
 
         ObjectAnimator scaleXUp = ObjectAnimator.ofFloat(mFab, "scaleX", 0.0f, 1.0f);
         ObjectAnimator scaleYUp = ObjectAnimator.ofFloat(mFab, "scaleY", 0.0f, 1.0f);

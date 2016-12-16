@@ -5,13 +5,11 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
@@ -145,7 +143,7 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
         }, 1000);
 
         // Display back the add button when the user is finished adding a to-do list
-        mParent.resetViews();
+        mParent.showViews();
     }
 }
 

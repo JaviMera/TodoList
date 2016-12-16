@@ -77,7 +77,7 @@ public abstract class DialogBase extends DialogFragment
     @OnClick(R.id.cancelDialog)
     public void onCancelDialog(View view) {
 
-        mParent.resetViews();
+        mParent.showViews();
     }
 
     @Override

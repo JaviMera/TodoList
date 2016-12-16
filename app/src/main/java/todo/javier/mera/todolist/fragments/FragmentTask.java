@@ -1,6 +1,5 @@
 package todo.javier.mera.todolist.fragments;
 
-import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
@@ -12,14 +11,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import todo.javier.mera.todolist.R;
@@ -215,7 +212,7 @@ public class FragmentTask extends FragmentRecycler<Task>
         }, 1000);
 
         // Display back the add button when the user is finished adding a task
-        mParent.resetViews();
+        mParent.showViews();
     }
 
     @Override
