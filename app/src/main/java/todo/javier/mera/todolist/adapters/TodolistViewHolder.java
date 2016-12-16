@@ -13,7 +13,7 @@ import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.model.TodoList;
 
-public class TodolistViewHolder extends ViewHolderBase<TodoList>
+class TodolistViewHolder extends ViewHolderBase<TodoList>
     implements View.OnClickListener, View.OnLongClickListener{
 
     private LinearLayout mLayout;

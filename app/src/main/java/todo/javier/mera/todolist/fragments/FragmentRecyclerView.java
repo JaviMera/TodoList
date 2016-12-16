@@ -10,7 +10,7 @@ import android.view.animation.Animation;
  * Created by javie on 11/29/2016.
  */
 
-public interface FragmentRecyclerView {
+interface FragmentRecyclerView {
 
     void setAdapter(Fragment context);
     void setItemAnimator(RecyclerView.ItemAnimator animator);

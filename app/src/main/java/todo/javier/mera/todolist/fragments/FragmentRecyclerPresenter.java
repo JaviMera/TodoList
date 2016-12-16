@@ -10,31 +10,31 @@ import android.view.animation.Animation;
  * Created by javie on 11/29/2016.
  */
 
-public class FragmentRecyclerPresenter {
+class FragmentRecyclerPresenter {
 
     private FragmentRecyclerView mView;
 
-    public FragmentRecyclerPresenter(FragmentRecyclerView view) {
+    FragmentRecyclerPresenter(FragmentRecyclerView view) {
 
         mView = view;
     }
 
-    public void setAdapter(Fragment fragment) {
+    void setAdapter(Fragment fragment) {
 
         mView.setAdapter(fragment);
     }
 
-    public void setItemAnimator(RecyclerView.ItemAnimator animator) {
+    void setItemAnimator(RecyclerView.ItemAnimator animator) {
 
         mView.setItemAnimator(animator);
     }
 
-    public void setLayoutManager(Context context) {
+    void setLayoutManager(Context context) {
 
         mView.setLayoutManager(context);
     }
 
-    public void setFixedSize(boolean isFixed) {
+    void setFixedSize(boolean isFixed) {
 
         mView.setFixedSize(isFixed);
     }

@@ -7,33 +7,33 @@ import android.support.v4.app.Fragment;
  * Created by javie on 12/3/2016.
  */
 
-public class FragmentHelper {
+class FragmentHelper {
 
     private FragmentManager mManager;
 
-    public FragmentHelper(FragmentManager manager) {
+    FragmentHelper(FragmentManager manager) {
 
         mManager = manager;
     }
 
-    public void replace(int containerId, Fragment fragment) {
+    void replace(int containerId, Fragment fragment, String tag) {
 
         mManager
             .beginTransaction()
-            .replace(containerId, fragment, "fragment_recycler")
+            .replace(containerId, fragment, tag)
             .commit();
     }
 
-    public void replaceWithBackStack(int containerId, Fragment fragment, String name) {
+    void replaceWithBackStack(int containerId, Fragment fragment, String tag, String name) {
 
         mManager
             .beginTransaction()
-            .replace(containerId, fragment, "fragment_recycler")
+            .replace(containerId, fragment, tag)
             .addToBackStack(name)
             .commit();
     }
 
-    public Fragment findFragment(String tag) {
+    Fragment findFragment(String tag) {
 
         return mManager.findFragmentByTag(tag);
     }

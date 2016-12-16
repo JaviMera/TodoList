@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity
 
     @BindView(R.id.fab)
     FloatingActionButton mFab;
+    private static final String FRAGMENT_TAG = "fragment_recycler";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +51,14 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         Fragment fragment = FragmentTodoList.newInstance();
-        mFragmentHelper.replace(R.id.fragmentContainer, fragment);
+
+        mFragmentHelper.replace(R.id.fragmentContainer, fragment, FRAGMENT_TAG);
     }
 
     @Override
     public void onBackPressed() {
 
-        FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment("fragment_recycler");
+        FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
         if (fragment.isRemovingItems()) {
 
             fragment.clearRemovableItems();
@@ -100,6 +102,7 @@ public class MainActivity extends AppCompatActivity
         mFragmentHelper.replaceWithBackStack(
             R.id.fragmentContainer,
             fragment,
+            FRAGMENT_TAG,
             null
         );
     }

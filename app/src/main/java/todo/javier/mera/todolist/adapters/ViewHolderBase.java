@@ -11,7 +11,7 @@ import todo.javier.mera.todolist.fragments.FragmentRecycler;
 /**
  * Created by javie on 11/30/2016.
  */
-public abstract class ViewHolderBase<T> extends RecyclerView.ViewHolder{
+abstract class ViewHolderBase<T> extends RecyclerView.ViewHolder{
 
     FragmentRecycler mParent;
 

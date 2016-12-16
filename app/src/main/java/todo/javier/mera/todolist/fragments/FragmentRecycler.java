@@ -43,7 +43,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     private boolean mIsRemovingItems;
 
     protected MainActivity mParent;
-    private ItemTouchHelper mHelper;
 
     protected abstract RecyclerAdapter getAdapter();
     protected abstract String getTitle();
@@ -85,7 +84,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
         RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        mHelper = new ItemTouchHelper(callback);
+        ItemTouchHelper mHelper = new ItemTouchHelper(callback);
         mHelper.attachToRecyclerView(mRecyclerView);
 
         new Handler().postDelayed(new Runnable() {

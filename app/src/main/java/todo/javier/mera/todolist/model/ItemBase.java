@@ -8,19 +8,19 @@ import android.os.Parcelable;
  */
 public abstract class ItemBase implements Parcelable {
 
-    protected String mId;
     private boolean mCanRemove;
     private boolean mIsMoving;
-    protected int mPosition;
+    private String mId;
+    private int mPosition;
 
-    protected ItemBase(String id, int position, boolean canRemove) {
+    ItemBase(String id, int position, boolean canRemove) {
 
         mId = id;
         mPosition  = position;
         mCanRemove = canRemove;
     }
 
-    public ItemBase(Parcel in) {
+    ItemBase(Parcel in) {
 
         mId = in.readString();
         mPosition = in.readInt();

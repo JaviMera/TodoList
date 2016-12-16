@@ -22,10 +22,10 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
     implements ItemTouchHelperAdapter
     {
 
-    protected final FragmentRecycler mFragment;
+    private final FragmentRecycler mFragment;
     private final Class<H> mHolderType;
 
-    protected List<T> mItems;
+    List<T> mItems;
 
     protected abstract void removeItem(int position);
     protected abstract int getLayout();
@@ -65,7 +65,7 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         notifyItemRangeChanged(0, mItems.size());
     }
 
-    public RecyclerAdapter(FragmentRecycler fragment, Class<H> holderType) {
+    RecyclerAdapter(FragmentRecycler fragment, Class<H> holderType) {
 
         mFragment = fragment;
         mHolderType = holderType;

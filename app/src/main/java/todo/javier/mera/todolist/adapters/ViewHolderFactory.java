@@ -9,18 +9,18 @@ import todo.javier.mera.todolist.fragments.FragmentRecycler;
  * Created by javie on 12/16/2016.
  */
 
-public class ViewHolderFactory {
+class ViewHolderFactory {
 
     private FragmentRecycler mFragment;
     private View mView;
 
-    public ViewHolderFactory(FragmentRecycler fragment, View view) {
+    ViewHolderFactory(FragmentRecycler fragment, View view) {
 
         mFragment = fragment;
         mView = view;
     }
 
-    public ViewHolderBase getViewHolder(Class holderType) {
+    ViewHolderBase getViewHolder(Class holderType) {
 
         if(holderType.equals(TodolistViewHolder.class)) {
 

@@ -19,13 +19,11 @@ import todo.javier.mera.todolist.model.TaskStatus;
 
 public class TodoListDataSource {
 
-    private Context mContext;
     private TodoListSQLiteHelper mSqliteHelper;
     private SQLiteDatabase mDb;
 
     public TodoListDataSource(Context context) {
 
-        mContext = context;
         mSqliteHelper = new TodoListSQLiteHelper(context);
     }
 

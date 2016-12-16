@@ -25,7 +25,7 @@ import todo.javier.mera.todolist.model.TaskStatus;
 /**
  * Created by javie on 12/5/2016.
  */
-public class TodoListTaskViewHolder extends ViewHolderBase<Task>
+class TodoListTaskViewHolder extends ViewHolderBase<Task>
     implements
     View.OnClickListener,
     View.OnLongClickListener {

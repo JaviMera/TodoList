@@ -50,7 +50,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
         + "FOREIGN KEY " + "(" + COLUMN_TODO_LIST_ID + ") REFERENCES " + TABLE_TODO_LISTS + "(" + COLUMN_TODO_LIST_ID + ")"
         + ")";
 
-    public TodoListSQLiteHelper(Context context) {
+    TodoListSQLiteHelper(Context context) {
 
         super(context, DB_NAME, null, DB_VERSION);
     }
