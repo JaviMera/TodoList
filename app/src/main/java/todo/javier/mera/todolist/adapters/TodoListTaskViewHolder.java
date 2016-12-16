@@ -1,5 +1,7 @@
 package todo.javier.mera.todolist.adapters;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.support.v4.content.ContextCompat;
@@ -91,10 +93,18 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
             ObjectAnimator scaleYDown = ObjectAnimator.ofFloat(mStatus, "alpha", 1.0f, 0.0f);
             AnimatorSet set = new AnimatorSet();
             set.play(scaleXDown).with(scaleYDown);
+            set.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    mStatus.setVisibility(View.INVISIBLE);
+                }
+            });
             set.start();
         }
         else {
 
+            mStatus.setVisibility(View.VISIBLE);
             ObjectAnimator scaleXDown = ObjectAnimator.ofFloat(mStatus, "alpha", 0.0f, 1.0f);
             ObjectAnimator scaleYDown = ObjectAnimator.ofFloat(mStatus, "alpha", 0.0f, 1.0f);
             AnimatorSet set = new AnimatorSet();
