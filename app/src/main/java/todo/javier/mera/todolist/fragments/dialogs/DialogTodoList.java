@@ -51,7 +51,7 @@ public class DialogTodoList extends DialogBase {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mListener = (FragmentTodoList)getTargetFragment();
+        mListener = (FragmentTodoList) getTargetFragment();
     }
 
     @OnClick(R.id.addTaskView)

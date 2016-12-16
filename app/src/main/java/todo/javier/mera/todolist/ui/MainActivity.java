@@ -13,18 +13,21 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.fragments.FragmentTodoList;
 import todo.javier.mera.todolist.fragments.FragmentTask;
+import todo.javier.mera.todolist.fragments.dialogs.DialogTodoList;
+import todo.javier.mera.todolist.fragments.dialogs.DialogTodoListListener;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class MainActivity extends AppCompatActivity
-    implements ActivityView,
-    NavigationView.OnNavigationItemSelectedListener{
+    implements ActivityView {
 
     private FragmentHelper mFragmentHelper;
 
@@ -107,8 +110,10 @@ public class MainActivity extends AppCompatActivity
         mToolBar.setBackground(newDrawable);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+    @OnClick(R.id.fab)
+    public void onAddListButtonClick(View view) {
+
+        FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment("fragment_recycler");
+        fragment.showAddDialog();
     }
 }

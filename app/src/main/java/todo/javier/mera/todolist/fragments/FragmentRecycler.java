@@ -54,6 +54,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     protected abstract int getDeleteTitle();
     protected abstract int removeItems(List<T> itemsToRemove);
     protected abstract void onUpdatePosition(List<T> items);
+    public abstract void showAddDialog();
 
     protected @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 

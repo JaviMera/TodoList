@@ -67,14 +67,6 @@ public class FragmentTask extends FragmentRecycler<Task>
         mTodoList = getArguments().getParcelable(TODO_LISt);
     }
 
-    @OnClick(R.id.fab)
-    public void onAddListButtonClick(View view) {
-
-        DialogTask dialogFragment = new DialogTask();
-        dialogFragment.setTargetFragment(this, 1);
-        dialogFragment.show(mParent.getSupportFragmentManager(), "dialog_task");
-    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
@@ -173,6 +165,14 @@ public class FragmentTask extends FragmentRecycler<Task>
 
             values.clear();
         }
+    }
+
+    @Override
+    public void showAddDialog() {
+
+        DialogTask dialogFragment = new DialogTask();
+        dialogFragment.setTargetFragment(this, 1);
+        dialogFragment.show(mParent.getSupportFragmentManager(), "dialog_task");
     }
 
     @Override
