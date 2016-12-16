@@ -185,34 +185,37 @@ public class FragmentTask extends FragmentRecycler<Task>
             @Override
             public void run() {
 
-                scrollToLastPosition();
-                RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+            scrollToLastPosition();
+            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
 
-                TodoListDataSource source = new TodoListDataSource(mParent);
+            TodoListDataSource source = new TodoListDataSource(mParent);
 
-                String taskId = UUID.randomUUID().toString();
-                long taskCreationDate = new Date().getTime();
-                TaskStatus taskStatus = TaskStatus.Created;
+            String taskId = UUID.randomUUID().toString();
+            long taskCreationDate = new Date().getTime();
+            TaskStatus taskStatus = TaskStatus.Created;
 
-                Task newTask = new Task(
-                    taskId,
-                    mTodoList.getId(),
-                    adapter.getItemCount(),
-                    taskDescription,
-                    taskStatus,
-                    taskCreationDate,
-                    taskDuedate.getTime(),
-                    taskPriority
-                );
+            Task newTask = new Task(
+                taskId,
+                mTodoList.getId(),
+                adapter.getItemCount(),
+                taskDescription,
+                taskStatus,
+                taskCreationDate,
+                taskDuedate.getTime(),
+                taskPriority
+            );
 
-                long rowId = source.createTodoListTask(newTask);
+            long rowId = source.createTodoListTask(newTask);
 
-                if(rowId > -1) {
+            if(rowId > -1) {
 
-                    adapter.addItem(newTask);
-                }
+                adapter.addItem(newTask);
+            }
             }
         }, 1000);
+
+        // Display back the add button when the user is finished adding a task
+        mParent.resetViews();
     }
 
     @Override

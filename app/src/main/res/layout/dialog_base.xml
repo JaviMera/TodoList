@@ -16,7 +16,7 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/cancelTaskView"
+            android:id="@+id/cancelDialog"
             style="@style/CancelButton"/>
 
         <Button

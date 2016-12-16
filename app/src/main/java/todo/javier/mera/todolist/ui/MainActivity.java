@@ -1,9 +1,12 @@
 package todo.javier.mera.todolist.ui;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -31,7 +34,11 @@ public class MainActivity extends AppCompatActivity
 
     private FragmentHelper mFragmentHelper;
 
-    @BindView(R.id.toolbar) Toolbar mToolBar;
+    @BindView(R.id.toolbar)
+    Toolbar mToolBar;
+
+    @BindView(R.id.fab)
+    FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,5 +122,23 @@ public class MainActivity extends AppCompatActivity
 
         FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment("fragment_recycler");
         fragment.showAddDialog();
+
+        ObjectAnimator scaleXDown = ObjectAnimator.ofFloat(mFab, "scaleX", 1.0f, 0.0f);
+        ObjectAnimator scaleYDown = ObjectAnimator.ofFloat(mFab, "scaleY", 1.0f, 0.0f);
+
+        AnimatorSet set = new AnimatorSet();
+        set.play(scaleXDown).with(scaleYDown);
+        set.start();
+    }
+
+    @Override
+    public void resetViews() {
+
+        ObjectAnimator scaleXUp = ObjectAnimator.ofFloat(mFab, "scaleX", 0.0f, 1.0f);
+        ObjectAnimator scaleYUp = ObjectAnimator.ofFloat(mFab, "scaleY", 0.0f, 1.0f);
+
+        AnimatorSet set = new AnimatorSet();
+        set.play(scaleXUp).with(scaleYUp);
+        set.start();
     }
 }

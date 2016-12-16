@@ -116,6 +116,7 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
         scrollToLastPosition();
         final String id = UUID.randomUUID().toString();
         final long creationDate = new Date().getTime();
+        final RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
 
         new Handler().postDelayed(new Runnable() {
 
@@ -123,7 +124,6 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
             public void run() {
 
             scrollToLastPosition();
-            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
 
             TodoListDataSource source = new TodoListDataSource(mParent);
 
@@ -143,6 +143,9 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
             }
             }
         }, 1000);
+
+        // Display back the add button when the user is finished adding a to-do list
+        mParent.resetViews();
     }
 }
 

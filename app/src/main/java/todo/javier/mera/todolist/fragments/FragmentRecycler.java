@@ -25,7 +25,6 @@ import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInRightAnimator;
 import todo.javier.mera.todolist.R;
-import todo.javier.mera.todolist.adapters.ItemLongClickListener;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.SimpleItemTouchHelperCallback;
 import todo.javier.mera.todolist.model.ItemBase;
@@ -37,9 +36,7 @@ import todo.javier.mera.todolist.ui.MainActivity;
 
 public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     implements FragmentRecyclerView,
-    ItemLongClickListener,
-    ItemClickListener,
-    ItemsListener<T> {
+    RecyclerItemListener<T> {
 
     private FragmentRecyclerPresenter mPresenter;
     private boolean mIsRemovingItems;

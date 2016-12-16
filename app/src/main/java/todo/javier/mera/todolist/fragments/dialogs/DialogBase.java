@@ -74,8 +74,11 @@ public abstract class DialogBase extends DialogFragment
         return dialogBuilder.create();
     }
 
+    @OnClick(R.id.cancelDialog)
+    public void onCancelDialog(View view) {
 
-
+        mParent.resetViews();
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -88,7 +91,7 @@ public abstract class DialogBase extends DialogFragment
             .windowAnimations = R.style.FragmentDialogTaskAnimations;
     }
 
-    @OnClick(R.id.cancelTaskView)
+    @OnClick(R.id.cancelDialog)
     public void onCancelClick(View view) {
 
         dismiss();
