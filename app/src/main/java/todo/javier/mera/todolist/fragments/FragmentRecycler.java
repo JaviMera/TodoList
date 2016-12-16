@@ -137,13 +137,14 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 if(!mIsRemovingItems) {
 
                     mIsRemovingItems = true;
+
+                    adapter.notifyUpdateItems();
                     mParent.updateToolbarBackground(R.color.remove_color_light);
                     mParent.hideViews();
                 }
                 else {
 
                     setItemAnimator(new SlideInRightAnimator());
-                    adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
                     List<T> itemsToRemove = adapter.getRemovableItems();
 
                     if(itemsToRemove.isEmpty()) {
@@ -170,6 +171,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
                     mIsRemovingItems = false;
                     mParent.showViews();
+                    adapter.notifyUpdateItems();
                 }
 
                 mParent.invalidateOptionsMenu();

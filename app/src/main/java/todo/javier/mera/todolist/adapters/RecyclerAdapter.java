@@ -207,4 +207,9 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         mItems.clear();
         notifyDataSetChanged();
     }
+
+    public void notifyUpdateItems() {
+
+        notifyItemRangeChanged(0, mItems.size());
+    }
 }

@@ -1,5 +1,7 @@
 package todo.javier.mera.todolist.ui;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.graphics.drawable.Drawable;
@@ -117,6 +119,13 @@ public class MainActivity extends AppCompatActivity
 
         AnimatorSet set = new AnimatorSet();
         set.play(scaleXDown).with(scaleYDown);
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mFab.setVisibility(View.INVISIBLE);
+            }
+        });
         set.start();
     }
 
@@ -131,11 +140,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void showViews() {
 
+        mFab.setVisibility(View.VISIBLE);
         ObjectAnimator scaleXUp = ObjectAnimator.ofFloat(mFab, "scaleX", 0.0f, 1.0f);
         ObjectAnimator scaleYUp = ObjectAnimator.ofFloat(mFab, "scaleY", 0.0f, 1.0f);
 
         AnimatorSet set = new AnimatorSet();
         set.play(scaleXUp).with(scaleYUp);
+
         set.start();
     }
 }

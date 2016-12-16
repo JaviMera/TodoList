@@ -84,6 +84,23 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
         
         int color = getLayoutColor(item);
         mLayout.setBackgroundColor(color);
+
+        if(mParent.isRemovingItems()) {
+
+            ObjectAnimator scaleXDown = ObjectAnimator.ofFloat(mStatus, "alpha", 1.0f, 0.0f);
+            ObjectAnimator scaleYDown = ObjectAnimator.ofFloat(mStatus, "alpha", 1.0f, 0.0f);
+            AnimatorSet set = new AnimatorSet();
+            set.play(scaleXDown).with(scaleYDown);
+            set.start();
+        }
+        else {
+
+            ObjectAnimator scaleXDown = ObjectAnimator.ofFloat(mStatus, "alpha", 0.0f, 1.0f);
+            ObjectAnimator scaleYDown = ObjectAnimator.ofFloat(mStatus, "alpha", 0.0f, 1.0f);
+            AnimatorSet set = new AnimatorSet();
+            set.play(scaleXDown).with(scaleYDown);
+            set.start();
+        }
     }
 
     @Override
