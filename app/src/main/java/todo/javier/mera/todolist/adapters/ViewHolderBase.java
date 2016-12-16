@@ -13,13 +13,15 @@ import todo.javier.mera.todolist.fragments.FragmentRecycler;
  */
 public abstract class ViewHolderBase<T> extends RecyclerView.ViewHolder{
 
-    protected FragmentRecycler mParent;
+    FragmentRecycler mParent;
 
     public abstract void bind(T item);
     protected abstract void setViews();
 
-    public ViewHolderBase(View itemView) {
+    ViewHolderBase(FragmentRecycler fragment, View itemView) {
         super(itemView);
+
+        mParent = fragment;
         setViews();
     }
 }

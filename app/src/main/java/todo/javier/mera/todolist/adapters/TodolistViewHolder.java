@@ -29,9 +29,8 @@ public class TodolistViewHolder extends ViewHolderBase<TodoList>
     private Drawable mTitleMoveDrawable;
 
     TodolistViewHolder(FragmentRecycler fragment, View itemView) {
-        super(itemView);
 
-        mParent = fragment;
+        super(fragment, itemView);
 
         mTitleRemoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_remove_background);
         mTitleDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_background);

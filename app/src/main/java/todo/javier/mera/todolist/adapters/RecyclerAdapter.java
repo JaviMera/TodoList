@@ -79,16 +79,9 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
             .from(mFragment.getActivity())
             .inflate(getLayout(), parent, false);
 
-        if(mHolderType.equals(TodolistViewHolder.class)) {
+        ViewHolderFactory factory = new ViewHolderFactory(mFragment, view);
 
-            return (H) new TodolistViewHolder(mFragment, view);
-        }
-        else if(mHolderType.equals(TodoListTaskViewHolder.class)) {
-
-            return (H) new TodoListTaskViewHolder(view, mFragment);
-        }
-
-        return null;
+        return (H) factory.getViewHolder(mHolderType);
     }
 
     @Override
@@ -106,7 +99,6 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
 
-        Toast.makeText(mFragment.getActivity(), "move", Toast.LENGTH_SHORT).show();
         if(fromPosition < toPosition) {
 
             for(int i = fromPosition ; i < toPosition ; i++) {

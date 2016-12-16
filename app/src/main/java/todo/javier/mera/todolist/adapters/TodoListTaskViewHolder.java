@@ -49,9 +49,10 @@ public class TodoListTaskViewHolder extends ViewHolderBase<Task>
     private ObjectAnimator mCheckBoxFadeOut;
     private ObjectAnimator mCheckBoxFadeIn;
 
-    TodoListTaskViewHolder(View itemView, FragmentRecycler fragment) {
-        super(itemView);
-        mParent = fragment;
+    TodoListTaskViewHolder(FragmentRecycler fragment, View itemView) {
+
+        super(fragment, itemView);
+
         mTaskListener = (FragmentTask)fragment;
 
         mNormalColor = ContextCompat.getColor(mParent.getActivity(), android.R.color.transparent);
