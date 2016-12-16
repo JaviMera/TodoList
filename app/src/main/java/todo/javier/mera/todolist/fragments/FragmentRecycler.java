@@ -43,6 +43,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     private boolean mIsRemovingItems;
 
     protected MainActivity mParent;
+    private ItemTouchHelper mHelper;
 
     protected abstract RecyclerAdapter getAdapter();
     protected abstract String getTitle();
@@ -84,8 +85,8 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
         RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        ItemTouchHelper helper = new ItemTouchHelper(callback);
-        helper.attachToRecyclerView(mRecyclerView);
+        mHelper = new ItemTouchHelper(callback);
+        mHelper.attachToRecyclerView(mRecyclerView);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -137,7 +138,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 if(!mIsRemovingItems) {
 
                     mIsRemovingItems = true;
-
                     adapter.notifyUpdateItems();
                     mParent.updateToolbarBackground(R.color.remove_color_light);
                     mParent.hideViews();
