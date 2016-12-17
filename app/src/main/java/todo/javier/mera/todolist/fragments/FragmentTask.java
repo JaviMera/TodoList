@@ -238,13 +238,13 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    public void onSortSelected(String sortByColumn, int sortSelected) {
+    public void onSortSelected(int sortSelected, String sortByColumn, String order) {
 
         mSortSelected = sortSelected;
         setItemAnimator(new FadeInDownAnimator(new LinearOutSlowInInterpolator()));
 
         TodoListDataSource dataSource = new TodoListDataSource(mParent);
-        final List<Task> tasks = dataSource.readTodoListTasks(mTodoList.getId(), sortByColumn);
+        final List<Task> tasks = dataSource.readTodoListTasks(mTodoList.getId(), sortByColumn, order);
 
         final RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
         adapter.removeAll();

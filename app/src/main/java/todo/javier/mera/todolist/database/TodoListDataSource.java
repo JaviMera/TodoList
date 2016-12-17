@@ -262,7 +262,7 @@ public class TodoListDataSource {
         return cursor.getLong(columnIndex);
     }
 
-    public List<Task> readTodoListTasks(String todoListId, String sortByColumn) {
+    public List<Task> readTodoListTasks(String todoListId, String sortByColumn, String order) {
         mDb = openReadable();
         List<Task> items = new LinkedList<>();
 
@@ -282,7 +282,7 @@ public class TodoListDataSource {
                 new String[]{String.valueOf(todoListId)},
                 null,
                 null,
-                sortByColumn + " DESC"
+                sortByColumn + " " + order
         );
 
         if(cursor.moveToFirst()) {

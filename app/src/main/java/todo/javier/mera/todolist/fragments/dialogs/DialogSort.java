@@ -75,6 +75,7 @@ public class DialogSort extends DialogFragment{
     public void onOkDialogClick(View view) {
 
         String columnSortBy = "";
+        String order = "";
 
         int id = mSortRadioGroup.getCheckedRadioButtonId();
 
@@ -82,23 +83,36 @@ public class DialogSort extends DialogFragment{
 
             case R.id.sortByNone:
                 columnSortBy = TodoListSQLiteHelper.COLUMN_ITEMS_POSITION;
+                order = "ASC";
+                break;
 
+            case R.id.sortByName:
+                columnSortBy = TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION;
+                order = "ASC";
+                break;
+
+            case R.id.sortByCreationDate:
+                columnSortBy = TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON;
+                order = "ASC";
                 break;
 
             case R.id.sortByDueDate:
                 columnSortBy = TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE;
+                order = "ASC";
                 break;
 
             case R.id.sortByPriority:
                 columnSortBy = TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY;
+                order = "DESC";
                 break;
 
             case R.id.sortByCompleted:
                 columnSortBy = TodoListSQLiteHelper.COLUMN_ITEMS_STATUS;
+                order = "DESC";
                 break;
         }
 
-        mListener.onSortSelected(columnSortBy, id);
+        mListener.onSortSelected(id, columnSortBy, order);
         dismiss();
     }
 }

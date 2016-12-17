@@ -39,6 +39,22 @@
                 android:padding="10dp"/>
 
             <RadioButton
+                android:id="@+id/sortByName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_name"
+                android:textSize="20sp"
+                android:padding="10dp"/>
+
+            <RadioButton
+                android:id="@+id/sortByCreationDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_creation_date"
+                android:textSize="20sp"
+                android:padding="10dp"/>
+
+            <RadioButton
                 android:id="@+id/sortByDueDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
