@@ -81,7 +81,7 @@ public abstract class DialogBase extends DialogFragment
             public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
                 if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
 
-                    mParent.showAddButton();
+                    mParent.showFabButton();
                 }
 
                 return false;
@@ -93,7 +93,7 @@ public abstract class DialogBase extends DialogFragment
     @OnClick(R.id.cancelDialog)
     public void onCancelDialog(View view) {
 
-        mParent.showAddButton();
+        mParent.showFabButton();
     }
 
     @Override

@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.UUID;
 
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
-import todo.javier.mera.todolist.adapters.RecyclerAdapter;
-import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.R;
+import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TodolistAdapter;
+import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTodoList;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTodoListListener;
@@ -143,7 +143,7 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
         }, 1000);
 
         // Display back the add button when the user is finished adding a to-do list
-        mParent.showAddButton();
+        mParent.showFabButton();
     }
 }
 

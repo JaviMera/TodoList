@@ -26,12 +26,12 @@ import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.dialogs.DialogSort;
 import todo.javier.mera.todolist.fragments.dialogs.DialogSortListener;
-import todo.javier.mera.todolist.fragments.dialogs.DialogTaskListener;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTask;
+import todo.javier.mera.todolist.fragments.dialogs.DialogTaskListener;
+import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TaskPriority;
 import todo.javier.mera.todolist.model.TaskStatus;
 import todo.javier.mera.todolist.model.TodoList;
-import todo.javier.mera.todolist.model.Task;
 
 /**
  * Created by javie on 12/2/2016.
@@ -212,7 +212,7 @@ public class FragmentTask extends FragmentRecycler<Task>
         }, 1000);
 
         // Display back the add button when the user is finished adding a task
-        mParent.showAddButton();
+        mParent.showFabButton();
     }
 
     @Override

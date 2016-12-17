@@ -1,7 +1,5 @@
 package todo.javier.mera.todolist.ui;
 
-import android.view.View;
-
 import todo.javier.mera.todolist.model.TodoList;
 
 /**
@@ -12,8 +10,8 @@ public interface MainActivityView {
     void setToolbarTitle(String text);
     void showFragmentTodoList(TodoList todoList);
     void updateToolbarBackground(int color);
-    void hideViews();
-    void showAddButton();
+    void hideFabButton();
+    void showFabButton();
     void toggleBackButton(boolean canDisplay);
     void setToolbar();
     void setFabVisibility(int visibility);

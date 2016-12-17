@@ -19,8 +19,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
-import todo.javier.mera.todolist.fragments.FragmentTodoList;
 import todo.javier.mera.todolist.fragments.FragmentTask;
+import todo.javier.mera.todolist.fragments.FragmentTodoList;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class MainMainActivity extends AppCompatActivity
@@ -86,7 +86,7 @@ public class MainMainActivity extends AppCompatActivity
 
             fragment.clearRemovableItems();
             mPresenter.updateToolbarBackground(R.color.colorPrimary);
-            mPresenter.showAddButton();
+            mPresenter.showFabButton();
         }
         else {
 
@@ -138,7 +138,7 @@ public class MainMainActivity extends AppCompatActivity
     }
 
     @Override
-    public void hideViews() {
+    public void hideFabButton() {
 
         AnimatorSet set = new AnimatorSet();
         set.play(mFabScaleXDown).with(mFabScaleYDown);
@@ -157,11 +157,11 @@ public class MainMainActivity extends AppCompatActivity
 
         FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG    );
         fragment.showAddDialog();
-        hideViews();
+        hideFabButton();
     }
 
     @Override
-    public void showAddButton() {
+    public void showFabButton() {
 
         mPresenter.setFabVisibility(View.VISIBLE);
 

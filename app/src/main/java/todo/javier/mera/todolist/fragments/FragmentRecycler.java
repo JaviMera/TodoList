@@ -139,7 +139,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                     mIsRemovingItems = true;
                     adapter.notifyUpdateItems();
                     mParent.updateToolbarBackground(R.color.remove_color_light);
-                    mParent.hideViews();
+                    mParent.hideFabButton();
                 }
                 else {
 
@@ -169,7 +169,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                     }
 
                     mIsRemovingItems = false;
-                    mParent.showAddButton();
+                    mParent.showFabButton();
                     adapter.notifyUpdateItems();
                 }
 

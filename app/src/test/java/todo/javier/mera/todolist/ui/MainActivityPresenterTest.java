@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.MatchersPrinter;
 import org.mockito.runners.MockitoJUnitRunner;
 
 /**
@@ -42,10 +41,10 @@ public class MainActivityPresenterTest {
     public void showAddButton() throws Exception {
 
         // Act
-        mPresenter.showAddButton();
+        mPresenter.showFabButton();
 
         // Assert
-        Mockito.verify(mView).showAddButton();
+        Mockito.verify(mView).showFabButton();
     }
 
     @Test

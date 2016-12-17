@@ -19,10 +19,10 @@ public class MainActivityPresenter {
         mView.updateToolbarBackground(color);
     }
 
-    public void showAddButton() {
+    public void showFabButton() {
 
 
-        mView.showAddButton();
+        mView.showFabButton();
     }
 
     public void toggleBackButton(boolean canDisplay) {
