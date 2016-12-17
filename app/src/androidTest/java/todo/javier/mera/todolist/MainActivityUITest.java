@@ -34,8 +34,8 @@ import static org.hamcrest.core.IsNot.not;
 public class MainActivityUITest {
 
 //    @Rule
-//    public ActivityTestRule<MainActivity> activityRule =
-//            new ActivityTestRule<>(MainActivity.class);
+//    public ActivityTestRule<MainMainActivity> activityRule =
+//            new ActivityTestRule<>(MainMainActivity.class);
 //
 //    @Test
 //    public void init() throws Exception {

@@ -29,7 +29,7 @@ import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.SimpleItemTouchHelperCallback;
 import todo.javier.mera.todolist.model.ItemBase;
-import todo.javier.mera.todolist.ui.MainActivity;
+import todo.javier.mera.todolist.ui.MainMainActivity;
 
 /**
  * Created by javie on 12/5/2016.
@@ -42,7 +42,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     private FragmentRecyclerPresenter mPresenter;
     private boolean mIsRemovingItems;
 
-    protected MainActivity mParent;
+    protected MainMainActivity mParent;
 
     protected abstract RecyclerAdapter getAdapter();
     protected abstract String getTitle();
@@ -60,7 +60,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mParent = (MainActivity) getActivity();
+        mParent = (MainMainActivity) getActivity();
         mIsRemovingItems = false;
         setHasOptionsMenu(true);
     }
@@ -169,7 +169,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                     }
 
                     mIsRemovingItems = false;
-                    mParent.showViews();
+                    mParent.showAddButton();
                     adapter.notifyUpdateItems();
                 }
 

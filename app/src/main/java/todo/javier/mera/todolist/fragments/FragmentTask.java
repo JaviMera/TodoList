@@ -212,7 +212,7 @@ public class FragmentTask extends FragmentRecycler<Task>
         }, 1000);
 
         // Display back the add button when the user is finished adding a task
-        mParent.showViews();
+        mParent.showAddButton();
     }
 
     @Override

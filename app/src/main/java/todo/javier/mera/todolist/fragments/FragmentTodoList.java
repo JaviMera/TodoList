@@ -5,9 +5,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import java.util.Date;
 import java.util.List;
@@ -146,7 +143,7 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
         }, 1000);
 
         // Display back the add button when the user is finished adding a to-do list
-        mParent.showViews();
+        mParent.showAddButton();
     }
 }
 

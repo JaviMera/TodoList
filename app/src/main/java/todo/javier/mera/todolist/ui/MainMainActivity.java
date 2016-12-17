@@ -23,39 +23,51 @@ import todo.javier.mera.todolist.fragments.FragmentTodoList;
 import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.model.TodoList;
 
-public class MainActivity extends AppCompatActivity
-    implements ActivityView {
+public class MainMainActivity extends AppCompatActivity
+    implements MainActivityView {
 
     private FragmentHelper mFragmentHelper;
+    private MainActivityPresenter mPresenter;
 
     @BindView(R.id.toolbar)
     Toolbar mToolBar;
 
     @BindView(R.id.fab)
     FloatingActionButton mFab;
+
     private static final String FRAGMENT_TAG = "fragment_recycler";
+    private ObjectAnimator mFabScaleXDown;
+    private ObjectAnimator mFabScaleYDown;
+    private ObjectAnimator mFabScaleXUp;
+    private ObjectAnimator mFabScaleYUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mFabScaleXDown = ObjectAnimator.ofFloat(mFab, "scaleX", 1.0f, 0.0f);
+        mFabScaleYDown = ObjectAnimator.ofFloat(mFab, "scaleY", 1.0f, 0.0f);
+        mFabScaleXUp = ObjectAnimator.ofFloat(mFab, "scaleX", 0.0f, 1.0f);
+        mFabScaleYUp = ObjectAnimator.ofFloat(mFab, "scaleY", 0.0f, 1.0f);
+
+        mPresenter = new MainActivityPresenter(this);
         mFragmentHelper = new FragmentHelper(getSupportFragmentManager());
         ButterKnife.bind(this);
 
         // For some reason if the title is not initially set to something, when the Fragment calls
         // for the first time to set the title, the title will not be changed.
-        mToolBar.setTitle("");
+        mPresenter.setToolbarTitle("");
 
-        setSupportActionBar(mToolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        mPresenter.setToolbar();
+        mPresenter.toggleBackButton(false);
 
         FragmentRecycler fragmentRecycler;
 
         if(savedInstanceState != null) {
 
             fragmentRecycler = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            mPresenter.toggleBackButton(true);
         }
         else {
 
@@ -73,12 +85,12 @@ public class MainActivity extends AppCompatActivity
         if (fragment.isRemovingItems()) {
 
             fragment.clearRemovableItems();
-            updateToolbarBackground(R.color.colorPrimary);
-            showViews();
+            mPresenter.updateToolbarBackground(R.color.colorPrimary);
+            mPresenter.showAddButton();
         }
         else {
 
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            mPresenter.toggleBackButton(false);
             super.onBackPressed();
         }
     }
@@ -107,7 +119,7 @@ public class MainActivity extends AppCompatActivity
     public void showFragmentTodoList(TodoList todoList) {
 
         // When the user selects a list, disply the back button also on the top left of the toolbar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mPresenter.toggleBackButton(true);
 
         Fragment fragment = FragmentTask.newInstance(todoList);
         mFragmentHelper.replaceWithBackStack(
@@ -128,16 +140,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void hideViews() {
 
-        ObjectAnimator scaleXDown = ObjectAnimator.ofFloat(mFab, "scaleX", 1.0f, 0.0f);
-        ObjectAnimator scaleYDown = ObjectAnimator.ofFloat(mFab, "scaleY", 1.0f, 0.0f);
-
         AnimatorSet set = new AnimatorSet();
-        set.play(scaleXDown).with(scaleYDown);
+        set.play(mFabScaleXDown).with(mFabScaleYDown);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                mFab.setVisibility(View.INVISIBLE);
+                mPresenter.setFabVisibility(View.INVISIBLE);
             }
         });
         set.start();
@@ -152,15 +161,31 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void showViews() {
+    public void showAddButton() {
 
-        mFab.setVisibility(View.VISIBLE);
-        ObjectAnimator scaleXUp = ObjectAnimator.ofFloat(mFab, "scaleX", 0.0f, 1.0f);
-        ObjectAnimator scaleYUp = ObjectAnimator.ofFloat(mFab, "scaleY", 0.0f, 1.0f);
+        mPresenter.setFabVisibility(View.VISIBLE);
 
         AnimatorSet set = new AnimatorSet();
-        set.play(scaleXUp).with(scaleYUp);
+        set.play(mFabScaleXUp).with(mFabScaleYUp);
 
         set.start();
+    }
+
+    @Override
+    public void toggleBackButton(boolean canDisplay) {
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(canDisplay);
+    }
+
+    @Override
+    public void setToolbar() {
+
+        setSupportActionBar(mToolBar);
+    }
+
+    @Override
+    public void setFabVisibility(int visibility) {
+
+        mFab.setVisibility(visibility);
     }
 }

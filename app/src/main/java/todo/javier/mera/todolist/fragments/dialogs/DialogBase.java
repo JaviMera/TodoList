@@ -20,7 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import todo.javier.mera.todolist.R;
-import todo.javier.mera.todolist.ui.MainActivity;
+import todo.javier.mera.todolist.ui.MainMainActivity;
 
 /**
  * Created by javie on 12/6/2016.
@@ -29,7 +29,7 @@ import todo.javier.mera.todolist.ui.MainActivity;
 public abstract class DialogBase extends DialogFragment
     implements DialogBaseView {
 
-    protected MainActivity mParent;
+    protected MainMainActivity mParent;
     protected DialogBasePresenter mPresenter;
     protected Animation mShakeAnimation;
 
@@ -47,7 +47,7 @@ public abstract class DialogBase extends DialogFragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mParent = (MainActivity) context;
+        mParent = (MainMainActivity) context;
     }
 
     @Override
@@ -81,7 +81,7 @@ public abstract class DialogBase extends DialogFragment
             public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
                 if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
 
-                    mParent.showViews();
+                    mParent.showAddButton();
                 }
 
                 return false;
@@ -93,7 +93,7 @@ public abstract class DialogBase extends DialogFragment
     @OnClick(R.id.cancelDialog)
     public void onCancelDialog(View view) {
 
-        mParent.showViews();
+        mParent.showAddButton();
     }
 
     @Override
