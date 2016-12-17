@@ -3,11 +3,13 @@ package todo.javier.mera.todolist.fragments.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -71,7 +73,21 @@ public abstract class DialogBase extends DialogFragment
         int colorId = ContextCompat.getColor(mParent, android.R.color.darker_gray);
         mPresenter.updateEditTextHintColor(colorId);
 
-        return dialogBuilder.create();
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.setCanceledOnTouchOutside(false);
+
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
+                if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
+
+                    mParent.showViews();
+                }
+
+                return false;
+            }
+        });
+        return dialog;
     }
 
     @OnClick(R.id.cancelDialog)
