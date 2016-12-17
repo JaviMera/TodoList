@@ -50,9 +50,20 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        Fragment fragment = FragmentTodoList.newInstance();
+        FragmentRecycler fragmentRecycler;
 
-        mFragmentHelper.replace(R.id.fragmentContainer, fragment, FRAGMENT_TAG);
+        if(savedInstanceState != null) {
+
+            fragmentRecycler = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        else {
+
+            fragmentRecycler = FragmentTodoList.newInstance();
+        }
+
+
+        mFragmentHelper.replace(R.id.fragmentContainer, fragmentRecycler, FRAGMENT_TAG);
     }
 
     @Override
@@ -135,7 +146,7 @@ public class MainActivity extends AppCompatActivity
     @OnClick(R.id.fab)
     public void onAddListButtonClick(View view) {
 
-        FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment("fragment_recycler");
+        FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG    );
         fragment.showAddDialog();
         hideViews();
     }
