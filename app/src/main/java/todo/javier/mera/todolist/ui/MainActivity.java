@@ -23,7 +23,7 @@ import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.fragments.FragmentTodoList;
 import todo.javier.mera.todolist.model.TodoList;
 
-public class MainMainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
     implements MainActivityView {
 
     private FragmentHelper mFragmentHelper;
@@ -155,7 +155,7 @@ public class MainMainActivity extends AppCompatActivity
     @OnClick(R.id.fab)
     public void onAddListButtonClick(View view) {
 
-        FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG    );
+        FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
         fragment.showAddDialog();
         hideFabButton();
     }

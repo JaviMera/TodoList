@@ -20,7 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import todo.javier.mera.todolist.R;
-import todo.javier.mera.todolist.ui.MainMainActivity;
+import todo.javier.mera.todolist.ui.MainActivity;
 
 /**
  * Created by javie on 12/6/2016.
@@ -29,7 +29,7 @@ import todo.javier.mera.todolist.ui.MainMainActivity;
 public abstract class DialogBase extends DialogFragment
     implements DialogBaseView {
 
-    protected MainMainActivity mParent;
+    protected MainActivity mParent;
     protected DialogBasePresenter mPresenter;
     protected Animation mShakeAnimation;
 
@@ -47,7 +47,7 @@ public abstract class DialogBase extends DialogFragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mParent = (MainMainActivity) context;
+        mParent = (MainActivity) context;
     }
 
     @Override
