@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -162,6 +161,8 @@ public class FragmentTask extends FragmentRecycler<Task>
 
             values.clear();
         }
+
+        mTodoList.setItems(items);
     }
 
     @Override
@@ -182,34 +183,36 @@ public class FragmentTask extends FragmentRecycler<Task>
             @Override
             public void run() {
 
-            scrollToLastPosition();
-            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+                scrollToLastPosition();
+                RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
 
-            TodoListDataSource source = new TodoListDataSource(mParent);
+                TodoListDataSource source = new TodoListDataSource(mParent);
 
-            String taskId = UUID.randomUUID().toString();
-            long taskCreationDate = new Date().getTime();
-            TaskStatus taskStatus = TaskStatus.Created;
+                String taskId = UUID.randomUUID().toString();
+                long taskCreationDate = new Date().getTime();
+                TaskStatus taskStatus = TaskStatus.Created;
 
-            Task newTask = new Task(
-                taskId,
-                mTodoList.getId(),
-                adapter.getItemCount(),
-                taskDescription,
-                taskStatus,
-                taskCreationDate,
-                taskDuedate.getTime(),
-                taskPriority
-            );
+                Task newTask = new Task(
+                    taskId,
+                    mTodoList.getId(),
+                    adapter.getItemCount(),
+                    taskDescription,
+                    taskStatus,
+                    taskCreationDate,
+                    taskDuedate.getTime(),
+                    taskPriority
+                );
 
-            long rowId = source.createTodoListTask(newTask);
+                long rowId = source.createTodoListTask(newTask);
 
-            if(rowId > -1) {
+                if(rowId > -1) {
 
-                adapter.addItem(newTask);
-            }
+                    adapter.addItem(newTask);
+                     mTodoList.addTask(newTask);
+                }
             }
         }, 1000);
+
 
         // Display back the add button when the user is finished adding a task
         mParent.showFabButton();
@@ -249,14 +252,6 @@ public class FragmentTask extends FragmentRecycler<Task>
         final RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
         adapter.removeAll();
 
-        // Check if user has selected sort by completed
-        if(!sortByColumn.equals(TodoListSQLiteHelper.COLUMN_ITEMS_STATUS)) {
-
-            // If user hasn't selected sort by Completed, then push down all completed tasks to the bottom
-            // as some of them might show up in between other undone tasks.
-            moveCompletedToBottom(tasks);
-        }
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -264,20 +259,5 @@ public class FragmentTask extends FragmentRecycler<Task>
             adapter.addItems(tasks);
             }
         }, 500);
-    }
-
-    private void moveCompletedToBottom(List<Task> tasks) {
-
-        List<Task> completedTasks = new LinkedList<>();
-        for(int i = 0 ; i < tasks.size() ; i++) {
-
-            if(tasks.get(i).getStatus() == TaskStatus.Completed) {
-
-                completedTasks.add(tasks.get(i));
-            }
-        }
-
-        tasks.removeAll(completedTasks);
-        tasks.addAll(tasks.size(), completedTasks);
     }
 }

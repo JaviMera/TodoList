@@ -66,6 +66,7 @@ public class TodoList extends ItemBase implements Parcelable {
 
     public void setItems(List<Task> items) {
 
+        mItems.clear();
         mItems = new LinkedList<>(items);
     }
 
@@ -79,5 +80,10 @@ public class TodoList extends ItemBase implements Parcelable {
         parcel.writeString(mTitle);
         parcel.writeLong(mCreationDate);
         parcel.writeTypedList(mItems);
+    }
+
+    public void addTask(Task newTask) {
+
+        mItems.add(newTask);
     }
 }
