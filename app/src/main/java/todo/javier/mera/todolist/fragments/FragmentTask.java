@@ -43,6 +43,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     DialogSortListener{
 
     public static final String TODO_LISt = "TODO_LISt";
+
     private TodoList mTodoList;
     private int mSortSelected;
 
@@ -102,7 +103,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    protected int removeItems(List<Task> itemsToRemove) {
+    protected int deleteRecords(List<Task> itemsToRemove) {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
 
@@ -203,7 +204,7 @@ public class FragmentTask extends FragmentRecycler<Task>
                     taskPriority
                 );
 
-                long rowId = source.createTodoListTask(newTask);
+                long rowId = source.addTaskRecord(newTask);
 
                 if(rowId > -1) {
 
@@ -244,10 +245,15 @@ public class FragmentTask extends FragmentRecycler<Task>
     public void onSortSelected(int sortSelected, String sortByColumn, String order) {
 
         mSortSelected = sortSelected;
+
         setItemAnimator(new FadeInDownAnimator(new LinearOutSlowInInterpolator()));
 
         TodoListDataSource dataSource = new TodoListDataSource(mParent);
-        final List<Task> tasks = dataSource.readTodoListTasks(mTodoList.getId(), sortByColumn, order);
+        final List<Task> tasks = dataSource.readTodoListTasks(
+            mTodoList.getId(),
+            sortByColumn,
+            order
+        );
 
         final RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
         adapter.removeAll();
@@ -259,5 +265,20 @@ public class FragmentTask extends FragmentRecycler<Task>
             adapter.addItems(tasks);
             }
         }, 500);
+    }
+
+    @Override
+    public void restoreRecords() {
+
+        List<Task> tasksToRestore = mRemovedItems;
+        TodoListDataSource dataSource = new TodoListDataSource(mParent);
+        RecyclerAdapter adapter = getAdapter();
+
+        for(Task task : tasksToRestore) {
+
+            dataSource.addTaskRecord(task);
+            adapter.addItems(tasksToRestore);
+        }
+
     }
 }

@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -187,6 +186,12 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         notifyItemRangeInserted(0, mItems.size());
     }
 
+    public void restoreItems(T item) {
+
+        mItems.add(item.getPosition(), item);
+        notifyItemInserted(item.getPosition());
+    }
+
     public void changeItemColor(int position) {
 
         T item = getItem(position);
@@ -196,8 +201,9 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
 
     public void removeAll() {
 
+        int size = mItems.size();
         mItems.clear();
-        notifyDataSetChanged();
+        notifyItemRangeRemoved(0, size);
     }
 
     public void notifyUpdateItems() {

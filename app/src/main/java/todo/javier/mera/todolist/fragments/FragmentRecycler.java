@@ -43,6 +43,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     private boolean mIsRemovingItems;
 
     protected MainActivity mParent;
+    protected List<T> mRemovedItems;
 
     protected abstract RecyclerAdapter getAdapter();
     protected abstract String getTitle();
@@ -50,8 +51,10 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     protected abstract List<T> getAllItems();
     protected abstract void showItem(T item);
     protected abstract int getDeleteTitle();
-    protected abstract int removeItems(List<T> itemsToRemove);
+    protected abstract int deleteRecords(List<T> itemsToRemove);
     protected abstract void onUpdatePosition(List<T> items);
+
+    public abstract void restoreRecords();
     public abstract void showAddDialog();
 
     protected @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
@@ -144,20 +147,21 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 else {
 
                     setItemAnimator(new SlideInRightAnimator());
-                    List<T> itemsToRemove = adapter.getRemovableItems();
+                    mRemovedItems = adapter.getRemovableItems();
 
-                    if(itemsToRemove.isEmpty()) {
+                    if(mRemovedItems.isEmpty()) {
 
                         Toast.makeText(mParent, "No items selected.", Toast.LENGTH_SHORT).show();
                         return true;
                     }
 
-                    int removedCount = removeItems(itemsToRemove);
+                    int removedCount = deleteRecords(mRemovedItems);
 
                     if(removedCount > 0){
 
-                        adapter.removeItems(itemsToRemove);
+                        adapter.removeItems(mRemovedItems);
                         mParent.updateToolbarBackground(R.color.colorPrimary);
+                        mParent.showSnackBar("Deleted Items", "UNDO");
                     }
                     else {
 

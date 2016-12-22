@@ -47,7 +47,7 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     }
 
     @Override
-    protected int removeItems(List<TodoList> itemsToRemove) {
+    protected int deleteRecords(List<TodoList> itemsToRemove) {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
 
@@ -144,6 +144,11 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
 
         // Display back the add button when the user is finished adding a to-do list
         mParent.showFabButton();
+    }
+
+    @Override
+    public void restoreRecords() {
+
     }
 }
 

@@ -6,7 +6,9 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +36,9 @@ public class MainActivity extends AppCompatActivity
 
     @BindView(R.id.fab)
     FloatingActionButton mFab;
+
+    @BindView(R.id.activityLayout)
+    CoordinatorLayout mCoordinatorLayout;
 
     private static final String FRAGMENT_TAG = "fragment_recycler";
     private ObjectAnimator mFabScaleXDown;
@@ -187,5 +192,27 @@ public class MainActivity extends AppCompatActivity
     public void setFabVisibility(int visibility) {
 
         mFab.setVisibility(visibility);
+    }
+
+    @Override
+    public void showSnackBar(String message, String action) {
+
+        Snackbar snackbar = Snackbar.make(
+            mCoordinatorLayout,
+            message,
+            Snackbar.LENGTH_LONG
+        );
+
+        snackbar.setAction(action, new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                FragmentRecycler fragmentRecycler = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
+                fragmentRecycler.restoreRecords();
+            }
+        });
+
+        snackbar.show();
     }
 }

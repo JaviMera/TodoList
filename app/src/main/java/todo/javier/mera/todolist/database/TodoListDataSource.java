@@ -8,10 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.LinkedList;
 import java.util.List;
 
-import todo.javier.mera.todolist.model.TaskPriority;
-import todo.javier.mera.todolist.model.TodoList;
 import todo.javier.mera.todolist.model.Task;
+import todo.javier.mera.todolist.model.TaskPriority;
 import todo.javier.mera.todolist.model.TaskStatus;
+import todo.javier.mera.todolist.model.TodoList;
 
 /**
  * Created by javie on 12/4/2016.
@@ -106,7 +106,7 @@ public class TodoListDataSource {
         return todoLists;
     }
 
-    public long createTodoListTask(Task newTask) {
+    public long addTaskRecord(Task newTask) {
 
         mDb = openWriteable();
         mDb.beginTransaction();

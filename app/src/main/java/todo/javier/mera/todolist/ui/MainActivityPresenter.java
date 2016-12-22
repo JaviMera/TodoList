@@ -44,4 +44,9 @@ public class MainActivityPresenter {
 
         mView.setFabVisibility(visibility);
     }
+
+    public void showSnackbar(String message, String action) {
+
+        mView.showSnackBar(message, action);
+    }
 }

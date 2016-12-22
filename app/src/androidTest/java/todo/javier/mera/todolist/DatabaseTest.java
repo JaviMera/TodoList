@@ -19,10 +19,10 @@ import java.util.UUID;
 
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
-import todo.javier.mera.todolist.model.TaskPriority;
-import todo.javier.mera.todolist.model.TodoList;
 import todo.javier.mera.todolist.model.Task;
+import todo.javier.mera.todolist.model.TaskPriority;
 import todo.javier.mera.todolist.model.TaskStatus;
+import todo.javier.mera.todolist.model.TodoList;
 
 /**
  * Created by javie on 12/5/2016.
@@ -110,7 +110,7 @@ public class DatabaseTest {
         // Act
         mDataSource.createTodoList(todoList);
 
-        long rowId = mDataSource.createTodoListTask(newTask);
+        long rowId = mDataSource.addTaskRecord(newTask);
 
         // Assert
         Assert.assertTrue(rowId > -1);
@@ -126,7 +126,7 @@ public class DatabaseTest {
 
         // Act
         mDataSource.createTodoList(todoList);
-        mDataSource.createTodoListTask(task);
+        mDataSource.addTaskRecord(task);
 
         List<Task> items = mDataSource.readTodoListTasks(todoList.getId());
 
@@ -179,7 +179,7 @@ public class DatabaseTest {
         Task task = createTask(todoList.getId());
 
         // Act
-        long rowId = mDataSource.createTodoListTask(task);
+        long rowId = mDataSource.addTaskRecord(task);
 
         int newPosition = 2;
 
@@ -207,7 +207,7 @@ public class DatabaseTest {
         Task expectedTask = createTask(UUID.randomUUID().toString());
 
         // Act
-        mDataSource.createTodoListTask(expectedTask);
+        mDataSource.addTaskRecord(expectedTask);
         expectedTask.setStatus(TaskStatus.Completed);
         ContentValues values = new ContentValues();
         values.put(TodoListSQLiteHelper.COLUMN_ITEMS_STATUS, expectedTask.getStatus().ordinal());
@@ -232,7 +232,7 @@ public class DatabaseTest {
         Task task = createTask(UUID.randomUUID().toString());
 
         // Act
-        mDataSource.createTodoListTask(task);
+        mDataSource.addTaskRecord(task);
         TaskPriority newPriority = TaskPriority.High;
 
         Task expectedTask = mDataSource.readTodoListTasks(task.getTodoListId()).get(0);
@@ -263,7 +263,7 @@ public class DatabaseTest {
 
         // Act
         mDataSource.createTodoList(todoList);
-        mDataSource.createTodoListTask(task);
+        mDataSource.addTaskRecord(task);
 
         int expectedRowCount = mDataSource.removeTodoListTasks(task);
 
@@ -280,7 +280,7 @@ public class DatabaseTest {
 
         // Act
         mDataSource.createTodoList(todoList);
-        mDataSource.createTodoListTask(task);
+        mDataSource.addTaskRecord(task);
 
         int expectedRowCount = mDataSource.removeTodoLists(new TodoList[]{todoList});
         List<Task> tasks = mDataSource.readTodoListTasks(todoList.getId());

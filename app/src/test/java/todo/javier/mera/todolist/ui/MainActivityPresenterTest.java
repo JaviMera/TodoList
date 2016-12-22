@@ -95,4 +95,18 @@ public class MainActivityPresenterTest {
         // Assert
         Mockito.verify(mView).setFabVisibility(visibility);
     }
+
+    @Test
+    public void showSnackbar() throws Exception {
+
+        // Arrange
+        String message = "sup";
+        String action = "undo";
+
+        // Act
+        mPresenter.showSnackbar(message, action);
+
+        // Assert
+        Mockito.verify(mView).showSnackBar(message, action);
+    }
 }

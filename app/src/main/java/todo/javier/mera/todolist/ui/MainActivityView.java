@@ -15,4 +15,5 @@ public interface MainActivityView {
     void toggleBackButton(boolean canDisplay);
     void setToolbar();
     void setFabVisibility(int visibility);
+    void showSnackBar(String message, String action);
 }
