@@ -270,15 +270,13 @@ public class FragmentTask extends FragmentRecycler<Task>
     @Override
     public void restoreRecords() {
 
-        List<Task> tasksToRestore = mRemovedItems;
         TodoListDataSource dataSource = new TodoListDataSource(mParent);
         RecyclerAdapter adapter = getAdapter();
 
-        for(Task task : tasksToRestore) {
+        for(Task task : mRemovedItems) {
 
             dataSource.addTaskRecord(task);
-            adapter.addItems(tasksToRestore);
+            adapter.restoreItem(task);
         }
-
     }
 }

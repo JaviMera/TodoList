@@ -186,7 +186,7 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         notifyItemRangeInserted(0, mItems.size());
     }
 
-    public void restoreItems(T item) {
+    public void restoreItem(T item) {
 
         mItems.add(item.getPosition(), item);
         notifyItemInserted(item.getPosition());
