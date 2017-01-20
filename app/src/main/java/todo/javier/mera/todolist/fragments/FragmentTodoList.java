@@ -18,6 +18,7 @@ import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTodoList;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTodoListListener;
+import todo.javier.mera.todolist.model.ItemBase;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class FragmentTodoList extends FragmentRecycler<TodoList>
@@ -84,6 +85,11 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
         DialogTodoList dialogTodoList = new DialogTodoList();
         dialogTodoList.setTargetFragment(this, 1);
         dialogTodoList.show(mParent.getSupportFragmentManager(), "dialog_todolists");
+    }
+
+    @Override
+    public void undoItemsDelete(List<ItemBase> items) {
+
     }
 
     @Override

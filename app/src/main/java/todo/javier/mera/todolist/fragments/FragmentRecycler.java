@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -137,40 +138,29 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 if(!mIsRemovingItems) {
 
                     mIsRemovingItems = true;
-                    adapter.notifyUpdateItems();
                     mParent.updateToolbarBackground(R.color.remove_color_light);
                     mParent.hideFabButton();
                 }
                 else {
 
                     setItemAnimator(new SlideInRightAnimator());
-                    List<T> itemsToRemove = adapter.getRemovableItems();
 
-                    if(itemsToRemove.isEmpty()) {
+                    List<T> items = adapter.removeItems();
+
+                    // Check if no items were selected to be removed
+                    if(items.isEmpty()) {
 
                         Toast.makeText(mParent, "No items selected.", Toast.LENGTH_SHORT).show();
                         return true;
                     }
 
-                    int removedCount = removeItems(itemsToRemove);
-
-                    if(removedCount > 0){
-
-                        adapter.removeItems(itemsToRemove);
-                        mParent.updateToolbarBackground(R.color.colorPrimary);
-                    }
-                    else {
-
-                        Toast
-                            .makeText(
-                                mParent,
-                                "Something went wrong in deleting tasks", Toast.LENGTH_SHORT)
-                            .show();
-                    }
+                    // Remove items from either Task or TodoList Fragment
+                    removeItems(items);
+                    mParent.updateToolbarBackground(R.color.colorPrimary);
 
                     mIsRemovingItems = false;
                     mParent.showFabButton();
-                    adapter.notifyUpdateItems();
+                    mParent.showSnackBar("Items deleted", "Undo", new LinkedList<ItemBase>());
                 }
 
                 mParent.invalidateOptionsMenu();
@@ -287,4 +277,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         mIsRemovingItems = false;
         mParent.invalidateOptionsMenu();
     }
+
+    public abstract void undoItemsDelete(List<ItemBase> items);
 }

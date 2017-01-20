@@ -6,13 +6,18 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +26,7 @@ import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.fragments.FragmentTodoList;
+import todo.javier.mera.todolist.model.ItemBase;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class MainMainActivity extends AppCompatActivity
@@ -34,6 +40,9 @@ public class MainMainActivity extends AppCompatActivity
 
     @BindView(R.id.fab)
     FloatingActionButton mFab;
+
+    @BindView(R.id.coordinatorLayout)
+    CoordinatorLayout mCoordinatorLayout;
 
     private static final String FRAGMENT_TAG = "fragment_recycler";
     private ObjectAnimator mFabScaleXDown;
@@ -187,5 +196,25 @@ public class MainMainActivity extends AppCompatActivity
     public void setFabVisibility(int visibility) {
 
         mFab.setVisibility(visibility);
+    }
+
+    @Override
+    public void showSnackBar(String message, String action, final List<ItemBase> items) {
+
+        Snackbar.make(
+            mCoordinatorLayout,
+            message,
+            Snackbar.LENGTH_LONG
+        )
+        .setAction(action, new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                FragmentRecycler currentFragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
+                currentFragment.undoItemsDelete(items);
+            }
+        })
+        .show();
     }
 }

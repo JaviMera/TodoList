@@ -153,32 +153,22 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         return count;
     }
 
-    public List getRemovableItems() {
+    public List<T> removeItems() {
 
-        List<T> items = new LinkedList<>();
+        List<T> itemsToRemove = new LinkedList<>();
 
         for(T item : mItems) {
-
-            if(item.getCanRemove()) {
-
-                items.add(item);
-            }
-        }
-
-        return items;
-    }
-
-    public void removeItems(List<T> itemsToRemove) {
-
-        for(T item : itemsToRemove) {
 
             int position = mItems.indexOf(item);
             if(position != -1) {
 
                 mItems.remove(position);
                 notifyItemRemoved(position);
+                itemsToRemove.add(item);
             }
         }
+
+        return itemsToRemove;
     }
 
     public void addItems(List<T> items) {
@@ -198,10 +188,5 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
 
         mItems.clear();
         notifyDataSetChanged();
-    }
-
-    public void notifyUpdateItems() {
-
-        notifyItemRangeChanged(0, mItems.size());
     }
 }
