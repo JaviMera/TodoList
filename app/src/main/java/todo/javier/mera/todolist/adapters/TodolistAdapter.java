@@ -18,13 +18,6 @@ public class TodolistAdapter extends RecyclerAdapter<TodoList, TodolistViewHolde
     }
 
     @Override
-    protected void removeItem(int position) {
-
-        mItems.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    @Override
     protected int getLayout() {
 
         return R.layout.todo_list_item;

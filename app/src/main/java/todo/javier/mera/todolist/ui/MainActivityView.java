@@ -1,6 +1,7 @@
 package todo.javier.mera.todolist.ui;
 
 import java.util.List;
+import java.util.Map;
 
 import todo.javier.mera.todolist.model.ItemBase;
 import todo.javier.mera.todolist.model.TodoList;
@@ -18,5 +19,5 @@ public interface MainActivityView {
     void toggleBackButton(boolean canDisplay);
     void setToolbar();
     void setFabVisibility(int visibility);
-    void showSnackBar(String message, String action, List<ItemBase> items);
+    void showSnackBar(String message, String action, Map<Integer, ItemBase> items);
 }

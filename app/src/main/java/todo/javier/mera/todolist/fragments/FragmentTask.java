@@ -11,10 +11,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
@@ -28,7 +30,6 @@ import todo.javier.mera.todolist.fragments.dialogs.DialogSort;
 import todo.javier.mera.todolist.fragments.dialogs.DialogSortListener;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTask;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTaskListener;
-import todo.javier.mera.todolist.model.ItemBase;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TaskPriority;
 import todo.javier.mera.todolist.model.TaskStatus;
@@ -98,8 +99,16 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    public void undoItemsDelete(List<ItemBase> items) {
+    public void undoItemsDelete(Map<Integer, Task> items) {
 
+        TodoListDataSource source = new TodoListDataSource(mParent);
+
+        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+        for(Map.Entry<Integer, Task> entry : items.entrySet()) {
+
+            adapter.addItem(entry.getKey(), entry.getValue());
+            source.createTodoListTask(entry.getValue());
+        }
     }
 
     @Override

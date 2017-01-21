@@ -1,5 +1,6 @@
 package todo.javier.mera.todolist.adapters;
 
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,11 +8,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.model.ItemBase;
+import todo.javier.mera.todolist.model.Task;
 
 /**
  * Created by javie on 11/29/2016.
@@ -24,10 +28,8 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
 
     private final FragmentRecycler mFragment;
     private final Class<H> mHolderType;
+    protected List<T> mItems;
 
-    List<T> mItems;
-
-    protected abstract void removeItem(int position);
     protected abstract int getLayout();
 
     public T getItem(int position) {
@@ -153,22 +155,27 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         return count;
     }
 
-    public List<T> removeItems() {
+    public Map<Integer, T> removeItems() {
 
-        List<T> itemsToRemove = new LinkedList<>();
+        Map<Integer, T> itemsMap = new LinkedHashMap<>();
+        List<T> itemsList = new LinkedList<>();
 
         for(T item : mItems) {
 
-            int position = mItems.indexOf(item);
-            if(position != -1) {
+            if(item.getCanRemove()) {
 
-                mItems.remove(position);
-                notifyItemRemoved(position);
-                itemsToRemove.add(item);
+                itemsList.add(item);
             }
         }
 
-        return itemsToRemove;
+        for(T item : itemsList) {
+
+            mItems.remove(item.getPosition());
+            notifyItemRemoved(item.getPosition());
+            itemsMap.put(item.getPosition(), item);
+        }
+
+        return itemsMap;
     }
 
     public void addItems(List<T> items) {
@@ -188,5 +195,12 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
 
         mItems.clear();
         notifyDataSetChanged();
+    }
+
+    public void addItem(Integer position, T item) {
+
+        mItems.add(position, item);
+        item.setCanRemove(false);
+        notifyItemInserted(position);
     }
 }

@@ -15,9 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -199,7 +198,7 @@ public class MainMainActivity extends AppCompatActivity
     }
 
     @Override
-    public void showSnackBar(String message, String action, final List<ItemBase> items) {
+    public void showSnackBar(String message, String action, final Map<Integer, ItemBase> items) {
 
         Snackbar.make(
             mCoordinatorLayout,

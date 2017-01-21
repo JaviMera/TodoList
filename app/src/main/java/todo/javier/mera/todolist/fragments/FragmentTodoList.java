@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
@@ -18,7 +19,6 @@ import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTodoList;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTodoListListener;
-import todo.javier.mera.todolist.model.ItemBase;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class FragmentTodoList extends FragmentRecycler<TodoList>
@@ -88,7 +88,7 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     }
 
     @Override
-    public void undoItemsDelete(List<ItemBase> items) {
+    public void undoItemsDelete(Map items) {
 
     }
 

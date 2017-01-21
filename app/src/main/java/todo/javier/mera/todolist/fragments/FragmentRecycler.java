@@ -19,8 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -145,7 +147,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
                     setItemAnimator(new SlideInRightAnimator());
 
-                    List<T> items = adapter.removeItems();
+                    Map<Integer, T> items = adapter.removeItems();
 
                     // Check if no items were selected to be removed
                     if(items.isEmpty()) {
@@ -155,12 +157,12 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                     }
 
                     // Remove items from either Task or TodoList Fragment
-                    removeItems(items);
+                    removeItems(new ArrayList(items.values()));
                     mParent.updateToolbarBackground(R.color.colorPrimary);
 
                     mIsRemovingItems = false;
                     mParent.showFabButton();
-                    mParent.showSnackBar("Items deleted", "Undo", new LinkedList<ItemBase>());
+                    mParent.showSnackBar("Items deleted", "Undo", items);
                 }
 
                 mParent.invalidateOptionsMenu();
@@ -278,5 +280,5 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         mParent.invalidateOptionsMenu();
     }
 
-    public abstract void undoItemsDelete(List<ItemBase> items);
+    public abstract void undoItemsDelete(Map<Integer, T> items);
 }
