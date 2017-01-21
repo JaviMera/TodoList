@@ -17,5 +17,6 @@
         app:showAsAction="ifRoom"
         android:orderInCategory="102"
         android:visible="false"
+        android:icon="@mipmap/ic_sort"
         />
 </menu>

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
 
 import java.util.Date;
 import java.util.List;
@@ -86,12 +85,6 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
         DialogTodoList dialogTodoList = new DialogTodoList();
         dialogTodoList.setTargetFragment(this, 1);
         dialogTodoList.show(mParent.getSupportFragmentManager(), "dialog_todolists");
-    }
-
-    @Override
-    protected void showChildMenu(Menu menu, boolean visible) {
-
-        // TODO add logic to show/hide todo list menu items
     }
 
     @Override
