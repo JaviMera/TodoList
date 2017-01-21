@@ -92,9 +92,10 @@ public class MainMainActivity extends AppCompatActivity
         FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
         if (fragment.isRemovingItems()) {
 
-            fragment.clearRemovableItems();
+            fragment.removeItems();
             mPresenter.updateToolbarBackground(R.color.colorPrimary);
             mPresenter.showFabButton();
+            getSupportActionBar().setHomeAsUpIndicator(0);
         }
         else {
 
@@ -215,5 +216,10 @@ public class MainMainActivity extends AppCompatActivity
             }
         })
         .show();
+    }
+
+    public void showCloseButton(int resourceId) {
+
+        getSupportActionBar().setHomeAsUpIndicator(resourceId);
     }
 }
