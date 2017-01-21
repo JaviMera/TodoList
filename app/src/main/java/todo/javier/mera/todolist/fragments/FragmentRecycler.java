@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -142,6 +141,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                     mIsRemovingItems = true;
                     mParent.updateToolbarBackground(R.color.remove_color_light);
                     mParent.hideFabButton();
+                    adapter.notifyItemRangeChanged(0, adapter.getItemCount());
                 }
                 else {
 
@@ -231,6 +231,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 mIsRemovingItems = false;
                 mParent.invalidateOptionsMenu();
                 mParent.updateToolbarBackground(R.color.colorPrimary);
+                adapter.notifyItemRangeChanged(0, adapter.getItemCount());
             }
         }
         else {

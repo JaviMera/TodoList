@@ -1,11 +1,9 @@
 package todo.javier.mera.todolist.adapters;
 
-import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -15,7 +13,6 @@ import java.util.Map;
 
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.model.ItemBase;
-import todo.javier.mera.todolist.model.Task;
 
 /**
  * Created by javie on 11/29/2016.
@@ -44,9 +41,9 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         notifyItemInserted(mItems.size() - 1);
     }
 
-    public void setRemovable(int itemLongClicked) {
+    public void setRemovable(int position) {
 
-        T item = mItems.get(itemLongClicked);
+        T item = mItems.get(position);
 
         // This will work as a toggle for can or can't be removed
         // The item will start as non removable, so the first click will make it removable, the next
@@ -54,7 +51,7 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         boolean isRemovable = !item.getCanRemove();
 
         item.setCanRemove(isRemovable);
-        notifyItemChanged(itemLongClicked);
+        notifyItemChanged(position);
     }
 
     public void clearRemovableItems() {
