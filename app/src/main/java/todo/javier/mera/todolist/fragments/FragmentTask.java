@@ -108,6 +108,8 @@ public class FragmentTask extends FragmentRecycler<Task>
             adapter.addItem(entry.getKey(), entry.getValue());
             source.createTodoListTask(entry.getValue(), entry.getKey());
         }
+
+        updateItemPositions();
     }
 
     @Override
@@ -158,7 +160,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    protected void onUpdatePosition(Map<String, Integer> items) {
+    protected void updateItemPositions(Map<String, Integer> items) {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
 

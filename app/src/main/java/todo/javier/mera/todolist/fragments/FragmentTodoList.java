@@ -59,7 +59,7 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     }
 
     @Override
-    protected void onUpdatePosition(Map<String, Integer> items) {
+    protected void updateItemPositions(Map<String, Integer> items) {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
 

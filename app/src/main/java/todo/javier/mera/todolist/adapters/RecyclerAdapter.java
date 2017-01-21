@@ -200,4 +200,9 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         item.setCanRemove(false);
         notifyItemInserted(position);
     }
+
+    public List<T> getItems() {
+
+        return mItems;
+    }
 }

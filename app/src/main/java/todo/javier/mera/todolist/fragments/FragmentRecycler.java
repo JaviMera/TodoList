@@ -55,7 +55,9 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     protected abstract void showItem(T item);
     protected abstract int getDeleteTitle();
     protected abstract int removeItems(List<T> itemsToRemove);
-    protected abstract void onUpdatePosition(Map<String, Integer> items);
+    protected abstract void updateItemPositions(Map<String, Integer> items);
+
+    public abstract void undoItemsDelete(Map<Integer, T> items);
     public abstract void showAddDialog();
 
     protected @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
@@ -158,12 +160,16 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
                     // Remove items from either Task or TodoList Fragment
                     removeItems(new ArrayList(mRemovableItems.values()));
+
+                    // Update the position of the items left in the list
+                    updateItemPositions();
                     mParent.updateToolbarBackground(R.color.colorPrimary);
 
                     mIsRemovingItems = false;
                     mParent.showFabButton();
                     mParent.showSnackBar("Items deleted", "Undo", mRemovableItems);
                     adapter.notifyItemRangeChanged(0, adapter.getItemCount());
+
                 }
 
                 mParent.invalidateOptionsMenu();
@@ -176,6 +182,19 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         return true;
     }
 
+    protected void updateItemPositions() {
+
+        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+        List<T> currentItems = adapter.getItems();
+        Map<String, Integer> itemsMap = new LinkedHashMap<>();
+
+        for(int position = 0 ; position < currentItems.size() ; position++) {
+
+            itemsMap.put(currentItems.get(position).getId(), position);
+        }
+
+        updateItemPositions(itemsMap);
+    }
 
     @Override
     public void setAdapter(Fragment context) {
@@ -246,7 +265,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     @Override
     public void onItemsUpdate(Map<String, Integer> items) {
 
-        onUpdatePosition(items);
+        updateItemPositions(items);
     }
 
     protected int getOrientation(Context context) {
@@ -282,6 +301,4 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         mIsRemovingItems = false;
         mParent.invalidateOptionsMenu();
     }
-
-    public abstract void undoItemsDelete(Map<Integer, T> items);
 }
