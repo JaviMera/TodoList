@@ -162,7 +162,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
                     mIsRemovingItems = false;
                     mParent.showFabButton();
-                    mParent.showSnackBar("Items deleted", "Undo", items);
+                    mParent.showSnackBar("Items deleted", "Undo", (Map<Integer, ItemBase>) items);
                 }
 
                 mParent.invalidateOptionsMenu();
