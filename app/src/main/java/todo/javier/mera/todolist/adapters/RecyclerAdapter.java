@@ -37,7 +37,6 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
     public void addItem(T item) {
 
         mItems.add(item);
-        item.setPosition(mItems.size() - 1);
         notifyItemInserted(mItems.size() - 1);
     }
 
@@ -102,8 +101,6 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
 
             for(int i = fromPosition ; i < toPosition ; i++) {
 
-                mItems.get(i).setPosition(i+1);
-                mItems.get(i+1).setPosition(i);
                 Collections.swap(mItems, i, i + 1);
             }
         }
@@ -111,8 +108,6 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
 
             for(int i = fromPosition ; i > toPosition ; i--) {
 
-                mItems.get(i).setPosition(i-1);
-                mItems.get(i-1).setPosition(i);
                 Collections.swap(mItems, i, i - 1);
             }
         }
@@ -129,12 +124,19 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
     }
 
     @Override
-    public void onItemDropped(int position) {
+    public void onItemDropped(int newPosition) {
 
-        T item = getItem(position);
+        T item = getItem(newPosition);
         item.setMoving(false);
-        notifyItemChanged(position);
-        mFragment.onItemsUpdate(mItems);
+        notifyItemChanged(newPosition);
+
+        Map<String, Integer> items = new LinkedHashMap<>();
+        for(int position = 0 ; position < mItems.size() ; position++) {
+
+            items.put(mItems.get(position).getId(), position);
+        }
+
+        mFragment.onItemsUpdate(items);
     }
 
     public int getRemovableCount() {
@@ -152,9 +154,8 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         return count;
     }
 
-    public Map<Integer, T> removeItems() {
+    public void removeItems() {
 
-        Map<Integer, T> itemsMap = new LinkedHashMap<>();
         List<T> itemsList = new LinkedList<>();
 
         for(T item : mItems) {
@@ -167,12 +168,10 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
 
         for(T item : itemsList) {
 
-            mItems.remove(item.getPosition());
-            notifyItemRemoved(item.getPosition());
-            itemsMap.put(item.getPosition(), item);
+            int position = mItems.indexOf(item);
+            mItems.remove(position);
+            notifyItemRemoved(position);
         }
-
-        return itemsMap;
     }
 
     public void addItems(List<T> items) {
@@ -195,6 +194,7 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
     }
 
     public void addItem(Integer position, T item) {
+
 
         mItems.add(position, item);
         item.setCanRemove(false);

@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -107,7 +106,7 @@ public class FragmentTask extends FragmentRecycler<Task>
         for(Map.Entry<Integer, Task> entry : items.entrySet()) {
 
             adapter.addItem(entry.getKey(), entry.getValue());
-            source.createTodoListTask(entry.getValue());
+            source.createTodoListTask(entry.getValue(), entry.getKey());
         }
     }
 
@@ -159,19 +158,19 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    protected void onUpdatePosition(List<Task> items) {
+    protected void onUpdatePosition(Map<String, Integer> items) {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
 
         ContentValues values = new ContentValues();
-        for(Task task : items) {
+        for(Map.Entry<String, Integer> item : items.entrySet()) {
 
-            values.put(TodoListSQLiteHelper.COLUMN_ITEMS_POSITION, task.getPosition());
+            values.put(TodoListSQLiteHelper.COLUMN_ITEMS_POSITION, item.getValue());
 
             source.update(
                 TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
                 TodoListSQLiteHelper.COLUMN_ITEMS_ID,
-                task.getId(),
+                item.getKey(),
                 values
             );
 
@@ -209,7 +208,6 @@ public class FragmentTask extends FragmentRecycler<Task>
             Task newTask = new Task(
                 taskId,
                 mTodoList.getId(),
-                adapter.getItemCount(),
                 taskDescription,
                 taskStatus,
                 taskCreationDate,
@@ -217,7 +215,10 @@ public class FragmentTask extends FragmentRecycler<Task>
                 taskPriority
             );
 
-            long rowId = source.createTodoListTask(newTask);
+            long rowId = source.createTodoListTask(
+                newTask,
+                adapter.getItemCount()
+            );
 
             if(rowId > -1) {
 

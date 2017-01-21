@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +44,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
     private FragmentRecyclerPresenter mPresenter;
     private boolean mIsRemovingItems;
+    private Map<Integer, ItemBase> mRemovableItems;
 
     protected MainMainActivity mParent;
 
@@ -53,7 +55,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     protected abstract void showItem(T item);
     protected abstract int getDeleteTitle();
     protected abstract int removeItems(List<T> itemsToRemove);
-    protected abstract void onUpdatePosition(List<T> items);
+    protected abstract void onUpdatePosition(Map<String, Integer> items);
     public abstract void showAddDialog();
 
     protected @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
@@ -64,6 +66,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
         mParent = (MainMainActivity) getActivity();
         mIsRemovingItems = false;
+        mRemovableItems = new LinkedHashMap<>();
         setHasOptionsMenu(true);
     }
 
@@ -74,10 +77,9 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         View view = inflater.inflate(R.layout.fragment_recycler, container, false);
 
         ButterKnife.bind(this, view);
-        mPresenter = new FragmentRecyclerPresenter(this);
-
         mParent.setToolbarTitle(getTitle());
 
+        mPresenter = new FragmentRecyclerPresenter(this);
         mPresenter.setAdapter(this);
         mPresenter.setLayoutManager(mParent);
         mPresenter.setFixedSize(true);
@@ -146,23 +148,22 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 else {
 
                     setItemAnimator(new SlideInRightAnimator());
-
-                    Map<Integer, T> items = adapter.removeItems();
-
+                    adapter.removeItems();
                     // Check if no items were selected to be removed
-                    if(items.isEmpty()) {
+                    if(mRemovableItems.isEmpty()) {
 
                         Toast.makeText(mParent, "No items selected.", Toast.LENGTH_SHORT).show();
                         return true;
                     }
 
                     // Remove items from either Task or TodoList Fragment
-                    removeItems(new ArrayList(items.values()));
+                    removeItems(new ArrayList(mRemovableItems.values()));
                     mParent.updateToolbarBackground(R.color.colorPrimary);
 
                     mIsRemovingItems = false;
                     mParent.showFabButton();
-                    mParent.showSnackBar("Items deleted", "Undo", (Map<Integer, ItemBase>) items);
+                    mParent.showSnackBar("Items deleted", "Undo", mRemovableItems);
+                    adapter.notifyItemRangeChanged(0, adapter.getItemCount());
                 }
 
                 mParent.invalidateOptionsMenu();
@@ -224,6 +225,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         if(mIsRemovingItems) {
 
             adapter.setRemovable(position);
+            mRemovableItems.put(position, adapter.getItem(position));
 
             int count = adapter.getRemovableCount();
             if(count == 0) {
@@ -242,7 +244,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     }
 
     @Override
-    public void onItemsUpdate(List<T> items) {
+    public void onItemsUpdate(Map<String, Integer> items) {
 
         onUpdatePosition(items);
     }

@@ -18,14 +18,13 @@ public class Task extends ItemBase implements Parcelable {
     public Task(
         String itemId,
         String todoListId,
-        int position,
         String description,
         TaskStatus status,
         long creationDate,
         long dueDate,
         TaskPriority priority) {
 
-        super(itemId, position, false);
+        super(itemId, false);
 
         mTodoListId = todoListId;
         mDescription = description;
