@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -19,10 +20,13 @@ import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTodoList;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTodoListListener;
+import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class FragmentTodoList extends FragmentRecycler<TodoList>
     implements DialogTodoListListener {
+
+    private Map<String, List<Task>> mRemovableTodoLists;
 
     public static FragmentTodoList newInstance() {
 
@@ -51,6 +55,13 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     protected int removeItems(List<TodoList> itemsToRemove) {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
+        mRemovableTodoLists = new LinkedHashMap();
+
+        for(TodoList tl : itemsToRemove) {
+
+            List<Task> tasks = source.readTodoListTasks(tl.getId());
+            mRemovableTodoLists.put(tl.getId(), tasks);
+        }
 
         TodoList[] items = itemsToRemove.toArray(new TodoList[itemsToRemove.size()]);
         int affectedRows = source.removeTodoLists(items);
@@ -88,8 +99,22 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     }
 
     @Override
-    public void undoItemsDelete(Map items) {
+    public void undoItemsDelete(Map<Integer, TodoList> items) {
 
+        TodoListDataSource source = new TodoListDataSource(mParent);
+
+        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+        for(Map.Entry<Integer, TodoList> entry : items.entrySet()) {
+
+            adapter.addItem(entry.getKey(), entry.getValue());
+            source.createTodoList(entry.getValue(), entry.getKey());
+
+            List<Task> tasks = mRemovableTodoLists.get(entry.getValue().getId());
+            for(int position = 0 ; position < tasks.size() ; position++) {
+
+                source.createTodoListTask(tasks.get(position), position);
+            }
+        }
     }
 
     @Override

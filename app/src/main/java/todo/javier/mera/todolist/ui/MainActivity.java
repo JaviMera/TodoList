@@ -96,6 +96,15 @@ public class MainActivity extends AppCompatActivity
             mPresenter.updateToolbarBackground(R.color.colorPrimary);
             mPresenter.showFabButton();
             getSupportActionBar().setHomeAsUpIndicator(0);
+
+            if(fragment instanceof FragmentTodoList) {
+
+                mPresenter.toggleBackButton(false);
+            }
+            else {
+
+                mPresenter.toggleBackButton(true);
+            }
         }
         else {
 
@@ -117,6 +126,7 @@ public class MainActivity extends AppCompatActivity
                     fragment.removeItems();
                     mPresenter.updateToolbarBackground(R.color.colorPrimary);
                     mPresenter.showFabButton();
+                    mPresenter.toggleBackButton(false);
                     getSupportActionBar().setHomeAsUpIndicator(0);
                 }
                 else {
@@ -144,10 +154,10 @@ public class MainActivity extends AppCompatActivity
 
         Fragment fragment = FragmentTask.newInstance(todoList);
         mFragmentHelper.replaceWithBackStack(
-                R.id.fragmentContainer,
-                fragment,
-                FRAGMENT_TAG,
-                null
+            R.id.fragmentContainer,
+            fragment,
+            FRAGMENT_TAG,
+            null
         );
     }
 

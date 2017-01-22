@@ -154,6 +154,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                     mIsRemovingItems = true;
                     mParent.updateToolbarBackground(R.color.remove_color_light);
                     mParent.hideFabButton();
+                    mParent.toggleBackButton(true);
                     mParent.showCloseButton(R.mipmap.ic_check);
                     adapter.notifyItemRangeChanged(0, adapter.getItemCount());
                 }
@@ -219,7 +220,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
         // Don't allow the user to drag items while they are selecting items to be removed.
         if(mIsRemovingItems) {
-
             return;
         }
 
@@ -308,13 +308,14 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         updatePositions();
 
         mParent.updateToolbarBackground(R.color.colorPrimary);
-
         mParent.showFabButton();
         mParent.showSnackBar("Items deleted", "Undo", mRemovableItems);
         adapter.notifyItemRangeChanged(0, adapter.getItemCount());
     }
 
     public void resetItems() {
+
+        mParent.invalidateOptionsMenu();
 
         RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
         adapter.resetItems();
