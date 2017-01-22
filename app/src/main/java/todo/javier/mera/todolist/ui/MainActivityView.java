@@ -19,4 +19,5 @@ public interface MainActivityView {
     void setToolbar();
     void setFabVisibility(int visibility);
     void showSnackBar(String message, String action, Map<Integer, ItemBase> items);
+    void setIndicator(int resourceId);
 }

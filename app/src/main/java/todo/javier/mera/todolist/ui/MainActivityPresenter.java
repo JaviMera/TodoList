@@ -44,4 +44,9 @@ public class MainActivityPresenter {
 
         mView.setFabVisibility(visibility);
     }
+
+    public void setIndicator(int resourceId) {
+
+        mView.setIndicator(resourceId);
+    }
 }

@@ -1,7 +1,5 @@
 package todo.javier.mera.todolist.model;
 
-import android.renderscript.RenderScript;
-
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -21,7 +19,6 @@ public class TaskTest {
     private TaskStatus mExpectedStatus = TaskStatus.Created;
     private long mExpectedCreationDate = new Date().getTime();
     private Task mTask;
-    private int mExpectedPosition = 0;
     private long mExpectedDueDate = new Date().getTime();
     private TaskPriority mExpectedPriority = TaskPriority.None;
 
@@ -31,7 +28,6 @@ public class TaskTest {
         mTask = new Task(
             mExpectedItemId,
             mExpectedTodolistId,
-            mExpectedPosition,
             mExpectedDescription,
             mExpectedStatus,
             mExpectedCreationDate,
@@ -94,27 +90,6 @@ public class TaskTest {
 
         // Assert
         Assert.assertEquals(expectedStatus, actualStatus);
-    }
-
-    @Test
-    public void getPosition() throws Exception {
-
-        // Assert
-        Assert.assertEquals(mExpectedPosition, mTask.getPosition());
-    }
-
-    @Test
-    public void setPosition() throws Exception {
-
-        // Arrange
-        int expectedPosition = 3;
-
-        // Act
-        mTask.setPosition(expectedPosition);
-        int actualPosition = mTask.getPosition();
-
-        // Assert
-        Assert.assertEquals(expectedPosition, actualPosition);
     }
 
     @Test

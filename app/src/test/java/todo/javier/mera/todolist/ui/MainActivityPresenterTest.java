@@ -97,16 +97,15 @@ public class MainActivityPresenterTest {
     }
 
     @Test
-    public void showSnackbar() throws Exception {
+    public void setIndicator() throws Exception {
 
         // Arrange
-        String message = "sup";
-        String action = "undo";
+        int resourceId = 0;
 
         // Act
-        mPresenter.showSnackbar(message, action);
+        mPresenter.setIndicator(resourceId);
 
         // Assert
-        Mockito.verify(mView).showSnackBar(message, action);
+        Mockito.verify(mView).setIndicator(resourceId);
     }
 }
