@@ -1,6 +1,6 @@
 package todo.javier.mera.todolist.fragments;
 
-import java.util.List;
+import java.util.Map;
 
 import todo.javier.mera.todolist.model.ItemBase;
 
@@ -12,5 +12,5 @@ interface RecyclerItemListener<T extends ItemBase> {
 
     void onClick(int position);
     void onLongClick(int position);
-    void onItemsUpdate(List<T> items);
+    void onItemsUpdate(Map<String, Integer> items);
 }

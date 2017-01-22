@@ -15,9 +15,9 @@ public class TodoList extends ItemBase implements Parcelable {
     private long mCreationDate;
     private List<Task> mItems;
 
-    public TodoList(String id, String title, long creationDate, int position) {
+    public TodoList(String id, String title, long creationDate) {
 
-        super(id, position, false);
+        super(id, false);
 
         mTitle = title;
         mCreationDate = creationDate;

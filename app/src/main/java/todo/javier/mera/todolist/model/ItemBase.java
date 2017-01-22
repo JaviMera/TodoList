@@ -11,19 +11,16 @@ public abstract class ItemBase implements Parcelable {
     private boolean mCanRemove;
     private boolean mIsMoving;
     private String mId;
-    private int mPosition;
 
-    ItemBase(String id, int position, boolean canRemove) {
+    ItemBase(String id, boolean canRemove) {
 
         mId = id;
-        mPosition  = position;
         mCanRemove = canRemove;
     }
 
     ItemBase(Parcel in) {
 
         mId = in.readString();
-        mPosition = in.readInt();
         mCanRemove = in.readInt() == 1;
     }
 
@@ -36,8 +33,31 @@ public abstract class ItemBase implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
 
         parcel.writeString(mId);
-        parcel.writeInt(mPosition);
         parcel.writeInt(mCanRemove ? 1 : 0);
+    }
+
+    @Override
+    public int hashCode() {
+
+        final int prime = 31;
+
+        return prime * 1 + mId.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if(obj == this)
+            return true;
+
+        if(!(obj instanceof ItemBase)) {
+
+            return false;
+        }
+
+        ItemBase item = (ItemBase)obj;
+
+        return item.getId().equals(this.getId());
     }
 
     public void setCanRemove(boolean canRemove){
@@ -63,14 +83,5 @@ public abstract class ItemBase implements Parcelable {
     public boolean isMoving() {
 
         return mIsMoving;
-    }
-
-    public int getPosition() {
-        return mPosition;
-    }
-
-    public void setPosition(int position) {
-
-        mPosition = position;
     }
 }

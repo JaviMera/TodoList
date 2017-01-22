@@ -19,7 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +32,7 @@ import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.SimpleItemTouchHelperCallback;
 import todo.javier.mera.todolist.model.ItemBase;
-import todo.javier.mera.todolist.ui.MainActivity;
+import todo.javier.mera.todolist.ui.MainMainActivity;
 
 /**
  * Created by javie on 12/5/2016.
@@ -41,9 +44,9 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
     private FragmentRecyclerPresenter mPresenter;
     private boolean mIsRemovingItems;
+    private Map<Integer, ItemBase> mRemovableItems;
 
-    protected MainActivity mParent;
-    protected List<T> mRemovedItems;
+    protected MainMainActivity mParent;
 
     protected abstract RecyclerAdapter getAdapter();
     protected abstract String getTitle();
@@ -51,10 +54,10 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     protected abstract List<T> getAllItems();
     protected abstract void showItem(T item);
     protected abstract int getDeleteTitle();
-    protected abstract int deleteRecords(List<T> itemsToRemove);
-    protected abstract void onUpdatePosition(List<T> items);
+    protected abstract int removeItems(List<T> itemsToRemove);
+    protected abstract void updateItemPositions(Map<String, Integer> items);
 
-    public abstract void restoreRecords();
+    public abstract void undoItemsDelete(Map<Integer, T> items);
     public abstract void showAddDialog();
 
     protected @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
@@ -63,8 +66,9 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mParent = (MainActivity) getActivity();
+        mParent = (MainMainActivity) getActivity();
         mIsRemovingItems = false;
+        mRemovableItems = new LinkedHashMap<>();
         setHasOptionsMenu(true);
     }
 
@@ -75,10 +79,9 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         View view = inflater.inflate(R.layout.fragment_recycler, container, false);
 
         ButterKnife.bind(this, view);
-        mPresenter = new FragmentRecyclerPresenter(this);
-
         mParent.setToolbarTitle(getTitle());
 
+        mPresenter = new FragmentRecyclerPresenter(this);
         mPresenter.setAdapter(this);
         mPresenter.setLayoutManager(mParent);
         mPresenter.setFixedSize(true);
@@ -108,15 +111,19 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
         inflater.inflate(R.menu.fragment_recycler_menu, menu);
         MenuItem deleteItem = menu.findItem(R.id.action_delete);
+        MenuItem sortItem = menu.findItem(R.id.action_sort);
+
         deleteItem.setTitle(getDeleteTitle());
 
         if(mIsRemovingItems) {
 
-            deleteItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            deleteItem.setVisible(false);
+            sortItem.setVisible(false);
         }
         else {
 
-            deleteItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+            deleteItem.setVisible(true);
+            sortItem.setVisible(true);
         }
 
         super.onCreateOptionsMenu(menu, inflater);
@@ -143,38 +150,8 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                     adapter.notifyUpdateItems();
                     mParent.updateToolbarBackground(R.color.remove_color_light);
                     mParent.hideFabButton();
-                }
-                else {
-
-                    setItemAnimator(new SlideInRightAnimator());
-                    mRemovedItems = adapter.getRemovableItems();
-
-                    if(mRemovedItems.isEmpty()) {
-
-                        Toast.makeText(mParent, "No items selected.", Toast.LENGTH_SHORT).show();
-                        return true;
-                    }
-
-                    int removedCount = deleteRecords(mRemovedItems);
-
-                    if(removedCount > 0){
-
-                        adapter.removeItems(mRemovedItems);
-                        mParent.updateToolbarBackground(R.color.colorPrimary);
-                        mParent.showSnackBar("Deleted Items", "UNDO");
-                    }
-                    else {
-
-                        Toast
-                            .makeText(
-                                mParent,
-                                "Something went wrong in deleting tasks", Toast.LENGTH_SHORT)
-                            .show();
-                    }
-
-                    mIsRemovingItems = false;
-                    mParent.showFabButton();
-                    adapter.notifyUpdateItems();
+                    mParent.showCloseButton(R.mipmap.ic_check);
+                    adapter.notifyItemRangeChanged(0, adapter.getItemCount());
                 }
 
                 mParent.invalidateOptionsMenu();
@@ -187,6 +164,19 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         return true;
     }
 
+    protected void updateItemPositions() {
+
+        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+        List<T> currentItems = adapter.getItems();
+        Map<String, Integer> itemsMap = new LinkedHashMap<>();
+
+        for(int position = 0 ; position < currentItems.size() ; position++) {
+
+            itemsMap.put(currentItems.get(position).getId(), position);
+        }
+
+        updateItemPositions(itemsMap);
+    }
 
     @Override
     public void setAdapter(Fragment context) {
@@ -236,6 +226,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         if(mIsRemovingItems) {
 
             adapter.setRemovable(position);
+            mRemovableItems.put(position, adapter.getItem(position));
 
             int count = adapter.getRemovableCount();
             if(count == 0) {
@@ -243,6 +234,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 mIsRemovingItems = false;
                 mParent.invalidateOptionsMenu();
                 mParent.updateToolbarBackground(R.color.colorPrimary);
+                adapter.notifyItemRangeChanged(0, adapter.getItemCount());
             }
         }
         else {
@@ -253,9 +245,9 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     }
 
     @Override
-    public void onItemsUpdate(List<T> items) {
+    public void onItemsUpdate(Map<String, Integer> items) {
 
-        onUpdatePosition(items);
+        updateItemPositions(items);
     }
 
     protected int getOrientation(Context context) {
@@ -280,15 +272,36 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         return mIsRemovingItems;
     }
 
-    public void clearRemovableItems() {
-
-        // Assign a default animator when the user clears out all selected items to be removed.
-        // This will make the items visually change back to normal without reloading the list.
-        setItemAnimator(new DefaultItemAnimator());
+    public void removeItems() {
 
         RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-        adapter.clearRemovableItems();
+
+        setItemAnimator(new SlideInRightAnimator());
+
         mIsRemovingItems = false;
+
         mParent.invalidateOptionsMenu();
+
+        // Check if no items were selected to be removed
+        if(mRemovableItems.isEmpty()) {
+
+            Toast.makeText(mParent, "No items selected.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Remove items from the fragment's list
+        adapter.removeItems();
+
+        // Remove items from the database
+        removeItems(new ArrayList(mRemovableItems.values()));
+
+        // Update the position of the items left in the list
+        updateItemPositions();
+
+        mParent.updateToolbarBackground(R.color.colorPrimary);
+
+        mParent.showFabButton();
+        mParent.showSnackBar("Items deleted", "Undo", mRemovableItems);
+        adapter.notifyItemRangeChanged(0, adapter.getItemCount());
     }
 }

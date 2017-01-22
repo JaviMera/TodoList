@@ -13,7 +13,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
@@ -43,7 +45,6 @@ public class FragmentTask extends FragmentRecycler<Task>
     DialogSortListener{
 
     public static final String TODO_LISt = "TODO_LISt";
-
     private TodoList mTodoList;
     private int mSortSelected;
 
@@ -62,16 +63,6 @@ public class FragmentTask extends FragmentRecycler<Task>
         super.onCreate(savedInstanceState);
 
         mTodoList = getArguments().getParcelable(TODO_LISt);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-        super.onCreateOptionsMenu(menu, inflater);
-
-        menu
-            .findItem(R.id.action_sort)
-            .setVisible(true);
     }
 
     @Override
@@ -97,13 +88,28 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
+    public void undoItemsDelete(Map<Integer, Task> items) {
+
+        TodoListDataSource source = new TodoListDataSource(mParent);
+
+        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+        for(Map.Entry<Integer, Task> entry : items.entrySet()) {
+
+            adapter.addItem(entry.getKey(), entry.getValue());
+            source.createTodoListTask(entry.getValue(), entry.getKey());
+        }
+
+        updateItemPositions();
+    }
+
+    @Override
     protected int getDeleteTitle() {
 
         return R.string.menu_delete_task;
     }
 
     @Override
-    protected int deleteRecords(List<Task> itemsToRemove) {
+    protected int removeItems(List<Task> itemsToRemove) {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
 
@@ -144,26 +150,24 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    protected void onUpdatePosition(List<Task> items) {
+    protected void updateItemPositions(Map<String, Integer> items) {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
 
         ContentValues values = new ContentValues();
-        for(Task task : items) {
+        for(Map.Entry<String, Integer> item : items.entrySet()) {
 
-            values.put(TodoListSQLiteHelper.COLUMN_ITEMS_POSITION, task.getPosition());
+            values.put(TodoListSQLiteHelper.COLUMN_ITEMS_POSITION, item.getValue());
 
             source.update(
                 TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
                 TodoListSQLiteHelper.COLUMN_ITEMS_ID,
-                task.getId(),
+                item.getKey(),
                 values
             );
 
             values.clear();
         }
-
-        mTodoList.setItems(items);
     }
 
     @Override
@@ -184,33 +188,34 @@ public class FragmentTask extends FragmentRecycler<Task>
             @Override
             public void run() {
 
-                scrollToLastPosition();
-                RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+            scrollToLastPosition();
+            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
 
-                TodoListDataSource source = new TodoListDataSource(mParent);
+            TodoListDataSource source = new TodoListDataSource(mParent);
 
-                String taskId = UUID.randomUUID().toString();
-                long taskCreationDate = new Date().getTime();
-                TaskStatus taskStatus = TaskStatus.Created;
+            String taskId = UUID.randomUUID().toString();
+            long taskCreationDate = new Date().getTime();
+            TaskStatus taskStatus = TaskStatus.Created;
 
-                Task newTask = new Task(
-                    taskId,
-                    mTodoList.getId(),
-                    adapter.getItemCount(),
-                    taskDescription,
-                    taskStatus,
-                    taskCreationDate,
-                    taskDuedate.getTime(),
-                    taskPriority
-                );
+            Task newTask = new Task(
+                taskId,
+                mTodoList.getId(),
+                taskDescription,
+                taskStatus,
+                taskCreationDate,
+                taskDuedate.getTime(),
+                taskPriority
+            );
 
-                long rowId = source.addTaskRecord(newTask);
+            long rowId = source.createTodoListTask(
+                newTask,
+                adapter.getItemCount()
+            );
 
-                if(rowId > -1) {
+            if(rowId > -1) {
 
-                    adapter.addItem(newTask);
-                     mTodoList.addTask(newTask);
-                }
+                adapter.addItem(newTask);
+            }
             }
         }, 1000);
 
@@ -245,18 +250,21 @@ public class FragmentTask extends FragmentRecycler<Task>
     public void onSortSelected(int sortSelected, String sortByColumn, String order) {
 
         mSortSelected = sortSelected;
-
         setItemAnimator(new FadeInDownAnimator(new LinearOutSlowInInterpolator()));
 
         TodoListDataSource dataSource = new TodoListDataSource(mParent);
-        final List<Task> tasks = dataSource.readTodoListTasks(
-            mTodoList.getId(),
-            sortByColumn,
-            order
-        );
+        final List<Task> tasks = dataSource.readTodoListTasks(mTodoList.getId(), sortByColumn, order);
 
         final RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
         adapter.removeAll();
+
+        // Check if user has selected sort by completed
+        if(!sortByColumn.equals(TodoListSQLiteHelper.COLUMN_ITEMS_STATUS)) {
+
+            // If user hasn't selected sort by Completed, then push down all completed tasks to the bottom
+            // as some of them might show up in between other undone tasks.
+            moveCompletedToBottom(tasks);
+        }
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -267,16 +275,18 @@ public class FragmentTask extends FragmentRecycler<Task>
         }, 500);
     }
 
-    @Override
-    public void restoreRecords() {
+    private void moveCompletedToBottom(List<Task> tasks) {
 
-        TodoListDataSource dataSource = new TodoListDataSource(mParent);
-        RecyclerAdapter adapter = getAdapter();
+        List<Task> completedTasks = new LinkedList<>();
+        for(int i = 0 ; i < tasks.size() ; i++) {
 
-        for(Task task : mRemovedItems) {
+            if(tasks.get(i).getStatus() == TaskStatus.Completed) {
 
-            dataSource.addTaskRecord(task);
-            adapter.restoreItem(task);
+                completedTasks.add(tasks.get(i));
+            }
         }
+
+        tasks.removeAll(completedTasks);
+        tasks.addAll(tasks.size(), completedTasks);
     }
 }

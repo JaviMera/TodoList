@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
@@ -58,19 +59,19 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     }
 
     @Override
-    protected void onUpdatePosition(List<TodoList> items) {
+    protected void updateItemPositions(Map<String, Integer> items) {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
 
         ContentValues values = new ContentValues();
-        for(TodoList todoList : items) {
+        for(Map.Entry<String, Integer> item : items.entrySet()) {
 
-            values.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION, todoList.getPosition());
+            values.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION, item.getValue());
 
             source.update(
                 TodoListSQLiteHelper.TABLE_TODO_LISTS,
                 TodoListSQLiteHelper.COLUMN_TODO_LIST_ID,
-                todoList.getId(),
+                item.getKey(),
                 values
             );
 
@@ -84,6 +85,11 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
         DialogTodoList dialogTodoList = new DialogTodoList();
         dialogTodoList.setTargetFragment(this, 1);
         dialogTodoList.show(mParent.getSupportFragmentManager(), "dialog_todolists");
+    }
+
+    @Override
+    public void undoItemsDelete(Map items) {
+
     }
 
     @Override
@@ -129,11 +135,13 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
             TodoList newList = new TodoList(
                 id,
                 name,
-                creationDate,
-                adapter.getItemCount()
+                creationDate
             );
 
-            long rowId = source.createTodoList(newList);
+            long rowId = source.createTodoList(
+                newList,
+                adapter.getItemCount()
+            );
 
             if(rowId != -1 ){
 

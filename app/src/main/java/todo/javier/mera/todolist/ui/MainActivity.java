@@ -16,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -23,10 +25,11 @@ import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.fragments.FragmentTodoList;
+import todo.javier.mera.todolist.model.ItemBase;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class MainActivity extends AppCompatActivity
-    implements MainActivityView {
+        implements MainActivityView {
 
     private FragmentHelper mFragmentHelper;
     private MainActivityPresenter mPresenter;
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.fab)
     FloatingActionButton mFab;
 
-    @BindView(R.id.activityLayout)
+    @BindView(R.id.coordinatorLayout)
     CoordinatorLayout mCoordinatorLayout;
 
     private static final String FRAGMENT_TAG = "fragment_recycler";
@@ -89,9 +92,10 @@ public class MainActivity extends AppCompatActivity
         FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
         if (fragment.isRemovingItems()) {
 
-            fragment.clearRemovableItems();
+            fragment.removeItems();
             mPresenter.updateToolbarBackground(R.color.colorPrimary);
             mPresenter.showFabButton();
+            getSupportActionBar().setHomeAsUpIndicator(0);
         }
         else {
 
@@ -128,10 +132,10 @@ public class MainActivity extends AppCompatActivity
 
         Fragment fragment = FragmentTask.newInstance(todoList);
         mFragmentHelper.replaceWithBackStack(
-            R.id.fragmentContainer,
-            fragment,
-            FRAGMENT_TAG,
-            null
+                R.id.fragmentContainer,
+                fragment,
+                FRAGMENT_TAG,
+                null
         );
     }
 
@@ -160,7 +164,7 @@ public class MainActivity extends AppCompatActivity
     @OnClick(R.id.fab)
     public void onAddListButtonClick(View view) {
 
-        FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
+        FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG    );
         fragment.showAddDialog();
         hideFabButton();
     }
@@ -195,24 +199,27 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void showSnackBar(String message, String action) {
+    public void showSnackBar(String message, String action, final Map<Integer, ItemBase> items) {
 
-        Snackbar snackbar = Snackbar.make(
-            mCoordinatorLayout,
-            message,
-            Snackbar.LENGTH_LONG
-        );
+        Snackbar.make(
+                mCoordinatorLayout,
+                message,
+                Snackbar.LENGTH_LONG
+        )
+                .setAction(action, new View.OnClickListener() {
 
-        snackbar.setAction(action, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-            @Override
-            public void onClick(View view) {
+                        FragmentRecycler currentFragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
+                        currentFragment.undoItemsDelete(items);
+                    }
+                })
+                .show();
+    }
 
-                FragmentRecycler fragmentRecycler = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
-                fragmentRecycler.restoreRecords();
-            }
-        });
+    public void showCloseButton(int resourceId) {
 
-        snackbar.show();
+        getSupportActionBar().setHomeAsUpIndicator(resourceId);
     }
 }

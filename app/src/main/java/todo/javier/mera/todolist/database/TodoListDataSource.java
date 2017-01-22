@@ -42,14 +42,14 @@ public class TodoListDataSource {
         db.close();
     }
 
-    public long createTodoList(TodoList newList) {
+    public long createTodoList(TodoList newList, int position) {
 
         mDb = openWriteable();
         mDb.beginTransaction();
 
         ContentValues todoListValues = new ContentValues();
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_ID, newList.getId());
-        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION, newList.getPosition());
+        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION, position);
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME, newList.getTitle());
         todoListValues.put(TodoListSQLiteHelper.COLUMN_CREATION_DATE, newList.getCreationDate());
 
@@ -91,7 +91,7 @@ public class TodoListDataSource {
                 String name = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME);
                 long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_CREATION_DATE);
 
-                TodoList todoList = new TodoList(id, name, creationDate, position);
+                TodoList todoList = new TodoList(id, name, creationDate);
 
                 List<Task> tasks = readTodoListTasks(id);
                 todoList.setItems(tasks);
@@ -106,7 +106,7 @@ public class TodoListDataSource {
         return todoLists;
     }
 
-    public long addTaskRecord(Task newTask) {
+    public long createTodoListTask(Task newTask, int position) {
 
         mDb = openWriteable();
         mDb.beginTransaction();
@@ -114,7 +114,7 @@ public class TodoListDataSource {
         ContentValues itemValues = new ContentValues();
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_ID, newTask.getId());
         itemValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_ID, newTask.getTodoListId());
-        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_POSITION, newTask.getPosition());
+        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_POSITION, position);
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION, newTask.getDescription());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_STATUS, newTask.getStatus().ordinal());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON, newTask.getCreationDate());
@@ -169,7 +169,7 @@ public class TodoListDataSource {
                 long dueDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE);
                 TaskPriority priority = TaskPriority.values()[getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY)];
 
-                Task item = new Task(itemId, id, position, description, status, creationDate, dueDate, priority);
+                Task item = new Task(itemId, id, description, status, creationDate, dueDate, priority);
                 items.add(item);
             }while(cursor.moveToNext());
         }
@@ -291,7 +291,6 @@ public class TodoListDataSource {
 
                 String itemId = getString(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_ID);
                 String id = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_ID);
-                int position = getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_POSITION);
                 String description = getString(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION);
                 TaskStatus status = TaskStatus.values()[
                         getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_STATUS)];
@@ -300,7 +299,7 @@ public class TodoListDataSource {
                 long dueDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE);
                 TaskPriority priority = TaskPriority.values()[getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY)];
 
-                Task item = new Task(itemId, id, position, description, status, creationDate, dueDate, priority);
+                Task item = new Task(itemId, id, description, status, creationDate, dueDate, priority);
                 items.add(item);
             }while(cursor.moveToNext());
         }

@@ -16,13 +16,6 @@ public class TodoListTaskAdapter extends RecyclerAdapter<Task, TodoListTaskViewH
     }
 
     @Override
-    protected void removeItem(int position) {
-
-        mItems.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    @Override
     protected int getLayout() {
 
         return R.layout.task_item;

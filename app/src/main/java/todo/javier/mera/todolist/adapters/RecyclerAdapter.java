@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.model.ItemBase;
@@ -23,10 +25,8 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
 
     private final FragmentRecycler mFragment;
     private final Class<H> mHolderType;
+    protected List<T> mItems;
 
-    List<T> mItems;
-
-    protected abstract void removeItem(int position);
     protected abstract int getLayout();
 
     public T getItem(int position) {
@@ -37,13 +37,12 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
     public void addItem(T item) {
 
         mItems.add(item);
-        item.setPosition(mItems.size() - 1);
         notifyItemInserted(mItems.size() - 1);
     }
 
-    public void setRemovable(int itemLongClicked) {
+    public void setRemovable(int position) {
 
-        T item = mItems.get(itemLongClicked);
+        T item = mItems.get(position);
 
         // This will work as a toggle for can or can't be removed
         // The item will start as non removable, so the first click will make it removable, the next
@@ -51,7 +50,7 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         boolean isRemovable = !item.getCanRemove();
 
         item.setCanRemove(isRemovable);
-        notifyItemChanged(itemLongClicked);
+        notifyItemChanged(position);
     }
 
     public void clearRemovableItems() {
@@ -102,8 +101,6 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
 
             for(int i = fromPosition ; i < toPosition ; i++) {
 
-                mItems.get(i).setPosition(i+1);
-                mItems.get(i+1).setPosition(i);
                 Collections.swap(mItems, i, i + 1);
             }
         }
@@ -111,8 +108,6 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
 
             for(int i = fromPosition ; i > toPosition ; i--) {
 
-                mItems.get(i).setPosition(i-1);
-                mItems.get(i-1).setPosition(i);
                 Collections.swap(mItems, i, i - 1);
             }
         }
@@ -129,12 +124,19 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
     }
 
     @Override
-    public void onItemDropped(int position) {
+    public void onItemDropped(int newPosition) {
 
-        T item = getItem(position);
+        T item = getItem(newPosition);
         item.setMoving(false);
-        notifyItemChanged(position);
-        mFragment.onItemsUpdate(mItems);
+        notifyItemChanged(newPosition);
+
+        Map<String, Integer> items = new LinkedHashMap<>();
+        for(int position = 0 ; position < mItems.size() ; position++) {
+
+            items.put(mItems.get(position).getId(), position);
+        }
+
+        mFragment.onItemsUpdate(items);
     }
 
     public int getRemovableCount() {
@@ -152,31 +154,23 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         return count;
     }
 
-    public List getRemovableItems() {
+    public void removeItems() {
 
-        List<T> items = new LinkedList<>();
+        List<T> itemsList = new LinkedList<>();
 
         for(T item : mItems) {
 
             if(item.getCanRemove()) {
 
-                items.add(item);
+                itemsList.add(item);
             }
         }
 
-        return items;
-    }
-
-    public void removeItems(List<T> itemsToRemove) {
-
-        for(T item : itemsToRemove) {
+        for(T item : itemsList) {
 
             int position = mItems.indexOf(item);
-            if(position != -1) {
-
-                mItems.remove(position);
-                notifyItemRemoved(position);
-            }
+            mItems.remove(position);
+            notifyItemRemoved(position);
         }
     }
 
@@ -206,8 +200,16 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         notifyItemRangeRemoved(0, size);
     }
 
-    public void notifyUpdateItems() {
+    public void addItem(Integer position, T item) {
 
-        notifyItemRangeChanged(0, mItems.size());
+
+        mItems.add(position, item);
+        item.setCanRemove(false);
+        notifyItemInserted(position);
+    }
+
+    public List<T> getItems() {
+
+        return mItems;
     }
 }
