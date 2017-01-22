@@ -1,6 +1,5 @@
 package todo.javier.mera.todolist.ui;
 
-import java.util.List;
 import java.util.Map;
 
 import todo.javier.mera.todolist.model.ItemBase;

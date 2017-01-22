@@ -8,8 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import java.util.Date;
@@ -98,8 +96,6 @@ public class FragmentTask extends FragmentRecycler<Task>
             adapter.addItem(entry.getKey(), entry.getValue());
             source.createTodoListTask(entry.getValue(), entry.getKey());
         }
-
-        updateItemPositions();
     }
 
     @Override

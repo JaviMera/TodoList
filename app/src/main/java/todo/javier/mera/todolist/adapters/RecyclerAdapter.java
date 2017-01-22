@@ -180,12 +180,6 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         notifyItemRangeInserted(0, mItems.size());
     }
 
-    public void restoreItem(T item) {
-
-        mItems.add(item.getPosition(), item);
-        notifyItemInserted(item.getPosition());
-    }
-
     public void changeItemColor(int position) {
 
         T item = getItem(position);
@@ -201,7 +195,6 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
     }
 
     public void addItem(Integer position, T item) {
-
 
         mItems.add(position, item);
         item.setCanRemove(false);

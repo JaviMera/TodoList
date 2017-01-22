@@ -202,20 +202,21 @@ public class MainActivity extends AppCompatActivity
     public void showSnackBar(String message, String action, final Map<Integer, ItemBase> items) {
 
         Snackbar.make(
-                mCoordinatorLayout,
-                message,
-                Snackbar.LENGTH_LONG
+            mCoordinatorLayout,
+            message,
+            Snackbar.LENGTH_LONG
         )
-                .setAction(action, new View.OnClickListener() {
+        .setAction(action, new View.OnClickListener() {
 
-                    @Override
-                    public void onClick(View view) {
-
-                        FragmentRecycler currentFragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
-                        currentFragment.undoItemsDelete(items);
-                    }
-                })
-                .show();
+            @Override
+            public void onClick(View view) {
+            FragmentRecycler currentFragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
+            currentFragment.undoItemsDelete(items);
+            currentFragment.clearRemovableItems();
+            currentFragment.updatePositions();
+            }
+        })
+        .show();
     }
 
     public void showCloseButton(int resourceId) {

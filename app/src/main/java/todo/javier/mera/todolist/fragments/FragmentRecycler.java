@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -23,6 +22,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +32,7 @@ import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.SimpleItemTouchHelperCallback;
 import todo.javier.mera.todolist.model.ItemBase;
-import todo.javier.mera.todolist.ui.MainMainActivity;
+import todo.javier.mera.todolist.ui.MainActivity;
 
 /**
  * Created by javie on 12/5/2016.
@@ -46,7 +46,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     private boolean mIsRemovingItems;
     private Map<Integer, ItemBase> mRemovableItems;
 
-    protected MainMainActivity mParent;
+    protected MainActivity mParent;
 
     protected abstract RecyclerAdapter getAdapter();
     protected abstract String getTitle();
@@ -66,9 +66,14 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mParent = (MainMainActivity) getActivity();
+        mParent = (MainActivity) getActivity();
         mIsRemovingItems = false;
-        mRemovableItems = new LinkedHashMap<>();
+
+        // Use a treemap because the order of the map will matter.
+        // Items should be ordered by their positions, so if the user selects items 3,0,1
+        // then the map should have them as 0,1,3 to avoid having an Index exception when re-inserting items.
+        mRemovableItems = new TreeMap<>();
+
         setHasOptionsMenu(true);
     }
 
@@ -147,7 +152,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 if(!mIsRemovingItems) {
 
                     mIsRemovingItems = true;
-                    adapter.notifyUpdateItems();
                     mParent.updateToolbarBackground(R.color.remove_color_light);
                     mParent.hideFabButton();
                     mParent.showCloseButton(R.mipmap.ic_check);
@@ -164,7 +168,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         return true;
     }
 
-    protected void updateItemPositions() {
+    public void updatePositions() {
 
         RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
         List<T> currentItems = adapter.getItems();
@@ -176,6 +180,11 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         }
 
         updateItemPositions(itemsMap);
+    }
+
+    public void clearRemovableItems() {
+
+        mRemovableItems.clear();
     }
 
     @Override
@@ -296,7 +305,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         removeItems(new ArrayList(mRemovableItems.values()));
 
         // Update the position of the items left in the list
-        updateItemPositions();
+        updatePositions();
 
         mParent.updateToolbarBackground(R.color.colorPrimary);
 
