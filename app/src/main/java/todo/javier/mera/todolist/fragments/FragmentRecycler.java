@@ -298,7 +298,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
             return;
         }
 
-        // Remove items from the fragment's list
+        // Remove items from the fragment's adapter
         adapter.removeItems();
 
         // Remove items from the database
@@ -312,5 +312,14 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         mParent.showFabButton();
         mParent.showSnackBar("Items deleted", "Undo", mRemovableItems);
         adapter.notifyItemRangeChanged(0, adapter.getItemCount());
+    }
+
+    public void resetItems() {
+
+        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+        adapter.resetItems();
+
+        clearRemovableItems();
+        mIsRemovingItems = false;
     }
 }

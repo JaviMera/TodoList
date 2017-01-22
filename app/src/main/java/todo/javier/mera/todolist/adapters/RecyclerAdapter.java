@@ -53,7 +53,7 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         notifyItemChanged(position);
     }
 
-    public void clearRemovableItems() {
+    public void resetItems() {
 
         for(int i = 0 ; i < mItems.size() ; i++) {
 

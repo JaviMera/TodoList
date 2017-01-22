@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity
         FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
         if (fragment.isRemovingItems()) {
 
-            fragment.removeItems();
+            fragment.resetItems();
             mPresenter.updateToolbarBackground(R.color.colorPrimary);
             mPresenter.showFabButton();
             getSupportActionBar().setHomeAsUpIndicator(0);
@@ -111,7 +111,19 @@ public class MainActivity extends AppCompatActivity
 
             case android.R.id.home:
 
-                onBackPressed();
+                FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
+                if (fragment.isRemovingItems()) {
+
+                    fragment.removeItems();
+                    mPresenter.updateToolbarBackground(R.color.colorPrimary);
+                    mPresenter.showFabButton();
+                    getSupportActionBar().setHomeAsUpIndicator(0);
+                }
+                else {
+
+                    onBackPressed();
+                }
+
                 return true;
         }
 
