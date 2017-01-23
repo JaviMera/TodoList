@@ -1,5 +1,9 @@
 package todo.javier.mera.todolist.ui;
 
+import java.util.Map;
+
+import todo.javier.mera.todolist.model.ItemBase;
+
 /**
  * Created by javie on 12/17/2016.
  */
@@ -45,8 +49,14 @@ public class MainActivityPresenter {
         mView.setFabVisibility(visibility);
     }
 
+    public void showSnackBar(String message, String action, Map<Integer, ItemBase> items) {
+
+        mView.showSnackBar(message,action,items);
+    }
+
     public void setIndicator(int resourceId) {
 
         mView.setIndicator(resourceId);
     }
+
 }

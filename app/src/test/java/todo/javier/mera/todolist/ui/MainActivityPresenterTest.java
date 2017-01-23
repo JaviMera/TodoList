@@ -7,6 +7,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import todo.javier.mera.todolist.model.ItemBase;
+
 /**
  * Created by javie on 12/17/2016.
  */
@@ -94,6 +99,21 @@ public class MainActivityPresenterTest {
 
         // Assert
         Mockito.verify(mView).setFabVisibility(visibility);
+    }
+
+    @Test
+    public void showSnackBar() throws Exception {
+
+        // Arrange
+        String message = "sup";
+        String action = "I dare you to click";
+        Map<Integer, ItemBase> items = new LinkedHashMap<>();
+
+        // Act
+        mPresenter.showSnackBar(message, action, items);
+
+        // Assert
+        Mockito.verify(mView).showSnackBar(message,action,items);
     }
 
     @Test
