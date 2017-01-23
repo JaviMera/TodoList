@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -48,6 +47,7 @@ public class MainActivity extends AppCompatActivity
     private ObjectAnimator mFabScaleYDown;
     private ObjectAnimator mFabScaleXUp;
     private ObjectAnimator mFabScaleYUp;
+    private FragmentRecycler mCurrentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,34 +70,31 @@ public class MainActivity extends AppCompatActivity
         mPresenter.setToolbar();
         mPresenter.toggleBackButton(false);
 
-        FragmentRecycler fragmentRecycler;
-
         if(savedInstanceState != null) {
 
-            fragmentRecycler = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
+            mCurrentFragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
             mPresenter.toggleBackButton(true);
         }
         else {
 
-            fragmentRecycler = FragmentTodoList.newInstance();
+            mCurrentFragment = FragmentTodoList.newInstance();
         }
 
 
-        mFragmentHelper.replace(R.id.fragmentContainer, fragmentRecycler, FRAGMENT_TAG);
+        mFragmentHelper.replace(R.id.fragmentContainer, mCurrentFragment, FRAGMENT_TAG);
     }
 
     @Override
     public void onBackPressed() {
 
-        FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
-        if (fragment.isRemovingItems()) {
+        if (mCurrentFragment.isRemovingItems()) {
 
-            fragment.resetItems();
+            mCurrentFragment.resetItems();
             mPresenter.updateToolbarBackground(R.color.colorPrimary);
             mPresenter.showFabButton();
             mPresenter.setIndicator(0);
 
-            if(fragment instanceof FragmentTodoList) {
+            if(mCurrentFragment instanceof FragmentTodoList) {
 
                 mPresenter.toggleBackButton(false);
             }
@@ -120,15 +117,15 @@ public class MainActivity extends AppCompatActivity
 
             case android.R.id.home:
 
-                FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
-                if (fragment.isRemovingItems()) {
+                mCurrentFragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
+                if (mCurrentFragment.isRemovingItems()) {
 
-                    fragment.removeItems();
+                    mCurrentFragment.removeItems();
                     mPresenter.updateToolbarBackground(R.color.colorPrimary);
                     mPresenter.showFabButton();
                     mPresenter.setIndicator(0);
 
-                    if(fragment instanceof FragmentTodoList){
+                    if(mCurrentFragment instanceof FragmentTodoList){
 
                         mPresenter.toggleBackButton(false);
                     }
@@ -160,10 +157,10 @@ public class MainActivity extends AppCompatActivity
         // When the user selects a list, disply the back button also on the top left of the toolbar
         mPresenter.toggleBackButton(true);
 
-        Fragment fragment = FragmentTask.newInstance(todoList);
+        mCurrentFragment = FragmentTask.newInstance(todoList);
         mFragmentHelper.replaceWithBackStack(
             R.id.fragmentContainer,
-            fragment,
+            mCurrentFragment,
             FRAGMENT_TAG,
             null
         );
@@ -194,7 +191,7 @@ public class MainActivity extends AppCompatActivity
     @OnClick(R.id.fab)
     public void onAddListButtonClick(View view) {
 
-        FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG    );
+        FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
         fragment.showAddDialog();
         hideFabButton();
     }
