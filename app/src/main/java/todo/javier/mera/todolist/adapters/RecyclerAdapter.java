@@ -40,15 +40,9 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         notifyItemInserted(mItems.size() - 1);
     }
 
-    public void setRemovable(int position) {
+    public void setRemovable(int position, boolean isRemovable) {
 
         T item = mItems.get(position);
-
-        // This will work as a toggle for can or can't be removed
-        // The item will start as non removable, so the first click will make it removable, the next
-        // will set it back to non removable and so on.
-        boolean isRemovable = !item.getCanRemove();
-
         item.setCanRemove(isRemovable);
         notifyItemChanged(position);
     }

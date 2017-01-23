@@ -254,9 +254,4 @@ public class MainActivity extends AppCompatActivity
 
         getSupportActionBar().setHomeAsUpIndicator(resourceId);
     }
-
-    public void showCloseButton(int resourceId) {
-
-        mPresenter.setIndicator(resourceId);
-    }
 }

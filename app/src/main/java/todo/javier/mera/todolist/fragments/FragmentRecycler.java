@@ -44,7 +44,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
     private FragmentRecyclerPresenter mPresenter;
     private boolean mIsRemovingItems;
-    private Map<Integer, ItemBase> mRemovableItems;
+    private Map<Integer, T> mRemovableItems;
 
     protected MainActivity mParent;
 
@@ -155,7 +155,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                     mParent.updateToolbarBackground(R.color.remove_color_light);
                     mParent.hideFabButton();
                     mParent.toggleBackButton(true);
-                    mParent.showCloseButton(R.mipmap.ic_check);
+                    mParent.setIndicator(R.mipmap.ic_check);
                     adapter.notifyItemRangeChanged(0, adapter.getItemCount());
                 }
 
@@ -234,8 +234,16 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
         if(mIsRemovingItems) {
 
-            adapter.setRemovable(position);
-            mRemovableItems.put(position, adapter.getItem(position));
+            if(mRemovableItems.containsKey(position)) {
+
+                mRemovableItems.remove(position);
+                adapter.setRemovable(position, false);
+            }
+            else {
+
+                mRemovableItems.put(position, (T) adapter.getItem(position));
+                adapter.setRemovable(position, true);
+            }
 
             int count = adapter.getRemovableCount();
             if(count == 0) {
@@ -243,6 +251,12 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 mIsRemovingItems = false;
                 mParent.invalidateOptionsMenu();
                 mParent.updateToolbarBackground(R.color.colorPrimary);
+                mParent.setIndicator(0);
+
+                if(this instanceof FragmentTodoList) {
+
+                    mParent.toggleBackButton(false);
+                }
                 adapter.notifyItemRangeChanged(0, adapter.getItemCount());
             }
         }
@@ -309,7 +323,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
         mParent.updateToolbarBackground(R.color.colorPrimary);
         mParent.showFabButton();
-        mParent.showSnackBar("Items deleted", "Undo", mRemovableItems);
+        mParent.showSnackBar("Items deleted", "Undo", (Map<Integer, ItemBase>) mRemovableItems);
         adapter.notifyItemRangeChanged(0, adapter.getItemCount());
     }
 
