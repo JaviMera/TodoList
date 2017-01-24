@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MotionEventCompat;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -40,6 +42,7 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
     private TextView mDescription;
     private CheckBox mStatus;
     private ImageView mCheckMark;
+    private ImageView mDragImageView;
 
     private int mNormalColor;
     private int mRemoveColor;
@@ -70,9 +73,21 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
     @Override
     public void bind(final Task item) {
 
+        final ViewHolderBase currentObject = this;
+        mDragImageView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN)
+                    mParent.onStartDrag(currentObject);
+
+                return false;
+            }
+        });
+
         boolean isCompleted = item.getStatus() == TaskStatus.Completed;
         mStatus.setChecked(isCompleted);
-        mCheckMark.setVisibility(isCompleted ? View.VISIBLE : View.INVISIBLE);
 
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -139,7 +154,7 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
         mDueDate = (TextView) itemView.findViewById(R.id.dueDateView);
         mLayout = (LinearLayout) itemView.findViewById(R.id.containerLayout);
         mDescription = (TextView) itemView.findViewById(R.id.itemDescriptionView);
-        mCheckMark = (ImageView) itemView.findViewById(R.id.checkMarkView);
+        mDragImageView = (ImageView) itemView.findViewById(R.id.dragImageView);
 
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
@@ -154,8 +169,7 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
     @Override
     public boolean onLongClick(View view) {
 
-        mParent.onLongClick(getLayoutPosition());
-        return true;
+        return false;
     }
 
     private int getLayoutColor(Task task) {
@@ -191,7 +205,6 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
     private void setCompleted(boolean isCompleted) {
 
         mDueDate.setVisibility(isCompleted ? View.INVISIBLE : View.VISIBLE);
-        mCheckMark.setVisibility(isCompleted ? View.VISIBLE : View.INVISIBLE);
     }
 
     private ObjectAnimator floatAnimator(View view, String property, float from, float to) {

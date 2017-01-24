@@ -29,6 +29,7 @@ import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInRightAnimator;
 import todo.javier.mera.todolist.R;
+import todo.javier.mera.todolist.adapters.OnStartDragListener;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.SimpleItemTouchHelperCallback;
 import todo.javier.mera.todolist.model.ItemBase;
@@ -40,13 +41,15 @@ import todo.javier.mera.todolist.ui.MainActivity;
 
 public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     implements FragmentRecyclerView,
-    RecyclerItemListener<T> {
+    RecyclerItemListener<T>,
+    OnStartDragListener{
 
     private FragmentRecyclerPresenter mPresenter;
     private boolean mIsRemovingItems;
     private Map<Integer, T> mRemovableItems;
 
     protected MainActivity mParent;
+    private ItemTouchHelper mHelper;
 
     protected abstract RecyclerAdapter getAdapter();
     protected abstract String getTitle();
@@ -61,6 +64,12 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     public abstract void showAddDialog();
 
     protected @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+
+        mHelper.startDrag(viewHolder);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,7 +104,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
         RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        ItemTouchHelper mHelper = new ItemTouchHelper(callback);
+        mHelper = new ItemTouchHelper(callback);
         mHelper.attachToRecyclerView(mRecyclerView);
 
         new Handler().postDelayed(new Runnable() {
@@ -216,7 +225,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     }
 
     @Override
-    public void onLongClick(int position) {
+    public void onDragItem(int position) {
 
         // Don't allow the user to drag items while they are selecting items to be removed.
         if(mIsRemovingItems) {

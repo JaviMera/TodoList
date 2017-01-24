@@ -19,7 +19,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback{
     @Override
     public boolean isLongPressDragEnabled() {
 
-        return true;
+        return false;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback{
 
         int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
 
-        return makeMovementFlags(dragFlags, ItemTouchHelper.ACTION_STATE_IDLE);
+        return makeMovementFlags(dragFlags, 0);
     }
 
     @Override
