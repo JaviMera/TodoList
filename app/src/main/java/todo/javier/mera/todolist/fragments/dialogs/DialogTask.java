@@ -1,10 +1,17 @@
 package todo.javier.mera.todolist.fragments.dialogs;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -17,19 +24,24 @@ import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.model.PriorityUtil;
 import todo.javier.mera.todolist.model.TaskPriority;
+import todo.javier.mera.todolist.ui.MainActivity;
 
 /**
  * Created by javie on 12/6/2016.
  */
 
-public class DialogTask extends DialogBase
+public class DialogTask extends DialogFragment
     implements
     DatePickerListener,
     PriorityListener{
 
+    private MainActivity mParent;
     private Date mDueDate;
     private DialogTaskListener mListener;
     private TaskPriority mPriority;
+
+    @BindView(R.id.taskEditTextView)
+    EditText mDescriptionEditText;
 
     @BindView(R.id.datePickerTextView)
     TextView mDateTextView;
@@ -38,26 +50,10 @@ public class DialogTask extends DialogBase
     TextView mPriorityTextView;
 
     @Override
-    protected String getTitle() {
-
-        return "Create a new Task!";
-    }
-
-    @Override
-    protected String getHint() {
-
-        return "enter task";
-    }
-
-    @Override
-    protected String getHintError() {
-
-        return "task description can't be blank";
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        mParent = (MainActivity) context;
         mListener = (FragmentTask)getTargetFragment();
     }
 
@@ -68,29 +64,59 @@ public class DialogTask extends DialogBase
         mPriority = TaskPriority.None;
     }
 
+    @NonNull
     @Override
-    protected View getDialogView() {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        View view = LayoutInflater.from(mParent).inflate(R.layout.task_dialog, null);
+        View view = LayoutInflater
+            .from(mParent)
+            .inflate(R.layout.task_dialog, null
+        );
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mParent);
+        dialogBuilder.setView(view);
+
         ButterKnife.bind(this, view);
 
-        return view;
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.setCanceledOnTouchOutside(false);
+
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
+                if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
+
+                    mParent.showFabButton();
+                }
+
+                return false;
+            }
+        });
+        return dialog;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // Initialize dialog animations when this event is fired.
+        getDialog()
+            .getWindow()
+            .getAttributes()
+            .windowAnimations = R.style.FragmentDialogTaskAnimations;
     }
 
     @OnClick(R.id.addTaskView)
     public void onAddClick() {
 
-        if(canDismiss()) {
+        // If edit text contains text, then add it and close the dialog
+        mListener.onCreatedTask(
+            mDescriptionEditText.getText().toString(),
+            mDueDate,
+            mPriority
+        );
 
-            // If edit text contains text, then add it and close the dialog
-            mListener.onCreatedTask(
-                mNameEditText.getText().toString(),
-                mDueDate,
-                mPriority
-            );
-
-            dismiss();
-        }
+        dismiss();
     }
 
     @OnClick(R.id.datePickerTextView)
