@@ -150,6 +150,12 @@ public class DialogTask extends DialogFragment
         dismiss();
     }
 
+    @OnClick(R.id.cancelDialog)
+    public void onCancelDialog(View view){
+
+        dismiss();
+    }
+
     @OnClick(R.id.datePickerTextView)
     public void onDateButtonClick(View view) {
 
