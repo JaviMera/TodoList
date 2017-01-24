@@ -70,17 +70,30 @@
             android:scaleType="fitCenter"
             android:padding="@dimen/item_body_pad_portrait"/>
 
-        <TextView
-            android:id="@+id/priorityTextView"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2.5"
-            android:text="@string/priority_title"
-            android:textSize="18sp"
-            android:textStyle="italic"
-            android:layout_gravity="center"
-            android:layout_margin="15dp"
-            android:textColor="@color/colorSecondary"/>
+            android:orientation="vertical"
+            android:layout_margin="15dp">
+
+            <TextView
+                android:id="@+id/priorityTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/priority_title"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                android:textColor="@color/colorSecondary"/>
+
+            <TextView
+                android:id="@+id/priorityMessageTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="None by default"
+                android:layout_marginTop="5dp"
+                android:textSize="12sp"/>
+        </LinearLayout>
 
     </LinearLayout>
 

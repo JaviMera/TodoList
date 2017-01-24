@@ -11,8 +11,11 @@ import android.support.v4.app.DialogFragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,6 +42,10 @@ public class DialogTask extends DialogFragment
     private Date mDueDate;
     private DialogTaskListener mListener;
     private TaskPriority mPriority;
+    private Animation mShakeAnimation;
+
+    @BindView(R.id.dialogTitleView)
+    TextView mTitleView;
 
     @BindView(R.id.taskEditTextView)
     EditText mDescriptionEditText;
@@ -48,6 +55,9 @@ public class DialogTask extends DialogFragment
 
     @BindView(R.id.priorityTextView)
     TextView mPriorityTextView;
+
+    @BindView(R.id.priorityMessageTextView)
+    TextView mPriorityMessage;
 
     @Override
     public void onAttach(Context context) {
@@ -62,6 +72,7 @@ public class DialogTask extends DialogFragment
         super.onCreate(savedInstanceState);
 
         mPriority = TaskPriority.None;
+        mShakeAnimation = AnimationUtils.loadAnimation(mParent, R.anim.shake);
     }
 
     @NonNull
@@ -78,10 +89,18 @@ public class DialogTask extends DialogFragment
 
         ButterKnife.bind(this, view);
 
+        mTitleView.setText("Create new task!");
+
         AlertDialog dialog = dialogBuilder.create();
         dialog.setCanceledOnTouchOutside(false);
 
-        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+        dialog.setOnKeyListener(getKeyListener());
+        return dialog;
+    }
+
+    private DialogInterface.OnKeyListener getKeyListener() {
+
+        return new DialogInterface.OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
                 if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
@@ -91,11 +110,9 @@ public class DialogTask extends DialogFragment
 
                 return false;
             }
-        });
-        return dialog;
+        };
     }
 
-    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -108,6 +125,20 @@ public class DialogTask extends DialogFragment
 
     @OnClick(R.id.addTaskView)
     public void onAddClick() {
+
+        if(mDescriptionEditText.getText().toString().isEmpty()) {
+
+            showToast("Task description cannot be blank.");
+            mDescriptionEditText.startAnimation(mShakeAnimation);
+            return;
+        }
+
+        if(mDueDate == null) {
+
+            showToast("Task due date cannot be blank.");
+            mDateTextView.startAnimation(mShakeAnimation);
+            return;
+        }
 
         // If edit text contains text, then add it and close the dialog
         mListener.onCreatedTask(
@@ -149,5 +180,13 @@ public class DialogTask extends DialogFragment
 
         mPriority = TaskPriority.values()[position];
         mPriorityTextView.setText(PriorityUtil.getName(mPriority.ordinal()));
+        mPriorityMessage.setVisibility(View.GONE);
+    }
+
+    private void showToast(String message) {
+
+        Toast
+            .makeText(mParent, message, Toast.LENGTH_LONG)
+            .show();
     }
 }
