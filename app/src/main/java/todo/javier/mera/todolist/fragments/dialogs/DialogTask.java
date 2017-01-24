@@ -4,12 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,7 +14,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import todo.javier.mera.todolist.R;
-import todo.javier.mera.todolist.adapters.PrioritySpinnerAdapter;
 import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.model.PriorityUtil;
 import todo.javier.mera.todolist.model.TaskPriority;
@@ -30,17 +25,17 @@ import todo.javier.mera.todolist.model.TaskPriority;
 public class DialogTask extends DialogBase
     implements
     DatePickerListener,
-    AdapterView.OnItemSelectedListener{
+    PriorityListener{
 
     private Date mDueDate;
     private DialogTaskListener mListener;
     private TaskPriority mPriority;
 
-    @BindView(R.id.datePickerButton)
-    Button mDateButton;
+    @BindView(R.id.datePickerTextView)
+    TextView mDateTextView;
 
-    @BindView(R.id.prioritySpinnerView)
-    Spinner mPrioritySpinner;
+    @BindView(R.id.priorityTextView)
+    TextView mPriorityTextView;
 
     @Override
     protected String getTitle() {
@@ -79,17 +74,6 @@ public class DialogTask extends DialogBase
         View view = LayoutInflater.from(mParent).inflate(R.layout.task_dialog, null);
         ButterKnife.bind(this, view);
 
-        String[] names = PriorityUtil.getNames();
-        Integer[] drawables = PriorityUtil.getDrawables();
-
-        PrioritySpinnerAdapter adapter = new PrioritySpinnerAdapter(
-            mParent,
-            names,
-            drawables
-        );
-
-        mPrioritySpinner.setAdapter(adapter);
-        mPrioritySpinner.setOnItemSelectedListener(this);
         return view;
     }
 
@@ -109,12 +93,20 @@ public class DialogTask extends DialogBase
         }
     }
 
-    @OnClick(R.id.datePickerButton)
+    @OnClick(R.id.datePickerTextView)
     public void onDateButtonClick(View view) {
 
         DatePickerDialog dialog = new DatePickerDialog();
         dialog.setTargetFragment(this, 1);
         dialog.show(mParent.getSupportFragmentManager(), "date_dialog");
+    }
+
+    @OnClick(R.id.priorityTextView)
+    public void onPriorityClick(View view) {
+
+        DialogPriority dialog = new DialogPriority();
+        dialog.setTargetFragment(this, 1);
+        dialog.show(mParent.getSupportFragmentManager(), "priority_dialog");
     }
 
     @Override
@@ -123,17 +115,13 @@ public class DialogTask extends DialogBase
         mDueDate = date;
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
         String dateAsString = format.format(mDueDate);
-        mDateButton.setText(dateAsString);
+        mDateTextView.setText(dateAsString);
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+    public void onPrioritySelected(int position) {
 
         mPriority = TaskPriority.values()[position];
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
+        mPriorityTextView.setText(PriorityUtil.getName(mPriority.ordinal()));
     }
 }

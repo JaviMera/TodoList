@@ -16,7 +16,7 @@
     <string name="menu_delete_task">Delete task(s)</string>
     <string name="item_body_tasks_text">Tasks:</string>
     <string name="item_body_created_text">Created:</string>
-    <string name="item_body_due_date_text">Due by:</string>
+    <string name="due_date_title">Add due date</string>
     <string name="menu_sort_task">sort by</string>
     <string name="sort_none">None</string>
     <string name="sort_due_date">Due Date</string>
@@ -25,5 +25,7 @@
     <string name="dialog_ok_text">OK</string>
     <string name="sort_name">Name</string>
     <string name="sort_creation_date">Creation Date</string>
+    <string name="priority_title">Add priority</string>
+    <string name="description_title">Add description</string>
 
 </resources>
