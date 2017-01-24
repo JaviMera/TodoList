@@ -113,6 +113,7 @@ public class DialogTask extends DialogFragment
         };
     }
 
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 

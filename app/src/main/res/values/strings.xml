@@ -27,5 +27,6 @@
     <string name="sort_creation_date">Creation Date</string>
     <string name="priority_title">Add priority</string>
     <string name="description_title">Add description</string>
+    <string name="todo_list_title">Add title</string>
 
 </resources>
