@@ -98,6 +98,7 @@ public class DialogTodoList extends DialogFragment {
     public void onCancelClick(View view) {
 
         dismiss();
+        mParent.showFabButton();
     }
 
     private DialogInterface.OnKeyListener getKeyListener() {

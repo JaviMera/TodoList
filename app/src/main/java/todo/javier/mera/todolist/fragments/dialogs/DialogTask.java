@@ -155,6 +155,7 @@ public class DialogTask extends DialogFragment
     public void onCancelDialog(View view){
 
         dismiss();
+        mParent.showFabButton();
     }
 
     @OnClick(R.id.datePickerTextView)
