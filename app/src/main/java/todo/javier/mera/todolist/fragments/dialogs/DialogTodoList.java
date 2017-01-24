@@ -94,6 +94,12 @@ public class DialogTodoList extends DialogFragment {
         dismiss();
     }
 
+    @OnClick(R.id.cancelDialog)
+    public void onCancelClick(View view) {
+
+        dismiss();
+    }
+
     private DialogInterface.OnKeyListener getKeyListener() {
 
         return new DialogInterface.OnKeyListener() {
