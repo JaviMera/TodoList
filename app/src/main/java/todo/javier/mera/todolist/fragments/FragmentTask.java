@@ -186,8 +186,6 @@ public class FragmentTask extends FragmentRecycler<Task>
             public void run() {
 
             scrollToLastPosition();
-            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-
             TodoListDataSource source = new TodoListDataSource(mParent);
 
             String taskId = UUID.randomUUID().toString();
@@ -206,12 +204,12 @@ public class FragmentTask extends FragmentRecycler<Task>
 
             long rowId = source.createTodoListTask(
                 newTask,
-                adapter.getItemCount()
+                mAdapter.getItemCount()
             );
 
             if(rowId > -1) {
 
-                adapter.addItem(newTask);
+                mAdapter.addItem(newTask);
             }
             }
         }, 1000);
@@ -224,8 +222,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     @Override
     public void onUpdateStatus(int position, boolean isCompleted) {
 
-        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-        Task item = (Task)adapter.getItem(position);
+        Task item = (Task)mAdapter.getItem(position);
         item.setStatus(isCompleted ? TaskStatus.Completed : TaskStatus.Created);
 
         ContentValues values = new ContentValues();
@@ -252,8 +249,7 @@ public class FragmentTask extends FragmentRecycler<Task>
         TodoListDataSource dataSource = new TodoListDataSource(mParent);
         final List<Task> tasks = dataSource.readTodoListTasks(mTodoList.getId(), sortByColumn, order);
 
-        final RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-        adapter.removeAll();
+        mAdapter.removeAll();
 
         // Check if user has selected sort by completed
         if(!sortByColumn.equals(TodoListSQLiteHelper.COLUMN_ITEMS_STATUS)) {
@@ -267,7 +263,7 @@ public class FragmentTask extends FragmentRecycler<Task>
             @Override
             public void run() {
 
-            adapter.addItems(tasks);
+            mAdapter.addItems(tasks);
             }
         }, 500);
     }

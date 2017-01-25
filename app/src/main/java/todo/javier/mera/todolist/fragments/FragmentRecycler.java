@@ -47,10 +47,10 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     private FragmentRecyclerPresenter mPresenter;
     private boolean mIsRemovingItems;
     private Map<Integer, T> mRemovableItems;
-    private RecyclerAdapter mAdapter;
     private ItemTouchHelper mHelper;
 
     protected MainActivity mParent;
+    protected RecyclerAdapter mAdapter;
 
     protected abstract RecyclerAdapter createAdapter();
     protected abstract String getTitle();

@@ -23,8 +23,6 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
     implements ItemTouchHelperAdapter
     {
 
-    private final OnStartDragListener mDragStartListener;
-
     private final FragmentRecycler mFragment;
     private final Class<H> mHolderType;
     protected List<T> mItems;
@@ -63,7 +61,6 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         mFragment = fragment;
         mHolderType = holderType;
         mItems = new LinkedList<>();
-        mDragStartListener = fragment;
     }
 
     @Override

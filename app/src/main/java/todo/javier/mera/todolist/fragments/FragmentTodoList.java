@@ -103,10 +103,9 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
 
         TodoListDataSource source = new TodoListDataSource(mParent);
 
-        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
         for(Map.Entry<Integer, TodoList> entry : items.entrySet()) {
 
-            adapter.addItem(entry.getKey(), entry.getValue());
+            mAdapter.addItem(entry.getKey(), entry.getValue());
             source.createTodoList(entry.getValue(), entry.getKey());
 
             List<Task> tasks = mRemovableTodoLists.get(entry.getValue().getId());
@@ -145,7 +144,6 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
         scrollToLastPosition();
         final String id = UUID.randomUUID().toString();
         final long creationDate = new Date().getTime();
-        final RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
 
         new Handler().postDelayed(new Runnable() {
 
@@ -165,12 +163,12 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
 
             long rowId = source.createTodoList(
                 newList,
-                adapter.getItemCount()
+                mAdapter.getItemCount()
             );
 
             if(rowId != -1 ){
 
-                adapter.addItem(newList);
+                mAdapter.addItem(newList);
             }
             }
         }, 1000);
