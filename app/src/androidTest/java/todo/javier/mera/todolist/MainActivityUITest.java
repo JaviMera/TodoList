@@ -108,7 +108,7 @@ public class MainActivityUITest {
 //        public boolean matches(Object item) {
 //
 //            RecyclerView view = (RecyclerView)item;
-//            TodoListAdapter adapter = (TodoListAdapter) view.getAdapter();
+//            TodoListAdapter adapter = (TodoListAdapter) view.createAdapter();
 //            TodoList todoList = adapter.getItem(0);
 //
 //            return todoList.getTitle().equals(mItemName);

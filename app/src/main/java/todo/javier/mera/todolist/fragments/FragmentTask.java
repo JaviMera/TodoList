@@ -116,7 +116,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    protected RecyclerAdapter getAdapter() {
+    protected RecyclerAdapter createAdapter() {
 
         return new TodoListTaskAdapter(this);
     }

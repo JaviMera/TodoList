@@ -34,7 +34,7 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     }
 
     @Override
-    protected RecyclerAdapter getAdapter() {
+    protected RecyclerAdapter createAdapter() {
 
         return new TodolistAdapter(this);
     }

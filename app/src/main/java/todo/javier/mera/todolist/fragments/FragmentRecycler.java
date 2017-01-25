@@ -47,11 +47,12 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     private FragmentRecyclerPresenter mPresenter;
     private boolean mIsRemovingItems;
     private Map<Integer, T> mRemovableItems;
-
-    protected MainActivity mParent;
+    private RecyclerAdapter mAdapter;
     private ItemTouchHelper mHelper;
 
-    protected abstract RecyclerAdapter getAdapter();
+    protected MainActivity mParent;
+
+    protected abstract RecyclerAdapter createAdapter();
     protected abstract String getTitle();
     protected abstract RecyclerView.LayoutManager getLayoutManager(Context context);
     protected abstract List<T> getAllItems();
@@ -69,8 +70,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     public void onStartDrag(RecyclerView.ViewHolder viewHolder, int position) {
 
         mHelper.startDrag(viewHolder);
-        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-        adapter.notifyItemMove(position);
+        mAdapter.notifyItemMove(position);
     }
 
     @Override
@@ -104,8 +104,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
         mPresenter.setItemAnimator(new FadeInDownAnimator(new LinearOutSlowInInterpolator()));
 
-        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
         mHelper = new ItemTouchHelper(callback);
         mHelper.attachToRecyclerView(mRecyclerView);
 
@@ -114,8 +113,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
             public void run() {
 
             List<T> items = getAllItems();
-            RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-            adapter.addItems(items);
+            mAdapter.addItems(items);
             }
         }, 500);
 
@@ -153,8 +151,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
             case R.id.action_delete:
 
-                RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-                if(adapter.getItemCount() == 0) {
+                if(mAdapter.isEmpty()) {
 
                     Toast.makeText(mParent, "You have no items to delete.", Toast.LENGTH_SHORT).show();
                     return true;
@@ -174,7 +171,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 }
 
                 // Remove items from the fragment's adapter
-                adapter.removeItems();
+                mAdapter.removeItems();
 
                 // Remove items from the database
                 removeItems(new ArrayList(mRemovableItems.values()));
@@ -185,7 +182,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 mParent.updateToolbarBackground(R.color.colorPrimary);
                 mParent.showFabButton();
                 mParent.showSnackBar("Items deleted", "Undo", (Map<Integer, ItemBase>) mRemovableItems);
-                adapter.notifyItemRangeChanged(0, adapter.getItemCount());
+                mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
 
                 break;
             default:
@@ -197,8 +194,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
     public void updatePositions() {
 
-        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-        List<T> currentItems = adapter.getItems();
+        List<T> currentItems = mAdapter.getItems();
         Map<String, Integer> itemsMap = new LinkedHashMap<>();
 
         for(int position = 0 ; position < currentItems.size() ; position++) {
@@ -209,16 +205,13 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         updateItemPositions(itemsMap);
     }
 
-    public void clearRemovableItems() {
 
-        mRemovableItems.clear();
-    }
 
     @Override
     public void setAdapter(Fragment context) {
 
-        RecyclerAdapter adapter = getAdapter();
-        mRecyclerView.setAdapter(adapter);
+        mAdapter = createAdapter();
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -249,8 +242,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
             return;
         }
 
-        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-        adapter.notifyItemMove(position);
+        mAdapter.notifyItemMove(position);
     }
 
     @Override
@@ -263,11 +255,10 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
             mParent.hideFabButton();
             mParent.toggleBackButton(true);
 
-            RecyclerAdapter adapter = (RecyclerAdapter)mRecyclerView.getAdapter();
-            adapter.notifyItemRangeChanged(0, adapter.getItemCount());
+            mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
 
-            adapter.setRemovable(position, true);
-            mRemovableItems.put(position, (T)adapter.getItem(position));
+            mAdapter.setRemovable(position, true);
+            mRemovableItems.put(position, (T)mAdapter.getItem(position));
             mParent.invalidateOptionsMenu();
         }
     }
@@ -275,22 +266,20 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     @Override
     public void onClick(int position) {
 
-        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-
         if(mIsRemovingItems) {
 
             if(mRemovableItems.containsKey(position)) {
 
                 mRemovableItems.remove(position);
-                adapter.setRemovable(position, false);
+                mAdapter.setRemovable(position, false);
             }
             else {
 
-                mRemovableItems.put(position, (T) adapter.getItem(position));
-                adapter.setRemovable(position, true);
+                mRemovableItems.put(position, (T) mAdapter.getItem(position));
+                mAdapter.setRemovable(position, true);
             }
 
-            int count = adapter.getRemovableCount();
+            int count = mAdapter.getRemovableCount();
             if(count == 0) {
 
                 mIsRemovingItems = false;
@@ -303,12 +292,12 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                     mParent.toggleBackButton(false);
                 }
 
-                adapter.notifyItemRangeChanged(0, adapter.getItemCount());
+                mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
             }
         }
         else {
 
-            T item = (T) adapter.getItem(position);
+            T item = (T) mAdapter.getItem(position);
             showItem(item);
         }
     }
@@ -331,8 +320,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
     protected void scrollToLastPosition() {
 
-        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-        int lastPosition = adapter.getItemCount();
+        int lastPosition = mAdapter.getItemCount();
         mRecyclerView.smoothScrollToPosition(lastPosition);
     }
 
@@ -345,10 +333,13 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
         mIsRemovingItems = false;
         mParent.invalidateOptionsMenu();
-
-        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-        adapter.resetItems();
+        mAdapter.resetItems();
 
         clearRemovableItems();
+    }
+
+    public void clearRemovableItems() {
+
+        mRemovableItems.clear();
     }
 }

@@ -201,4 +201,9 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
 
         return mItems;
     }
+
+    public boolean isEmpty() {
+
+        return mItems.isEmpty();
+    }
 }
