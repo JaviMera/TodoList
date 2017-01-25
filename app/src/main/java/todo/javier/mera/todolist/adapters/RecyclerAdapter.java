@@ -54,9 +54,8 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         for(int i = 0 ; i < mItems.size() ; i++) {
 
             mItems.get(i).setCanRemove(false);
+            notifyItemChanged(i);
         }
-
-        notifyItemRangeChanged(0, mItems.size());
     }
 
     RecyclerAdapter(FragmentRecycler fragment, Class<H> holderType) {
@@ -177,7 +176,7 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         notifyItemRangeInserted(0, mItems.size());
     }
 
-    public void changeItemColor(int position) {
+    public void notifyItemMove(int position) {
 
         T item = getItem(position);
         item.setMoving(true);

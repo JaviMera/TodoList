@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity
             mCurrentFragment.resetItems();
             mPresenter.updateToolbarBackground(R.color.colorPrimary);
             mPresenter.showFabButton();
-            mPresenter.setIndicator(0);
 
             if(mCurrentFragment instanceof FragmentTodoList) {
 
@@ -117,28 +116,7 @@ public class MainActivity extends AppCompatActivity
 
             case android.R.id.home:
 
-                mCurrentFragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
-                if (mCurrentFragment.isRemovingItems()) {
-
-                    mCurrentFragment.removeItems();
-                    mPresenter.updateToolbarBackground(R.color.colorPrimary);
-                    mPresenter.showFabButton();
-                    mPresenter.setIndicator(0);
-
-                    if(mCurrentFragment instanceof FragmentTodoList){
-
-                        mPresenter.toggleBackButton(false);
-                    }
-                    else {
-
-                        mPresenter.toggleBackButton(true);
-                    }
-                }
-                else {
-
-                    onBackPressed();
-                }
-
+                onBackPressed();
                 return true;
         }
 

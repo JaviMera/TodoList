@@ -88,7 +88,7 @@ class TodolistViewHolder extends ViewHolderBase<TodoList>
     @Override
     public boolean onLongClick(View view) {
 
-        mParent.onDragItem(getLayoutPosition());
+        mParent.onLongClick(getLayoutPosition());
         return true;
     }
 }

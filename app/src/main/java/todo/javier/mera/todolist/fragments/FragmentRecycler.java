@@ -66,9 +66,11 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     protected @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
     @Override
-    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder, int position) {
 
         mHelper.startDrag(viewHolder);
+        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
+        adapter.notifyItemMove(position);
     }
 
     @Override
@@ -131,12 +133,12 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
         if(mIsRemovingItems) {
 
-            deleteItem.setVisible(false);
+            deleteItem.setVisible(true);
             sortItem.setVisible(false);
         }
         else {
 
-            deleteItem.setVisible(true);
+            deleteItem.setVisible(false);
             sortItem.setVisible(true);
         }
 
@@ -158,17 +160,32 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                     return true;
                 }
 
-                if(!mIsRemovingItems) {
+                setItemAnimator(new SlideInRightAnimator());
 
-                    mIsRemovingItems = true;
-                    mParent.updateToolbarBackground(R.color.remove_color_light);
-                    mParent.hideFabButton();
-                    mParent.toggleBackButton(true);
-                    mParent.setIndicator(R.mipmap.ic_check);
-                    adapter.notifyItemRangeChanged(0, adapter.getItemCount());
-                }
+                mIsRemovingItems = false;
 
                 mParent.invalidateOptionsMenu();
+
+                // Check if no items were selected to be removed
+                if(mRemovableItems.isEmpty()) {
+
+                    Toast.makeText(mParent, "No items selected.", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
+                // Remove items from the fragment's adapter
+                adapter.removeItems();
+
+                // Remove items from the database
+                removeItems(new ArrayList(mRemovableItems.values()));
+
+                // Update the position of the items left in the list
+                updatePositions();
+
+                mParent.updateToolbarBackground(R.color.colorPrimary);
+                mParent.showFabButton();
+                mParent.showSnackBar("Items deleted", "Undo", (Map<Integer, ItemBase>) mRemovableItems);
+                adapter.notifyItemRangeChanged(0, adapter.getItemCount());
 
                 break;
             default:
@@ -233,7 +250,26 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         }
 
         RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-        adapter.changeItemColor(position);
+        adapter.notifyItemMove(position);
+    }
+
+    @Override
+    public void onLongClick(int position) {
+
+        if(!mIsRemovingItems) {
+
+            mIsRemovingItems = true;
+            mParent.updateToolbarBackground(R.color.remove_color_light);
+            mParent.hideFabButton();
+            mParent.toggleBackButton(true);
+
+            RecyclerAdapter adapter = (RecyclerAdapter)mRecyclerView.getAdapter();
+            adapter.notifyItemRangeChanged(0, adapter.getItemCount());
+
+            adapter.setRemovable(position, true);
+            mRemovableItems.put(position, (T)adapter.getItem(position));
+            mParent.invalidateOptionsMenu();
+        }
     }
 
     @Override
@@ -266,6 +302,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
                     mParent.toggleBackButton(false);
                 }
+
                 adapter.notifyItemRangeChanged(0, adapter.getItemCount());
             }
         }
@@ -304,46 +341,14 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         return mIsRemovingItems;
     }
 
-    public void removeItems() {
-
-        RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
-
-        setItemAnimator(new SlideInRightAnimator());
-
-        mIsRemovingItems = false;
-
-        mParent.invalidateOptionsMenu();
-
-        // Check if no items were selected to be removed
-        if(mRemovableItems.isEmpty()) {
-
-            Toast.makeText(mParent, "No items selected.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Remove items from the fragment's adapter
-        adapter.removeItems();
-
-        // Remove items from the database
-        removeItems(new ArrayList(mRemovableItems.values()));
-
-        // Update the position of the items left in the list
-        updatePositions();
-
-        mParent.updateToolbarBackground(R.color.colorPrimary);
-        mParent.showFabButton();
-        mParent.showSnackBar("Items deleted", "Undo", (Map<Integer, ItemBase>) mRemovableItems);
-        adapter.notifyItemRangeChanged(0, adapter.getItemCount());
-    }
-
     public void resetItems() {
 
+        mIsRemovingItems = false;
         mParent.invalidateOptionsMenu();
 
         RecyclerAdapter adapter = (RecyclerAdapter) mRecyclerView.getAdapter();
         adapter.resetItems();
 
         clearRemovableItems();
-        mIsRemovingItems = false;
     }
 }

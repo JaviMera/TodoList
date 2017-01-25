@@ -80,7 +80,7 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
             public boolean onTouch(View view, MotionEvent motionEvent) {
 
                 if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN)
-                    mParent.onStartDrag(currentObject);
+                    mParent.onStartDrag(currentObject, getLayoutPosition());
 
                 return false;
             }
@@ -106,6 +106,8 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
             set.play(mCheckBoxFadeOut);
             set.addListener(visibilityAdapter(mStatus, View.INVISIBLE));
             set.start();
+
+            mDragImageView.setVisibility(View.GONE);
         }
         else {
 
@@ -113,6 +115,8 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
             AnimatorSet set = new AnimatorSet();
             set.play(mCheckBoxFadeIn);
             set.start();
+
+            mDragImageView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -128,8 +132,6 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
 
             if(isCompleted) {
 
-                setCompleted(true);
-
                 AnimatorSet scaleUp = new AnimatorSet();
                 scaleUp
                     .play(mCheckMarkScaleX)
@@ -138,8 +140,6 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
                 scaleUp.start();
             }
             else {
-
-                setCompleted(false);
 
                 AnimatorSet set = new AnimatorSet();
                 set
@@ -169,7 +169,8 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
     @Override
     public boolean onLongClick(View view) {
 
-        return false;
+        mParent.onLongClick(getLayoutPosition());
+        return true;
     }
 
     private int getLayoutColor(Task task) {
@@ -200,11 +201,6 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
                 mParent.getActivity(),
                 color
         );
-    }
-
-    private void setCompleted(boolean isCompleted) {
-
-        mDueDate.setVisibility(isCompleted ? View.INVISIBLE : View.VISIBLE);
     }
 
     private ObjectAnimator floatAnimator(View view, String property, float from, float to) {
