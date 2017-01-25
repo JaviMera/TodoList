@@ -136,7 +136,8 @@ public class FragmentTask extends FragmentRecycler<Task>
     @Override
     protected List<Task> getAllItems() {
 
-        return mTodoList.getTasks();
+        TodoListDataSource dataSource = new TodoListDataSource(mParent);
+        return dataSource.readTodoListTasks(mTodoList.getId());
     }
 
     @Override
