@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +36,8 @@ import todo.javier.mera.todolist.ui.MainActivity;
 
 public class DialogTask extends DialogBase
     implements DatePickerListener, PriorityListener{
+
+    private static final String DIALOG_TITLE = "Create new task!";
 
     private Date mDueDate;
     private DialogTaskListener mListener;
@@ -78,18 +81,14 @@ public class DialogTask extends DialogBase
             .inflate(R.layout.task_dialog, null
         );
 
+        ButterKnife.bind(this, view);
+
+        mTitleView.setText(DIALOG_TITLE);
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mParent);
         dialogBuilder.setView(view);
 
-        ButterKnife.bind(this, view);
-
-        mTitleView.setText("Create new task!");
-
-        AlertDialog dialog = dialogBuilder.create();
-        dialog.setCanceledOnTouchOutside(false);
-
-        dialog.setOnKeyListener(getKeyListener());
-        return dialog;
+        return createDialog(dialogBuilder);
     }
 
     @OnClick(R.id.addTaskView)
@@ -146,7 +145,7 @@ public class DialogTask extends DialogBase
     public void onDatePicked(Date date) {
 
         mDueDate = date;
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
         String dateAsString = format.format(mDueDate);
         mDateTextView.setText(dateAsString);
     }

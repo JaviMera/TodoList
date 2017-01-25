@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
@@ -29,7 +30,12 @@ import todo.javier.mera.todolist.ui.MainActivity;
 
 public class DialogTodoList extends DialogBase {
 
+    private static final String DIALOG_TITLE = "Create a To-do list!";
+
     private DialogTodoListListener mListener;
+
+    @BindView(R.id.dialogTitleView)
+    TextView mTitleView;
 
     @BindView(R.id.todoListEditTextView)
     EditText mTitleEditText;
@@ -52,11 +58,12 @@ public class DialogTodoList extends DialogBase {
 
         ButterKnife.bind(this, view);
 
+        mTitleView.setText(DIALOG_TITLE);
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mParent);
         dialogBuilder.setView(view);
-        dialogBuilder.setOnKeyListener(getKeyListener());
 
-        return dialogBuilder.create();
+        return createDialog(dialogBuilder);
     }
 
     @OnClick(R.id.addTaskView)

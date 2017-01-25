@@ -63,7 +63,16 @@ public abstract class DialogBase extends DialogFragment {
             .show();
     }
 
-    protected DialogInterface.OnKeyListener getKeyListener() {
+    protected AlertDialog createDialog(AlertDialog.Builder builder) {
+
+        AlertDialog dialog = builder.create();
+        dialog.setOnKeyListener(getKeyListener());
+        dialog.setCanceledOnTouchOutside(false);
+
+        return dialog;
+    }
+
+    private DialogInterface.OnKeyListener getKeyListener() {
 
         return new DialogInterface.OnKeyListener() {
             @Override
