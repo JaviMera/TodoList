@@ -33,16 +33,12 @@ import todo.javier.mera.todolist.ui.MainActivity;
  * Created by javie on 12/6/2016.
  */
 
-public class DialogTask extends DialogFragment
-    implements
-    DatePickerListener,
-    PriorityListener{
+public class DialogTask extends DialogBase
+    implements DatePickerListener, PriorityListener{
 
-    private MainActivity mParent;
     private Date mDueDate;
     private DialogTaskListener mListener;
     private TaskPriority mPriority;
-    private Animation mShakeAnimation;
 
     @BindView(R.id.dialogTitleView)
     TextView mTitleView;
@@ -63,7 +59,6 @@ public class DialogTask extends DialogFragment
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        mParent = (MainActivity) context;
         mListener = (FragmentTask)getTargetFragment();
     }
 
@@ -72,7 +67,6 @@ public class DialogTask extends DialogFragment
         super.onCreate(savedInstanceState);
 
         mPriority = TaskPriority.None;
-        mShakeAnimation = AnimationUtils.loadAnimation(mParent, R.anim.shake);
     }
 
     @NonNull
@@ -96,32 +90,6 @@ public class DialogTask extends DialogFragment
 
         dialog.setOnKeyListener(getKeyListener());
         return dialog;
-    }
-
-    private DialogInterface.OnKeyListener getKeyListener() {
-
-        return new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
-                if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
-
-                    mParent.showFabButton();
-                }
-
-                return false;
-            }
-        };
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        // Initialize dialog animations when this event is fired.
-        getDialog()
-            .getWindow()
-            .getAttributes()
-            .windowAnimations = R.style.FragmentDialogTaskAnimations;
     }
 
     @OnClick(R.id.addTaskView)
@@ -189,12 +157,5 @@ public class DialogTask extends DialogFragment
         mPriority = TaskPriority.values()[position];
         mPriorityTextView.setText(PriorityUtil.getName(mPriority.ordinal()));
         mPriorityMessage.setVisibility(View.GONE);
-    }
-
-    private void showToast(String message) {
-
-        Toast
-            .makeText(mParent, message, Toast.LENGTH_LONG)
-            .show();
     }
 }

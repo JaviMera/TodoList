@@ -15,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,74 +27,22 @@ import todo.javier.mera.todolist.ui.MainActivity;
  * Created by javie on 12/6/2016.
  */
 
-public abstract class DialogBase extends DialogFragment
-    implements DialogBaseView {
+public abstract class DialogBase extends DialogFragment {
 
     protected MainActivity mParent;
-    protected DialogBasePresenter mPresenter;
     protected Animation mShakeAnimation;
-
-    protected abstract String getTitle();
-    protected abstract String getHint();
-    protected abstract String getHintError();
-    protected abstract View getDialogView();
-
-    @BindView(R.id.dialogTitleView)
-    TextView mTitleView;
-
-    protected @BindView(R.id.taskEditTextView)
-    EditText mNameEditText;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mParent = (MainActivity) context;
+        mParent = (MainActivity)context;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mShakeAnimation = AnimationUtils.loadAnimation(mParent, R.anim.shake);
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-        View view = getDialogView();
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mParent);
-        dialogBuilder.setView(view);
-
-        ButterKnife.bind(this, view);
-
-        mPresenter = new DialogBasePresenter(this);
-        mPresenter.setDialogTitle(getTitle());
-        mPresenter.updateEditTextHint(getHint());
-
-        int colorId = ContextCompat.getColor(mParent, android.R.color.darker_gray);
-        mPresenter.updateEditTextHintColor(colorId);
-
-        AlertDialog dialog = dialogBuilder.create();
-        dialog.setCanceledOnTouchOutside(false);
-
-        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
-                if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
-
-                    mParent.showFabButton();
-                }
-
-                return false;
-            }
-        });
-        return dialog;
-    }
-
-    @OnClick(R.id.cancelDialog)
-    public void onCancelDialog(View view) {
-
-        mParent.showFabButton();
     }
 
     @Override
@@ -107,50 +56,26 @@ public abstract class DialogBase extends DialogFragment
             .windowAnimations = R.style.FragmentDialogTaskAnimations;
     }
 
-    @OnClick(R.id.cancelDialog)
-    public void onCancelClick(View view) {
+    protected void showToast(String message) {
 
-        dismiss();
+        Toast
+            .makeText(mParent, message, Toast.LENGTH_LONG)
+            .show();
     }
 
-    protected boolean canDismiss() {
+    protected DialogInterface.OnKeyListener getKeyListener() {
 
-        if(mNameEditText.getText().toString().isEmpty()) {
+        return new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
 
-            // If the edit text is empty, then show the user the error
-            mPresenter.updateEditTextHint(getHintError());
+                if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
 
-            int hintColor = ContextCompat.getColor(mParent, android.R.color.holo_red_light);
-            mPresenter.updateEditTextHintColor(hintColor);
-            mPresenter.startEditTextAnimation(mShakeAnimation);
+                    mParent.showFabButton();
+                }
 
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public void setDialogTitle(String title) {
-
-        mTitleView.setText(title);
-    }
-
-    @Override
-    public void updateEditTextHintColor(int colorId) {
-
-        mNameEditText.setHintTextColor(colorId);
-    }
-
-    @Override
-    public void updateEditTextHint(String text) {
-
-        mNameEditText.setHint(text);
-    }
-
-    @Override
-    public void startEditTextAnim(Animation anim) {
-
-        mNameEditText.startAnimation(anim);
+                return false;
+            }
+        };
     }
 }

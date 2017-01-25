@@ -27,11 +27,9 @@ import todo.javier.mera.todolist.ui.MainActivity;
  * Created by javie on 12/6/2016.
  */
 
-public class DialogTodoList extends DialogFragment {
+public class DialogTodoList extends DialogBase {
 
-    private Animation mShakeAnimation;
     private DialogTodoListListener mListener;
-    private MainActivity mParent;
 
     @BindView(R.id.todoListEditTextView)
     EditText mTitleEditText;
@@ -40,15 +38,7 @@ public class DialogTodoList extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        mParent = (MainActivity)context;
         mListener = (FragmentTodoList) getTargetFragment();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        mShakeAnimation = AnimationUtils.loadAnimation(mParent, R.anim.shake);
     }
 
     @NonNull
@@ -69,23 +59,12 @@ public class DialogTodoList extends DialogFragment {
         return dialogBuilder.create();
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        // Initialize dialog animations when this event is fired.
-        getDialog()
-            .getWindow()
-            .getAttributes()
-            .windowAnimations = R.style.FragmentDialogTaskAnimations;
-    }
-
     @OnClick(R.id.addTaskView)
     public void onAddClick(View view) {
 
         if(mTitleEditText.getText().toString().isEmpty()) {
 
-            Toast.makeText(mParent, "To-do list title cannot be blank.", Toast.LENGTH_SHORT).show();
+            showToast("To-do list title cannot be blank.");
             mTitleEditText.startAnimation(mShakeAnimation);
             return;
         }
@@ -99,20 +78,5 @@ public class DialogTodoList extends DialogFragment {
 
         dismiss();
         mParent.showFabButton();
-    }
-
-    private DialogInterface.OnKeyListener getKeyListener() {
-
-        return new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
-                if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
-
-                    mParent.showFabButton();
-                }
-
-                return false;
-            }
-        };
     }
 }
