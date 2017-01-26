@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -62,6 +63,9 @@ public class MainActivity extends AppCompatActivity
         mPresenter = new MainActivityPresenter(this);
         mFragmentHelper = new FragmentHelper(getSupportFragmentManager());
         ButterKnife.bind(this);
+
+        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.ic_sort);
+        mToolBar.setOverflowIcon(drawable);
 
         // For some reason if the title is not initially set to something, when the Fragment calls
         // for the first time to set the title, the title will not be changed.

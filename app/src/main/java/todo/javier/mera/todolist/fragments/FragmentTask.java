@@ -7,7 +7,9 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import java.util.Date;
@@ -23,8 +25,6 @@ import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TodoListTaskAdapter;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
-import todo.javier.mera.todolist.fragments.dialogs.DialogSort;
-import todo.javier.mera.todolist.fragments.dialogs.DialogSortListener;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTask;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTaskListener;
 import todo.javier.mera.todolist.model.Task;
@@ -40,9 +40,10 @@ public class FragmentTask extends FragmentRecycler<Task>
     implements
     DialogTaskListener,
     ItemTaskListener,
-    DialogSortListener{
+    PopupMenu.OnMenuItemClickListener{
 
     public static final String TODO_LISt = "TODO_LISt";
+
     private TodoList mTodoList;
     private int mSortSelected;
 
@@ -61,6 +62,7 @@ public class FragmentTask extends FragmentRecycler<Task>
         super.onCreate(savedInstanceState);
 
         mTodoList = getArguments().getParcelable(TODO_LISt);
+        mSortSelected = R.id.sortByNone;
     }
 
     @Override
@@ -69,13 +71,17 @@ public class FragmentTask extends FragmentRecycler<Task>
         switch(item.getItemId()) {
 
             case R.id.action_sort:
-                DialogSort dialogSort = DialogSort.newInstance(mSortSelected);
-                dialogSort.setTargetFragment(this, 1);
-                dialogSort.show(
-                    mParent.getSupportFragmentManager(),
-                    "sort_dialog"
+
+                PopupMenu popupMenu = new PopupMenu(
+                    mParent,
+                    mParent.findViewById(R.id.action_sort)
                 );
 
+                MenuInflater inflater = popupMenu.getMenuInflater();
+                inflater.inflate(R.menu.popup_task_sort, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(this);
+                popupMenu.show();
                 break;
 
             default:
@@ -179,41 +185,78 @@ public class FragmentTask extends FragmentRecycler<Task>
     public void onCreatedTask(final String taskDescription, final Date taskDuedate, final TaskPriority taskPriority) {
 
         setItemAnimator(new FadeInUpAnimator());
-        scrollToLastPosition();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        TodoListDataSource source = new TodoListDataSource(mParent);
 
-            scrollToLastPosition();
-            TodoListDataSource source = new TodoListDataSource(mParent);
+        String taskId = UUID.randomUUID().toString();
+        long taskCreationDate = new Date().getTime();
+        TaskStatus taskStatus = TaskStatus.Created;
 
-            String taskId = UUID.randomUUID().toString();
-            long taskCreationDate = new Date().getTime();
-            TaskStatus taskStatus = TaskStatus.Created;
+        Task newTask = new Task(
+            taskId,
+            mTodoList.getId(),
+            taskDescription,
+            taskStatus,
+            taskCreationDate,
+            taskDuedate.getTime(),
+            taskPriority
+        );
 
-            Task newTask = new Task(
-                taskId,
-                mTodoList.getId(),
-                taskDescription,
-                taskStatus,
-                taskCreationDate,
-                taskDuedate.getTime(),
-                taskPriority
-            );
+        long rowId = source.createTodoListTask(
+            newTask,
+            mAdapter.getItemCount()
+        );
 
-            long rowId = source.createTodoListTask(
-                newTask,
-                mAdapter.getItemCount()
-            );
+        if(rowId > -1) {
 
-            if(rowId > -1) {
+            int position = mAdapter.getItemCount();
+            switch (mSortSelected) {
 
-                mAdapter.addItem(newTask);
+                case R.id.sortByName:
+
+                    position = 0;
+                    for (Task item : (List<Task>) mAdapter.getItems()) {
+
+                        if (newTask.getDescription().compareTo(item.getDescription()) < 0) {
+                            break;
+                        }
+
+                        position++;
+                    }
+                    break;
+
+                case R.id.sortByDueDate:
+
+                    position = 0;
+                    for (Task item : (List<Task>) mAdapter.getItems()) {
+
+                        if (newTask.getDueDate() < item.getDueDate()) {
+                            break;
+                        }
+
+                        position++;
+                    }
+                    break;
+
+                case R.id.sortByPriority:
+
+                    position = 0;
+                    for (Task item : (List<Task>) mAdapter.getItems()) {
+
+                        if (newTask.getPriority().ordinal() >= item.getPriority().ordinal()) {
+                            break;
+                        }
+
+                        position++;
+                    }
+                    break;
+
+                default:
+                    break;
             }
-            }
-        }, 1000);
 
+            mAdapter.addItem(position, newTask);
+        }
 
         // Display back the add button when the user is finished adding a task
         mParent.showFabButton();
@@ -241,9 +284,40 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    public void onSortSelected(int sortSelected, String sortByColumn, String order) {
+    public boolean onMenuItemClick(MenuItem item) {
 
-        mSortSelected = sortSelected;
+        mSortSelected = item.getItemId();
+        String sortByColumn = "";
+        String order = "";
+
+        switch(item.getItemId()) {
+
+            case R.id.sortByNone:
+                sortByColumn = TodoListSQLiteHelper.COLUMN_ITEMS_POSITION;
+                order = "ASC";
+                break;
+
+            case R.id.sortByName:
+                sortByColumn = TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION;
+                order = "ASC";
+                break;
+
+            case R.id.sortByDueDate:
+                sortByColumn = TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE;
+                order = "ASC";
+                break;
+
+            case R.id.sortByPriority:
+                sortByColumn = TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY;
+                order = "DESC";
+                break;
+
+            case R.id.sortByCompleted:
+                sortByColumn = TodoListSQLiteHelper.COLUMN_ITEMS_STATUS;
+                order = "DESC";
+                break;
+        }
+
         setItemAnimator(new FadeInDownAnimator(new LinearOutSlowInInterpolator()));
 
         TodoListDataSource dataSource = new TodoListDataSource(mParent);
@@ -251,35 +325,13 @@ public class FragmentTask extends FragmentRecycler<Task>
 
         mAdapter.removeAll();
 
-        // Check if user has selected sort by completed
-        if(!sortByColumn.equals(TodoListSQLiteHelper.COLUMN_ITEMS_STATUS)) {
-
-            // If user hasn't selected sort by Completed, then push down all completed tasks to the bottom
-            // as some of them might show up in between other undone tasks.
-            moveCompletedToBottom(tasks);
-        }
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
 
-            mAdapter.addItems(tasks);
+                mAdapter.addItems(tasks);
             }
         }, 500);
-    }
-
-    private void moveCompletedToBottom(List<Task> tasks) {
-
-        List<Task> completedTasks = new LinkedList<>();
-        for(int i = 0 ; i < tasks.size() ; i++) {
-
-            if(tasks.get(i).getStatus() == TaskStatus.Completed) {
-
-                completedTasks.add(tasks.get(i));
-            }
-        }
-
-        tasks.removeAll(completedTasks);
-        tasks.addAll(tasks.size(), completedTasks);
+        return true;
     }
 }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/sortByNone"
+        app:showAsAction="ifRoom"
+        android:title="None"
+        android:orderInCategory="100"/>
+
+    <item
+        android:id="@+id/sortByName"
+        app:showAsAction="ifRoom"
+        android:title="Name"
+        android:orderInCategory="101"/>
+
+    <item
+        android:id="@+id/sortByDueDate"
+        app:showAsAction="ifRoom"
+        android:title="Due Date"
+        android:orderInCategory="102"/>
+
+    <item
+        android:id="@+id/sortByPriority"
+        app:showAsAction="ifRoom"
+        android:title="Priority"
+        android:orderInCategory="103"/>
+
+    <item
+        android:id="@+id/sortByCompleted"
+        app:showAsAction="ifRoom"
+        android:title="Completed"
+        android:orderInCategory="104"/>
+</menu>
