@@ -23,6 +23,8 @@ import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TodoListTaskAdapter;
+import todo.javier.mera.todolist.comparators.Comparator;
+import todo.javier.mera.todolist.comparators.ComparatorFactory;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTask;
@@ -209,52 +211,11 @@ public class FragmentTask extends FragmentRecycler<Task>
 
         if(rowId > -1) {
 
-            int position = mAdapter.getItemCount();
-            switch (mSortSelected) {
+            Comparator comparator = new ComparatorFactory()
+                .getComparator(mSortSelected);
 
-                case R.id.sortByName:
-
-                    position = 0;
-                    for (Task item : (List<Task>) mAdapter.getItems()) {
-
-                        if (newTask.getDescription().compareTo(item.getDescription()) < 0) {
-                            break;
-                        }
-
-                        position++;
-                    }
-                    break;
-
-                case R.id.sortByDueDate:
-
-                    position = 0;
-                    for (Task item : (List<Task>) mAdapter.getItems()) {
-
-                        if (newTask.getDueDate() < item.getDueDate()) {
-                            break;
-                        }
-
-                        position++;
-                    }
-                    break;
-
-                case R.id.sortByPriority:
-
-                    position = 0;
-                    for (Task item : (List<Task>) mAdapter.getItems()) {
-
-                        if (newTask.getPriority().ordinal() >= item.getPriority().ordinal()) {
-                            break;
-                        }
-
-                        position++;
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-
+            List<Task> tasks = mAdapter.getItems();
+            int position = comparator.getPosition(newTask, tasks);
             mAdapter.addItem(position, newTask);
         }
 
