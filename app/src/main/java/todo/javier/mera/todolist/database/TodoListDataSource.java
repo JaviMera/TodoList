@@ -106,7 +106,7 @@ public class TodoListDataSource {
         return todoLists;
     }
 
-    public long createTodoListTask(Task newTask, int position) {
+    public long createTask(Task newTask, int position) {
 
         mDb = openWriteable();
         mDb.beginTransaction();

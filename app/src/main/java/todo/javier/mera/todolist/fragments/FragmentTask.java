@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -102,7 +101,7 @@ public class FragmentTask extends FragmentRecycler<Task>
         for(Map.Entry<Integer, Task> entry : items.entrySet()) {
 
             adapter.addItem(entry.getKey(), entry.getValue());
-            source.createTodoListTask(entry.getValue(), entry.getKey());
+            source.createTask(entry.getValue(), entry.getKey());
         }
     }
 
@@ -203,7 +202,7 @@ public class FragmentTask extends FragmentRecycler<Task>
             taskPriority
         );
 
-        long rowId = source.createTodoListTask(
+        long rowId = source.createTask(
             newTask,
             mAdapter.getItemCount()
         );

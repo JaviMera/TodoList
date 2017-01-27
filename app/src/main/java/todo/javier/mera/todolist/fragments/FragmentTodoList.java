@@ -111,7 +111,7 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
             List<Task> tasks = mRemovableTodoLists.get(entry.getValue().getId());
             for(int position = 0 ; position < tasks.size() ; position++) {
 
-                source.createTodoListTask(tasks.get(position), position);
+                source.createTask(tasks.get(position), position);
             }
         }
     }

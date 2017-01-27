@@ -53,7 +53,7 @@ public class DatabaseTest {
         TodoList todoList = createTodoList();
 
         // Act
-        long rowId = mDataSource.createTodoList(todoList);
+        long rowId = mDataSource.createTodoList(todoList, 0);
 
         // Assert
         Assert.assertTrue(rowId > -1);
@@ -64,8 +64,7 @@ public class DatabaseTest {
         return new TodoList(
             UUID.randomUUID().toString(),
             "My List",
-            new Date().getTime(),
-            0
+            new Date().getTime()
         );
     }
 
@@ -74,7 +73,6 @@ public class DatabaseTest {
         return new Task(
             UUID.randomUUID().toString(),
             todoListId,
-            0,
             "My Task",
             TaskStatus.Created,
             new Date().getTime(),
@@ -90,7 +88,7 @@ public class DatabaseTest {
         TodoList expectedTodoList = createTodoList();
 
         // Act
-        mDataSource.createTodoList(expectedTodoList);
+        mDataSource.createTodoList(expectedTodoList, 0);
 
         TodoList actualTodoList = mDataSource.readTodoLists().get(0);
 
@@ -108,9 +106,9 @@ public class DatabaseTest {
         Task newTask = createTask(todoList.getId());
 
         // Act
-        mDataSource.createTodoList(todoList);
+        mDataSource.createTodoList(todoList, 0);
 
-        long rowId = mDataSource.addTaskRecord(newTask);
+        long rowId = mDataSource.createTask(newTask, 0);
 
         // Assert
         Assert.assertTrue(rowId > -1);
@@ -125,8 +123,8 @@ public class DatabaseTest {
         int expectedSize = 1;
 
         // Act
-        mDataSource.createTodoList(todoList);
-        mDataSource.addTaskRecord(task);
+        mDataSource.createTodoList(todoList, 0);
+        mDataSource.createTask(task, 0);
 
         List<Task> items = mDataSource.readTodoListTasks(todoList.getId());
 
@@ -136,39 +134,11 @@ public class DatabaseTest {
         Task item = items.get(0);
         Assert.assertEquals(task.getId(), item.getId());
         Assert.assertEquals(task.getTodoListId(), item.getTodoListId());
-        Assert.assertEquals(task.getPosition(), item.getPosition());
         Assert.assertEquals(task.getDescription(), item.getDescription());
         Assert.assertEquals(task.getCreationDate(), item.getCreationDate());;
         Assert.assertEquals(task.getDueDate(), item.getDueDate());
         Assert.assertEquals(task.getStatus(), item.getStatus());
         Assert.assertEquals(task.getPriority(), item.getPriority());
-    }
-
-    @Test
-    public void dbShuoldUpdateTodoList() throws Exception {
-
-        // Arrange
-        TodoList todoList = createTodoList();
-
-        // Act
-        mDataSource.createTodoList(todoList);
-
-        int position = 3;
-        todoList.setPosition(position);
-        ContentValues values = new ContentValues();
-        values.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION, todoList.getPosition());
-
-        int affectedRow = mDataSource.update(
-            TodoListSQLiteHelper.TABLE_TODO_LISTS,
-            TodoListSQLiteHelper.COLUMN_TODO_LIST_ID,
-            todoList.getId(),
-            values);
-
-        TodoList list = mDataSource.readTodoLists().get(0);
-
-        // Assert
-        Assert.assertTrue(affectedRow > 0);
-        Assert.assertEquals(position, list.getPosition());
     }
 
     @Test
@@ -179,7 +149,7 @@ public class DatabaseTest {
         Task task = createTask(todoList.getId());
 
         // Act
-        long rowId = mDataSource.addTaskRecord(task);
+        long rowId = mDataSource.createTask(task, 0);
 
         int newPosition = 2;
 
@@ -193,11 +163,8 @@ public class DatabaseTest {
             values
         );
 
-        task = mDataSource.readTodoListTasks(todoList.getId()).get(0);
-
         // Assert
         Assert.assertTrue(rowsAffected > 0);
-        Assert.assertEquals(newPosition, task.getPosition());
     }
 
     @Test
@@ -207,7 +174,7 @@ public class DatabaseTest {
         Task expectedTask = createTask(UUID.randomUUID().toString());
 
         // Act
-        mDataSource.addTaskRecord(expectedTask);
+        mDataSource.createTask(expectedTask, 0);
         expectedTask.setStatus(TaskStatus.Completed);
         ContentValues values = new ContentValues();
         values.put(TodoListSQLiteHelper.COLUMN_ITEMS_STATUS, expectedTask.getStatus().ordinal());
@@ -232,7 +199,7 @@ public class DatabaseTest {
         Task task = createTask(UUID.randomUUID().toString());
 
         // Act
-        mDataSource.addTaskRecord(task);
+        mDataSource.createTask(task, 0);
         TaskPriority newPriority = TaskPriority.High;
 
         Task expectedTask = mDataSource.readTodoListTasks(task.getTodoListId()).get(0);
@@ -262,8 +229,8 @@ public class DatabaseTest {
         Task task = createTask(todoList.getId());
 
         // Act
-        mDataSource.createTodoList(todoList);
-        mDataSource.addTaskRecord(task);
+        mDataSource.createTodoList(todoList, 0);
+        mDataSource.createTask(task, 0);
 
         int expectedRowCount = mDataSource.removeTodoListTasks(task);
 
@@ -279,8 +246,8 @@ public class DatabaseTest {
         Task task = createTask(todoList.getId());
 
         // Act
-        mDataSource.createTodoList(todoList);
-        mDataSource.addTaskRecord(task);
+        mDataSource.createTodoList(todoList, 0);
+        mDataSource.createTask(task, 0);
 
         int expectedRowCount = mDataSource.removeTodoLists(new TodoList[]{todoList});
         List<Task> tasks = mDataSource.readTodoListTasks(todoList.getId());
