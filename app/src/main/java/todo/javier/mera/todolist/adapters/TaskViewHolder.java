@@ -27,7 +27,7 @@ import todo.javier.mera.todolist.model.TaskStatus;
 /**
  * Created by javie on 12/5/2016.
  */
-class TodoListTaskViewHolder extends ViewHolderBase<Task>
+class TaskViewHolder extends ViewHolderBase<Task>
     implements
     View.OnClickListener,
     View.OnLongClickListener {
@@ -44,7 +44,7 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
 
     private ItemTaskListener mTaskListener;
 
-    TodoListTaskViewHolder(FragmentRecycler fragment, View itemView) {
+    TaskViewHolder(FragmentRecycler fragment, View itemView) {
 
         super(fragment, itemView);
 
@@ -74,10 +74,15 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
         boolean isCompleted = item.getStatus() == TaskStatus.Completed;
         mStatus.setChecked(isCompleted);
 
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
         mDescription.setText(item.getDescription());
-        mDueDate.setText(format.format(item.getDueDate()));
+        mDueDate.setText(
+            "Due by " +
+            dateFormat.format(item.getDueDate()) +
+            " at " +
+            timeFormat.format(item.getmDueTime()));
 
         int priorityColor = getPriorityColor(item);
         mDueDate.setTextColor(priorityColor);

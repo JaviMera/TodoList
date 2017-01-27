@@ -9,5 +9,5 @@ import todo.javier.mera.todolist.model.TaskPriority;
  */
 public interface DialogTaskListener {
 
-    void onCreatedTask(String title, Date dueDate, TaskPriority priority);
+    void onCreatedTask(String title, Date dueDate, long dueTime, TaskPriority priority);
 }

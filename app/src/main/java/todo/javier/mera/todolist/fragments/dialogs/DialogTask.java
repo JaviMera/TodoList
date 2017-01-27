@@ -29,11 +29,12 @@ import todo.javier.mera.todolist.model.TaskPriority;
  */
 
 public class DialogTask extends DialogBase
-    implements DatePickerListener, PriorityListener{
+    implements DatePickerListener, TimePickerListener, PriorityListener{
 
     private static final String DIALOG_TITLE = "Create new task!";
 
     private Date mDueDate;
+    private long mDueTime;
     private DialogTaskListener mListener;
     private TaskPriority mPriority;
 
@@ -48,6 +49,9 @@ public class DialogTask extends DialogBase
 
     @BindView(R.id.datePickerTextView)
     TextView mDateTextView;
+
+    @BindView(R.id.timePickerTextView)
+    TextView mTimeTextView;
 
     @BindView(R.id.priorityTextView)
     TextView mPriorityTextView;
@@ -109,6 +113,7 @@ public class DialogTask extends DialogBase
         mListener.onCreatedTask(
             mDescriptionEditText.getText().toString(),
             mDueDate,
+            mDueTime,
             mPriority
         );
 
@@ -121,6 +126,14 @@ public class DialogTask extends DialogBase
         DatePickerDialog dialog = new DatePickerDialog();
         dialog.setTargetFragment(this, 1);
         dialog.show(mParent.getSupportFragmentManager(), "date_dialog");
+    }
+
+    @OnClick(R.id.timePickerTextView)
+    public void onTimeClick(View view) {
+
+        TimePickerDialog dialog = new TimePickerDialog();
+        dialog.setTargetFragment(this, 1);
+        dialog.show(mParent.getSupportFragmentManager(), "time_dialog");
     }
 
     @OnClick(R.id.priorityTextView)
@@ -146,5 +159,14 @@ public class DialogTask extends DialogBase
         mPriority = TaskPriority.values()[position];
         mPriorityTextView.setText(PriorityUtil.getName(mPriority.ordinal()));
         mPriorityMessage.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onTimeSelected(long time) {
+
+        mDueTime = time;
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
+        String timeAsString = format.format(time);
+        mTimeTextView.setText(timeAsString);
     }
 }

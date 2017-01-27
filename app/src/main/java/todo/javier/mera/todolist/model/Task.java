@@ -33,6 +33,7 @@ public class Task extends ItemBase implements Parcelable {
         mStatus = status;
         mCreationDate = creationDate;
         mDueDate = dueDate;
+        mDueTime = dueTime;
         mPriority = priority;
     }
 

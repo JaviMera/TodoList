@@ -1,6 +1,5 @@
 package todo.javier.mera.todolist.adapters;
 
-import android.support.v4.app.Fragment;
 import android.view.View;
 
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
@@ -26,9 +25,9 @@ class ViewHolderFactory {
 
             return new TodolistViewHolder(mFragment, mView);
         }
-        else if(holderType.equals(TodoListTaskViewHolder.class)) {
+        else if(holderType.equals(TaskViewHolder.class)) {
 
-            return new TodoListTaskViewHolder(mFragment, mView);
+            return new TaskViewHolder(mFragment, mView);
         }
 
         return null;

@@ -28,5 +28,6 @@
     <string name="priority_title">Add priority</string>
     <string name="description_title">Add description</string>
     <string name="todo_list_title">Add title</string>
+    <string name="add_due_time">Add due time</string>
 
 </resources>

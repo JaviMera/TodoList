@@ -21,7 +21,7 @@ import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
-import todo.javier.mera.todolist.adapters.TodoListTaskAdapter;
+import todo.javier.mera.todolist.adapters.TaskAdapter;
 import todo.javier.mera.todolist.comparators.Comparator;
 import todo.javier.mera.todolist.comparators.ComparatorFactory;
 import todo.javier.mera.todolist.database.TodoListDataSource;
@@ -124,7 +124,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     @Override
     protected RecyclerAdapter createAdapter() {
 
-        return new TodoListTaskAdapter(this);
+        return new TaskAdapter(this);
     }
 
     @Override
@@ -182,7 +182,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    public void onCreatedTask(final String taskDescription, final Date taskDuedate, final TaskPriority taskPriority) {
+    public void onCreatedTask(final String taskDescription, Date taskDuedate, long dueTime, TaskPriority taskPriority) {
 
         setItemAnimator(new FadeInUpAnimator());
 
@@ -199,7 +199,7 @@ public class FragmentTask extends FragmentRecycler<Task>
             taskStatus,
             taskCreationDate,
             taskDuedate.getTime(),
-            0L,
+            dueTime,
             taskPriority
         );
 

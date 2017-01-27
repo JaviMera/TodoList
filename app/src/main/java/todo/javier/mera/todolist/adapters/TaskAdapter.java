@@ -8,11 +8,11 @@ import todo.javier.mera.todolist.model.Task;
  * Created by javie on 12/5/2016.
  */
 
-public class TodoListTaskAdapter extends RecyclerAdapter<Task, TodoListTaskViewHolder> {
+public class TaskAdapter extends RecyclerAdapter<Task, TaskViewHolder> {
 
-    public TodoListTaskAdapter(FragmentRecycler fragment) {
+    public TaskAdapter(FragmentRecycler fragment) {
 
-        super(fragment, TodoListTaskViewHolder.class);
+        super(fragment, TaskViewHolder.class);
     }
 
     @Override
