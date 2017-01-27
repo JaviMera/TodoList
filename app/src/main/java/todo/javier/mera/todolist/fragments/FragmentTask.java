@@ -199,6 +199,7 @@ public class FragmentTask extends FragmentRecycler<Task>
             taskStatus,
             taskCreationDate,
             taskDuedate.getTime(),
+            0L,
             taskPriority
         );
 

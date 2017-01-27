@@ -13,6 +13,7 @@ public class Task extends ItemBase implements Parcelable {
     private TaskStatus mStatus;
     private long mCreationDate;
     private long mDueDate;
+    private long mDueTime;
     private TaskPriority mPriority;
 
     public Task(
@@ -22,6 +23,7 @@ public class Task extends ItemBase implements Parcelable {
         TaskStatus status,
         long creationDate,
         long dueDate,
+        long dueTime,
         TaskPriority priority) {
 
         super(itemId, false);
@@ -103,6 +105,11 @@ public class Task extends ItemBase implements Parcelable {
     public TaskPriority getPriority() {
 
         return mPriority;
+    }
+
+    public long getmDueTime() {
+
+        return mDueTime;
     }
 
     public void setPriority(TaskPriority newPriority) {

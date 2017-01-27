@@ -77,6 +77,7 @@ public class DatabaseTest {
             TaskStatus.Created,
             new Date().getTime(),
             new Date().getTime(),
+            new Date().getTime(),
             TaskPriority.None
         );
     }
@@ -137,6 +138,7 @@ public class DatabaseTest {
         Assert.assertEquals(task.getDescription(), item.getDescription());
         Assert.assertEquals(task.getCreationDate(), item.getCreationDate());;
         Assert.assertEquals(task.getDueDate(), item.getDueDate());
+        Assert.assertEquals(task.getmDueTime(), item.getmDueTime());
         Assert.assertEquals(task.getStatus(), item.getStatus());
         Assert.assertEquals(task.getPriority(), item.getPriority());
     }
