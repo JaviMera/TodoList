@@ -172,9 +172,6 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
             }
             }
         }, 1000);
-
-        // Display back the add button when the user is finished adding a to-do list
-        mParent.showFabButton();
     }
 }
 

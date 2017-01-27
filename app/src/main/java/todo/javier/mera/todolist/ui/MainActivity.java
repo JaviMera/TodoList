@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import java.util.Map;
 
@@ -37,28 +38,16 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.toolbar)
     Toolbar mToolBar;
 
-    @BindView(R.id.fab)
-    FloatingActionButton mFab;
-
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout mCoordinatorLayout;
 
     private static final String FRAGMENT_TAG = "fragment_recycler";
-    private ObjectAnimator mFabScaleXDown;
-    private ObjectAnimator mFabScaleYDown;
-    private ObjectAnimator mFabScaleXUp;
-    private ObjectAnimator mFabScaleYUp;
     private FragmentRecycler mCurrentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mFabScaleXDown = ObjectAnimator.ofFloat(mFab, "scaleX", 1.0f, 0.0f);
-        mFabScaleYDown = ObjectAnimator.ofFloat(mFab, "scaleY", 1.0f, 0.0f);
-        mFabScaleXUp = ObjectAnimator.ofFloat(mFab, "scaleX", 0.0f, 1.0f);
-        mFabScaleYUp = ObjectAnimator.ofFloat(mFab, "scaleY", 0.0f, 1.0f);
 
         mPresenter = new MainActivityPresenter(this);
         mFragmentHelper = new FragmentHelper(getSupportFragmentManager());
@@ -95,7 +84,6 @@ public class MainActivity extends AppCompatActivity
 
             mCurrentFragment.resetItems();
             mPresenter.updateToolbarBackground(R.color.colorPrimary);
-            mPresenter.showFabButton();
 
             if(mCurrentFragment instanceof FragmentTodoList) {
 
@@ -156,40 +144,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void hideFabButton() {
-
-        AnimatorSet set = new AnimatorSet();
-        set.play(mFabScaleXDown).with(mFabScaleYDown);
-        set.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                mPresenter.setFabVisibility(View.INVISIBLE);
-            }
-        });
-        set.start();
-    }
-
-    @OnClick(R.id.fab)
-    public void onAddListButtonClick(View view) {
-
-        FragmentRecycler fragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
-        fragment.showAddDialog();
-        hideFabButton();
-    }
-
-    @Override
-    public void showFabButton() {
-
-        mPresenter.setFabVisibility(View.VISIBLE);
-
-        AnimatorSet set = new AnimatorSet();
-        set.play(mFabScaleXUp).with(mFabScaleYUp);
-
-        set.start();
-    }
-
-    @Override
     public void toggleBackButton(boolean canDisplay) {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(canDisplay);
@@ -199,12 +153,6 @@ public class MainActivity extends AppCompatActivity
     public void setToolbar() {
 
         setSupportActionBar(mToolBar);
-    }
-
-    @Override
-    public void setFabVisibility(int visibility) {
-
-        mFab.setVisibility(visibility);
     }
 
     @Override

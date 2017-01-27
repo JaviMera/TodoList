@@ -217,9 +217,6 @@ public class FragmentTask extends FragmentRecycler<Task>
             int position = comparator.getPosition(newTask, tasks);
             mAdapter.addItem(position, newTask);
         }
-
-        // Display back the add button when the user is finished adding a task
-        mParent.showFabButton();
     }
 
     @Override

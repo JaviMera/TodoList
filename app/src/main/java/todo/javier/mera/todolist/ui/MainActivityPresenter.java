@@ -23,12 +23,6 @@ public class MainActivityPresenter {
         mView.updateToolbarBackground(color);
     }
 
-    public void showFabButton() {
-
-
-        mView.showFabButton();
-    }
-
     public void toggleBackButton(boolean canDisplay) {
 
         mView.toggleBackButton(canDisplay);
@@ -42,11 +36,6 @@ public class MainActivityPresenter {
     public void setToolbar() {
 
         mView.setToolbar();
-    }
-
-    public void setFabVisibility(int visibility) {
-
-        mView.setFabVisibility(visibility);
     }
 
     public void showSnackBar(String message, String action, Map<Integer, ItemBase> items) {

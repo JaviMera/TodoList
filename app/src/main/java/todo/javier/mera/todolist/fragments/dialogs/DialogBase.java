@@ -66,25 +66,8 @@ public abstract class DialogBase extends DialogFragment {
     protected AlertDialog createDialog(AlertDialog.Builder builder) {
 
         AlertDialog dialog = builder.create();
-        dialog.setOnKeyListener(getKeyListener());
         dialog.setCanceledOnTouchOutside(false);
 
         return dialog;
-    }
-
-    private DialogInterface.OnKeyListener getKeyListener() {
-
-        return new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
-
-                if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
-
-                    mParent.showFabButton();
-                }
-
-                return false;
-            }
-        };
     }
 }
