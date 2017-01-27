@@ -151,19 +151,14 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
 
         List<T> itemsList = new LinkedList<>();
 
-        for(T item : mItems) {
+        for(int position = 0 ; position < mItems.size() ; position++){
 
-            if(item.getCanRemove()) {
+            if(getItem(position).getCanRemove()) {
 
-                itemsList.add(item);
+                mItems.remove(position);
+                notifyItemRemoved(position);
+                position--;
             }
-        }
-
-        for(T item : itemsList) {
-
-            int position = mItems.indexOf(item);
-            mItems.remove(position);
-            notifyItemRemoved(position);
         }
     }
 
