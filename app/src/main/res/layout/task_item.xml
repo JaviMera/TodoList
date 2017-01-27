@@ -15,7 +15,7 @@
                 android:id="@+id/itemCheckBoxView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.2"
+                android:layout_weight="0.1"
                 android:layout_gravity="center"
                 android:gravity="center"/>
 
@@ -55,11 +55,16 @@
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_drag"
                 android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:maxHeight="30dp"
+                android:maxWidth="30dp"
                 android:layout_gravity="center"/>
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimary" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/line_divider"
+        android:layerType="software"/>
 </LinearLayout>
