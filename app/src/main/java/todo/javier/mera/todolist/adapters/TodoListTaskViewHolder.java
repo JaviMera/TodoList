@@ -88,10 +88,12 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
         if(mParent.isRemovingItems()) {
 
             mDragImageView.setVisibility(View.GONE);
+            mStatus.setVisibility(View.GONE);
         }
         else {
 
             mDragImageView.setVisibility(View.VISIBLE);
+            mStatus.setVisibility(View.VISIBLE);
         }
     }
 
