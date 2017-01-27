@@ -32,6 +32,7 @@ import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.OnStartDragListener;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.SimpleItemTouchHelperCallback;
+import todo.javier.mera.todolist.model.Decoration;
 import todo.javier.mera.todolist.model.ItemBase;
 import todo.javier.mera.todolist.ui.MainActivity;
 

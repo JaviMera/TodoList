@@ -1,5 +1,6 @@
 package todo.javier.mera.todolist.adapters;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -21,23 +22,9 @@ class TodolistViewHolder extends ViewHolderBase<TodoList>
     private TextView mTotalitems;
     private TextView mCreationDate;
 
-    private Drawable mTitleRemoveDrawable;
-    private Drawable mTitleDrawable;
-    private Drawable mBodyRemoveDrawable;
-    private Drawable mBodyDrawable;
-    private Drawable mBodyMoveDrawable;
-    private Drawable mTitleMoveDrawable;
-
     TodolistViewHolder(FragmentRecycler fragment, View itemView) {
 
         super(fragment, itemView);
-
-        mTitleRemoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_remove_background);
-        mTitleDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_background);
-        mTitleMoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.title_move_background);
-        mBodyRemoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_remove_background);
-        mBodyDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_background);
-        mBodyMoveDrawable = ContextCompat.getDrawable(mParent.getActivity(), R.drawable.body_move_background);
     }
 
     @Override
@@ -50,28 +37,23 @@ class TodolistViewHolder extends ViewHolderBase<TodoList>
 
         mCreationDate.setText(dateFormat.format(item.getCreationDate()));
 
-        if(item.isMoving()) {
+        if(item.getCanRemove()) {
 
-            mTodolistTitle.setBackground(mTitleMoveDrawable);
-            mLayout.setBackground(mBodyMoveDrawable);
-        }
-        else if(item.getCanRemove()) {
-
-            mTodolistTitle.setBackground(mTitleRemoveDrawable);
-            mLayout.setBackground(mBodyRemoveDrawable);
+            int color = ContextCompat.getColor(mParent.getContext(), R.color.remove_color_light);
+            mLayout.setBackgroundColor(color);
         }
         else {
 
-            mTodolistTitle.setBackground(mTitleDrawable);
-            mLayout.setBackground(mBodyDrawable);
+            int color = ContextCompat.getColor(mParent.getContext(), android.R.color.white);
+            mLayout.setBackgroundColor(color);
         }
     }
 
     @Override
     protected void setViews() {
 
-        mLayout = (LinearLayout) itemView.findViewById(R.id.bodyLayout);
-        mTodolistTitle = (TextView) itemView.findViewById(R.id.todoTitleView);
+        mLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
+        mTodolistTitle = (TextView) itemView.findViewById(R.id.todoListNameView);
         mTotalitems = (TextView) itemView.findViewById(R.id.totalItemsText);
         mCreationDate = (TextView) itemView.findViewById(R.id.creationDateView);
 

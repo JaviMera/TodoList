@@ -42,7 +42,7 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     @Override
     protected String getTitle() {
 
-        return "Home";
+        return "My Lists";
     }
 
     @Override
