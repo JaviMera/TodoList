@@ -10,5 +10,5 @@ import todo.javier.mera.todolist.model.ItemBase;
 
 public interface Comparator<T extends ItemBase>{
 
-    int getPosition(T newItem, List<T> items);
+    <T> int getPosition(T newItem, List<T> items);
 }
