@@ -255,9 +255,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
             mParent.updateToolbarBackground(R.color.remove_color_light);
             mParent.hideFabButton();
             mParent.toggleBackButton(true);
-
             mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
-
             mAdapter.setRemovable(position, true);
             mRemovableItems.put(position, (T)mAdapter.getItem(position));
             mParent.invalidateOptionsMenu();
@@ -286,6 +284,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 mIsRemovingItems = false;
                 mParent.invalidateOptionsMenu();
                 mParent.updateToolbarBackground(R.color.colorPrimary);
+                mParent.showFabButton();
                 mParent.setIndicator(0);
 
                 if(this instanceof FragmentTodoList) {

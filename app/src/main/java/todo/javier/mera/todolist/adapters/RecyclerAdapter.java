@@ -149,8 +149,6 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
 
     public void removeItems() {
 
-        List<T> itemsList = new LinkedList<>();
-
         for(int position = 0 ; position < mItems.size() ; position++){
 
             if(getItem(position).getCanRemove()) {
