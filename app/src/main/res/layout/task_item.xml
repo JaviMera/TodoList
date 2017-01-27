@@ -33,7 +33,7 @@
                     android:id="@+id/itemDescriptionView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     tools:text="This is an item"
                     android:maxLines="1"
                     android:ellipsize="end"/>
@@ -43,8 +43,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:textSize="14sp"
-                    android:textStyle="italic"
+                    android:textSize="16sp"
+                    android:textStyle="italic|bold"
                     tools:text="12/12/2016"/>
 
             </LinearLayout>
@@ -53,6 +53,7 @@
                 android:id="@+id/dragImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:src="@mipmap/ic_drag"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
