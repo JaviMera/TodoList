@@ -120,7 +120,7 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     protected RecyclerView.LayoutManager getLayoutManager(Context context) {
 
         int orientation = getOrientation(context);
-        return new LinearLayoutManager(context, orientation, false);
+        return new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
     }
 
     @Override
