@@ -32,6 +32,7 @@ public class DialogTask extends DialogBase
     implements DatePickerListener, TimePickerListener, PriorityListener{
 
     private static final String DIALOG_TITLE = "Create new task!";
+    private static final long EMPTY_DUE_TIME = 0L;
 
     private Date mDueDate;
     private long mDueTime;
@@ -71,6 +72,7 @@ public class DialogTask extends DialogBase
         super.onCreate(savedInstanceState);
 
         mPriority = TaskPriority.None;
+        mDueTime = 0L;
     }
 
     @NonNull
@@ -106,6 +108,13 @@ public class DialogTask extends DialogBase
 
             showToast("Task due date cannot be blank.");
             mDateTextView.startAnimation(mShakeAnimation);
+            return;
+        }
+
+        if(mDueTime == EMPTY_DUE_TIME) {
+
+            showToast("Task due time cannot be blank");
+            mTimeTextView.startAnimation(mShakeAnimation);
             return;
         }
 
@@ -165,7 +174,7 @@ public class DialogTask extends DialogBase
     public void onTimeSelected(long time) {
 
         mDueTime = time;
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
         String timeAsString = format.format(time);
         mTimeTextView.setText(timeAsString);
     }
