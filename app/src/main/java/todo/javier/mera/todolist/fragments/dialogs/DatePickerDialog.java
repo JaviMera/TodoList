@@ -54,8 +54,6 @@ public class DatePickerDialog extends DialogFragment {
     @OnClick(R.id.addTaskView)
     public void onAddDateClick(View view) {
 
-        String date = mDate.getMonth() + "/" + mDate.getDayOfMonth() + "/" + mDate.getYear();
-
         Calendar c = Calendar.getInstance();
         c.set(mDate.getYear(), mDate.getMonth(), mDate.getDayOfMonth());
         mListener.onDatePicked(c.getTime());
