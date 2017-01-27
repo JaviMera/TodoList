@@ -118,9 +118,8 @@ public class FragmentTask extends FragmentRecycler<Task>
         TodoListDataSource source = new TodoListDataSource(mParent);
 
         Task[] items = itemsToRemove.toArray(new Task[itemsToRemove.size()]);
-        int affectedRows = source.removeTodoListTasks(items);
 
-        return affectedRows;
+        return source.removeTodoListTasks(items);
     }
 
     @Override
