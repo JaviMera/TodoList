@@ -79,11 +79,4 @@ public class DialogTodoList extends DialogBase {
         mListener.onCreateTodoList(mTitleEditText.getText().toString());
         dismiss();
     }
-
-    @OnClick(R.id.cancelDialog)
-    public void onCancelClick(View view) {
-
-        dismiss();
-        mParent.showFabButton();
-    }
 }
