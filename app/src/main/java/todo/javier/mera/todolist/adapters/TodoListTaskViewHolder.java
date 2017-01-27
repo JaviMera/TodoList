@@ -32,16 +32,10 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
     View.OnClickListener,
     View.OnLongClickListener {
 
-    private final ObjectAnimator mCheckMarkScaleX;
-    private final ObjectAnimator mCheckMarkScaleY;
-    private final ObjectAnimator mDueDateScaleX;
-    private final ObjectAnimator mDueDateScaleY;
-
     private TextView mDueDate;
     private LinearLayout mLayout;
     private TextView mDescription;
     private CheckBox mStatus;
-    private ImageView mCheckMark;
     private ImageView mDragImageView;
 
     private int mNormalColor;
@@ -49,8 +43,6 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
     private int mMoveColor;
 
     private ItemTaskListener mTaskListener;
-    private ObjectAnimator mCheckBoxFadeOut;
-    private ObjectAnimator mCheckBoxFadeIn;
 
     TodoListTaskViewHolder(FragmentRecycler fragment, View itemView) {
 
@@ -61,13 +53,6 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
         mNormalColor = ContextCompat.getColor(mParent.getActivity(), android.R.color.transparent);
         mRemoveColor = ContextCompat.getColor(mParent.getActivity(), R.color.remove_color_light);
         mMoveColor = ContextCompat.getColor(mParent.getActivity(), R.color.move_color_light);
-
-        mCheckMarkScaleX = floatAnimator(mCheckMark, "scaleX", 0.0f, 1.0f);
-        mCheckMarkScaleY = floatAnimator(mCheckMark, "scaleY", 0.0f, 1.0f);
-        mDueDateScaleX = floatAnimator(mDueDate, "scaleX", 0.0f, 1.0f);
-        mDueDateScaleY = floatAnimator(mDueDate, "scaleY", 0.0f, 1.0f);
-        mCheckBoxFadeOut = ObjectAnimator.ofFloat(mStatus, "alpha", 1.0f, 0.0f);
-        mCheckBoxFadeIn = ObjectAnimator.ofFloat(mStatus, "alpha", 0.0f, 1.0f);
     }
 
     @Override
@@ -102,19 +87,9 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
 
         if(mParent.isRemovingItems()) {
 
-            AnimatorSet set = new AnimatorSet();
-            set.play(mCheckBoxFadeOut);
-            set.addListener(visibilityAdapter(mStatus, View.INVISIBLE));
-            set.start();
-
             mDragImageView.setVisibility(View.GONE);
         }
         else {
-
-            mStatus.setVisibility(View.VISIBLE);
-            AnimatorSet set = new AnimatorSet();
-            set.play(mCheckBoxFadeIn);
-            set.start();
 
             mDragImageView.setVisibility(View.VISIBLE);
         }
@@ -129,25 +104,6 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
             public void onCheckedChanged(CompoundButton compoundButton, boolean isCompleted) {
 
             mTaskListener.onUpdateStatus(getAdapterPosition(), isCompleted);
-
-            if(isCompleted) {
-
-                AnimatorSet scaleUp = new AnimatorSet();
-                scaleUp
-                    .play(mCheckMarkScaleX)
-                    .with(mCheckMarkScaleY);
-
-                scaleUp.start();
-            }
-            else {
-
-                AnimatorSet set = new AnimatorSet();
-                set
-                    .play(mDueDateScaleX)
-                    .with(mDueDateScaleY);
-
-                set.start();
-            }
             }
         });
 
@@ -201,22 +157,5 @@ class TodoListTaskViewHolder extends ViewHolderBase<Task>
                 mParent.getActivity(),
                 color
         );
-    }
-
-    private ObjectAnimator floatAnimator(View view, String property, float from, float to) {
-
-        return ObjectAnimator
-                .ofFloat(view, property, from, to);
-    }
-
-    private AnimatorListenerAdapter visibilityAdapter(final View view, final int visibility) {
-
-        return new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                view.setVisibility(visibility);
-            }
-        };
     }
 }
