@@ -21,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.Map;
 
@@ -28,6 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import todo.javier.mera.todolist.R;
+import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.fragments.FragmentTodoList;
@@ -36,6 +38,8 @@ import todo.javier.mera.todolist.model.TodoList;
 
 public class MainActivity extends AppCompatActivity
         implements MainActivityView {
+
+    public static final int TASK_NOTIFICATION_CODE = 10;
 
     private FragmentHelper mFragmentHelper;
     private MainActivityPresenter mPresenter;
@@ -75,7 +79,20 @@ public class MainActivity extends AppCompatActivity
         }
         else {
 
-            mCurrentFragment = FragmentTodoList.newInstance();
+            Intent intent = getIntent();
+
+            Bundle bundle = intent.getBundleExtra("bundle");
+            if(bundle == null) {
+
+                mCurrentFragment = FragmentTodoList.newInstance();
+            }
+            else {
+
+                String listId = bundle.getString("ID");
+                TodoListDataSource source = new TodoListDataSource(this);
+                TodoList todoList = source.readTodoList(listId);
+                showFragmentTodoList(todoList);
+            }
         }
 
 

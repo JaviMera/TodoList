@@ -43,6 +43,7 @@ import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TaskPriority;
 import todo.javier.mera.todolist.model.TaskStatus;
 import todo.javier.mera.todolist.model.TodoList;
+import todo.javier.mera.todolist.ui.MainActivity;
 import todo.javier.mera.todolist.ui.NotificationPublisher;
 
 /**
@@ -320,12 +321,28 @@ public class FragmentTask extends FragmentRecycler<Task>
         builder.setContentTitle("Task Reminder");
         builder.setContentText(mTaskWithReminder.getDescription());
         builder.setSmallIcon(R.mipmap.ic_add_alarm);
+        builder.setLargeIcon(BitmapFactory.decodeResource(mParent.getResources(), R.mipmap.ic_add_alarm));
+        builder.setAutoCancel(true);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("ID", mTodoList.getId());
+        builder.setContentIntent(
+            PendingIntent.getActivity(
+                mParent,
+                MainActivity.TASK_NOTIFICATION_CODE,
+                new Intent(mParent, MainActivity.class)
+                    .putExtra("bundle", bundle),
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        );
+
         Intent intent = new Intent(mParent, NotificationPublisher.class);
+
         int id = mTaskWithReminder.hashCode();
         intent.putExtra("ID", id);
         intent.putExtra("NOTIFICATION", builder.build());
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(mParent, (int)System.currentTimeMillis() , intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mParent, (int)System.currentTimeMillis() , intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Calendar c = Calendar.getInstance();
         c.set(2017, Calendar.JANUARY, 28, hour, minutes, 0);

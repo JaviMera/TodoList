@@ -87,7 +87,6 @@ public class TodoListDataSource {
             do {
 
                 String id = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_ID);
-                int position = getInt(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION);
                 String name = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME);
                 long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_CREATION_DATE);
 
@@ -333,5 +332,42 @@ public class TodoListDataSource {
         close(mDb);
 
         return items;
+    }
+
+    public TodoList readTodoList(String listId) {
+
+        mDb = openReadable();
+
+        Cursor cursor = mDb.query(
+            TodoListSQLiteHelper.TABLE_TODO_LISTS,
+            new String[] {
+                TodoListSQLiteHelper.COLUMN_TODO_LIST_ID,
+                TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION,
+                TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME,
+                TodoListSQLiteHelper.COLUMN_CREATION_DATE},
+            TodoListSQLiteHelper.COLUMN_TODO_LIST_ID + "=?",
+            new String[]{String.valueOf(listId)},
+            null,
+            null,
+            null
+        );
+
+        TodoList todoList = null;
+        if(cursor.moveToFirst()) {
+
+            String id = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_ID);
+            String name = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME);
+            long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_CREATION_DATE);
+
+            todoList = new TodoList(id, name, creationDate);
+
+            List<Task> tasks = readTodoListTasks(id);
+            todoList.setItems(tasks);
+        }
+
+        cursor.close();
+        close(mDb);
+
+        return todoList;
     }
 }
