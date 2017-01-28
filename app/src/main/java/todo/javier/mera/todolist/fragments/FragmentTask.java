@@ -7,10 +7,8 @@ import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,7 +36,6 @@ import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTask;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTaskListener;
-import todo.javier.mera.todolist.model.ItemBase;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TaskPriority;
 import todo.javier.mera.todolist.model.TaskStatus;
@@ -340,7 +337,7 @@ public class FragmentTask extends FragmentRecycler<Task>
         PendingIntent pendingIntent = PendingIntent.getBroadcast(mParent, (int)System.currentTimeMillis() , intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Calendar c = Calendar.getInstance();
-        c.set(2017, Calendar.JANUARY, 28, hour, minutes, 0);
+        c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), hour, minutes, 0);
         AlarmManager alarmManager = (AlarmManager)mParent.getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
