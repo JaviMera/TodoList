@@ -16,7 +16,7 @@
                 android:id="@+id/itemCheckBoxView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.1"
+                android:layout_weight="0.2"
                 android:layout_gravity="center"
                 android:gravity="center"/>
 
@@ -49,6 +49,15 @@
                     tools:text="Due by 12/12/2016 at 00:00:00"/>
 
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/addAlarmImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_add_alarm"
+                android:scaleType="fitCenter"
+
+                android:layout_gravity="center"/>
 
             <ImageView
                 android:id="@+id/dragImageView"
