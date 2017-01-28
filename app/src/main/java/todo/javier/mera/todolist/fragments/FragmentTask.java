@@ -1,9 +1,16 @@
 package todo.javier.mera.todolist.fragments;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +18,9 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TimePicker;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -22,16 +31,19 @@ import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TaskAdapter;
+import todo.javier.mera.todolist.adapters.TaskAlarmListener;
 import todo.javier.mera.todolist.comparators.Comparator;
 import todo.javier.mera.todolist.comparators.ComparatorFactory;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTask;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTaskListener;
+import todo.javier.mera.todolist.model.ItemBase;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TaskPriority;
 import todo.javier.mera.todolist.model.TaskStatus;
 import todo.javier.mera.todolist.model.TodoList;
+import todo.javier.mera.todolist.ui.NotificationPublisher;
 
 /**
  * Created by javie on 12/2/2016.
@@ -41,12 +53,13 @@ public class FragmentTask extends FragmentRecycler<Task>
     implements
     DialogTaskListener,
     ItemTaskListener,
-    PopupMenu.OnMenuItemClickListener{
+    PopupMenu.OnMenuItemClickListener, TaskAlarmListener, TimePickerDialog.OnTimeSetListener {
 
     public static final String TODO_LISt = "TODO_LISt";
 
     private TodoList mTodoList;
     private int mSortSelected;
+    private Task mTaskWithReminder;
 
     public static FragmentTask newInstance(TodoList todoList) {
 
@@ -290,5 +303,33 @@ public class FragmentTask extends FragmentRecycler<Task>
             }
         }, 500);
         return true;
+    }
+
+    @Override
+    public void onAddAlarmClick(int position) {
+
+        mTaskWithReminder = (Task) mAdapter.getItem(position);
+        TimePickerDialog dialog = new TimePickerDialog(mParent, this, 0,0,true);
+        dialog.show();
+    }
+
+    @Override
+    public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
+
+        Notification.Builder builder = new Notification.Builder(mParent);
+        builder.setContentTitle("Task Reminder");
+        builder.setContentText(mTaskWithReminder.getDescription());
+        builder.setSmallIcon(R.mipmap.ic_add_alarm);
+        Intent intent = new Intent(mParent, NotificationPublisher.class);
+        int id = mTaskWithReminder.hashCode();
+        intent.putExtra("ID", id);
+        intent.putExtra("NOTIFICATION", builder.build());
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mParent, (int)System.currentTimeMillis() , intent, PendingIntent.FLAG_ONE_SHOT);
+
+        Calendar c = Calendar.getInstance();
+        c.set(2017, Calendar.JANUARY, 28, hour, minutes, 0);
+        AlarmManager alarmManager = (AlarmManager)mParent.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 }

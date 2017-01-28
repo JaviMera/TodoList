@@ -37,18 +37,21 @@ class TaskViewHolder extends ViewHolderBase<Task>
     private TextView mDescription;
     private CheckBox mStatus;
     private ImageView mDragImageView;
+    private ImageView mAlarmImageView;
 
     private int mNormalColor;
     private int mRemoveColor;
     private int mMoveColor;
 
     private ItemTaskListener mTaskListener;
+    private TaskAlarmListener mAlarmListener;
 
     TaskViewHolder(FragmentRecycler fragment, View itemView) {
 
         super(fragment, itemView);
 
         mTaskListener = (FragmentTask)fragment;
+        mAlarmListener = (FragmentTask)fragment;
 
         mNormalColor = ContextCompat.getColor(mParent.getActivity(), android.R.color.transparent);
         mRemoveColor = ContextCompat.getColor(mParent.getActivity(), R.color.remove_color_light);
@@ -59,6 +62,15 @@ class TaskViewHolder extends ViewHolderBase<Task>
     public void bind(final Task item) {
 
         final ViewHolderBase currentObject = this;
+
+        mAlarmImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mAlarmListener.onAddAlarmClick(getLayoutPosition());
+            }
+        });
+
         mDragImageView.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -118,6 +130,7 @@ class TaskViewHolder extends ViewHolderBase<Task>
         mLayout = (LinearLayout) itemView.findViewById(R.id.containerLayout);
         mDescription = (TextView) itemView.findViewById(R.id.itemDescriptionView);
         mDragImageView = (ImageView) itemView.findViewById(R.id.dragImageView);
+        mAlarmImageView = (ImageView) itemView.findViewById(R.id.addAlarmImageView);
 
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
