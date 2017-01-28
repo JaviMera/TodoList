@@ -79,22 +79,8 @@ public class MainActivity extends AppCompatActivity
         }
         else {
 
-            Intent intent = getIntent();
-
-            Bundle bundle = intent.getBundleExtra("bundle");
-            if(bundle == null) {
-
-                mCurrentFragment = FragmentTodoList.newInstance();
-            }
-            else {
-
-                String listId = bundle.getString("ID");
-                TodoListDataSource source = new TodoListDataSource(this);
-                TodoList todoList = source.readTodoList(listId);
-                showFragmentTodoList(todoList);
-            }
+            mCurrentFragment = FragmentTodoList.newInstance();
         }
-
 
         mFragmentHelper.replace(R.id.fragmentContainer, mCurrentFragment, FRAGMENT_TAG);
     }

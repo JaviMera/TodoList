@@ -321,18 +321,13 @@ public class FragmentTask extends FragmentRecycler<Task>
         builder.setContentTitle("Task Reminder");
         builder.setContentText(mTaskWithReminder.getDescription());
         builder.setSmallIcon(R.mipmap.ic_add_alarm);
-        builder.setLargeIcon(BitmapFactory.decodeResource(mParent.getResources(), R.mipmap.ic_add_alarm));
         builder.setAutoCancel(true);
-
-        Bundle bundle = new Bundle();
-        bundle.putString("ID", mTodoList.getId());
         builder.setContentIntent(
             PendingIntent.getActivity(
                 mParent,
                 MainActivity.TASK_NOTIFICATION_CODE,
-                new Intent(mParent, MainActivity.class)
-                    .putExtra("bundle", bundle),
-                PendingIntent.FLAG_UPDATE_CURRENT
+                new Intent(mParent, MainActivity.class),
+                PendingIntent.FLAG_CANCEL_CURRENT
             )
         );
 
