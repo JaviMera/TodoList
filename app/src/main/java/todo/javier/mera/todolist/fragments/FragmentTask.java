@@ -51,13 +51,12 @@ public class FragmentTask extends FragmentRecycler<Task>
     implements
     DialogTaskListener,
     ItemTaskListener,
-    PopupMenu.OnMenuItemClickListener, TaskAlarmListener, TimePickerDialog.OnTimeSetListener {
+    PopupMenu.OnMenuItemClickListener{
 
     public static final String TODO_LISt = "TODO_LISt";
 
     private TodoList mTodoList;
     private int mSortSelected;
-    private Task mTaskWithReminder;
 
     public static FragmentTask newInstance(TodoList todoList) {
 
@@ -193,7 +192,13 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    public void onCreatedTask(final String taskDescription, Date taskDuedate, long dueTime, TaskPriority taskPriority) {
+    public void onCreatedTask(
+        String taskDescription,
+        Date taskDuedate,
+        long dueTime,
+        Date reminderDate,
+        long reminderTime,
+        TaskPriority taskPriority) {
 
         setItemAnimator(new FadeInUpAnimator());
 
@@ -227,6 +232,16 @@ public class FragmentTask extends FragmentRecycler<Task>
             List<Task> tasks = mAdapter.getItems();
             int position = comparator.getPosition(newTask, tasks);
             mAdapter.addItem(position, newTask);
+
+            if(reminderDate != null && reminderTime != 0L) {
+
+                mParent.setReminder(
+                    newTask.getDescription(),
+                    newTask.hashCode(),
+                    reminderDate,
+                    reminderTime
+                );
+            }
         }
     }
 
@@ -301,44 +316,5 @@ public class FragmentTask extends FragmentRecycler<Task>
             }
         }, 500);
         return true;
-    }
-
-    @Override
-    public void onAddAlarmClick(int position) {
-
-        mTaskWithReminder = (Task) mAdapter.getItem(position);
-        TimePickerDialog dialog = new TimePickerDialog(mParent, this, 0,0,true);
-        dialog.show();
-    }
-
-    @Override
-    public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
-
-        Notification.Builder builder = new Notification.Builder(mParent);
-        builder.setContentTitle("Task Reminder");
-        builder.setContentText(mTaskWithReminder.getDescription());
-        builder.setSmallIcon(R.mipmap.ic_add_alarm);
-        builder.setAutoCancel(true);
-        builder.setContentIntent(
-            PendingIntent.getActivity(
-                mParent,
-                MainActivity.TASK_NOTIFICATION_CODE,
-                new Intent(mParent, MainActivity.class),
-                PendingIntent.FLAG_CANCEL_CURRENT
-            )
-        );
-
-        Intent intent = new Intent(mParent, NotificationPublisher.class);
-
-        int id = mTaskWithReminder.hashCode();
-        intent.putExtra("ID", id);
-        intent.putExtra("NOTIFICATION", builder.build());
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(mParent, (int)System.currentTimeMillis() , intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        Calendar c = Calendar.getInstance();
-        c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), hour, minutes, 0);
-        AlarmManager alarmManager = (AlarmManager)mParent.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 }

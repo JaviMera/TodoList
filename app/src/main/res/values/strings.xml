@@ -29,5 +29,7 @@
     <string name="description_title">Add description</string>
     <string name="todo_list_title">Add title</string>
     <string name="add_due_time">Add due time</string>
+    <string name="dialog_reminder_title">Choose a time</string>
+    <string name="task_reminder_text">Add reminder</string>
 
 </resources>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_reminder_title"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:padding="15dp"/>
+
+    <TextView
+        android:id="@+id/dateTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="15dp"
+        tools:text="Sat, Jan 27"
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#40BBBDC0"
+        android:layout_margin="15dp" />
+
+    <TextView
+        android:id="@+id/timeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        tools:text="10:00 PM"
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#40BBBDC0"
+        android:layout_margin="15dp" />
+
+    <TextView
+        android:id="@+id/setReminderTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set Reminder"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimary"
+        android:gravity="end"
+        android:layout_marginTop="15dp"
+        android:padding="10dp"/>
+</LinearLayout>

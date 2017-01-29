@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -23,6 +24,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -34,6 +37,7 @@ import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.fragments.FragmentTodoList;
 import todo.javier.mera.todolist.model.ItemBase;
+import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class MainActivity extends AppCompatActivity
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity
 
     private FragmentHelper mFragmentHelper;
     private MainActivityPresenter mPresenter;
+    private AlarmManager mAlarmManager;
 
     @BindView(R.id.toolbar)
     Toolbar mToolBar;
@@ -60,6 +65,8 @@ public class MainActivity extends AppCompatActivity
 
         mPresenter = new MainActivityPresenter(this);
         mFragmentHelper = new FragmentHelper(getSupportFragmentManager());
+        mAlarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+
         ButterKnife.bind(this);
 
         Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.ic_sort);
@@ -188,5 +195,41 @@ public class MainActivity extends AppCompatActivity
     public void setIndicator(int resourceId) {
 
         getSupportActionBar().setHomeAsUpIndicator(resourceId);
+    }
+
+    public void setReminder(String description, int id, Date date, long time) {
+
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setContentTitle("Task Reminder");
+        builder.setContentText(description);
+        builder.setSmallIcon(R.mipmap.ic_add_alarm);
+        builder.setAutoCancel(true);
+        builder.setContentIntent(
+            PendingIntent.getActivity(
+                this,
+                MainActivity.TASK_NOTIFICATION_CODE,
+                new Intent(this, MainActivity.class),
+                PendingIntent.FLAG_CANCEL_CURRENT
+            )
+        );
+
+        Intent intent = new Intent(this, NotificationPublisher.class);
+
+        intent.putExtra("ID", id);
+        intent.putExtra("NOTIFICATION", builder.build());
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+            this,
+            (int)System.currentTimeMillis(),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.setTimeInMillis(time);
+
+        c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR), c.get(Calendar.MINUTE), 0);
+        mAlarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 }

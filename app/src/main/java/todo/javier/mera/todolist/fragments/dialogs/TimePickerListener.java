@@ -5,5 +5,5 @@ package todo.javier.mera.todolist.fragments.dialogs;
  */
 public interface TimePickerListener {
 
-    void onTimeSelected(long time);
+    void onTimePicked(long time);
 }

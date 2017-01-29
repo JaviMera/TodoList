@@ -8,11 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import butterknife.BindView;
@@ -35,7 +32,7 @@ public class TimePickerDialog extends DialogBase {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        mListener = (DialogTask)getTargetFragment();
+        mListener = (TimePickerListener) getTargetFragment();
     }
 
     @NonNull
@@ -74,7 +71,7 @@ public class TimePickerDialog extends DialogBase {
 
         // The first call to getTime gets us the date
         // The second call to getTime gets us the date as a long type along with the time
-        mListener.onTimeSelected(
+        mListener.onTimePicked(
             currentTime
                 .getTime()
                 .getTime()

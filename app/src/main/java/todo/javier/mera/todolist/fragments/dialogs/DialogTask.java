@@ -29,7 +29,7 @@ import todo.javier.mera.todolist.model.TaskPriority;
  */
 
 public class DialogTask extends DialogBase
-    implements DatePickerListener, TimePickerListener, PriorityListener{
+    implements DatePickerListener, TimePickerListener, PriorityListener, ReminderListener {
 
     private static final String DIALOG_TITLE = "Create new task!";
     private static final long EMPTY_DUE_TIME = 0L;
@@ -38,6 +38,8 @@ public class DialogTask extends DialogBase
     private long mDueTime;
     private DialogTaskListener mListener;
     private TaskPriority mPriority;
+    private Date mReminderDate;
+    private long mRemindertime;
 
     @BindView(R.id.dialogTitleView)
     TextView mTitleView;
@@ -57,6 +59,9 @@ public class DialogTask extends DialogBase
     @BindView(R.id.priorityTextView)
     TextView mPriorityTextView;
 
+    @BindView(R.id.reminderTextView)
+    TextView mReminderTextView;
+
     @BindView(R.id.priorityMessageTextView)
     TextView mPriorityMessage;
 
@@ -73,6 +78,8 @@ public class DialogTask extends DialogBase
 
         mPriority = TaskPriority.None;
         mDueTime = 0L;
+        mReminderDate = null;
+        mRemindertime = 0L;
     }
 
     @NonNull
@@ -123,6 +130,8 @@ public class DialogTask extends DialogBase
             mDescriptionEditText.getText().toString(),
             mDueDate,
             mDueTime,
+            mReminderDate,
+            mRemindertime,
             mPriority
         );
 
@@ -153,6 +162,14 @@ public class DialogTask extends DialogBase
         dialog.show(mParent.getSupportFragmentManager(), "priority_dialog");
     }
 
+    @OnClick(R.id.reminderTextView)
+    public void onReminderClick(View view) {
+
+        DialogReminder dialog = new DialogReminder();
+        dialog.setTargetFragment(this, 1);
+        dialog.show(mParent.getSupportFragmentManager(), "reminder_dialog");
+    }
+
     @Override
     public void onDatePicked(Date date) {
 
@@ -171,11 +188,21 @@ public class DialogTask extends DialogBase
     }
 
     @Override
-    public void onTimeSelected(long time) {
+    public void onTimePicked(long time) {
 
         mDueTime = time;
         SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
         String timeAsString = format.format(time);
         mTimeTextView.setText(timeAsString);
+    }
+
+    @Override
+    public void onReminderSet(Date date, long time) {
+
+        mReminderDate = date;
+        mRemindertime = time;
+        SimpleDateFormat format = new SimpleDateFormat("LLL, EEE dd  HH:mm");
+        date.setTime(time);
+        mReminderTextView.setText(format.format(date));
     }
 }
