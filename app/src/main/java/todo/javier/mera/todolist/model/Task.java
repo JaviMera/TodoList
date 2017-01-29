@@ -121,7 +121,7 @@ public class Task extends ItemBase implements Parcelable {
         mPriority = newPriority;
     }
 
-    public Reminder hasReminder() {
+    public Reminder getReminder() {
 
         return mReminder;
     }

@@ -14,9 +14,8 @@
 
             <CheckBox
                 android:id="@+id/itemCheckBoxView"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.2"
                 android:layout_gravity="center"
                 android:gravity="center"/>
 
@@ -27,7 +26,8 @@
                 android:orientation="vertical"
                 android:layout_gravity="center"
                 android:gravity="bottom"
-                android:padding="10dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:layout_marginLeft="10dp">
 
                 <TextView
@@ -53,13 +53,23 @@
                 android:id="@+id/priorityIconView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 tools:src="@mipmap/ic_low"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:maxHeight="30dp"
                 android:maxWidth="30dp"
                 android:scaleX="0.8"
+                android:layout_gravity="center"/>
+
+            <ImageView
+                android:id="@+id/reminderImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_alarm_on"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:maxHeight="30dp"
+                android:maxWidth="30dp"
                 android:layout_gravity="center"/>
 
             <ImageView

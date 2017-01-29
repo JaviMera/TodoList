@@ -19,6 +19,7 @@ import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.fragments.ItemTaskListener;
 import todo.javier.mera.todolist.model.Priority;
 import todo.javier.mera.todolist.model.PriorityUtil;
+import todo.javier.mera.todolist.model.Reminder;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TaskStatus;
 
@@ -36,6 +37,7 @@ class TaskViewHolder extends ViewHolderBase<Task>
     private CheckBox mStatus;
     private ImageView mDragImageView;
     private ImageView mPriorityImageView;
+    private ImageView mReminderImageView;
 
     private int mNormalColor;
     private int mRemoveColor;
@@ -103,6 +105,19 @@ class TaskViewHolder extends ViewHolderBase<Task>
             Drawable icon = ContextCompat.getDrawable(mParent.getContext(), PriorityUtil.getDrawable(item.getPriority().ordinal()));
             mPriorityImageView.setImageDrawable(icon);
         }
+        else {
+
+            mPriorityImageView.setVisibility(View.GONE);
+        }
+
+        if(Reminder.OFF != item.getReminder()) {
+
+            mReminderImageView.setVisibility(View.VISIBLE);
+        }
+        else {
+
+            mReminderImageView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -122,6 +137,7 @@ class TaskViewHolder extends ViewHolderBase<Task>
         mDescription = (TextView) itemView.findViewById(R.id.itemDescriptionView);
         mDragImageView = (ImageView) itemView.findViewById(R.id.dragImageView);
         mPriorityImageView = (ImageView) itemView.findViewById(R.id.priorityIconView);
+        mReminderImageView = (ImageView) itemView.findViewById(R.id.reminderImageView);
 
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);

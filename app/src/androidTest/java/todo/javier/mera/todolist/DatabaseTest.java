@@ -145,7 +145,7 @@ public class DatabaseTest {
         Assert.assertEquals(task.getmDueTime(), item.getmDueTime());
         Assert.assertEquals(task.getStatus(), item.getStatus());
         Assert.assertEquals(task.getPriority(), item.getPriority());
-        Assert.assertEquals(task.hasReminder(), item.hasReminder());
+        Assert.assertEquals(task.getReminder(), item.getReminder());
     }
 
     @Test

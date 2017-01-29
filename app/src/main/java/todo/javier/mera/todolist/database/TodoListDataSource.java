@@ -129,7 +129,7 @@ public class TodoListDataSource {
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE, newTask.getDueDate());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_DUE_TIME, newTask.getmDueTime());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY, newTask.getPriority().ordinal());
-        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, newTask.hasReminder().ordinal());
+        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, newTask.getReminder().ordinal());
 
         long newId = mDb.insert(TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS, null, itemValues);
 
