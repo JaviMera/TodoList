@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setHomeAsUpIndicator(resourceId);
     }
 
-    public void setReminder(String description, int id, Date date, long time) {
+    public void setReminder(String description, int id, Date date) {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentTitle("Task Reminder");
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity
 
         Calendar c = Calendar.getInstance();
         c.setTime(date);
-        c.setTimeInMillis(time);
+        c.setTimeInMillis(date.getTime());
 
         c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR), c.get(Calendar.MINUTE), 0);
         mAlarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);

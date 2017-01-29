@@ -36,10 +36,11 @@ public class DialogTask extends DialogBase
 
     private Date mDueDate;
     private long mDueTime;
-    private DialogTaskListener mListener;
     private Priority mPriority;
     private Date mReminderDate;
     private long mRemindertime;
+
+    private DialogTaskListener mListener;
 
     @BindView(R.id.dialogTitleView)
     TextView mTitleView;
@@ -125,13 +126,18 @@ public class DialogTask extends DialogBase
             return;
         }
 
+        if(mReminderDate != null) {
+
+            // Set the time on reminder date
+            mReminderDate.setTime(mRemindertime);
+        }
+
         // If edit text contains text, then add it and close the dialog
         mListener.onCreatedTask(
             mDescriptionEditText.getText().toString(),
             mDueDate,
             mDueTime,
             mReminderDate,
-            mRemindertime,
             mPriority
         );
 

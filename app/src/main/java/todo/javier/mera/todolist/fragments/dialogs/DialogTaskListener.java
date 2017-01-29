@@ -14,6 +14,5 @@ public interface DialogTaskListener {
         Date dueDate,
         long dueTime,
         Date reminderDate,
-        long reminderTime,
         Priority priority);
 }
