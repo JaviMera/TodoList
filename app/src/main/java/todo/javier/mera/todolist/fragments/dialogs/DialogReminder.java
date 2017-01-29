@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -39,6 +40,19 @@ public class DialogReminder extends DialogBase
     @BindView(R.id.timeTextView)
     TextView mTimeTextView;
 
+    @BindView(R.id.setReminderTextView)
+    TextView mSetTextView;
+
+    public static DialogReminder newInstance(String setText) {
+
+        DialogReminder dialog = new DialogReminder();
+        Bundle bundle = new Bundle();
+        bundle.putString("SET_TEXT", setText);
+        dialog.setArguments(bundle);
+
+        return dialog;
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -63,6 +77,9 @@ public class DialogReminder extends DialogBase
         Date date = new Date();
         onDatePicked(date);
         onTimePicked(date.getTime());
+
+        String text = getArguments().getString("SET_TEXT", "Set Reminder");
+        mSetTextView.setText(text);
 
         return dialogBuilder.create();
     }

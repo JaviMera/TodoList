@@ -139,39 +139,28 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     }
 
     @Override
-    public void onCreateTodoList(final String name) {
+    public void onCreateTodoList(String name, Date dueDate) {
 
-        scrollToLastPosition();
-        final String id = UUID.randomUUID().toString();
-        final long creationDate = new Date().getTime();
+        String id = UUID.randomUUID().toString();
+        long date = dueDate.getTime();
+        TodoListDataSource source = new TodoListDataSource(mParent);
 
-        new Handler().postDelayed(new Runnable() {
+        setItemAnimator(new FlipInTopXAnimator());
+        TodoList newList = new TodoList(
+            id,
+            name,
+            date
+        );
 
-            @Override
-            public void run() {
+        long rowId = source.createTodoList(
+            newList,
+            mAdapter.getItemCount()
+        );
 
-            scrollToLastPosition();
+        if(rowId != -1 ){
 
-            TodoListDataSource source = new TodoListDataSource(mParent);
-
-            setItemAnimator(new FlipInTopXAnimator());
-            TodoList newList = new TodoList(
-                id,
-                name,
-                creationDate
-            );
-
-            long rowId = source.createTodoList(
-                newList,
-                mAdapter.getItemCount()
-            );
-
-            if(rowId != -1 ){
-
-                mAdapter.addItem(newList);
-            }
-            }
-        }, 1000);
+            mAdapter.addItem(newList);
+        }
     }
 }
 

@@ -17,6 +17,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -28,17 +33,24 @@ import todo.javier.mera.todolist.ui.MainActivity;
  * Created by javie on 12/6/2016.
  */
 
-public class DialogTodoList extends DialogBase {
+public class DialogTodoList extends DialogBase
+    implements ReminderListener{
 
     private static final String DIALOG_TITLE = "Create a To-do list!";
+    private static final long EMPTY_DUE_TIME = 0L;
 
     private DialogTodoListListener mListener;
+    private Date mDueDate;
+    private long mDueTime;
 
     @BindView(R.id.dialogTitleView)
     TextView mTitleView;
 
     @BindView(R.id.todoListEditTextView)
     EditText mTitleEditText;
+
+    @BindView(R.id.dueDateTextView)
+    TextView mDueDateTextView;
 
     @Override
     public void onAttach(Context context) {
@@ -66,6 +78,14 @@ public class DialogTodoList extends DialogBase {
         return createDialog(dialogBuilder);
     }
 
+    @OnClick(R.id.dueDateTextView)
+    public void onDueDateClick(View view) {
+
+        DialogReminder dialog = DialogReminder.newInstance("Set Due Date");
+        dialog.setTargetFragment(this, 1);
+        dialog.show(mParent.getSupportFragmentManager(), "due_date_dialog");
+    }
+
     @OnClick(R.id.addTaskView)
     public void onAddClick(View view) {
 
@@ -76,7 +96,30 @@ public class DialogTodoList extends DialogBase {
             return;
         }
 
-        mListener.onCreateTodoList(mTitleEditText.getText().toString());
+        if(mDueDate == null || mDueTime == EMPTY_DUE_TIME) {
+
+            showToast("Task due date cannot be blank.");
+            mDueDateTextView.startAnimation(mShakeAnimation);
+            return;
+        }
+
+        // Set the selected time to the date object
+        // This way there is no need to pass the date and time separately
+        mDueDate.setTime(mDueTime);
+
+        mListener.onCreateTodoList(
+            mTitleEditText.getText().toString(),
+            mDueDate);
         dismiss();
+    }
+
+    @Override
+    public void onReminderSet(Date date, long time) {
+
+        mDueDate = date;
+        mDueTime = time;
+        SimpleDateFormat format = new SimpleDateFormat("LLL, EEE dd  HH:mm");
+        date.setTime(time);
+        mDueDateTextView.setText(format.format(date));
     }
 }
