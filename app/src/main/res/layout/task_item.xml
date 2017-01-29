@@ -45,9 +45,22 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:textSize="14sp"
-                    android:textStyle="italic|bold"
+                    android:textStyle="italic"
                     tools:text="Due by 12/12/2016 at 00:00:00"/>
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/priorityIconView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                tools:src="@mipmap/ic_low"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:maxHeight="30dp"
+                android:maxWidth="30dp"
+                android:scaleX="0.8"
+                android:layout_gravity="center"/>
 
             <ImageView
                 android:id="@+id/dragImageView"

@@ -1,5 +1,6 @@
 package todo.javier.mera.todolist.adapters;
 
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.view.MotionEvent;
@@ -16,6 +17,7 @@ import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.fragments.ItemTaskListener;
+import todo.javier.mera.todolist.model.Priority;
 import todo.javier.mera.todolist.model.PriorityUtil;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TaskStatus;
@@ -33,6 +35,7 @@ class TaskViewHolder extends ViewHolderBase<Task>
     private TextView mDescription;
     private CheckBox mStatus;
     private ImageView mDragImageView;
+    private ImageView mPriorityImageView;
 
     private int mNormalColor;
     private int mRemoveColor;
@@ -80,9 +83,6 @@ class TaskViewHolder extends ViewHolderBase<Task>
             dateFormat.format(item.getDueDate()) +
             " at " +
             timeFormat.format(item.getmDueTime()));
-
-        int priorityColor = getPriorityColor(item);
-        mDueDate.setTextColor(priorityColor);
         
         int color = getLayoutColor(item);
         mLayout.setBackgroundColor(color);
@@ -96,6 +96,12 @@ class TaskViewHolder extends ViewHolderBase<Task>
 
             mDragImageView.setVisibility(View.VISIBLE);
             mStatus.setVisibility(View.VISIBLE);
+        }
+
+        if(Priority.None != item.getPriority()) {
+
+            Drawable icon = ContextCompat.getDrawable(mParent.getContext(), PriorityUtil.getDrawable(item.getPriority().ordinal()));
+            mPriorityImageView.setImageDrawable(icon);
         }
     }
 
@@ -115,6 +121,7 @@ class TaskViewHolder extends ViewHolderBase<Task>
         mLayout = (LinearLayout) itemView.findViewById(R.id.containerLayout);
         mDescription = (TextView) itemView.findViewById(R.id.itemDescriptionView);
         mDragImageView = (ImageView) itemView.findViewById(R.id.dragImageView);
+        mPriorityImageView = (ImageView) itemView.findViewById(R.id.priorityIconView);
 
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
@@ -146,20 +153,5 @@ class TaskViewHolder extends ViewHolderBase<Task>
         }
 
         return mNormalColor;
-    }
-
-    private int getPriorityColor(Task task) {
-
-        int taskPriority = task
-            .getPriority()
-            .ordinal();
-
-        int color = PriorityUtil
-            .getColor(taskPriority);
-
-        return ContextCompat.getColor(
-            mParent.getActivity(),
-            color
-        );
     }
 }

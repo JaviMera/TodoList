@@ -21,18 +21,8 @@ public class PriorityUtil {
         }
     };
 
-    private static Map<Integer, Integer> colorMap = new LinkedHashMap<Integer, Integer>(){
-        {
-            put(Priority.None.ordinal(), R.color.priority_none);
-            put(Priority.Low.ordinal(), R.color.priority_low);
-            put(Priority.Medium.ordinal(), R.color.priority_medium);
-            put(Priority.High.ordinal(), R.color.priority_high);
-        }
-    };
-
     private static Map<Integer, Integer> drawableMap = new LinkedHashMap<Integer, Integer>() {
         {
-            put(Priority.None.ordinal(), R.mipmap.ic_none);
             put(Priority.Low.ordinal(), R.mipmap.ic_low);
             put(Priority.Medium.ordinal(), R.mipmap.ic_medium);
             put(Priority.High.ordinal(), R.mipmap.ic_high);
@@ -44,11 +34,6 @@ public class PriorityUtil {
         return namesMap.get(key);
     }
 
-    public static int getColor(int key) {
-
-        return colorMap.get(key);
-    }
-
     public static int getDrawable(int key) {
 
         return drawableMap.get(key);
@@ -58,11 +43,5 @@ public class PriorityUtil {
 
         Collection<String> names = namesMap.values();
         return names.toArray(new String[names.size()]);
-    }
-
-    public static Integer[] getDrawables() {
-
-        Collection<Integer> drawables = drawableMap.values();
-        return drawables.toArray(new Integer[drawables.size()]);
     }
 }

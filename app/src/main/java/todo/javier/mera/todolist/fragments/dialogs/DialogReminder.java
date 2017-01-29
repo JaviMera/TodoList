@@ -78,7 +78,7 @@ public class DialogReminder extends DialogBase
         onDatePicked(date);
         onTimePicked(date.getTime());
 
-        String text = getArguments().getString("SET_TEXT", "Set Reminder");
+        String text = getArguments().getString("SET_TEXT");
         mSetTextView.setText(text);
 
         return dialogBuilder.create();

@@ -165,7 +165,7 @@ public class DialogTask extends DialogBase
     @OnClick(R.id.reminderTextView)
     public void onReminderClick(View view) {
 
-        DialogReminder dialog = new DialogReminder();
+        DialogReminder dialog = DialogReminder.newInstance("Set Reminder");
         dialog.setTargetFragment(this, 1);
         dialog.show(mParent.getSupportFragmentManager(), "reminder_dialog");
     }
