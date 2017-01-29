@@ -37,9 +37,9 @@
             android:layout_height="wrap_content"
             tools:src="@mipmap/ic_priority"
             android:scaleType="fitCenter"
-            android:maxHeight="50dp"
-            android:maxWidth="50dp"
-            android:scaleX="0.7"
+            android:maxHeight="30dp"
+            android:maxWidth="30dp"
+            android:scaleX="0.8"
             android:adjustViewBounds="true"
             android:layout_gravity="center"/>
     </LinearLayout>
