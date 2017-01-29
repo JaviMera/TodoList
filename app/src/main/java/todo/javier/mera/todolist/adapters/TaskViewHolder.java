@@ -158,8 +158,8 @@ class TaskViewHolder extends ViewHolderBase<Task>
             .getColor(taskPriority);
 
         return ContextCompat.getColor(
-                mParent.getActivity(),
-                color
+            mParent.getActivity(),
+            color
         );
     }
 }

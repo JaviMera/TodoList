@@ -32,10 +32,10 @@ public class PriorityUtil {
 
     private static Map<Integer, Integer> drawableMap = new LinkedHashMap<Integer, Integer>() {
         {
-            put(Priority.None.ordinal(), R.drawable.priority_none_background);
-            put(Priority.Low.ordinal(), R.drawable.priority_low_background);
-            put(Priority.Medium.ordinal(), R.drawable.priority_medium_background);
-            put(Priority.High.ordinal(), R.drawable.priority_high_background);
+            put(Priority.None.ordinal(), R.mipmap.ic_none);
+            put(Priority.Low.ordinal(), R.mipmap.ic_low);
+            put(Priority.Medium.ordinal(), R.mipmap.ic_medium);
+            put(Priority.High.ordinal(), R.mipmap.ic_high);
         }
     };
 

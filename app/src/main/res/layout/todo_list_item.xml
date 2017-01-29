@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="center"
-            android:text="this is a made up list"
+            tools:text="this is a made up list"
             android:textColor="@android:color/black"
             android:textSize="25sp"
             android:padding="10dp"
@@ -35,10 +35,11 @@
             android:id="@+id/priorityIconView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_priority"
+            tools:src="@mipmap/ic_priority"
             android:scaleType="fitCenter"
-            android:maxHeight="30dp"
-            android:maxWidth="30dp"
+            android:maxHeight="50dp"
+            android:maxWidth="50dp"
+            android:scaleX="0.7"
             android:adjustViewBounds="true"
             android:layout_gravity="center"/>
     </LinearLayout>
@@ -53,7 +54,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
-            android:text="TASKS  54"
+            tools:text="TASKS  54"
             android:gravity="center"/>
 
         <TextView
@@ -61,7 +62,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="12/12/12"/>
+            tools:text="12/12/12"/>
     </LinearLayout>
 
     <View

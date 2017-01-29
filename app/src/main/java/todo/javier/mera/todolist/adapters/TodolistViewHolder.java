@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -12,6 +13,8 @@ import java.util.Locale;
 
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
+import todo.javier.mera.todolist.model.Priority;
+import todo.javier.mera.todolist.model.PriorityUtil;
 import todo.javier.mera.todolist.model.TodoList;
 
 class TodolistViewHolder extends ViewHolderBase<TodoList>
@@ -21,6 +24,7 @@ class TodolistViewHolder extends ViewHolderBase<TodoList>
     private TextView mTodolistTitle;
     private TextView mTotalitems;
     private TextView mCreationDate;
+    private ImageView mPriorityIcon;
 
     TodolistViewHolder(FragmentRecycler fragment, View itemView) {
 
@@ -47,6 +51,12 @@ class TodolistViewHolder extends ViewHolderBase<TodoList>
             int color = ContextCompat.getColor(mParent.getContext(), android.R.color.white);
             mLayout.setBackgroundColor(color);
         }
+
+        if(Priority.None != item.getPriority()) {
+
+            Drawable icon = ContextCompat.getDrawable(mParent.getContext(), PriorityUtil.getDrawable(item.getPriority().ordinal()));
+            mPriorityIcon.setImageDrawable(icon);
+        }
     }
 
     @Override
@@ -56,6 +66,7 @@ class TodolistViewHolder extends ViewHolderBase<TodoList>
         mTodolistTitle = (TextView) itemView.findViewById(R.id.todoListNameView);
         mTotalitems = (TextView) itemView.findViewById(R.id.totalItemsText);
         mCreationDate = (TextView) itemView.findViewById(R.id.creationDateView);
+        mPriorityIcon = (ImageView) itemView.findViewById(R.id.priorityIconView);
 
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
