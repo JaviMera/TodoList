@@ -59,11 +59,11 @@ public class DialogTask extends DialogBase
     @BindView(R.id.priorityTextView)
     TextView mPriorityTextView;
 
-    @BindView(R.id.reminderTextView)
-    TextView mReminderTextView;
-
     @BindView(R.id.priorityMessageTextView)
     TextView mPriorityMessage;
+
+    @BindView(R.id.reminderTextView)
+    TextView mReminderTextView;
 
     @Override
     public void onAttach(Context context) {

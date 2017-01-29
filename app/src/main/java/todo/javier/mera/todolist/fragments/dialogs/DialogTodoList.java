@@ -27,6 +27,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentTodoList;
+import todo.javier.mera.todolist.model.Priority;
+import todo.javier.mera.todolist.model.PriorityUtil;
 import todo.javier.mera.todolist.ui.MainActivity;
 
 /**
@@ -34,7 +36,7 @@ import todo.javier.mera.todolist.ui.MainActivity;
  */
 
 public class DialogTodoList extends DialogBase
-    implements ReminderListener{
+    implements ReminderListener, PriorityListener{
 
     private static final String DIALOG_TITLE = "Create a To-do list!";
     private static final long EMPTY_DUE_TIME = 0L;
@@ -42,6 +44,7 @@ public class DialogTodoList extends DialogBase
     private DialogTodoListListener mListener;
     private Date mDueDate;
     private long mDueTime;
+    private Priority mPriority;
 
     @BindView(R.id.dialogTitleView)
     TextView mTitleView;
@@ -52,11 +55,24 @@ public class DialogTodoList extends DialogBase
     @BindView(R.id.dueDateTextView)
     TextView mDueDateTextView;
 
+    @BindView(R.id.priorityTextView)
+    TextView mPriorityTextView;
+
+    @BindView(R.id.priorityMessageTextView)
+    TextView mPriorityMessage;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
         mListener = (FragmentTodoList) getTargetFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mPriority = Priority.None;
     }
 
     @NonNull
@@ -86,6 +102,14 @@ public class DialogTodoList extends DialogBase
         dialog.show(mParent.getSupportFragmentManager(), "due_date_dialog");
     }
 
+    @OnClick(R.id.priorityTextView)
+    public void onPriorityClick(View view) {
+
+        DialogPriority dialog = new DialogPriority();
+        dialog.setTargetFragment(this, 1);
+        dialog.show(mParent.getSupportFragmentManager(), "priority_dialog");
+    }
+
     @OnClick(R.id.addTaskView)
     public void onAddClick(View view) {
 
@@ -109,7 +133,9 @@ public class DialogTodoList extends DialogBase
 
         mListener.onCreateTodoList(
             mTitleEditText.getText().toString(),
-            mDueDate);
+            mDueDate,
+            mPriority);
+
         dismiss();
     }
 
@@ -121,5 +147,13 @@ public class DialogTodoList extends DialogBase
         SimpleDateFormat format = new SimpleDateFormat("LLL, EEE dd  HH:mm");
         date.setTime(time);
         mDueDateTextView.setText(format.format(date));
+    }
+
+    @Override
+    public void onPrioritySelected(int position) {
+
+        mPriority = Priority.values()[position];
+        mPriorityTextView.setText(PriorityUtil.getName(mPriority.ordinal()));
+        mPriorityMessage.setVisibility(View.GONE);
     }
 }

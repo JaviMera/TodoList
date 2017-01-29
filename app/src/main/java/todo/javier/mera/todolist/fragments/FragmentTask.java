@@ -206,7 +206,7 @@ public class FragmentTask extends FragmentRecycler<Task>
             taskCreationDate,
             taskDuedate.getTime(),
             dueTime,
-                priority
+            priority
         );
 
         long rowId = source.createTask(

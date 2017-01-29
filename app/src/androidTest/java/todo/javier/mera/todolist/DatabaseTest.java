@@ -65,7 +65,7 @@ public class DatabaseTest {
             UUID.randomUUID().toString(),
             "My List",
             new Date().getTime(),
-            Priority.None
+            Priority.High
         );
     }
 
@@ -98,6 +98,7 @@ public class DatabaseTest {
         Assert.assertNotNull(actualTodoList);
         Assert.assertEquals(expectedTodoList.getTitle(), actualTodoList.getTitle());
         Assert.assertEquals(expectedTodoList.getCreationDate(), actualTodoList.getCreationDate());
+        Assert.assertEquals(expectedTodoList.getPriority(), actualTodoList.getPriority());
     }
 
     @Test

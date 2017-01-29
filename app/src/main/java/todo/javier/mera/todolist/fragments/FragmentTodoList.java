@@ -139,7 +139,7 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     }
 
     @Override
-    public void onCreateTodoList(String name, Date dueDate) {
+    public void onCreateTodoList(String name, Date dueDate, Priority priority) {
 
         String id = UUID.randomUUID().toString();
         long date = dueDate.getTime();
@@ -150,7 +150,7 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
             id,
             name,
             date,
-                Priority.None);
+            priority);
 
         long rowId = source.createTodoList(
             newList,

@@ -22,7 +22,7 @@ import todo.javier.mera.todolist.R;
 
 public class DialogPriority extends DialogFragment {
 
-    private DialogTask mParent;
+    private PriorityListener mListener;
 
     private static Map<Integer, Integer> priorityMap = new LinkedHashMap<Integer, Integer>() {
         {
@@ -37,7 +37,7 @@ public class DialogPriority extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mParent = (DialogTask) getTargetFragment();
+        mListener = (PriorityListener) getTargetFragment();
     }
 
     @NonNull
@@ -45,12 +45,12 @@ public class DialogPriority extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         View view = LayoutInflater
-            .from(mParent.getActivity())
+            .from(getActivity())
             .inflate(R.layout.priority_layout, null);
 
         ButterKnife.bind(this, view);
 
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mParent.getActivity());
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         dialogBuilder.setView(view);
 
         return dialogBuilder.create();
@@ -63,7 +63,7 @@ public class DialogPriority extends DialogFragment {
     R.id.priorityHighLayout})
     public void onPriorityClicked(View view) {
 
-        mParent.onPrioritySelected(priorityMap.get(view.getId()));
+        mListener.onPrioritySelected(priorityMap.get(view.getId()));
         dismiss();
     }
 }
