@@ -19,6 +19,7 @@ import java.util.UUID;
 
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
+import todo.javier.mera.todolist.model.Reminder;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.Priority;
 import todo.javier.mera.todolist.model.TaskStatus;
@@ -79,7 +80,8 @@ public class DatabaseTest {
             new Date().getTime(),
             new Date().getTime(),
             new Date().getTime(),
-            Priority.None
+            Priority.None,
+            Reminder.ON
         );
     }
 
@@ -143,6 +145,7 @@ public class DatabaseTest {
         Assert.assertEquals(task.getmDueTime(), item.getmDueTime());
         Assert.assertEquals(task.getStatus(), item.getStatus());
         Assert.assertEquals(task.getPriority(), item.getPriority());
+        Assert.assertEquals(task.hasReminder(), item.hasReminder());
     }
 
     @Test

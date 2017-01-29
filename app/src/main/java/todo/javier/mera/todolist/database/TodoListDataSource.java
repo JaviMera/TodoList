@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.LinkedList;
 import java.util.List;
 
+import todo.javier.mera.todolist.model.Reminder;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.Priority;
 import todo.javier.mera.todolist.model.TaskStatus;
@@ -128,6 +129,7 @@ public class TodoListDataSource {
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE, newTask.getDueDate());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_DUE_TIME, newTask.getmDueTime());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY, newTask.getPriority().ordinal());
+        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, newTask.hasReminder().ordinal());
 
         long newId = mDb.insert(TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS, null, itemValues);
 
@@ -154,7 +156,8 @@ public class TodoListDataSource {
                 TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON,
                 TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE,
                 TodoListSQLiteHelper.COLUMN_ITEMS_DUE_TIME,
-                TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY
+                TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY,
+                TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER
                 },
             TodoListSQLiteHelper.COLUMN_TODO_LIST_ID + "=?",
             new String[]{String.valueOf(todoListId)},
@@ -178,6 +181,7 @@ public class TodoListDataSource {
                 long dueTime = getLong(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DUE_TIME);
 
                 Priority priority = Priority.values()[getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY)];
+                Reminder reminder = Reminder.values()[getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER)];
 
                 Task item = new Task(
                     itemId,
@@ -187,7 +191,8 @@ public class TodoListDataSource {
                     creationDate,
                     dueDate,
                     dueTime,
-                    priority);
+                    priority,
+                    reminder);
                 items.add(item);
 
             }while(cursor.moveToNext());
@@ -329,7 +334,8 @@ public class TodoListDataSource {
                     creationDate,
                     dueDate,
                     dueTime,
-                    priority
+                    priority,
+                    Reminder.OFF
                 );
 
                 items.add(item);

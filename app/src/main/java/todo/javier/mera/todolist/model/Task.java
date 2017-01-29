@@ -15,6 +15,7 @@ public class Task extends ItemBase implements Parcelable {
     private long mDueDate;
     private long mDueTime;
     private Priority mPriority;
+    private Reminder mReminder;
 
     public Task(
         String itemId,
@@ -24,7 +25,8 @@ public class Task extends ItemBase implements Parcelable {
         long creationDate,
         long dueDate,
         long dueTime,
-        Priority priority) {
+        Priority priority,
+        Reminder reminder) {
 
         super(itemId, false);
 
@@ -35,6 +37,7 @@ public class Task extends ItemBase implements Parcelable {
         mDueDate = dueDate;
         mDueTime = dueTime;
         mPriority = priority;
+        mReminder = reminder;
     }
 
     private Task(Parcel in) {
@@ -116,5 +119,15 @@ public class Task extends ItemBase implements Parcelable {
     public void setPriority(Priority newPriority) {
 
         mPriority = newPriority;
+    }
+
+    public Reminder hasReminder() {
+
+        return mReminder;
+    }
+
+    public void setReminder(Reminder reminder) {
+
+        mReminder = reminder;
     }
 }

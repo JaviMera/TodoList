@@ -28,6 +28,7 @@ import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTask;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTaskListener;
+import todo.javier.mera.todolist.model.Reminder;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.Priority;
 import todo.javier.mera.todolist.model.TaskStatus;
@@ -206,7 +207,8 @@ public class FragmentTask extends FragmentRecycler<Task>
             taskCreationDate,
             taskDuedate.getTime(),
             dueTime,
-            priority
+            priority,
+            Reminder.OFF
         );
 
         long rowId = source.createTask(
