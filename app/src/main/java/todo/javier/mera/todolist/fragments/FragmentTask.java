@@ -208,7 +208,7 @@ public class FragmentTask extends FragmentRecycler<Task>
             taskDuedate.getTime(),
             dueTime,
             priority,
-            Reminder.OFF
+            reminderDate == null ? Reminder.OFF : Reminder.ON
         );
 
         long rowId = source.createTask(
