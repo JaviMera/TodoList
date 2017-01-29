@@ -93,30 +93,32 @@ class TaskViewHolder extends ViewHolderBase<Task>
 
             mDragImageView.setVisibility(View.GONE);
             mStatus.setVisibility(View.GONE);
+            mReminderImageView.setVisibility(View.GONE);
+            mPriorityImageView.setVisibility(View.GONE);
         }
         else {
 
             mDragImageView.setVisibility(View.VISIBLE);
             mStatus.setVisibility(View.VISIBLE);
-        }
 
-        if(Priority.None != item.getPriority()) {
+            if(Priority.None != item.getPriority()) {
 
-            Drawable icon = ContextCompat.getDrawable(mParent.getContext(), PriorityUtil.getDrawable(item.getPriority().ordinal()));
-            mPriorityImageView.setImageDrawable(icon);
-        }
-        else {
+                Drawable icon = ContextCompat.getDrawable(mParent.getContext(), PriorityUtil.getDrawable(item.getPriority().ordinal()));
+                mPriorityImageView.setImageDrawable(icon);
+            }
+            else {
 
-            mPriorityImageView.setVisibility(View.GONE);
-        }
+                mPriorityImageView.setVisibility(View.GONE);
+            }
 
-        if(Reminder.OFF != item.getReminder()) {
+            if(Reminder.OFF != item.getReminder()) {
 
-            mReminderImageView.setVisibility(View.VISIBLE);
-        }
-        else {
+                mReminderImageView.setVisibility(View.VISIBLE);
+            }
+            else {
 
-            mReminderImageView.setVisibility(View.GONE);
+                mReminderImageView.setVisibility(View.GONE);
+            }
         }
     }
 
