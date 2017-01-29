@@ -10,11 +10,14 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -199,10 +202,12 @@ public class MainActivity extends AppCompatActivity
 
     public void setReminder(String description, int id, Date date, long time) {
 
-        Notification.Builder builder = new Notification.Builder(this);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentTitle("Task Reminder");
         builder.setContentText(description);
+        builder.setColor(ContextCompat.getColor(this, R.color.colorPrimary));
         builder.setSmallIcon(R.mipmap.ic_add_alarm);
+        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_logo));
         builder.setAutoCancel(true);
         builder.setContentIntent(
             PendingIntent.getActivity(
