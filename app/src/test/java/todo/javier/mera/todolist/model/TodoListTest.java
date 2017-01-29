@@ -25,8 +25,8 @@ public class TodoListTest {
         mTodoList = new TodoList(
             expectedId,
             "Some List",
-            expectedDate
-        );
+            expectedDate,
+                Priority.None);
     }
 
     @Test

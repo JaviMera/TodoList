@@ -22,7 +22,7 @@ import butterknife.OnClick;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.model.PriorityUtil;
-import todo.javier.mera.todolist.model.TaskPriority;
+import todo.javier.mera.todolist.model.Priority;
 
 /**
  * Created by javie on 12/6/2016.
@@ -37,7 +37,7 @@ public class DialogTask extends DialogBase
     private Date mDueDate;
     private long mDueTime;
     private DialogTaskListener mListener;
-    private TaskPriority mPriority;
+    private Priority mPriority;
     private Date mReminderDate;
     private long mRemindertime;
 
@@ -76,7 +76,7 @@ public class DialogTask extends DialogBase
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPriority = TaskPriority.None;
+        mPriority = Priority.None;
         mDueTime = 0L;
         mReminderDate = null;
         mRemindertime = 0L;
@@ -182,7 +182,7 @@ public class DialogTask extends DialogBase
     @Override
     public void onPrioritySelected(int position) {
 
-        mPriority = TaskPriority.values()[position];
+        mPriority = Priority.values()[position];
         mPriorityTextView.setText(PriorityUtil.getName(mPriority.ordinal()));
         mPriorityMessage.setVisibility(View.GONE);
     }

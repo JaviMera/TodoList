@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import todo.javier.mera.todolist.model.Task;
-import todo.javier.mera.todolist.model.TaskPriority;
+import todo.javier.mera.todolist.model.Priority;
 import todo.javier.mera.todolist.model.TaskStatus;
 import todo.javier.mera.todolist.model.TodoList;
 
@@ -52,6 +52,7 @@ public class TodoListDataSource {
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION, position);
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME, newList.getTitle());
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE, newList.getCreationDate());
+        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_PRIORITY, newList.getPriority().ordinal());
 
         long newId = mDb.insert(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, todoListValues);
 
@@ -73,7 +74,8 @@ public class TodoListDataSource {
                 TodoListSQLiteHelper.COLUMN_TODO_LIST_ID,
                 TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION,
                 TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME,
-                TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE},
+                TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE,
+                TodoListSQLiteHelper.COLUMN_TODO_LIST_PRIORITY},
             null,
             null,
             null,
@@ -89,8 +91,14 @@ public class TodoListDataSource {
                 String id = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_ID);
                 String name = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME);
                 long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE);
+                Priority priority = Priority.values()[getInt(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_PRIORITY)];
 
-                TodoList todoList = new TodoList(id, name, creationDate);
+                TodoList todoList = new TodoList(
+                    id,
+                    name,
+                    creationDate,
+                    priority
+                );
 
                 List<Task> tasks = readTodoListTasks(id);
                 todoList.setItems(tasks);
@@ -169,7 +177,7 @@ public class TodoListDataSource {
                 long dueDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE);
                 long dueTime = getLong(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DUE_TIME);
 
-                TaskPriority priority = TaskPriority.values()[getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY)];
+                Priority priority = Priority.values()[getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY)];
 
                 Task item = new Task(
                     itemId,
@@ -311,7 +319,7 @@ public class TodoListDataSource {
                 long dueDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE);
                 long dueTime = getLong(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_DUE_TIME);
 
-                TaskPriority priority = TaskPriority.values()[getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY)];
+                Priority priority = Priority.values()[getInt(cursor, TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY)];
 
                 Task item = new Task(
                     itemId,
@@ -359,7 +367,7 @@ public class TodoListDataSource {
             String name = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME);
             long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE);
 
-            todoList = new TodoList(id, name, creationDate);
+            todoList = new TodoList(id, name, creationDate, Priority.None);
 
             List<Task> tasks = readTodoListTasks(id);
             todoList.setItems(tasks);

@@ -2,7 +2,6 @@ package todo.javier.mera.todolist.fragments;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -20,6 +19,7 @@ import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTodoList;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTodoListListener;
+import todo.javier.mera.todolist.model.Priority;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TodoList;
 
@@ -149,8 +149,8 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
         TodoList newList = new TodoList(
             id,
             name,
-            date
-        );
+            date,
+                Priority.None);
 
         long rowId = source.createTodoList(
             newList,

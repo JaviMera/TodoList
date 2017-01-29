@@ -14,7 +14,7 @@ public class Task extends ItemBase implements Parcelable {
     private long mCreationDate;
     private long mDueDate;
     private long mDueTime;
-    private TaskPriority mPriority;
+    private Priority mPriority;
 
     public Task(
         String itemId,
@@ -24,7 +24,7 @@ public class Task extends ItemBase implements Parcelable {
         long creationDate,
         long dueDate,
         long dueTime,
-        TaskPriority priority) {
+        Priority priority) {
 
         super(itemId, false);
 
@@ -45,7 +45,7 @@ public class Task extends ItemBase implements Parcelable {
         mDescription = in.readString();
         mCreationDate = in.readLong();
         mStatus = TaskStatus.values()[in.readInt()];
-        mPriority = TaskPriority.values()[in.readInt()];
+        mPriority = Priority.values()[in.readInt()];
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
@@ -103,7 +103,7 @@ public class Task extends ItemBase implements Parcelable {
         return mDueDate;
     }
 
-    public TaskPriority getPriority() {
+    public Priority getPriority() {
 
         return mPriority;
     }
@@ -113,7 +113,7 @@ public class Task extends ItemBase implements Parcelable {
         return mDueTime;
     }
 
-    public void setPriority(TaskPriority newPriority) {
+    public void setPriority(Priority newPriority) {
 
         mPriority = newPriority;
     }

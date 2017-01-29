@@ -14,14 +14,16 @@ public class TodoList extends ItemBase implements Parcelable {
     private String mTitle;
     private long mCreationDate;
     private List<Task> mItems;
+    private Priority mPriority;
 
-    public TodoList(String id, String title, long creationDate) {
+    public TodoList(String id, String title, long creationDate, Priority priority) {
 
         super(id, false);
 
         mTitle = title;
         mCreationDate = creationDate;
         mItems = new LinkedList<>();
+        mPriority = priority;
     }
 
     protected TodoList(Parcel in) {
@@ -82,8 +84,11 @@ public class TodoList extends ItemBase implements Parcelable {
         parcel.writeTypedList(mItems);
     }
 
-    public void addTask(Task newTask) {
+    public Priority getPriority() {
+        return mPriority;
+    }
 
-        mItems.add(newTask);
+    public void setPriority(Priority mPriority) {
+        this.mPriority = mPriority;
     }
 }

@@ -20,7 +20,7 @@ public class TaskTest {
     private long mExpectedCreationDate = new Date().getTime();
     private Task mTask;
     private long mExpectedDueDate = new Date().getTime();
-    private TaskPriority mExpectedPriority = TaskPriority.None;
+    private Priority mExpectedPriority = Priority.None;
 
     @Before
     public void setUp() throws Exception {
@@ -124,7 +124,7 @@ public class TaskTest {
     public void setPriority() throws Exception {
 
         // Arrange
-        TaskPriority newPriority = TaskPriority.High;
+        Priority newPriority = Priority.High;
 
         // Act
         mTask.setPriority(newPriority);

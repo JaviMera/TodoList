@@ -20,7 +20,7 @@ import java.util.UUID;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.model.Task;
-import todo.javier.mera.todolist.model.TaskPriority;
+import todo.javier.mera.todolist.model.Priority;
 import todo.javier.mera.todolist.model.TaskStatus;
 import todo.javier.mera.todolist.model.TodoList;
 
@@ -64,7 +64,8 @@ public class DatabaseTest {
         return new TodoList(
             UUID.randomUUID().toString(),
             "My List",
-            new Date().getTime()
+            new Date().getTime(),
+            Priority.None
         );
     }
 
@@ -78,7 +79,7 @@ public class DatabaseTest {
             new Date().getTime(),
             new Date().getTime(),
             new Date().getTime(),
-            TaskPriority.None
+            Priority.None
         );
     }
 
@@ -202,7 +203,7 @@ public class DatabaseTest {
 
         // Act
         mDataSource.createTask(task, 0);
-        TaskPriority newPriority = TaskPriority.High;
+        Priority newPriority = Priority.High;
 
         Task expectedTask = mDataSource.readTodoListTasks(task.getTodoListId()).get(0);
         expectedTask.setPriority(newPriority);

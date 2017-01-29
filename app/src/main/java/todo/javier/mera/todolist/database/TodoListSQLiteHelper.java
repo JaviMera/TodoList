@@ -12,13 +12,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class TodoListSQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "todo_lists.db";
-    private static final int DB_VERSION = 22;
+    private static final int DB_VERSION = 23;
 
     public static final String TABLE_TODO_LISTS = "TODO_LISTS";
     public static final String COLUMN_TODO_LIST_ID = "TODOLIST_ID";
     public static final String COLUMN_TODO_LIST_NAME = "NAME";
     public static final String COLUMN_TODO_LIST_DUE_DATE = "DUE_DATE";
     public static final String COLUMN_TODO_LIST_POSITION = "POSITION";
+    public static final String COLUMN_TODO_LIST_PRIORITY = "PRIORITY";
     private String CREATE_TODO_LISTS = "CREATE TABLE "
         + TABLE_TODO_LISTS
         + "("
@@ -74,10 +75,10 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
 
-        if(oldVersion < newVersion) {
+        switch (oldVersion) {
 
-            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO_LISTS);
-            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO_LIST_ITEMS);
+            case 22:
+            sqLiteDatabase.execSQL("ALTER TABLE " + TABLE_TODO_LISTS + " ADD COLUMN " + COLUMN_TODO_LIST_PRIORITY + " INTEGER DEFAULT 0");
             onCreate(sqLiteDatabase);
         }
     }
