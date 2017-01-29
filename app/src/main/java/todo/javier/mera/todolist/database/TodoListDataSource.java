@@ -51,7 +51,7 @@ public class TodoListDataSource {
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_ID, newList.getId());
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION, position);
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME, newList.getTitle());
-        todoListValues.put(TodoListSQLiteHelper.COLUMN_CREATION_DATE, newList.getCreationDate());
+        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE, newList.getCreationDate());
 
         long newId = mDb.insert(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, todoListValues);
 
@@ -73,7 +73,7 @@ public class TodoListDataSource {
                 TodoListSQLiteHelper.COLUMN_TODO_LIST_ID,
                 TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION,
                 TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME,
-                TodoListSQLiteHelper.COLUMN_CREATION_DATE},
+                TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE},
             null,
             null,
             null,
@@ -88,7 +88,7 @@ public class TodoListDataSource {
 
                 String id = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_ID);
                 String name = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME);
-                long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_CREATION_DATE);
+                long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE);
 
                 TodoList todoList = new TodoList(id, name, creationDate);
 
@@ -344,7 +344,7 @@ public class TodoListDataSource {
                 TodoListSQLiteHelper.COLUMN_TODO_LIST_ID,
                 TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION,
                 TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME,
-                TodoListSQLiteHelper.COLUMN_CREATION_DATE},
+                TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE},
             TodoListSQLiteHelper.COLUMN_TODO_LIST_ID + "=?",
             new String[]{String.valueOf(listId)},
             null,
@@ -357,7 +357,7 @@ public class TodoListDataSource {
 
             String id = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_ID);
             String name = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME);
-            long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_CREATION_DATE);
+            long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE);
 
             todoList = new TodoList(id, name, creationDate);
 
