@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity
             mCurrentFragment = FragmentTodoList.newInstance();
             mFragmentHelper.replace(R.id.fragmentContainer, mCurrentFragment, FRAGMENT_TAG);
 
+            // Check if the activity is being opened by a notification touch
             Intent intent = getIntent();
             Bundle bundle = intent.getBundleExtra(NOTIFICATION_BUNDLE);
 
@@ -207,46 +208,89 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setHomeAsUpIndicator(resourceId);
     }
 
-    public void setReminder(Task task, Date date) {
+    public void setReminder(Task task, Date reminderDate) {
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
-        notificationBuilder.setContentTitle("Task Reminder");
-        notificationBuilder.setContentText(task.getDescription());
-        notificationBuilder.setColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        notificationBuilder.setSmallIcon(R.mipmap.ic_add_alarm);
-        notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_logo));
-        notificationBuilder.setAutoCancel(true);
-
-        Bundle bundle = new Bundle();
-        bundle.putString(NOTIFICATION_TODO_ID, task.getTodoListId());
-
-        notificationBuilder.setContentIntent(
-            PendingIntent.getActivity(
-                this,
-                MainActivity.TASK_NOTIFICATION_CODE,
-                new Intent(this, MainActivity.class)
-                    .putExtra(NOTIFICATION_BUNDLE,bundle),
-                PendingIntent.FLAG_CANCEL_CURRENT
-            )
+        Notification notification = createNotification(
+            "Task Reminder",
+            task,
+            R.mipmap.ic_alarm_on,
+            R.mipmap.ic_logo
         );
 
-        Intent intent = new Intent(this, NotificationPublisher.class);
+        Intent intent = createNotificationIntent(task, notification);
+        PendingIntent pendingIntent = createPendingIntent(intent);
+        Calendar c = createCalendarWithDate(reminderDate);
 
-        intent.putExtra(NOTIFICATION_ID, task.hashCode());
-        intent.putExtra(NOTIFICATION, notificationBuilder.build());
+        mAlarmManager.set(
+            AlarmManager.RTC_WAKEUP,
+            c.getTimeInMillis(),
+            pendingIntent
+        );
+    }
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+    private PendingIntent createPendingIntent(Intent intent) {
+
+       return PendingIntent.getBroadcast(
             this,
             (int)System.currentTimeMillis(),
             intent,
             PendingIntent.FLAG_ONE_SHOT
         );
+    }
 
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-        c.setTimeInMillis(date.getTime());
 
-        c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), 0);
-        mAlarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+    private Intent createNotificationIntent(Task task, Notification notification) {
+
+        Intent intent = new Intent(this, NotificationPublisher.class);
+        intent.putExtra(NOTIFICATION_ID, task.hashCode());
+        intent.putExtra(NOTIFICATION, notification);
+
+        return intent;
+    }
+
+    private Calendar createCalendarWithDate(Date date) {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.setTimeInMillis(date.getTime());
+
+        calendar.set(
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH),
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
+            0
+        );
+
+        return calendar;
+    }
+
+    private Notification createNotification(String title, Task task, int smallIcon, int largeIcon) {
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
+        notificationBuilder.setContentTitle(title);
+        notificationBuilder.setContentText(task.getDescription());
+        notificationBuilder.setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        notificationBuilder.setSmallIcon(smallIcon);
+        notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), largeIcon));
+        notificationBuilder.setAutoCancel(true);
+
+        // This bundle will later be used to retrieve the list to where the task belongs
+        // and will help us launch the fragment task with the corresponding to-do list
+        Bundle bundle = new Bundle();
+        bundle.putString(NOTIFICATION_TODO_ID, task.getTodoListId());
+
+        notificationBuilder.setContentIntent(
+                PendingIntent.getActivity(
+                    this,
+                    MainActivity.TASK_NOTIFICATION_CODE,
+                    new Intent(this, MainActivity.class)
+                            .putExtra(NOTIFICATION_BUNDLE,bundle),
+                    PendingIntent.FLAG_CANCEL_CURRENT
+                )
+        );
+
+        return notificationBuilder.build();
     }
 }
