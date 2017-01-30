@@ -3,6 +3,7 @@ package todo.javier.mera.todolist.ui;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -32,6 +33,7 @@ import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.fragments.FragmentTodoList;
 import todo.javier.mera.todolist.model.ItemBase;
+import todo.javier.mera.todolist.model.Reminder;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TodoList;
 
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity
     public static final String NOTIFICATION = "NOTIFICATION";
     public static final String NOTIFICATION_BUNDLE = "notification_bundle";
     public static final String NOTIFICATION_TODO_ID = "todo_list_id";
+    private static final String NOTIFICATION_TASK_ID = "todo_list_task_id";
 
     private FragmentHelper mFragmentHelper;
     private MainActivityPresenter mPresenter;
@@ -95,9 +98,20 @@ public class MainActivity extends AppCompatActivity
 
             if(bundle != null) {
 
-                String taskId = bundle.getString(NOTIFICATION_TODO_ID);
+                String todoListId = bundle.getString(NOTIFICATION_TODO_ID);
+                String taskId = bundle.getString(NOTIFICATION_TASK_ID);
+
+                ContentValues values = new ContentValues();
+                values.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, Reminder.OFF.ordinal());
+
                 TodoListDataSource source = new TodoListDataSource(this);
-                TodoList todoList = source.readTodoList(taskId);
+                source.update(
+                    TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
+                    TodoListSQLiteHelper.COLUMN_ITEMS_ID,
+                    taskId,
+                    values);
+
+                TodoList todoList = source.readTodoList(todoListId);
                 showFragmentTodoList(todoList);
             }
         }
@@ -280,15 +294,16 @@ public class MainActivity extends AppCompatActivity
         // and will help us launch the fragment task with the corresponding to-do list
         Bundle bundle = new Bundle();
         bundle.putString(NOTIFICATION_TODO_ID, task.getTodoListId());
+        bundle.putString(NOTIFICATION_TASK_ID, task.getId());
 
         notificationBuilder.setContentIntent(
-                PendingIntent.getActivity(
-                    this,
-                    MainActivity.TASK_NOTIFICATION_CODE,
-                    new Intent(this, MainActivity.class)
-                            .putExtra(NOTIFICATION_BUNDLE,bundle),
-                    PendingIntent.FLAG_CANCEL_CURRENT
-                )
+            PendingIntent.getActivity(
+                this,
+                MainActivity.TASK_NOTIFICATION_CODE,
+                new Intent(this, MainActivity.class)
+                    .putExtra(NOTIFICATION_BUNDLE,bundle),
+                PendingIntent.FLAG_CANCEL_CURRENT
+            )
         );
 
         return notificationBuilder.build();
