@@ -26,10 +26,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.broadcasts.NotificationPublisher;
+import todo.javier.mera.todolist.database.TodoListDataSource;
+import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.fragments.FragmentTodoList;
 import todo.javier.mera.todolist.model.ItemBase;
+import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class MainActivity extends AppCompatActivity
@@ -76,14 +79,25 @@ public class MainActivity extends AppCompatActivity
         if(savedInstanceState != null) {
 
             mCurrentFragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
+            mFragmentHelper.replace(R.id.fragmentContainer, mCurrentFragment, FRAGMENT_TAG);
             mPresenter.toggleBackButton(true);
         }
         else {
 
             mCurrentFragment = FragmentTodoList.newInstance();
-        }
+            mFragmentHelper.replace(R.id.fragmentContainer, mCurrentFragment, FRAGMENT_TAG);
 
-        mFragmentHelper.replace(R.id.fragmentContainer, mCurrentFragment, FRAGMENT_TAG);
+            Intent intent = getIntent();
+            Bundle bundle = intent.getBundleExtra("notification_bundle");
+
+            if(bundle != null) {
+
+                String taskId = bundle.getString("todo_list_id");
+                TodoListDataSource source = new TodoListDataSource(this);
+                TodoList todoList = source.readTodoList(taskId);
+                showFragmentTodoList(todoList);
+            }
+        }
     }
 
     @Override
@@ -191,27 +205,30 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setHomeAsUpIndicator(resourceId);
     }
 
-    public void setReminder(String description, int id, Date date) {
+    public void setReminder(Task task, Date date) {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentTitle("Task Reminder");
-        builder.setContentText(description);
+        builder.setContentText(task.getDescription());
         builder.setColor(ContextCompat.getColor(this, R.color.colorPrimary));
         builder.setSmallIcon(R.mipmap.ic_add_alarm);
         builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_logo));
         builder.setAutoCancel(true);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("todo_list_id", task.getTodoListId());
         builder.setContentIntent(
             PendingIntent.getActivity(
                 this,
                 MainActivity.TASK_NOTIFICATION_CODE,
-                new Intent(this, MainActivity.class),
+                new Intent(this, MainActivity.class).putExtra("notification_bundle",bundle),
                 PendingIntent.FLAG_CANCEL_CURRENT
             )
         );
 
         Intent intent = new Intent(this, NotificationPublisher.class);
 
-        intent.putExtra(NOTIFICATION_ID, id);
+        intent.putExtra(NOTIFICATION_ID, task.hashCode());
         intent.putExtra(NOTIFICATION, builder.build());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(

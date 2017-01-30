@@ -226,11 +226,7 @@ public class FragmentTask extends FragmentRecycler<Task>
 
             if(reminderDate != null) {
 
-                mParent.setReminder(
-                    newTask.getDescription(),
-                    newTask.hashCode(),
-                    reminderDate
-                );
+                mParent.setReminder(newTask, reminderDate);
             }
         }
     }
