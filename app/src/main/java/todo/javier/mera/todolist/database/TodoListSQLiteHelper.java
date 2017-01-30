@@ -14,7 +14,7 @@ import todo.javier.mera.todolist.fragments.dialogs.ReminderListener;
 public class TodoListSQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "todo_lists.db";
-    private static final int DB_VERSION = 28;
+    private static final int DB_VERSION = 30;
 
     public static final String TABLE_TODO_LISTS = "TODO_LISTS";
     public static final String COLUMN_TODO_LIST_ID = "TODOLIST_ID";
@@ -54,7 +54,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
         + COLUMN_ITEMS_DUE_DATE + " INTEGER, "
         + COLUMN_ITEMS_DUE_TIME + " INTEGER, "
         + COLUMN_ITEMS_PRIORITY + " INTEGER, "
-        + COLUMN_ITEMS_REMINDER + " INTEGER"
+        + COLUMN_ITEMS_REMINDER + " INTEGER, "
         + "FOREIGN KEY " + "(" + COLUMN_TODO_LIST_ID + ") REFERENCES " + TABLE_TODO_LISTS + "(" + COLUMN_TODO_LIST_ID + ")"
         + ")";
 

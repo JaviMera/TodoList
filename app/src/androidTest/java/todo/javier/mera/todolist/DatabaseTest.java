@@ -229,6 +229,33 @@ public class DatabaseTest {
     }
 
     @Test
+    public void dbShouldUpdateTaskReminder() throws Exception {
+
+        // Arrange
+        Task task = createTask(UUID.randomUUID().toString());
+
+        // Act
+        mDataSource.createTask(task, 0);
+        Reminder reminder = Reminder.OFF;
+
+        Task expectedTask = mDataSource.readTodoListTasks(task.getTodoListId()).get(0);
+        ContentValues values = new ContentValues();
+        values.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, expectedTask.getReminder().ordinal());
+
+        mDataSource.update(
+            TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
+            TodoListSQLiteHelper.COLUMN_ITEMS_ID,
+            expectedTask.getId(),
+            values
+        );
+
+        Task actualTask = mDataSource.readTodoListTasks(expectedTask.getTodoListId()).get(0);
+
+        // Assert
+        Assert.assertEquals(expectedTask.getReminder(), actualTask.getReminder());
+    }
+
+    @Test
     public void dbShouldRemoveTask() throws Exception {
 
         // Arrange
