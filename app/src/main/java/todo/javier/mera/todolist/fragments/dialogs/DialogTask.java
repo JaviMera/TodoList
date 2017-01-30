@@ -32,8 +32,8 @@ import todo.javier.mera.todolist.model.Priority;
 public class DialogTask extends DialogBase
     implements
     PriorityListener,
-    DueDateListener
-//    DueDateListener
+    DueDateListener,
+    ReminderListener
     {
 
     private static final String DIALOG_TITLE = "Create new task!";
@@ -97,10 +97,8 @@ public class DialogTask extends DialogBase
         ButterKnife.bind(this, view);
 
         mTitleView.setText(DIALOG_TITLE);
-        mReminderTextView.setEnabled(false);
 
-        int color = ContextCompat.getColor(mParent, android.R.color.darker_gray);
-        mReminderTextView.setTextColor(color);
+        mReminderTextView.setEnabled(false);
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mParent);
         dialogBuilder.setView(view);
@@ -125,12 +123,6 @@ public class DialogTask extends DialogBase
             return;
         }
 
-        if(mReminderDate != null) {
-
-            // Set the time on reminder date
-            mReminderDate.setTime(mRemindertime);
-        }
-
         // If edit text contains text, then add it and close the dialog
         mListener.onCreatedTask(
             mDescriptionEditText.getText().toString(),
@@ -149,6 +141,14 @@ public class DialogTask extends DialogBase
         DialogDueDate dialog = DialogDueDate.newInstance();
         dialog.setTargetFragment(this, 1);
         dialog.show(mParent.getSupportFragmentManager(), "date_dialog");
+    }
+
+    @OnClick(R.id.reminderTextView)
+    public void onReminderClick(View view) {
+
+        DialogReminder dialogReminder = DialogReminder.newInstance(mDueDate);
+        dialogReminder.setTargetFragment(this, 1);
+        dialogReminder.show(mParent.getSupportFragmentManager(), "reminder_dialog");
     }
 
     @OnClick(R.id.priorityTextView)
@@ -172,18 +172,19 @@ public class DialogTask extends DialogBase
 
         mDueDate = date;
         mDueTime = time;
+        mDueDate.setTime(time);
         SimpleDateFormat format = new SimpleDateFormat("LLL, EEE dd  HH:mm");
-        date.setTime(time);
-        mDueDateTextView.setText(format.format(date));
+
+        mDueDateTextView.setText(format.format(mDueDate));
+        mReminderTextView.setEnabled(true);
     }
 
-//    @Override
-//    public void onDueDateSelected(Date date, long time) {
-//
-//        mReminderDate = date;
-//        mRemindertime = time;
-//        SimpleDateFormat format = new SimpleDateFormat("LLL, EEE dd  HH:mm");
-//        date.setTime(time);
-//        mReminderTextView.setText(format.format(date));
-//    }
+    @Override
+    public void onReminderSelected(Date date) {
+
+        mReminderDate = new Date();
+        mReminderDate.setTime(date.getTime());
+        SimpleDateFormat format = new SimpleDateFormat("LLL, EEE dd  HH:mm");
+        mReminderTextView.setText(format.format(date));
+    }
 }
