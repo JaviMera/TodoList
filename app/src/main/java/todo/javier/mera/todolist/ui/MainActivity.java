@@ -284,6 +284,7 @@ public class MainActivity extends AppCompatActivity
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
         notificationBuilder.setContentTitle(title);
+        notificationBuilder.setVibrate(new long[]{1000, 1000});
         notificationBuilder.setContentText(task.getDescription());
         notificationBuilder.setColor(ContextCompat.getColor(this, R.color.colorPrimary));
         notificationBuilder.setSmallIcon(smallIcon);
