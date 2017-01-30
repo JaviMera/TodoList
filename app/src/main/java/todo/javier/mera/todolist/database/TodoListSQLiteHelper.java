@@ -5,8 +5,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import todo.javier.mera.todolist.fragments.dialogs.ReminderListener;
-
 /**
  * Created by javie on 12/4/2016.
  */

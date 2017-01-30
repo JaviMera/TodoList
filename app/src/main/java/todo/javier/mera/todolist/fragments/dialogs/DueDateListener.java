@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by javie on 1/28/2017.
  */
 
-public interface ReminderListener {
+public interface DueDateListener {
 
-    void onReminderSet(Date date, long time);
+    void onDueDateSelected(Date date, long time);
 }

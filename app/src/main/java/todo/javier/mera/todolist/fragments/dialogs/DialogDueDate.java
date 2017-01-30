@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -24,7 +23,7 @@ import todo.javier.mera.todolist.R;
  * Created by javie on 1/28/2017.
  */
 
-public class DialogReminder extends DialogBase
+public class DialogDueDate extends DialogBase
     implements
     DatePickerListener,
     TimePickerListener{
@@ -32,7 +31,7 @@ public class DialogReminder extends DialogBase
     private Date mDate;
     private long mTime;
 
-    private ReminderListener mListener;
+    private DueDateListener mListener;
 
     @BindView(R.id.dateTextView)
     TextView mDateTextView;
@@ -43,13 +42,9 @@ public class DialogReminder extends DialogBase
     @BindView(R.id.setReminderTextView)
     TextView mSetTextView;
 
-    public static DialogReminder newInstance(String setText) {
+    public static DialogDueDate newInstance() {
 
-        DialogReminder dialog = new DialogReminder();
-        Bundle bundle = new Bundle();
-        bundle.putString("SET_TEXT", setText);
-        dialog.setArguments(bundle);
-
+        DialogDueDate dialog = new DialogDueDate();
         return dialog;
     }
 
@@ -57,18 +52,14 @@ public class DialogReminder extends DialogBase
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        mListener = (ReminderListener) getTargetFragment();
+        mListener = (DueDateListener) getTargetFragment();
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        View view = LayoutInflater
-            .from(getActivity())
-            .inflate(R.layout.schedule_reminder_layout, null
-        );
-
+        View view = LayoutInflater.from(mParent).inflate(R.layout.due_date_layout, null);
         ButterKnife.bind(this, view);
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
@@ -77,9 +68,6 @@ public class DialogReminder extends DialogBase
         Date date = new Date();
         onDatePicked(date);
         onTimePicked(date.getTime());
-
-        String text = getArguments().getString("SET_TEXT");
-        mSetTextView.setText(text);
 
         return dialogBuilder.create();
     }
@@ -103,7 +91,7 @@ public class DialogReminder extends DialogBase
     @OnClick(R.id.setReminderTextView)
     public void onAddReminderClick(View view) {
 
-        mListener.onReminderSet(mDate, mTime);
+        mListener.onDueDateSelected(mDate, mTime);
         dismiss();
     }
 

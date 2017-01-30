@@ -3,21 +3,13 @@ package todo.javier.mera.todolist.fragments.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,14 +21,13 @@ import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentTodoList;
 import todo.javier.mera.todolist.model.Priority;
 import todo.javier.mera.todolist.model.PriorityUtil;
-import todo.javier.mera.todolist.ui.MainActivity;
 
 /**
  * Created by javie on 12/6/2016.
  */
 
 public class DialogTodoList extends DialogBase
-    implements ReminderListener, PriorityListener{
+    implements DueDateListener, PriorityListener{
 
     private static final String DIALOG_TITLE = "Create a To-do list!";
     private static final long EMPTY_DUE_TIME = 0L;
@@ -97,7 +88,7 @@ public class DialogTodoList extends DialogBase
     @OnClick(R.id.dueDateTextView)
     public void onDueDateClick(View view) {
 
-        DialogReminder dialog = DialogReminder.newInstance("Set Due Date");
+        DialogDueDate dialog = DialogDueDate.newInstance();
         dialog.setTargetFragment(this, 1);
         dialog.show(mParent.getSupportFragmentManager(), "due_date_dialog");
     }
@@ -140,7 +131,7 @@ public class DialogTodoList extends DialogBase
     }
 
     @Override
-    public void onReminderSet(Date date, long time) {
+    public void onDueDateSelected(Date date, long time) {
 
         mDueDate = date;
         mDueTime = time;

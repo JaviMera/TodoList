@@ -29,7 +29,11 @@ import todo.javier.mera.todolist.model.Priority;
  */
 
 public class DialogTask extends DialogBase
-    implements DatePickerListener, TimePickerListener, PriorityListener, ReminderListener {
+    implements
+    PriorityListener,
+    DueDateListener
+//    DueDateListener
+    {
 
     private static final String DIALOG_TITLE = "Create new task!";
     private static final long EMPTY_DUE_TIME = 0L;
@@ -51,11 +55,8 @@ public class DialogTask extends DialogBase
     @BindView(R.id.taskEditTextView)
     EditText mDescriptionEditText;
 
-    @BindView(R.id.datePickerTextView)
-    TextView mDateTextView;
-
-    @BindView(R.id.timePickerTextView)
-    TextView mTimeTextView;
+    @BindView(R.id.dueDateTextView)
+    TextView mDueDateTextView;
 
     @BindView(R.id.priorityTextView)
     TextView mPriorityTextView;
@@ -63,8 +64,8 @@ public class DialogTask extends DialogBase
     @BindView(R.id.priorityMessageTextView)
     TextView mPriorityMessage;
 
-    @BindView(R.id.reminderTextView)
-    TextView mReminderTextView;
+//    @BindView(R.id.reminderTextView)
+//    TextView mReminderTextView;
 
     @Override
     public void onAttach(Context context) {
@@ -115,14 +116,7 @@ public class DialogTask extends DialogBase
         if(mDueDate == null) {
 
             showToast("Task due date cannot be blank.");
-            mDateTextView.startAnimation(mShakeAnimation);
-            return;
-        }
-
-        if(mDueTime == EMPTY_DUE_TIME) {
-
-            showToast("Task due time cannot be blank");
-            mTimeTextView.startAnimation(mShakeAnimation);
+            mDueDateTextView.startAnimation(mShakeAnimation);
             return;
         }
 
@@ -144,20 +138,12 @@ public class DialogTask extends DialogBase
         dismiss();
     }
 
-    @OnClick(R.id.datePickerTextView)
+    @OnClick(R.id.dueDateTextView)
     public void onDateButtonClick(View view) {
 
-        DatePickerDialog dialog = new DatePickerDialog();
+        DialogDueDate dialog = DialogDueDate.newInstance();
         dialog.setTargetFragment(this, 1);
         dialog.show(mParent.getSupportFragmentManager(), "date_dialog");
-    }
-
-    @OnClick(R.id.timePickerTextView)
-    public void onTimeClick(View view) {
-
-        TimePickerDialog dialog = new TimePickerDialog();
-        dialog.setTargetFragment(this, 1);
-        dialog.show(mParent.getSupportFragmentManager(), "time_dialog");
     }
 
     @OnClick(R.id.priorityTextView)
@@ -166,23 +152,6 @@ public class DialogTask extends DialogBase
         DialogPriority dialog = new DialogPriority();
         dialog.setTargetFragment(this, 1);
         dialog.show(mParent.getSupportFragmentManager(), "priority_dialog");
-    }
-
-    @OnClick(R.id.reminderTextView)
-    public void onReminderClick(View view) {
-
-        DialogReminder dialog = DialogReminder.newInstance("Set Reminder");
-        dialog.setTargetFragment(this, 1);
-        dialog.show(mParent.getSupportFragmentManager(), "reminder_dialog");
-    }
-
-    @Override
-    public void onDatePicked(Date date) {
-
-        mDueDate = date;
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
-        String dateAsString = format.format(mDueDate);
-        mDateTextView.setText(dateAsString);
     }
 
     @Override
@@ -194,21 +163,22 @@ public class DialogTask extends DialogBase
     }
 
     @Override
-    public void onTimePicked(long time) {
+    public void onDueDateSelected(Date date, long time) {
 
+        mDueDate = date;
         mDueTime = time;
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-        String timeAsString = format.format(time);
-        mTimeTextView.setText(timeAsString);
-    }
-
-    @Override
-    public void onReminderSet(Date date, long time) {
-
-        mReminderDate = date;
-        mRemindertime = time;
         SimpleDateFormat format = new SimpleDateFormat("LLL, EEE dd  HH:mm");
         date.setTime(time);
-        mReminderTextView.setText(format.format(date));
+        mDueDateTextView.setText(format.format(date));
     }
+
+//    @Override
+//    public void onDueDateSelected(Date date, long time) {
+//
+//        mReminderDate = date;
+//        mRemindertime = time;
+//        SimpleDateFormat format = new SimpleDateFormat("LLL, EEE dd  HH:mm");
+//        date.setTime(time);
+//        mReminderTextView.setText(format.format(date));
+//    }
 }

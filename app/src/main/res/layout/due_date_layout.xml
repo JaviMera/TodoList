@@ -48,10 +48,10 @@
         android:id="@+id/setReminderTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Set Reminder"
-        android:textSize="16sp"
+        android:text="Set Due Date"
+        android:textSize="18sp"
         android:textColor="@color/colorPrimary"
         android:gravity="end"
         android:layout_marginTop="15dp"
-        android:padding="10dp"/>
+        android:padding="15dp"/>
 </LinearLayout>
