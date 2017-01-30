@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity
     public static final int TASK_NOTIFICATION_CODE = 10;
     public static final String NOTIFICATION_ID = "ID";
     public static final String NOTIFICATION = "NOTIFICATION";
+    public static final String NOTIFICATION_BUNDLE = "notification_bundle";
+    public static final String NOTIFICATION_TODO_ID = "todo_list_id";
 
     private FragmentHelper mFragmentHelper;
     private MainActivityPresenter mPresenter;
@@ -88,11 +90,11 @@ public class MainActivity extends AppCompatActivity
             mFragmentHelper.replace(R.id.fragmentContainer, mCurrentFragment, FRAGMENT_TAG);
 
             Intent intent = getIntent();
-            Bundle bundle = intent.getBundleExtra("notification_bundle");
+            Bundle bundle = intent.getBundleExtra(NOTIFICATION_BUNDLE);
 
             if(bundle != null) {
 
-                String taskId = bundle.getString("todo_list_id");
+                String taskId = bundle.getString(NOTIFICATION_TODO_ID);
                 TodoListDataSource source = new TodoListDataSource(this);
                 TodoList todoList = source.readTodoList(taskId);
                 showFragmentTodoList(todoList);
@@ -207,21 +209,23 @@ public class MainActivity extends AppCompatActivity
 
     public void setReminder(Task task, Date date) {
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setContentTitle("Task Reminder");
-        builder.setContentText(task.getDescription());
-        builder.setColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        builder.setSmallIcon(R.mipmap.ic_add_alarm);
-        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_logo));
-        builder.setAutoCancel(true);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
+        notificationBuilder.setContentTitle("Task Reminder");
+        notificationBuilder.setContentText(task.getDescription());
+        notificationBuilder.setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        notificationBuilder.setSmallIcon(R.mipmap.ic_add_alarm);
+        notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_logo));
+        notificationBuilder.setAutoCancel(true);
 
         Bundle bundle = new Bundle();
-        bundle.putString("todo_list_id", task.getTodoListId());
-        builder.setContentIntent(
+        bundle.putString(NOTIFICATION_TODO_ID, task.getTodoListId());
+
+        notificationBuilder.setContentIntent(
             PendingIntent.getActivity(
                 this,
                 MainActivity.TASK_NOTIFICATION_CODE,
-                new Intent(this, MainActivity.class).putExtra("notification_bundle",bundle),
+                new Intent(this, MainActivity.class)
+                    .putExtra(NOTIFICATION_BUNDLE,bundle),
                 PendingIntent.FLAG_CANCEL_CURRENT
             )
         );
@@ -229,7 +233,7 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, NotificationPublisher.class);
 
         intent.putExtra(NOTIFICATION_ID, task.hashCode());
-        intent.putExtra(NOTIFICATION, builder.build());
+        intent.putExtra(NOTIFICATION, notificationBuilder.build());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
             this,
