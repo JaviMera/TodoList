@@ -5,6 +5,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import todo.javier.mera.todolist.fragments.dialogs.ReminderListener;
+
 /**
  * Created by javie on 12/4/2016.
  */
@@ -12,7 +14,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class TodoListSQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "todo_lists.db";
-    private static final int DB_VERSION = 27;
+    private static final int DB_VERSION = 28;
 
     public static final String TABLE_TODO_LISTS = "TODO_LISTS";
     public static final String COLUMN_TODO_LIST_ID = "TODOLIST_ID";
@@ -26,7 +28,8 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
         + COLUMN_TODO_LIST_ID + " TEXT PRIMARY KEY, "
         + COLUMN_TODO_LIST_POSITION + " INTEGER, "
         + COLUMN_TODO_LIST_NAME + " TEXT, "
-        + COLUMN_TODO_LIST_DUE_DATE + " INTEGER"
+        + COLUMN_TODO_LIST_DUE_DATE + " INTEGER, "
+        + COLUMN_TODO_LIST_PRIORITY + " INTEGER"
         + ")";
 
     public static final String TABLE_TODO_LIST_ITEMS = "TODO_LIST_ITEMS";
@@ -51,6 +54,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
         + COLUMN_ITEMS_DUE_DATE + " INTEGER, "
         + COLUMN_ITEMS_DUE_TIME + " INTEGER, "
         + COLUMN_ITEMS_PRIORITY + " INTEGER, "
+        + COLUMN_ITEMS_REMINDER + " INTEGER"
         + "FOREIGN KEY " + "(" + COLUMN_TODO_LIST_ID + ") REFERENCES " + TABLE_TODO_LISTS + "(" + COLUMN_TODO_LIST_ID + ")"
         + ")";
 
@@ -76,22 +80,11 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
 
-        switch (oldVersion) {
+        if(oldVersion < newVersion) {
 
-            case 22:
-                sqLiteDatabase.execSQL("ALTER TABLE " + TABLE_TODO_LISTS + " ADD COLUMN " + COLUMN_TODO_LIST_PRIORITY + " INTEGER DEFAULT 0");
-                onCreate(sqLiteDatabase);
-
-            case 23:
-                sqLiteDatabase.execSQL("ALTER TABLE " + TABLE_TODO_LISTS + " ADD COLUMN " + COLUMN_ITEMS_REMINDER + " INTEGER DEFAULT 0");
-                onCreate(sqLiteDatabase);
-
-            case 24:
-                sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO_LISTS);
-                onCreate(sqLiteDatabase);
-                sqLiteDatabase.execSQL("ALTER TABLE " + TABLE_TODO_LIST_ITEMS + " ADD COLUMN " + COLUMN_ITEMS_REMINDER + " INTEGER DEFAULT 0");
-                onCreate(sqLiteDatabase);
-                break;
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO_LISTS);
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO_LIST_ITEMS);
+            onCreate(sqLiteDatabase);
         }
     }
 }
