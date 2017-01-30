@@ -45,7 +45,7 @@
         android:layout_margin="15dp" />
 
     <TextView
-        android:id="@+id/setReminderTextView"
+        android:id="@+id/setDueDateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Set Due Date"

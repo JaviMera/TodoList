@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set a reminder"
+        android:textColor="@color/colorPrimary"
+        android:textSize="25dp"
+        android:padding="15dp" />
+
+    <RadioGroup
+        android:id="@+id/reminderRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <RadioButton
+            android:id="@+id/fiveBeforeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5 minutes before due date"
+            android:textSize="18sp"
+            android:padding="10dp"/>
+
+        <RadioButton
+            android:id="@+id/tenBeforeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10 minutes before due date"
+            android:textSize="18sp"
+            android:padding="10dp"/>
+
+        <RadioButton
+            android:id="@+id/twentyBeforeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20 minutes before due date"
+            android:textSize="18sp"
+            android:padding="10dp"/>
+
+        <RadioButton
+            android:id="@+id/thirtyBeforeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30 minutes before due date"
+            android:textSize="18sp"
+            android:padding="10dp"/>
+
+        <RadioButton
+            android:id="@+id/hourBeforeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1 hour before due date"
+            android:textSize="18sp"
+            android:padding="10dp"/>
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/setDueDateTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="Set Reminder"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimary"
+        android:gravity="end"/>
+</LinearLayout>

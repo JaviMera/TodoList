@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -64,8 +65,8 @@ public class DialogTask extends DialogBase
     @BindView(R.id.priorityMessageTextView)
     TextView mPriorityMessage;
 
-//    @BindView(R.id.reminderTextView)
-//    TextView mReminderTextView;
+    @BindView(R.id.reminderTextView)
+    TextView mReminderTextView;
 
     @Override
     public void onAttach(Context context) {
@@ -96,6 +97,10 @@ public class DialogTask extends DialogBase
         ButterKnife.bind(this, view);
 
         mTitleView.setText(DIALOG_TITLE);
+        mReminderTextView.setEnabled(false);
+
+        int color = ContextCompat.getColor(mParent, android.R.color.darker_gray);
+        mReminderTextView.setTextColor(color);
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mParent);
         dialogBuilder.setView(view);

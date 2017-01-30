@@ -39,7 +39,7 @@ public class DialogDueDate extends DialogBase
     @BindView(R.id.timeTextView)
     TextView mTimeTextView;
 
-    @BindView(R.id.setReminderTextView)
+    @BindView(R.id.setDueDateTextView)
     TextView mSetTextView;
 
     public static DialogDueDate newInstance() {
@@ -88,7 +88,7 @@ public class DialogDueDate extends DialogBase
         dialog.show(mParent.getSupportFragmentManager(), "time_dialog");
     }
 
-    @OnClick(R.id.setReminderTextView)
+    @OnClick(R.id.setDueDateTextView)
     public void onAddReminderClick(View view) {
 
         mListener.onDueDateSelected(mDate, mTime);
