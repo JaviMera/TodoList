@@ -26,31 +26,9 @@ import todo.javier.mera.todolist.model.PriorityUtil;
  * Created by javie on 12/6/2016.
  */
 
-public class DialogTodoList extends DialogBase
-    implements DueDateListener, PriorityListener{
-
-    private static final String DIALOG_TITLE = "Create a To-do list!";
-    private static final long EMPTY_DUE_TIME = 0L;
+public class DialogTodoList extends DialogCreate {
 
     private DialogTodoListListener mListener;
-    private Date mDueDate;
-    private long mDueTime;
-    private Priority mPriority;
-
-    @BindView(R.id.dialogTitleView)
-    TextView mTitleView;
-
-    @BindView(R.id.todoListEditTextView)
-    EditText mTitleEditText;
-
-    @BindView(R.id.dueDateTextView)
-    TextView mDueDateTextView;
-
-    @BindView(R.id.priorityTextView)
-    TextView mPriorityTextView;
-
-    @BindView(R.id.priorityMessageTextView)
-    TextView mPriorityMessage;
 
     @Override
     public void onAttach(Context context) {
@@ -60,74 +38,29 @@ public class DialogTodoList extends DialogBase
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected String getTitle() {
 
-        mPriority = Priority.None;
+        return "Create a new list!";
     }
 
-    @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    protected View getLayout() {
 
         View view = LayoutInflater
             .from(mParent)
             .inflate(R.layout.todo_list_dialog, null
-        );
+            );
 
-        ButterKnife.bind(this, view);
-
-        mTitleView.setText(DIALOG_TITLE);
-
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mParent);
-        dialogBuilder.setView(view);
-
-        return createDialog(dialogBuilder);
+        return view;
     }
 
-    @OnClick(R.id.dueDateTextView)
-    public void onDueDateClick(View view) {
-
-        DialogDueDate dialog = DialogDueDate.newInstance();
-        dialog.setTargetFragment(this, 1);
-        dialog.show(mParent.getSupportFragmentManager(), "due_date_dialog");
-    }
-
-    @OnClick(R.id.priorityTextView)
-    public void onPriorityClick(View view) {
-
-        DialogPriority dialog = new DialogPriority();
-        dialog.setTargetFragment(this, 1);
-        dialog.show(mParent.getSupportFragmentManager(), "priority_dialog");
-    }
-
-    @OnClick(R.id.addTaskView)
-    public void onAddClick(View view) {
-
-        if(mTitleEditText.getText().toString().isEmpty()) {
-
-            showToast("To-do list title cannot be blank.");
-            mTitleEditText.startAnimation(mShakeAnimation);
-            return;
-        }
-
-        if(mDueDate == null || mDueTime == EMPTY_DUE_TIME) {
-
-            showToast("Task due date cannot be blank.");
-            mDueDateTextView.startAnimation(mShakeAnimation);
-            return;
-        }
-
-        // Set the selected time to the date object
-        // This way there is no need to pass the date and time separately
-        mDueDate.setTime(mDueTime);
+    @Override
+    protected void createItem() {
 
         mListener.onCreateTodoList(
-            mTitleEditText.getText().toString(),
+            mEditText.getText().toString(),
             mDueDate,
             mPriority);
-
-        dismiss();
     }
 
     @Override

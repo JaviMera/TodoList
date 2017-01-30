@@ -63,11 +63,9 @@ public abstract class DialogBase extends DialogFragment {
             .show();
     }
 
-    protected AlertDialog createDialog(AlertDialog.Builder builder) {
+    protected AlertDialog createDialog(AlertDialog dialog) {
 
-        AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
-
         return dialog;
     }
 }

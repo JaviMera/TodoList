@@ -23,7 +23,7 @@
             android:textColor="@android:color/white"/>
 
         <ImageView
-            android:id="@+id/addTaskView"
+            android:id="@+id/createItemView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_check" />
@@ -44,7 +44,7 @@
             android:id="@+id/imageView" />
 
         <EditText
-            android:id="@+id/todoListEditTextView"
+            android:id="@+id/editTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2.5"

@@ -46,7 +46,7 @@ public class TimePickerDialog extends DialogBase {
 
         ButterKnife.bind(this, view);
 
-        return createDialog(dialogBuilder);
+        return createDialog(dialogBuilder.create());
     }
 
     @OnClick(R.id.addTimeView)

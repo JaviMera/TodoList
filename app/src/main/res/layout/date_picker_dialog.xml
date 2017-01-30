@@ -12,7 +12,7 @@
         android:padding="15dp">
 
         <ImageView
-            android:id="@+id/addTaskView"
+            android:id="@+id/createItemView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_check"

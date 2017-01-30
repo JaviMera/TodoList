@@ -51,7 +51,7 @@ public class DatePickerDialog extends DialogFragment {
         return dialogBuilder.create();
     }
 
-    @OnClick(R.id.addTaskView)
+    @OnClick(R.id.createItemView)
     public void onAddDateClick(View view) {
 
         Calendar c = Calendar.getInstance();
