@@ -20,6 +20,8 @@ import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TodolistAdapter;
+import todo.javier.mera.todolist.comparators.Comparator;
+import todo.javier.mera.todolist.comparators.ComparatorFactory;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTodoList;
@@ -191,7 +193,13 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
 
         if(rowId != -1 ){
 
-            mAdapter.addItem(newList);
+            Comparator comparator = new ComparatorFactory<TodoList>()
+                .getComparator(mSortSelected);
+
+            List<TodoList> lists = mAdapter.getItems();
+            int position = comparator.getPosition(newList, lists);
+
+            mAdapter.addItem(position, newList);
         }
     }
 

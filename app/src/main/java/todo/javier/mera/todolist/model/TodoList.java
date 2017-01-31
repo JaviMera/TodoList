@@ -11,28 +11,20 @@ import java.util.List;
  */
 public class TodoList extends ItemBase implements Parcelable {
 
-    private String mTitle;
-    private long mCreationDate;
     private List<Task> mItems;
-    private Priority mPriority;
 
-    public TodoList(String id, String title, long creationDate, Priority priority) {
+    public TodoList(String id, String description, long dueDate, Priority priority) {
 
-        super(id, false);
+        super(id, description,  false, dueDate, priority);
 
-        mTitle = title;
-        mCreationDate = creationDate;
         mItems = new LinkedList<>();
-        mPriority = priority;
     }
 
     protected TodoList(Parcel in) {
 
         super(in);
 
-        mTitle = in.readString();
         mItems = in.createTypedArrayList(Task.CREATOR);
-        mCreationDate = in.readLong();
     }
 
     public static final Creator<TodoList> CREATOR = new Creator<TodoList>() {
@@ -47,18 +39,9 @@ public class TodoList extends ItemBase implements Parcelable {
         }
     };
 
-    public String getTitle() {
-        return mTitle;
-    }
-
     public int getItemsCount() {
 
         return mItems.size();
-    }
-
-    public long getCreationDate() {
-
-        return mCreationDate;
     }
 
     public List<Task> getTasks() {
@@ -79,16 +62,6 @@ public class TodoList extends ItemBase implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(mTitle);
-        parcel.writeLong(mCreationDate);
         parcel.writeTypedList(mItems);
-    }
-
-    public Priority getPriority() {
-        return mPriority;
-    }
-
-    public void setPriority(Priority mPriority) {
-        this.mPriority = mPriority;
     }
 }

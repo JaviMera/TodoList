@@ -33,12 +33,12 @@ class TodolistViewHolder extends ViewHolderBase<TodoList>
     @Override
     public void bind(TodoList item) {
 
-        mTodolistTitle.setText(item.getTitle());
+        mTodolistTitle.setText(item.getDescription());
         mTotalitems.setText(String.format(Locale.ENGLISH, "TASKS  %d", item.getItemsCount()));
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyy");
 
-        mCreationDate.setText(dateFormat.format(item.getCreationDate()));
+        mCreationDate.setText(dateFormat.format(item.getDueDate()));
 
         if(item.getCanRemove()) {
 

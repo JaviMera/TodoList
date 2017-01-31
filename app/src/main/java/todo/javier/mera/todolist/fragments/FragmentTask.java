@@ -131,7 +131,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     @Override
     protected String getTitle() {
 
-        return mTodoList.getTitle();
+        return mTodoList.getDescription();
     }
 
     @Override
@@ -205,7 +205,6 @@ public class FragmentTask extends FragmentRecycler<Task>
             taskStatus,
             taskCreationDate,
             taskDuedate.getTime(),
-            dueTime,
             priority,
             reminderDate == null ? Reminder.OFF : Reminder.ON
         );
@@ -217,7 +216,7 @@ public class FragmentTask extends FragmentRecycler<Task>
 
         if(rowId > -1) {
 
-            Comparator comparator = new ComparatorFactory()
+            Comparator comparator = new ComparatorFactory<Task>()
                 .getComparator(mSortSelected);
 
             List<Task> tasks = mAdapter.getItems();

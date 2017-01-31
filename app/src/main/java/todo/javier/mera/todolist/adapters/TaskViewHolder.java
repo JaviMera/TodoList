@@ -84,7 +84,7 @@ class TaskViewHolder extends ViewHolderBase<Task>
             "Due by " +
             dateFormat.format(item.getDueDate()) +
             " at " +
-            timeFormat.format(item.getmDueTime()));
+            timeFormat.format(item.getDueDate()));
         
         int color = getLayoutColor(item);
         mLayout.setBackgroundColor(color);

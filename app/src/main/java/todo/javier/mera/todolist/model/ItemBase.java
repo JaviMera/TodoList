@@ -8,14 +8,21 @@ import android.os.Parcelable;
  */
 public abstract class ItemBase implements Parcelable {
 
+    private String mDescription;
     private boolean mCanRemove;
     private boolean mIsMoving;
     private String mId;
 
-    ItemBase(String id, boolean canRemove) {
+    private long mDueDate;
+    private Priority mPriority;
+
+    ItemBase(String id, String description, boolean canRemove, long dueDate, Priority priority) {
 
         mId = id;
+        mDescription = description;
         mCanRemove = canRemove;
+        mPriority = priority;
+        mDueDate = dueDate;
     }
 
     ItemBase(Parcel in) {
@@ -83,5 +90,25 @@ public abstract class ItemBase implements Parcelable {
     public boolean isMoving() {
 
         return mIsMoving;
+    }
+
+    public Priority getPriority() {
+
+        return mPriority;
+    }
+
+    public void setPriority(Priority newPriority) {
+
+        mPriority = newPriority;
+    }
+
+    public long getDueDate() {
+
+        return mDueDate;
+    }
+
+    public String getDescription() {
+
+        return mDescription;
     }
 }

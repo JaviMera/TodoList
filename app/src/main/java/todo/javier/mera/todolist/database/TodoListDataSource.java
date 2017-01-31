@@ -51,8 +51,8 @@ public class TodoListDataSource {
         ContentValues todoListValues = new ContentValues();
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_ID, newList.getId());
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION, position);
-        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME, newList.getTitle());
-        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE, newList.getCreationDate());
+        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME, newList.getDescription());
+        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE, newList.getDueDate());
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_PRIORITY, newList.getPriority().ordinal());
 
         long newId = mDb.insert(TodoListSQLiteHelper.TABLE_TODO_LISTS, null, todoListValues);
@@ -127,7 +127,7 @@ public class TodoListDataSource {
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_STATUS, newTask.getStatus().ordinal());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_CREATED_ON, newTask.getCreationDate());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE, newTask.getDueDate());
-        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_DUE_TIME, newTask.getmDueTime());
+        itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_DUE_TIME, newTask.getDueDate());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY, newTask.getPriority().ordinal());
         itemValues.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, newTask.getReminder().ordinal());
 
@@ -190,7 +190,6 @@ public class TodoListDataSource {
                     status,
                     creationDate,
                     dueDate,
-                    dueTime,
                     priority,
                     reminder);
                 items.add(item);
@@ -333,7 +332,6 @@ public class TodoListDataSource {
                     status,
                     creationDate,
                     dueDate,
-                    dueTime,
                     priority,
                     Reminder.OFF
                 );
