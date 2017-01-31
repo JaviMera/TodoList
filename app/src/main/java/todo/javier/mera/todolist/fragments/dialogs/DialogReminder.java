@@ -68,36 +68,38 @@ public class DialogReminder extends DialogBase {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mParent);
         dialogBuilder.setView(view);
 
+        mReminderGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+
+                Calendar c = Calendar.getInstance();
+                c.setTime(mDueDate);
+
+                int selectedId = mReminderGroup.getCheckedRadioButtonId();
+                switch(selectedId) {
+
+                    case R.id.fiveBeforeButton:
+                        c.add(Calendar.MINUTE, -5);
+                        break;
+                    case R.id.tenBeforeButton:
+                        c.add(Calendar.MINUTE, -10);
+                        break;
+                    case R.id.twentyBeforeButton:
+                        c.add(Calendar.MINUTE, -20);
+                        break;
+                    case R.id.thirtyBeforeButton:
+                        c.add(Calendar.MINUTE, -30);
+                        break;
+                    case R.id.hourBeforeButton:
+                        c.add(Calendar.MINUTE, -60);
+                        break;
+                }
+
+                mListener.onReminderSelected(c.getTime());
+                dismiss();
+            }
+        });
+
         return dialogBuilder.create();
-    }
-
-    @OnClick(R.id.setReminderTextView)
-    public void onSetReminderClick(View view) {
-
-        Calendar c = Calendar.getInstance();
-        c.setTime(mDueDate);
-
-        int selectedId = mReminderGroup.getCheckedRadioButtonId();
-        switch(selectedId) {
-
-            case R.id.fiveBeforeButton:
-                c.add(Calendar.MINUTE, -5);
-                break;
-            case R.id.tenBeforeButton:
-                c.add(Calendar.MINUTE, -10);
-                break;
-            case R.id.twentyBeforeButton:
-                c.add(Calendar.MINUTE, -20);
-                break;
-            case R.id.thirtyBeforeButton:
-                c.add(Calendar.MINUTE, -30);
-                break;
-            case R.id.hourBeforeButton:
-                c.add(Calendar.MINUTE, -60);
-                break;
-        }
-
-        mListener.onReminderSelected(c.getTime());
-        dismiss();
     }
 }
