@@ -103,6 +103,7 @@ class TaskViewHolder extends ViewHolderBase<Task>
 
             if(Priority.None != item.getPriority()) {
 
+                mPriorityImageView.setVisibility(View.VISIBLE);
                 Drawable icon = ContextCompat.getDrawable(mParent.getContext(), PriorityUtil.getDrawable(item.getPriority().ordinal()));
                 mPriorityImageView.setImageDrawable(icon);
             }

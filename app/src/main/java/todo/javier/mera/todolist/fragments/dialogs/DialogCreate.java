@@ -130,4 +130,10 @@ public abstract class DialogCreate extends DialogBase
         createItem();
         dismiss();
     }
+
+    @OnClick(R.id.cancelItemView)
+    public void onCancelClick(View view) {
+
+        dismiss();
+    }
 }

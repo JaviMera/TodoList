@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <include layout="@layout/field_title" />
-
-    <include layout="@layout/field_description" />
-
-    <include layout="@layout/field_due_date" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,23 +12,20 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@mipmap/ic_add_alarm"
+            android:src="@mipmap/ic_date"
             android:scaleType="fitCenter"
             android:padding="@dimen/item_body_pad_portrait"/>
 
         <TextView
-            android:id="@+id/reminderTextView"
+            android:id="@+id/dueDateTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2.5"
             android:layout_gravity="center"
-            android:text="@string/task_reminder_text"
+            android:text="@string/due_date_title"
             android:textSize="18sp"
             android:textStyle="italic"
             android:layout_margin="15dp"/>
 
     </LinearLayout>
-
-    <include layout="@layout/field_priority" />
-    <include layout="@layout/actions_layout" />
-</LinearLayout>
+</merge>

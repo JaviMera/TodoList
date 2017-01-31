@@ -55,6 +55,13 @@ public class DialogTask extends DialogCreate
     @Override
     protected void createItem() {
 
+        mListener.onCreatedTask(
+            mEditText.getText().toString(),
+            mDueDate,
+            mDueTime,
+            mReminderDate,
+            mPriority
+        );
     }
 
     @Override
@@ -80,21 +87,6 @@ public class DialogTask extends DialogCreate
         mReminderTextView.setEnabled(false);
 
         return dialog;
-    }
-
-    @OnClick(R.id.createItemView)
-    public void onAddClick() {
-
-        // If edit text contains text, then add it and close the dialog
-        mListener.onCreatedTask(
-            mEditText.getText().toString(),
-            mDueDate,
-            mDueTime,
-            mReminderDate,
-            mPriority
-        );
-
-        dismiss();
     }
 
     @Override

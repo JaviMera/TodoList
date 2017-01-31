@@ -5,118 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:padding="15dp">
+    <include layout="@layout/field_title" />
 
-        <TextView
-            android:id="@+id/dialogTitleView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            tools:text="This is a title"
-            android:textSize="25sp"
-            android:textColor="@android:color/white"/>
+    <include layout="@layout/field_description" />
 
-        <ImageView
-            android:id="@+id/createItemView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_check" />
-    </LinearLayout>
+    <include layout="@layout/field_due_date" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp">
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@mipmap/ic_description"
-            android:scaleType="fitCenter"
-            android:padding="@dimen/item_body_pad_portrait"
-            android:id="@+id/imageView" />
-
-        <EditText
-            android:id="@+id/editTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2.5"
-            android:layout_gravity="center"
-            android:hint="@string/todo_list_title"
-            style="@style/DialogEditText" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp">
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@mipmap/ic_date"
-            android:scaleType="fitCenter"
-            android:padding="@dimen/item_body_pad_portrait"/>
-
-        <TextView
-            android:id="@+id/dueDateTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2.5"
-            android:layout_gravity="center"
-            android:text="@string/due_date_title"
-            android:textSize="18sp"
-            android:textStyle="italic"
-            android:layout_margin="15dp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp">
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@mipmap/ic_priority"
-            android:scaleType="fitCenter"
-            android:padding="@dimen/item_body_pad_portrait"/>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2.5"
-            android:orientation="vertical"
-            android:layout_margin="15dp">
-
-            <TextView
-                android:id="@+id/priorityTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/priority_title"
-                android:textSize="18sp"
-                android:textStyle="italic"/>
-
-            <TextView
-                android:id="@+id/priorityMessageTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="None by default"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginTop="5dp"
-                android:textSize="12sp"/>
-        </LinearLayout>
-
-    </LinearLayout>
+    <include layout="@layout/field_priority" />
+    <include layout="@layout/actions_layout" />
 </LinearLayout>
