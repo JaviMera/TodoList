@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +28,15 @@ import todo.javier.mera.todolist.model.PriorityUtil;
 
 public abstract class DialogCreate extends DialogBase
     implements DueDateListener, PriorityListener {
+
+    private static Map<Integer, Integer> priorityOptions = new LinkedHashMap<Integer, Integer>() {
+        {
+            put(R.id.noneButton, 0);
+            put(R.id.lowButton, 1);
+            put(R.id.mediumButton, 2);
+            put(R.id.highButton, 3);
+        }
+    };
 
     protected abstract String getTitle();
     protected abstract View getLayout();
@@ -101,8 +112,9 @@ public abstract class DialogCreate extends DialogBase
     }
 
     @Override
-    public void onPrioritySelected(int position) {
+    public void onPrioritySelected(int buttonId) {
 
+        int position = priorityOptions.get(buttonId);
         mPriority = Priority.values()[position];
         mPriorityTextView.setText(PriorityUtil.getName(mPriority.ordinal()));
     }

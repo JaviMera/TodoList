@@ -51,8 +51,6 @@ public class DialogReminder extends DialogBase {
 
         ButterKnife.bind(this, view);
 
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mParent);
         dialogBuilder.setView(view);
 

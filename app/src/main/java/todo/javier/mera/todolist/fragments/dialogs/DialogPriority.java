@@ -26,15 +26,6 @@ public class DialogPriority extends DialogFragment {
 
     private PriorityListener mListener;
 
-    private static Map<Integer, Integer> priorityMap = new LinkedHashMap<Integer, Integer>() {
-        {
-            put(R.id.noneButton, 0);
-            put(R.id.lowButton, 1);
-            put(R.id.mediumButton, 2);
-            put(R.id.highButton, 3);
-        }
-    };
-
     @BindView(R.id.priorityRadioGroup)
     RadioGroup mPriorityGroup;
 
@@ -62,7 +53,7 @@ public class DialogPriority extends DialogFragment {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int buttonId) {
 
-                mListener.onPrioritySelected(priorityMap.get(buttonId));
+                mListener.onPrioritySelected(buttonId);
                 dismiss();
             }
         });

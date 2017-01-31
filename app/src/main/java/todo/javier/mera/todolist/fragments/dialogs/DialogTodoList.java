@@ -72,12 +72,4 @@ public class DialogTodoList extends DialogCreate {
         date.setTime(time);
         mDueDateTextView.setText(format.format(date));
     }
-
-    @Override
-    public void onPrioritySelected(int position) {
-
-        mPriority = Priority.values()[position];
-        mPriorityTextView.setText(PriorityUtil.getName(mPriority.ordinal()));
-        mPriorityMessage.setVisibility(View.GONE);
-    }
 }
