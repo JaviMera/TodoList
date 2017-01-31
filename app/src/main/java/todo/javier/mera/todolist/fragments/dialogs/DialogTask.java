@@ -62,16 +62,21 @@ public class DialogTask extends DialogCreate
     @Override
     protected void createItem() {
 
-        Calendar c = Calendar.getInstance();
-        c.setTime(mDueDate);
-        int reminderMinutes = reminderOptions.get(mReminderTime);
-        c.add(Calendar.MINUTE, reminderMinutes);
+        Date reminderDate = null;
+        if(mReminderTime != -1) {
+
+            Calendar c = Calendar.getInstance();
+            c.setTime(mDueDate);
+            int reminderMinutes = reminderOptions.get(mReminderTime);
+            c.add(Calendar.MINUTE, reminderMinutes);
+            reminderDate = c.getTime();
+        }
 
         mListener.onCreatedTask(
             mEditText.getText().toString(),
             mDueDate,
             mDueTime,
-            c.getTime(),
+            reminderDate,
             mPriority
         );
     }
