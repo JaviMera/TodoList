@@ -1,6 +1,5 @@
 package todo.javier.mera.todolist.fragments.dialogs;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -8,20 +7,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentTask;
-import todo.javier.mera.todolist.model.PriorityUtil;
-import todo.javier.mera.todolist.model.Priority;
 
 /**
  * Created by javie on 12/6/2016.
@@ -32,7 +29,17 @@ public class DialogTask extends DialogCreate
     ReminderListener
     {
 
-    private Date mReminderDate;
+    private int mReminderTime;
+
+    private static Map<Integer, Integer> reminderOptions = new LinkedHashMap<Integer, Integer>() {
+        {
+            put(R.id.fiveBeforeButton, -5);
+            put(R.id.tenBeforeButton, -10);
+            put(R.id.twentyBeforeButton, -20);
+            put(R.id.thirtyBeforeButton, -30);
+            put(R.id.hourBeforeButton, -60);
+        }
+    };
 
     private DialogTaskListener mListener;
 
@@ -55,11 +62,16 @@ public class DialogTask extends DialogCreate
     @Override
     protected void createItem() {
 
+        Calendar c = Calendar.getInstance();
+        c.setTime(mDueDate);
+        int reminderMinutes = reminderOptions.get(mReminderTime);
+        c.add(Calendar.MINUTE, reminderMinutes);
+
         mListener.onCreatedTask(
             mEditText.getText().toString(),
             mDueDate,
             mDueTime,
-            mReminderDate,
+            c.getTime(),
             mPriority
         );
     }
@@ -75,7 +87,7 @@ public class DialogTask extends DialogCreate
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mReminderDate = null;
+        mReminderTime = -1;
     }
 
     @NonNull
@@ -94,22 +106,39 @@ public class DialogTask extends DialogCreate
         super.onDueDateSelected(date, time);
 
         mReminderTextView.setEnabled(true);
+        if(mReminderTime != -1) {
+
+            Date reminder = getReminderDate(mReminderTime);
+            SimpleDateFormat format = new SimpleDateFormat("LLL, EEE dd  HH:mm");
+
+            mReminderTextView.setText(format.format(reminder));
+        }
     }
 
     @OnClick(R.id.reminderTextView)
     public void onReminderClick(View view) {
 
-        DialogReminder dialogReminder = DialogReminder.newInstance(mDueDate);
+        DialogReminder dialogReminder = DialogReminder.newInstance();
         dialogReminder.setTargetFragment(this, 1);
         dialogReminder.show(mParent.getSupportFragmentManager(), "reminder_dialog");
     }
 
     @Override
-    public void onReminderSelected(Date date) {
+    public void onReminderSelected(int buttonId) {
 
-        mReminderDate = new Date();
-        mReminderDate.setTime(date.getTime());
+        mReminderTime = buttonId;
+        Date reminder = getReminderDate(mReminderTime);
         SimpleDateFormat format = new SimpleDateFormat("LLL, EEE dd  HH:mm");
-        mReminderTextView.setText(format.format(date));
+        mReminderTextView.setText(format.format(reminder));
+    }
+
+    private Date getReminderDate(int buttonId) {
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(mDueDate);
+        int reminderMinutes = reminderOptions.get(buttonId);
+        c.add(Calendar.MINUTE, reminderMinutes);
+
+        return c.getTime();
     }
 }

@@ -8,5 +8,5 @@ import java.util.Date;
 
 public interface ReminderListener {
 
-    void onReminderSelected(Date date);
+    void onReminderSelected(int reminderId);
 }
