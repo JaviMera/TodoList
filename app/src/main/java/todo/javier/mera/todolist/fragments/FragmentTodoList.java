@@ -2,8 +2,12 @@ package todo.javier.mera.todolist.fragments;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -11,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
@@ -24,9 +29,10 @@ import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class FragmentTodoList extends FragmentRecycler<TodoList>
-    implements DialogTodoListListener {
+    implements DialogTodoListListener, PopupMenu.OnMenuItemClickListener {
 
     private Map<String, List<Task>> mRemovableTodoLists;
+    private int mSortSelected;
 
     public static FragmentTodoList newInstance() {
 
@@ -49,6 +55,32 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     protected int getDeleteTitle() {
 
         return R.string.menu_delete_todolist;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+
+            case R.id.action_sort:
+
+                PopupMenu popupMenu = new PopupMenu(
+                    mParent,
+                    mParent.findViewById(R.id.action_sort)
+                );
+
+                MenuInflater inflater = popupMenu.getMenuInflater();
+                inflater.inflate(R.menu.popup_todo_list_sort, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(this);
+                popupMenu.show();
+                break;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
     }
 
     @Override
@@ -161,6 +193,41 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
 
             mAdapter.addItem(newList);
         }
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+
+        mSortSelected = item.getItemId();
+        String sortByColumn = "";
+        String order = "";
+
+        switch(item.getItemId()) {
+
+            case R.id.sortByNone:
+                sortByColumn = TodoListSQLiteHelper.COLUMN_ITEMS_POSITION;
+                order = "ASC";
+                break;
+
+            case R.id.sortByDueDate:
+                sortByColumn = TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE;
+                order = "ASC";
+                break;
+
+            case R.id.sortByPriority:
+                sortByColumn = TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY;
+                order = "DESC";
+                break;
+        }
+
+        setItemAnimator(new FadeInDownAnimator(new LinearOutSlowInInterpolator()));
+        TodoListDataSource dataSource = new TodoListDataSource(mParent);
+        List<TodoList> todoLists = dataSource.readTodoLists(sortByColumn, order);
+
+        mAdapter.removeAll();
+        mAdapter.addItems(todoLists);
+
+        return true;
     }
 }
 

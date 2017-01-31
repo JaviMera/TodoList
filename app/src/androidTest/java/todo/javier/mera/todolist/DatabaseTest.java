@@ -51,7 +51,7 @@ public class DatabaseTest {
     public void dbShouldAddTodoList() throws Exception {
 
         // Arrange
-        TodoList todoList = createTodoList();
+        TodoList todoList = createTodoList(Priority.Low);
 
         // Act
         long rowId = mDataSource.createTodoList(todoList, 0);
@@ -60,13 +60,13 @@ public class DatabaseTest {
         Assert.assertTrue(rowId > -1);
     }
 
-    private TodoList createTodoList() {
+    private TodoList createTodoList(Priority priority) {
 
         return new TodoList(
             UUID.randomUUID().toString(),
             "My List",
             new Date().getTime(),
-            Priority.High
+            priority
         );
     }
 
@@ -89,7 +89,7 @@ public class DatabaseTest {
     public void dbShouldReadTodoList() throws Exception {
 
         // Arrange
-        TodoList expectedTodoList = createTodoList();
+        TodoList expectedTodoList = createTodoList(Priority.Low);
 
         // Act
         mDataSource.createTodoList(expectedTodoList, 0);
@@ -104,10 +104,30 @@ public class DatabaseTest {
     }
 
     @Test
+    public void dbShouldReadTodoListWithSortOptions() throws Exception {
+
+        // Arrange
+        TodoList todoList1 = createTodoList(Priority.Low);
+        TodoList todoList2 = createTodoList(Priority.High);
+
+        // Act
+        mDataSource.createTodoList(todoList1,0);
+        mDataSource.createTodoList(todoList2, 1);
+
+        TodoList actualTodoList = mDataSource
+            .readTodoLists(TodoListSQLiteHelper.COLUMN_TODO_LIST_PRIORITY, "DESC")
+            .get(0);
+
+        // Assert
+        Assert.assertNotNull(actualTodoList);
+        Assert.assertEquals(todoList2.getPriority(), actualTodoList.getPriority());
+    }
+
+    @Test
     public void dbShouldAddTask() throws Exception {
 
         // Arrange
-        TodoList todoList = createTodoList();
+        TodoList todoList = createTodoList(Priority.Low);
         Task newTask = createTask(todoList.getId());
 
         // Act
@@ -123,7 +143,7 @@ public class DatabaseTest {
     public void dbShouldReadTasks() throws Exception {
 
         // Arrange
-        TodoList todoList = createTodoList();
+        TodoList todoList = createTodoList(Priority.Low);
         Task task = createTask(todoList.getId());
         int expectedSize = 1;
 
@@ -152,7 +172,7 @@ public class DatabaseTest {
     public void dbShouldUpdateTodoListTaskPosition() throws Exception {
 
         // Arrange
-        TodoList todoList = createTodoList();
+        TodoList todoList = createTodoList(Priority.Low);
         Task task = createTask(todoList.getId());
 
         // Act
@@ -259,7 +279,7 @@ public class DatabaseTest {
     public void dbShouldRemoveTask() throws Exception {
 
         // Arrange
-        TodoList todoList = createTodoList();
+        TodoList todoList = createTodoList(Priority.Low);
         Task task = createTask(todoList.getId());
 
         // Act
@@ -276,7 +296,7 @@ public class DatabaseTest {
     public void dbShouldRemoveTodoListAndTasks() throws Exception {
 
         // Arrange
-        TodoList todoList = createTodoList();
+        TodoList todoList = createTodoList(Priority.Low);
         Task task = createTask(todoList.getId());
 
         // Act
