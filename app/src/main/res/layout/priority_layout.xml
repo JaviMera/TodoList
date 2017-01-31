@@ -1,96 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/priorityNoneLayout"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set a priority"
+        android:textColor="@color/colorPrimary"
+        android:textSize="25dp"
+        android:padding="15dp"
+        android:layout_marginLeft="10dp"/>
+
+    <RadioGroup
+        android:id="@+id/priorityRadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:padding="20dp">
 
-        <ImageView
-            android:layout_width="0dp"
+        <RadioButton
+            android:id="@+id/noneButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:src="@mipmap/ic_priority"
-            android:scaleType="fitEnd"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="None"
-            android:padding="20dp"
-            android:textSize="20sp"/>
-    </LinearLayout>
+            android:textSize="18sp"
+            android:padding="10dp"/>
 
-    <LinearLayout
-        android:id="@+id/priorityLowLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="0dp"
+        <RadioButton
+            android:id="@+id/lowButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:src="@mipmap/ic_low"
-            android:scaleType="fitEnd"/>
+            android:text="low"
+            android:textSize="18sp"
+            android:padding="10dp"/>
 
-        <TextView
-            android:layout_width="0dp"
+        <RadioButton
+            android:id="@+id/mediumButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Low"
-            android:padding="20dp"
-            android:textSize="20sp"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/priorityMediumLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:src="@mipmap/ic_medium"
-            android:scaleType="fitEnd"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="Medium"
-            android:padding="20dp"
-            android:textSize="20sp"/>
-    </LinearLayout>
+            android:textSize="18sp"
+            android:padding="10dp"/>
 
-    <LinearLayout
-        android:id="@+id/priorityHighLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="0dp"
+        <RadioButton
+            android:id="@+id/highButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:src="@mipmap/ic_high"
-            android:scaleType="fitEnd"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="High"
-            android:padding="20dp"
-            android:textSize="20sp"/>
-    </LinearLayout>
+            android:textSize="18sp"
+            android:padding="10dp"/>
+    </RadioGroup>
 </LinearLayout>

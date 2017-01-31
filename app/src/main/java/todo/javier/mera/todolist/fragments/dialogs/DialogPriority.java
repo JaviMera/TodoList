@@ -8,10 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.RadioGroup;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import todo.javier.mera.todolist.R;
@@ -26,12 +28,15 @@ public class DialogPriority extends DialogFragment {
 
     private static Map<Integer, Integer> priorityMap = new LinkedHashMap<Integer, Integer>() {
         {
-            put(R.id.priorityNoneLayout, 0);
-            put(R.id.priorityLowLayout, 1);
-            put(R.id.priorityMediumLayout, 2);
-            put(R.id.priorityHighLayout, 3);
+            put(R.id.noneButton, 0);
+            put(R.id.lowButton, 1);
+            put(R.id.mediumButton, 2);
+            put(R.id.highButton, 3);
         }
     };
+
+    @BindView(R.id.priorityRadioGroup)
+    RadioGroup mPriorityGroup;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,17 +58,14 @@ public class DialogPriority extends DialogFragment {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         dialogBuilder.setView(view);
 
+        mPriorityGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int buttonId) {
+
+                mListener.onPrioritySelected(priorityMap.get(buttonId));
+                dismiss();
+            }
+        });
         return dialogBuilder.create();
-    }
-
-    @OnClick({
-    R.id.priorityNoneLayout,
-    R.id.priorityLowLayout,
-    R.id.priorityMediumLayout,
-    R.id.priorityHighLayout})
-    public void onPriorityClicked(View view) {
-
-        mListener.onPrioritySelected(priorityMap.get(view.getId()));
-        dismiss();
     }
 }
