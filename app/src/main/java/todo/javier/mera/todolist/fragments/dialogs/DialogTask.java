@@ -107,8 +107,8 @@ public class DialogTask extends DialogCreate
     }
 
     @Override
-    public void onDueDateSelected(Date date, long time) {
-        super.onDueDateSelected(date, time);
+    public void onDueDateSelected(Date date) {
+        super.onDueDateSelected(date);
 
         mReminderTextView.setEnabled(true);
         if(mReminderTime != -1) {

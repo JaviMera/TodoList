@@ -79,7 +79,6 @@ public class DatabaseTest {
             TaskStatus.Created,
             new Date().getTime(),
             new Date().getTime(),
-            new Date().getTime(),
             Priority.None,
             Reminder.ON
         );
@@ -98,8 +97,8 @@ public class DatabaseTest {
 
         // Assert
         Assert.assertNotNull(actualTodoList);
-        Assert.assertEquals(expectedTodoList.getTitle(), actualTodoList.getTitle());
-        Assert.assertEquals(expectedTodoList.getCreationDate(), actualTodoList.getCreationDate());
+        Assert.assertEquals(expectedTodoList.getDescription(), actualTodoList.getDescription());
+        Assert.assertEquals(expectedTodoList.getDueDate(), actualTodoList.getDueDate());
         Assert.assertEquals(expectedTodoList.getPriority(), actualTodoList.getPriority());
     }
 
@@ -162,7 +161,7 @@ public class DatabaseTest {
         Assert.assertEquals(task.getDescription(), item.getDescription());
         Assert.assertEquals(task.getCreationDate(), item.getCreationDate());;
         Assert.assertEquals(task.getDueDate(), item.getDueDate());
-        Assert.assertEquals(task.getmDueTime(), item.getmDueTime());
+        Assert.assertEquals(task.getDueDate(), item.getDueDate());
         Assert.assertEquals(task.getStatus(), item.getStatus());
         Assert.assertEquals(task.getPriority(), item.getPriority());
         Assert.assertEquals(task.getReminder(), item.getReminder());

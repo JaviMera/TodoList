@@ -114,6 +114,56 @@ public class TodoListDataSource {
         return todoLists;
     }
 
+    public List<TodoList> readTodoLists(String sortByColumn, String order) {
+
+        mDb = openReadable();
+
+        Cursor cursor = mDb.query(
+
+                TodoListSQLiteHelper.TABLE_TODO_LISTS,
+                new String[] {
+                        TodoListSQLiteHelper.COLUMN_TODO_LIST_ID,
+                        TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION,
+                        TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME,
+                        TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE,
+                        TodoListSQLiteHelper.COLUMN_TODO_LIST_PRIORITY},
+                null,
+                null,
+                null,
+                null,
+                sortByColumn + " " + order
+        );
+
+        List<TodoList> todoLists = new LinkedList<>();
+        if(cursor.moveToFirst()) {
+
+            do {
+
+                String id = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_ID);
+                String name = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME);
+                long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE);
+                Priority priority = Priority.values()[getInt(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_PRIORITY)];
+
+                TodoList todoList = new TodoList(
+                        id,
+                        name,
+                        creationDate,
+                        priority
+                );
+
+                List<Task> tasks = readTodoListTasks(id);
+                todoList.setItems(tasks);
+                todoLists.add(todoList);
+
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+        close(mDb);
+
+        return todoLists;
+    }
+
     public long createTask(Task newTask, int position) {
 
         mDb = openWriteable();
@@ -381,53 +431,5 @@ public class TodoListDataSource {
         close(mDb);
 
         return todoList;
-    }
-
-    public List<TodoList> readTodoLists(String sortByColumn, String order) {
-
-        mDb = openReadable();
-
-        Cursor cursor = mDb.query(
-
-                TodoListSQLiteHelper.TABLE_TODO_LISTS,
-                new String[] {
-                        TodoListSQLiteHelper.COLUMN_TODO_LIST_ID,
-                        TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION,
-                        TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME,
-                        TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE,
-                        TodoListSQLiteHelper.COLUMN_TODO_LIST_PRIORITY},
-                null,
-                null,
-                null,
-                null,
-                sortByColumn + " " + order
-        );
-
-        List<TodoList> todoLists = new LinkedList<>();
-        if(cursor.moveToFirst()) {
-
-            do {
-
-                String id = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_ID);
-                String name = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME);
-                long creationDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE);
-                Priority priority = Priority.values()[getInt(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_PRIORITY)];
-
-                TodoList todoList = new TodoList(
-                    id,
-                    name,
-                    creationDate,
-                    priority
-                );
-
-                todoLists.add(todoList);
-
-            }while(cursor.moveToNext());
-        }
-
-        cursor.close();
-        close(mDb);
-
-        return todoLists;
     }
 }
