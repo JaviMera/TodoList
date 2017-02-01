@@ -102,7 +102,7 @@ public class TodoListDataSource {
                 );
 
                 List<Task> tasks = readTodoListTasks(id);
-                todoList.setItems(tasks);
+                todoList.setTaskNumber(tasks.size());
                 todoLists.add(todoList);
 
             }while(cursor.moveToNext());
@@ -152,7 +152,7 @@ public class TodoListDataSource {
                 );
 
                 List<Task> tasks = readTodoListTasks(id);
-                todoList.setItems(tasks);
+                todoList.setTaskNumber(tasks.size());
                 todoLists.add(todoList);
 
             }while(cursor.moveToNext());
@@ -424,7 +424,7 @@ public class TodoListDataSource {
             todoList = new TodoList(id, name, creationDate, Priority.None);
 
             List<Task> tasks = readTodoListTasks(id);
-            todoList.setItems(tasks);
+            todoList.setTaskNumber(tasks.size());
         }
 
         cursor.close();

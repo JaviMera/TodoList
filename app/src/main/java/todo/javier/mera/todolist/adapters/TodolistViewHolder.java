@@ -34,7 +34,7 @@ class TodolistViewHolder extends ViewHolderBase<TodoList>
     public void bind(TodoList item) {
 
         mTodolistTitle.setText(item.getDescription());
-        mTotalitems.setText(String.format(Locale.ENGLISH, "TASKS  %d", item.getItemsCount()));
+        mTotalitems.setText(String.format(Locale.ENGLISH, "TASKS  %d", item.getTaskNumber()));
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyy");
 

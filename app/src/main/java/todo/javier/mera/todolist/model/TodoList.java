@@ -12,12 +12,23 @@ import java.util.List;
 public class TodoList extends ItemBase implements Parcelable {
 
     private List<Task> mItems;
+    private int mTaskNumber;
 
     public TodoList(String id, String description, long dueDate, Priority priority) {
 
         super(id, description,  false, dueDate, priority);
 
         mItems = new LinkedList<>();
+    }
+
+    public void setTaskNumber(int number) {
+
+        mTaskNumber = number;
+    }
+
+    public int getTaskNumber() {
+
+        return mTaskNumber;
     }
 
     protected TodoList(Parcel in) {
@@ -38,22 +49,6 @@ public class TodoList extends ItemBase implements Parcelable {
             return new TodoList[size];
         }
     };
-
-    public int getItemsCount() {
-
-        return mItems.size();
-    }
-
-    public List<Task> getTasks() {
-
-        return mItems;
-    }
-
-    public void setItems(List<Task> items) {
-
-        mItems.clear();
-        mItems = new LinkedList<>(items);
-    }
 
     @Override
     public int describeContents() {
