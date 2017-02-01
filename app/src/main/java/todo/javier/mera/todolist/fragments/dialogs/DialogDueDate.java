@@ -67,6 +67,15 @@ public class DialogDueDate extends DialogBase
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         dialogBuilder.setView(view);
 
+        Date date = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+
+        onDatePicked(c.getTime());
+        onTimePicked(hour, minute);
+
         return dialogBuilder.create();
     }
 
