@@ -66,16 +66,8 @@ public class TimePickerDialog extends DialogBase {
             hour = mTimePicker.getCurrentHour();
             minute = mTimePicker.getCurrentMinute();
         }
-        currentTime.set(Calendar.HOUR_OF_DAY, hour);
-        currentTime.set(Calendar.MINUTE, minute);
 
-        // The first call to getTime gets us the date
-        // The second call to getTime gets us the date as a long type along with the time
-        mListener.onTimePicked(
-            currentTime
-                .getTime()
-                .getTime()
-        );
+        mListener.onTimePicked(hour, minute);
 
         dismiss();
     }

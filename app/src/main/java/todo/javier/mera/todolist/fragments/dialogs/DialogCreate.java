@@ -11,8 +11,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -101,12 +103,11 @@ public abstract class DialogCreate extends DialogBase
     }
 
     @Override
-    public void onDueDateSelected(Date date, long time) {
+    public void onDueDateSelected(Date date) {
 
-        mDueDate = date;
-        mDueTime = time;
-        mDueDate.setTime(time);
-        SimpleDateFormat format = new SimpleDateFormat("LLL, EEE dd  HH:mm");
+        mDueDate = new Date();
+        mDueDate.setTime(date.getTime());
+        SimpleDateFormat format = new SimpleDateFormat("LLL, EEE dd  HH:mm", Locale.ENGLISH);
 
         mDueDateTextView.setText(format.format(mDueDate));
     }
@@ -129,16 +130,13 @@ public abstract class DialogCreate extends DialogBase
             return;
         }
 
-        if(mDueDate == null || mDueTime == 0L) {
+        if(mDueDate == null) {
 
             showToast("Task due date cannot be blank.");
             mDueDateTextView.startAnimation(mShakeAnimation);
             return;
         }
 
-        // Set the selected time to the date object
-        // This way there is no need to pass the date and time separately
-        mDueDate.setTime(mDueTime);
         createItem();
         dismiss();
     }

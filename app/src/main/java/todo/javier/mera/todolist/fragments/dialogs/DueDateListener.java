@@ -8,5 +8,5 @@ import java.util.Date;
 
 public interface DueDateListener {
 
-    void onDueDateSelected(Date date, long time);
+    void onDueDateSelected(Date date);
 }

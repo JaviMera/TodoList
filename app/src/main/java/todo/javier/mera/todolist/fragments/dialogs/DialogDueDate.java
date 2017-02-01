@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.media.MediaDescriptionCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -29,7 +30,6 @@ public class DialogDueDate extends DialogBase
     TimePickerListener{
 
     private Date mDate;
-    private long mTime;
 
     private DueDateListener mListener;
 
@@ -41,6 +41,8 @@ public class DialogDueDate extends DialogBase
 
     @BindView(R.id.setDueDateTextView)
     TextView mSetTextView;
+    private int mHour;
+    private int mMinute;
 
     public static DialogDueDate newInstance() {
 
@@ -65,10 +67,6 @@ public class DialogDueDate extends DialogBase
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         dialogBuilder.setView(view);
 
-        Date date = new Date();
-        onDatePicked(date);
-        onTimePicked(date.getTime());
-
         return dialogBuilder.create();
     }
 
@@ -91,7 +89,12 @@ public class DialogDueDate extends DialogBase
     @OnClick(R.id.setDueDateTextView)
     public void onAddReminderClick(View view) {
 
-        mListener.onDueDateSelected(mDate, mTime);
+        Calendar c = Calendar.getInstance();
+        c.setTime(mDate);
+        c.set(Calendar.HOUR_OF_DAY, mHour);
+        c.set(Calendar.MINUTE, mMinute);
+
+        mListener.onDueDateSelected(c.getTime());
         dismiss();
     }
 
@@ -104,13 +107,16 @@ public class DialogDueDate extends DialogBase
     }
 
     @Override
-    public void onTimePicked(long time) {
+    public void onTimePicked(int hour, int minute) {
 
-        mTime = time;
+        mHour = hour;
+        mMinute = minute;
+
         Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(time);
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, minute);
 
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-        mTimeTextView.setText(format.format(c.getTime().getTime()));
+        mTimeTextView.setText(format.format(c.getTime()));
     }
 }

@@ -62,14 +62,4 @@ public class DialogTodoList extends DialogCreate {
             mDueDate,
             mPriority);
     }
-
-    @Override
-    public void onDueDateSelected(Date date, long time) {
-
-        mDueDate = date;
-        mDueTime = time;
-        SimpleDateFormat format = new SimpleDateFormat("LLL, EEE dd  HH:mm");
-        date.setTime(time);
-        mDueDateTextView.setText(format.format(date));
-    }
 }
