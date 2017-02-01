@@ -122,11 +122,11 @@ public class TodoListDataSource {
 
                 TodoListSQLiteHelper.TABLE_TODO_LISTS,
                 new String[] {
-                        TodoListSQLiteHelper.COLUMN_TODO_LIST_ID,
-                        TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION,
-                        TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME,
-                        TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE,
-                        TodoListSQLiteHelper.COLUMN_TODO_LIST_PRIORITY},
+                    TodoListSQLiteHelper.COLUMN_TODO_LIST_ID,
+                    TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION,
+                    TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME,
+                    TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE,
+                    TodoListSQLiteHelper.COLUMN_TODO_LIST_PRIORITY},
                 null,
                 null,
                 null,

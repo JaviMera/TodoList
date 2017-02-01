@@ -22,7 +22,7 @@ class TodolistViewHolder extends ViewHolderBase<TodoList>
     private LinearLayout mLayout;
     private TextView mTodolistTitle;
     private TextView mTotalitems;
-    private TextView mCreationDate;
+    private TextView mDueDateTextView;
     private ImageView mPriorityImageView;
 
     TodolistViewHolder(FragmentRecycler fragment, View itemView) {
@@ -38,24 +38,31 @@ class TodolistViewHolder extends ViewHolderBase<TodoList>
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyy");
 
-        mCreationDate.setText(dateFormat.format(item.getDueDate()));
+        mDueDateTextView.setText(dateFormat.format(item.getDueDate()));
 
-        if(item.getCanRemove()) {
+        if(mParent.isRemovingItems()) {
 
             int color = ContextCompat.getColor(mParent.getContext(), R.color.remove_color_light);
             mLayout.setBackgroundColor(color);
+            mPriorityImageView.setVisibility(View.GONE);
         }
         else {
 
             int color = ContextCompat.getColor(mParent.getContext(), android.R.color.white);
             mLayout.setBackgroundColor(color);
+
+            if(Priority.None != item.getPriority()) {
+
+                mPriorityImageView.setVisibility(View.VISIBLE);
+                Drawable icon = ContextCompat.getDrawable(mParent.getContext(), PriorityUtil.getDrawable(item.getPriority().ordinal()));
+                mPriorityImageView.setImageDrawable(icon);
+            }
+            else {
+
+                mPriorityImageView.setVisibility(View.GONE);
+            }
         }
 
-        if(Priority.None != item.getPriority()) {
-
-            Drawable icon = ContextCompat.getDrawable(mParent.getContext(), PriorityUtil.getDrawable(item.getPriority().ordinal()));
-            mPriorityImageView.setImageDrawable(icon);
-        }
     }
 
     @Override
@@ -64,7 +71,7 @@ class TodolistViewHolder extends ViewHolderBase<TodoList>
         mLayout = (LinearLayout) itemView.findViewById(R.id.itemLayout);
         mTodolistTitle = (TextView) itemView.findViewById(R.id.todoListNameView);
         mTotalitems = (TextView) itemView.findViewById(R.id.totalItemsText);
-        mCreationDate = (TextView) itemView.findViewById(R.id.creationDateView);
+        mDueDateTextView = (TextView) itemView.findViewById(R.id.creationDateView);
         mPriorityImageView = (ImageView) itemView.findViewById(R.id.priorityIconView);
 
         itemView.setOnClickListener(this);
