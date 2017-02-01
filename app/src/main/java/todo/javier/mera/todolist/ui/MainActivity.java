@@ -16,9 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.view.inputmethod.InputMethodManager;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity
 
                 TodoListDataSource source = new TodoListDataSource(this);
                 source.update(
-                    TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
+                    TodoListSQLiteHelper.TABLE_TASKS,
                     TodoListSQLiteHelper.COLUMN_ITEMS_ID,
                     taskId,
                     values);
@@ -220,6 +219,13 @@ public class MainActivity extends AppCompatActivity
     public void setIndicator(int resourceId) {
 
         getSupportActionBar().setHomeAsUpIndicator(resourceId);
+    }
+
+    @Override
+    public void hideSoftKeyboard(View view) {
+
+        InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     public void setReminder(Task task, Date reminderDate) {

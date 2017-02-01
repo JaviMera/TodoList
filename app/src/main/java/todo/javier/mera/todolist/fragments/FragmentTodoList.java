@@ -93,7 +93,7 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
 
         for(TodoList tl : itemsToRemove) {
 
-            List<Task> tasks = source.readTodoListTasks(tl.getId());
+            List<Task> tasks = source.readTask(tl.getId());
             mRemovableTodoLists.put(tl.getId(), tasks);
         }
 

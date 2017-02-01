@@ -123,6 +123,11 @@ public class DialogTask extends DialogCreate
     @OnClick(R.id.reminderTextView)
     public void onReminderClick(View view) {
 
+        // Explicitly hide the virtual keyboard when taped on add due date text view
+        // if the user didn't press enter after entering a description, the keyboard will still be
+        // present.
+        mParent.hideSoftKeyboard(view);
+
         DialogReminder dialogReminder = DialogReminder.newInstance();
         dialogReminder.setTargetFragment(this, 1);
         dialogReminder.show(mParent.getSupportFragmentManager(), "reminder_dialog");

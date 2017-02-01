@@ -144,7 +144,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     protected List<Task> getAllItems() {
 
         TodoListDataSource dataSource = new TodoListDataSource(mParent);
-        return dataSource.readTodoListTasks(mTodoList.getId());
+        return dataSource.readTask(mTodoList.getId());
     }
 
     @Override
@@ -164,7 +164,7 @@ public class FragmentTask extends FragmentRecycler<Task>
             values.put(TodoListSQLiteHelper.COLUMN_ITEMS_POSITION, item.getValue());
 
             source.update(
-                TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
+                TodoListSQLiteHelper.TABLE_TASKS,
                 TodoListSQLiteHelper.COLUMN_ITEMS_ID,
                 item.getKey(),
                 values
@@ -244,7 +244,7 @@ public class FragmentTask extends FragmentRecycler<Task>
 
         TodoListDataSource dataSource = new TodoListDataSource(mParent);
         dataSource.update(
-            TodoListSQLiteHelper.TABLE_TODO_LIST_ITEMS,
+            TodoListSQLiteHelper.TABLE_TASKS,
             TodoListSQLiteHelper.COLUMN_ITEMS_ID,
             item.getId(),
             values
@@ -289,7 +289,7 @@ public class FragmentTask extends FragmentRecycler<Task>
         setItemAnimator(new FadeInDownAnimator(new LinearOutSlowInInterpolator()));
 
         TodoListDataSource dataSource = new TodoListDataSource(mParent);
-        final List<Task> tasks = dataSource.readTodoListTasks(mTodoList.getId(), sortByColumn, order);
+        final List<Task> tasks = dataSource.readTask(mTodoList.getId(), sortByColumn, order);
 
         mAdapter.removeAll();
 

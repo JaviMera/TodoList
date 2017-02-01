@@ -89,6 +89,11 @@ public abstract class DialogCreate extends DialogBase
     @OnClick(R.id.dueDateTextView)
     public void onDueDateClick(View view) {
 
+        // Explicitly hide the virtual keyboard when taped on add due date text view
+        // if the user didn't press enter after entering a description, the keyboard will still be
+        // present.
+        mParent.hideSoftKeyboard(view);
+
         DialogDueDate dialog = DialogDueDate.newInstance();
         dialog.setTargetFragment(this, 1);
         dialog.show(mParent.getSupportFragmentManager(), "due_date_dialog");
@@ -96,6 +101,11 @@ public abstract class DialogCreate extends DialogBase
 
     @OnClick(R.id.priorityTextView)
     public void onPriorityClick(View view) {
+
+        // Explicitly hide the virtual keyboard when taped on add due date text view
+        // if the user didn't press enter after entering a description, the keyboard will still be
+        // present.
+        mParent.hideSoftKeyboard(view);
 
         DialogPriority dialog = new DialogPriority();
         dialog.setTargetFragment(this, 1);

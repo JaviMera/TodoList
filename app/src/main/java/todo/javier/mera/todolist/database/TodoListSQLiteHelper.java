@@ -30,7 +30,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
         + COLUMN_TODO_LIST_PRIORITY + " INTEGER"
         + ")";
 
-    public static final String TABLE_TODO_LIST_ITEMS = "TODO_LIST_ITEMS";
+    public static final String TABLE_TASKS = "TODO_LIST_ITEMS";
     public static final String COLUMN_ITEMS_ID = "ITEM_ID";
     public static final String COLUMN_ITEMS_POSITION = "POSITION";
     public static final String COLUMN_ITEMS_DESCRIPTION = "DESCRIPTION";
@@ -41,7 +41,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ITEMS_PRIORITY = "PRIORITY";
     public static final String COLUMN_ITEMS_REMINDER = "REMINDER";
     private static final String CREATE_TODO_LIST_ITEMS = "CREATE TABLE "
-        + TABLE_TODO_LIST_ITEMS
+        + TABLE_TASKS
         + "("
         + COLUMN_ITEMS_ID + " TEXT PRIMARY KEY, "
         + COLUMN_TODO_LIST_ID + " TEXT, "
@@ -81,7 +81,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
         if(oldVersion < newVersion) {
 
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO_LISTS);
-            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO_LIST_ITEMS);
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TASKS);
             onCreate(sqLiteDatabase);
         }
     }

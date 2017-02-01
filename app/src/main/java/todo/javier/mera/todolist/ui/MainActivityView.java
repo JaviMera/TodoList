@@ -1,5 +1,7 @@
 package todo.javier.mera.todolist.ui;
 
+import android.view.View;
+
 import java.util.Map;
 
 import todo.javier.mera.todolist.model.ItemBase;
@@ -17,4 +19,5 @@ public interface MainActivityView {
     void setToolbar();
     void showSnackBar(String message, String action, Map<Integer, ItemBase> items);
     void setIndicator(int resourceId);
+    void hideSoftKeyboard(View view);
 }
