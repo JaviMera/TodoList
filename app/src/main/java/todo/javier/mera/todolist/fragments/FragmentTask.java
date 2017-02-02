@@ -315,8 +315,25 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    public void onUpdateItem(String todoListId, String id, String description) {
+    public void onUpdateItem(Task task) {
 
+        ContentValues values = new ContentValues();
+        TodoListDataSource dataSource = new TodoListDataSource(mParent);
+        values.put(TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION, task.getDescription());
+        values.put(TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE, task.getDueDate());
+        values.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, task.getReminder());
+        values.put(TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY, task.getPriority().ordinal());
 
+        int affectedRows = dataSource.update(
+            TodoListSQLiteHelper.TABLE_TASKS,
+            TodoListSQLiteHelper.COLUMN_ITEMS_ID,
+            task.getId(),
+            values
+        );
+
+        if(affectedRows != -1) {
+
+            mAdapter.updateItem(task);
+        }
     }
 }

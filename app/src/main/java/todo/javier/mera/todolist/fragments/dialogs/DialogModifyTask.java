@@ -5,7 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import todo.javier.mera.todolist.model.PriorityUtil;
 import todo.javier.mera.todolist.model.Task;
@@ -38,11 +40,12 @@ public class DialogModifyTask extends DialogEditTask {
     @Override
     protected void saveItem() {
 
-        mListener.onUpdateItem(
-            mTask.getTodoListId(),
-            mTask.getId(),
-            mEditText.getText().toString()
-        );
+        mTask.setDescription(mEditText.getText().toString());
+        mTask.setDueDate(mDueDate.getTime());
+        mTask.setReminder(getReminderDate(mReminderTime).getTime());
+        mTask.setPriority(mPriority);
+
+        mListener.onUpdateItem(mTask);
     }
 
     @Override
@@ -63,6 +66,9 @@ public class DialogModifyTask extends DialogEditTask {
         dueDate.setTime(mTask.getDueDate());
         onDueDateSelected(dueDate);
 
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.ENGLISH);
+
+        mReminderTextView.setText(format.format(mTask.getReminder()));
         mPriorityTextView.setText(PriorityUtil.getName(mTask.getPriority().ordinal()));
         return dialog;
     }

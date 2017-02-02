@@ -109,7 +109,7 @@ public abstract class DialogEditTask extends DialogEdit
         mReminderTextView.setText(format.format(reminder));
     }
 
-    private Date getReminderDate(int buttonId) {
+    protected Date getReminderDate(int buttonId) {
 
         Calendar c = Calendar.getInstance();
         c.setTime(mDueDate);

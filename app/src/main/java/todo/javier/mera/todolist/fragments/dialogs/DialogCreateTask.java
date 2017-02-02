@@ -30,21 +30,22 @@ public class DialogCreateTask extends DialogEditTask {
     @Override
     protected void saveItem() {
 
-        Date reminderDate = null;
+        long reminderDate = 0L;
+
         if(mReminderTime != -1) {
 
             Calendar c = Calendar.getInstance();
             c.setTime(mDueDate);
             int reminderMinutes = reminderOptions.get(mReminderTime);
             c.add(Calendar.MINUTE, reminderMinutes);
-            reminderDate = c.getTime();
+            reminderDate = c.getTime().getTime();
         }
 
         mListener.onCreatedTask(
             mEditText.getText().toString(),
             mDueDate,
             mDueTime,
-            reminderDate.getTime(),
+            reminderDate,
             mPriority
         );
     }
