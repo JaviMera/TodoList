@@ -47,6 +47,10 @@ public class DialogModifyTask extends DialogEditTask {
 
             mTask.setReminder(getReminderDate(mReminderTime).getTime());
         }
+        else {
+
+            mTask.setReminder(0L);
+        }
 
         mTask.setPriority(mPriority);
 

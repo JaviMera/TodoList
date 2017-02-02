@@ -338,6 +338,10 @@ public class FragmentTask extends FragmentRecycler<Task>
 
                 mParent.setReminder(task);
             }
+            else {
+
+                mParent.cancelReminder(task);
+            }
         }
     }
 }

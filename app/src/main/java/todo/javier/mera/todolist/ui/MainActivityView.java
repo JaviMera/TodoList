@@ -5,6 +5,7 @@ import android.view.View;
 import java.util.Map;
 
 import todo.javier.mera.todolist.model.ItemBase;
+import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TodoList;
 
 /**
@@ -20,4 +21,5 @@ public interface MainActivityView {
     void showSnackBar(String message, String action, Map<Integer, ItemBase> items);
     void setIndicator(int resourceId);
     void hideSoftKeyboard(View view);
+    void cancelReminder(Task task);
 }

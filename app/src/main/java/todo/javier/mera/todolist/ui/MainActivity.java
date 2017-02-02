@@ -227,6 +227,21 @@ public class MainActivity extends AppCompatActivity
         manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    @Override
+    public void cancelReminder(Task task) {
+
+        Intent intent = new Intent(this, NotificationPublisher.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+            MainActivity.this,
+            task.hashCode(),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+        pendingIntent.cancel();
+        mAlarmManager.cancel(pendingIntent);
+    }
+
     public void setReminder(Task task) {
 
         Notification notification = createNotification(
