@@ -164,7 +164,7 @@ public class DatabaseTest {
         Assert.assertEquals(task.getDueDate(), item.getDueDate());
         Assert.assertEquals(task.getStatus(), item.getStatus());
         Assert.assertEquals(task.getPriority(), item.getPriority());
-        Assert.assertEquals(task.getReminder(), item.getReminder());
+        Assert.assertEquals(task.getReminderDate(), item.getReminderDate());
     }
 
     @Test
@@ -259,7 +259,7 @@ public class DatabaseTest {
 
         Task expectedTask = mDataSource.readTask(task.getTodoListId()).get(0);
         ContentValues values = new ContentValues();
-        values.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, expectedTask.getReminder());
+        values.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, expectedTask.getReminderDate());
 
         mDataSource.update(
             TodoListSQLiteHelper.TABLE_TASKS,
@@ -271,7 +271,7 @@ public class DatabaseTest {
         Task actualTask = mDataSource.readTask(expectedTask.getTodoListId()).get(0);
 
         // Assert
-        Assert.assertEquals(expectedTask.getReminder(), actualTask.getReminder());
+        Assert.assertEquals(expectedTask.getReminderDate(), actualTask.getReminderDate());
     }
 
     @Test

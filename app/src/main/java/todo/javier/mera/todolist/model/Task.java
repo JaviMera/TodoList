@@ -85,7 +85,7 @@ public class Task extends ItemBase implements Parcelable {
         parcel.writeLong(mReminderDate);
     }
 
-    public long getReminder() {
+    public long getReminderDate() {
 
         return mReminderDate;
     }

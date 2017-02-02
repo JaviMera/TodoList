@@ -42,7 +42,12 @@ public class DialogModifyTask extends DialogEditTask {
 
         mTask.setDescription(mEditText.getText().toString());
         mTask.setDueDate(mDueDate.getTime());
-        mTask.setReminder(getReminderDate(mReminderTime).getTime());
+
+        if(mReminderTime != -1) {
+
+            mTask.setReminder(getReminderDate(mReminderTime).getTime());
+        }
+
         mTask.setPriority(mPriority);
 
         mListener.onUpdateItem(mTask);
@@ -68,8 +73,13 @@ public class DialogModifyTask extends DialogEditTask {
 
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.ENGLISH);
 
-        mReminderTextView.setText(format.format(mTask.getReminder()));
+        if(mTask.getReminderDate() != 0L) {
+
+            mReminderTextView.setText(format.format(mTask.getReminderDate()));
+        }
+
         mPriorityTextView.setText(PriorityUtil.getName(mTask.getPriority().ordinal()));
+
         return dialog;
     }
 }

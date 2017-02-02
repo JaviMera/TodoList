@@ -30,7 +30,6 @@ import todo.javier.mera.todolist.fragments.dialogs.DialogCreateTask;
 import todo.javier.mera.todolist.fragments.dialogs.DialogModifyTask;
 import todo.javier.mera.todolist.fragments.dialogs.DialogModifyTaskListener;
 import todo.javier.mera.todolist.fragments.dialogs.DialogCreateTaskListener;
-import todo.javier.mera.todolist.model.Reminder;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.Priority;
 import todo.javier.mera.todolist.model.TaskStatus;
@@ -236,7 +235,7 @@ public class FragmentTask extends FragmentRecycler<Task>
 
             if(reminderDate != 0L) {
 
-                mParent.setReminder(newTask, reminderDate);
+                mParent.setReminder(newTask);
             }
         }
     }
@@ -321,7 +320,7 @@ public class FragmentTask extends FragmentRecycler<Task>
         TodoListDataSource dataSource = new TodoListDataSource(mParent);
         values.put(TodoListSQLiteHelper.COLUMN_ITEMS_DESCRIPTION, task.getDescription());
         values.put(TodoListSQLiteHelper.COLUMN_ITEMS_DUE_DATE, task.getDueDate());
-        values.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, task.getReminder());
+        values.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, task.getReminderDate());
         values.put(TodoListSQLiteHelper.COLUMN_ITEMS_PRIORITY, task.getPriority().ordinal());
 
         int affectedRows = dataSource.update(
@@ -334,6 +333,11 @@ public class FragmentTask extends FragmentRecycler<Task>
         if(affectedRows != -1) {
 
             mAdapter.updateItem(task);
+
+            if(task.getReminderDate() != 0L) {
+
+                mParent.setReminder(task);
+            }
         }
     }
 }

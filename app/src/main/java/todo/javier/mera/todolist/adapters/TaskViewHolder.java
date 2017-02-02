@@ -16,7 +16,6 @@ import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.fragments.ItemTaskListener;
-import todo.javier.mera.todolist.model.Reminder;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TaskStatus;
 
@@ -66,7 +65,7 @@ class TaskViewHolder extends ViewHolderBase<Task>
             setVisibility(mDragImageView, View.VISIBLE);
             setVisibility(mStatus, View.VISIBLE);
             setPriority(task.getPriority());
-            setReminder(task.getReminder());
+            setReminder(task.getReminderDate());
         }
     }
 

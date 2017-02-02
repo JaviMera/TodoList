@@ -32,7 +32,6 @@ import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.fragments.FragmentTodoList;
 import todo.javier.mera.todolist.model.ItemBase;
-import todo.javier.mera.todolist.model.Reminder;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TodoList;
 
@@ -228,7 +227,7 @@ public class MainActivity extends AppCompatActivity
         manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public void setReminder(Task task, long reminderDate) {
+    public void setReminder(Task task) {
 
         Notification notification = createNotification(
             "Task Reminder",
@@ -239,7 +238,7 @@ public class MainActivity extends AppCompatActivity
 
         Intent intent = createNotificationIntent(task, notification);
         PendingIntent pendingIntent = createPendingIntent(intent);
-        Calendar c = createCalendarWithDate(reminderDate);
+        Calendar c = createCalendarWithDate(task.getReminderDate());
 
         mAlarmManager.set(
             AlarmManager.RTC_WAKEUP,
@@ -254,7 +253,7 @@ public class MainActivity extends AppCompatActivity
             this,
             (int)System.currentTimeMillis(),
             intent,
-            PendingIntent.FLAG_ONE_SHOT
+            PendingIntent.FLAG_UPDATE_CURRENT
         );
     }
 

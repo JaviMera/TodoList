@@ -78,13 +78,9 @@ public abstract class DialogEditTask extends DialogEdit
         super.onDueDateSelected(date);
 
         mReminderTextView.setEnabled(true);
-        if(mReminderTime != -1) {
 
-            Date reminder = getReminderDate(mReminderTime);
-            SimpleDateFormat format = new SimpleDateFormat("LLL, EEE dd  HH:mm");
-
-            mReminderTextView.setText(format.format(reminder));
-        }
+        String reminderText = mParent.getString(R.string.task_reminder_text);
+        mReminderTextView.setText(reminderText);
     }
 
     @OnClick(R.id.reminderTextView)
