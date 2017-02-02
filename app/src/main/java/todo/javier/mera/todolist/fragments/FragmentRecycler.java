@@ -243,17 +243,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     }
 
     @Override
-    public void onDragItem(int position) {
-
-        // Don't allow the user to drag items while they are selecting items to be removed.
-        if(mIsRemovingItems) {
-            return;
-        }
-
-        mAdapter.notifyItemMove(position);
-    }
-
-    @Override
     public void onLongClick(int position) {
 
         if(!mIsRemovingItems) {
@@ -266,6 +255,13 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
             mRemovableItems.put(position, (T)mAdapter.getItem(position));
             mParent.invalidateOptionsMenu();
         }
+    }
+
+    @Override
+    public void onNavigateClick(int position) {
+
+        T item = (T) mAdapter.getItem(position);
+        showItem(item);
     }
 
     @Override
@@ -299,11 +295,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
                 mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
             }
-        }
-        else {
-
-            T item = (T) mAdapter.getItem(position);
-            showItem(item);
         }
     }
 
