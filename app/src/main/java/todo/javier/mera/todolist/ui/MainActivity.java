@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity
     public void cancelReminder(Task task) {
 
         Intent intent = new Intent(this, NotificationPublisher.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
             MainActivity.this,
             task.hashCode(),
             intent,
@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity
         );
 
         Intent intent = createNotificationIntent(task, notification);
-        PendingIntent pendingIntent = createPendingIntent(intent);
+        PendingIntent pendingIntent = createPendingIntent(intent, task.hashCode());
         Calendar c = createCalendarWithDate(task.getReminderDate());
 
         mAlarmManager.set(
@@ -262,11 +262,11 @@ public class MainActivity extends AppCompatActivity
         );
     }
 
-    private PendingIntent createPendingIntent(Intent intent) {
+    private PendingIntent createPendingIntent(Intent intent, int hashcode) {
 
        return PendingIntent.getBroadcast(
             this,
-            (int)System.currentTimeMillis(),
+            hashcode,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT
         );
