@@ -61,4 +61,16 @@ public class DialogModifyTodoList extends DialogEditTodoList {
         mTodoList.setPriority(mPriority);
         mListener.onModifyTodoList(mTodoList);
     }
+
+    @Override
+    protected String getSaveText() {
+
+        return "Update";
+    }
+
+    @Override
+    protected String getTitle() {
+
+        return "Edit Todo List!";
+    }
 }

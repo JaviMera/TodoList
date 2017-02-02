@@ -20,11 +20,23 @@ public class DialogCreateTodoList extends DialogEditTodoList {
     }
 
     @Override
+    protected String getTitle() {
+
+        return "Create a new list!";
+    }
+
+    @Override
     protected void saveItem() {
 
         mListener.onCreateTodoList(
             mEditText.getText().toString(),
             mDueDate,
             mPriority);
+    }
+
+    @Override
+    protected String getSaveText() {
+
+        return "Create";
     }
 }

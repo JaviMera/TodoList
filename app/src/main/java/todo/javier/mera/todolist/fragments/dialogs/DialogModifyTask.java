@@ -45,6 +45,12 @@ public class DialogModifyTask extends DialogEditTask {
         );
     }
 
+    @Override
+    protected String getSaveText() {
+
+        return "Update";
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

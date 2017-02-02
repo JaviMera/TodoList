@@ -44,8 +44,14 @@ public class DialogCreateTask extends DialogEditTask {
             mEditText.getText().toString(),
             mDueDate,
             mDueTime,
-            reminderDate,
+            reminderDate.getTime(),
             mPriority
         );
+    }
+
+    @Override
+    protected String getSaveText() {
+
+        return "Create";
     }
 }

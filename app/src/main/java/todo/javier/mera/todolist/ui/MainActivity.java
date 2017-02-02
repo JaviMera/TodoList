@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity
                 String taskId = bundle.getString(NOTIFICATION_TASK_ID);
 
                 ContentValues values = new ContentValues();
-                values.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, Reminder.OFF.ordinal());
+                values.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, 0L);
 
                 TodoListDataSource source = new TodoListDataSource(this);
                 source.update(
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity
         manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public void setReminder(Task task, Date reminderDate) {
+    public void setReminder(Task task, long reminderDate) {
 
         Notification notification = createNotification(
             "Task Reminder",
@@ -268,11 +268,12 @@ public class MainActivity extends AppCompatActivity
         return intent;
     }
 
-    private Calendar createCalendarWithDate(Date date) {
+    private Calendar createCalendarWithDate(long date) {
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.setTimeInMillis(date.getTime());
+        Date reminderDate = new Date();
+        reminderDate.setTime(date);
+        calendar.setTime(reminderDate);
 
         calendar.set(
             calendar.get(Calendar.YEAR),

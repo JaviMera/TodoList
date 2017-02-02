@@ -198,7 +198,7 @@ public class FragmentTask extends FragmentRecycler<Task>
         String taskDescription,
         Date taskDuedate,
         long dueTime,
-        Date reminderDate,
+        long reminderDate,
         Priority priority) {
 
         setItemAnimator(new FadeInUpAnimator());
@@ -217,7 +217,7 @@ public class FragmentTask extends FragmentRecycler<Task>
             taskCreationDate,
             taskDuedate.getTime(),
             priority,
-            reminderDate == null ? Reminder.OFF : Reminder.ON
+            reminderDate
         );
 
         long rowId = source.createTask(
@@ -234,7 +234,7 @@ public class FragmentTask extends FragmentRecycler<Task>
             int position = comparator.getPosition(newTask, tasks);
             mAdapter.addItem(position, newTask);
 
-            if(reminderDate != null) {
+            if(reminderDate != 0L) {
 
                 mParent.setReminder(newTask, reminderDate);
             }

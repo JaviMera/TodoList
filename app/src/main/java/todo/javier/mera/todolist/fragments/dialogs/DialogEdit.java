@@ -42,6 +42,7 @@ public abstract class DialogEdit extends DialogBase
     protected abstract String getTitle();
     protected abstract View getLayout();
     protected abstract void saveItem();
+    protected abstract String getSaveText();
 
     protected Date mDueDate;
     protected long mDueTime;
@@ -62,6 +63,9 @@ public abstract class DialogEdit extends DialogBase
     @BindView(R.id.priorityMessageTextView)
     TextView mPriorityMessage;
 
+    @BindView(R.id.saveItemView)
+    TextView mSaveTextView;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +80,7 @@ public abstract class DialogEdit extends DialogBase
         View view = getLayout();
         ButterKnife.bind(this, view);
         mTitleView.setText(getTitle());
-
+        mSaveTextView.setText(getSaveText());
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mParent);
         dialogBuilder.setView(view);
 
@@ -129,7 +133,7 @@ public abstract class DialogEdit extends DialogBase
         mPriorityTextView.setText(PriorityUtil.getName(mPriority.ordinal()));
     }
 
-    @OnClick(R.id.createItemView)
+    @OnClick(R.id.saveItemView)
     public void onAddClick(View view) {
 
         if(mEditText.getText().toString().isEmpty()) {

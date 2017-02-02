@@ -13,13 +13,6 @@ import todo.javier.mera.todolist.fragments.FragmentTodoList;
 
 public abstract class DialogEditTodoList extends DialogEdit {
 
-
-    @Override
-    protected String getTitle() {
-
-        return "Create a new list!";
-    }
-
     @Override
     protected View getLayout() {
 

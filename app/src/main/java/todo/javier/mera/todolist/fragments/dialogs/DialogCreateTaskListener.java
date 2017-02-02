@@ -13,6 +13,6 @@ public interface DialogCreateTaskListener {
         String title,
         Date dueDate,
         long dueTime,
-        Date reminderDate,
+        long reminderDate,
         Priority priority);
 }

@@ -80,7 +80,7 @@ public class DatabaseTest {
             new Date().getTime(),
             new Date().getTime(),
             Priority.None,
-            Reminder.ON
+            new Date().getTime()
         );
     }
 
@@ -259,7 +259,7 @@ public class DatabaseTest {
 
         Task expectedTask = mDataSource.readTask(task.getTodoListId()).get(0);
         ContentValues values = new ContentValues();
-        values.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, expectedTask.getReminder().ordinal());
+        values.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, expectedTask.getReminder());
 
         mDataSource.update(
             TodoListSQLiteHelper.TABLE_TASKS,

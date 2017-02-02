@@ -149,9 +149,9 @@ class TaskViewHolder extends ViewHolderBase<Task>
         mStatus.setChecked(isCompleted);
     }
 
-    private void setReminder(Reminder reminder) {
+    private void setReminder(long reminderDate) {
 
-        if(Reminder.OFF != reminder) {
+        if(reminderDate != 0L) {
 
             setVisibility(mReminderImageView, View.VISIBLE);
         }

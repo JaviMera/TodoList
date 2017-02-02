@@ -11,7 +11,7 @@ public class Task extends ItemBase implements Parcelable {
     private String mTodoListId;
     private TaskStatus mStatus;
     private long mCreationDate;
-    private Reminder mReminder;
+    private long mReminder;
 
     public Task(
         String itemId,
@@ -21,14 +21,14 @@ public class Task extends ItemBase implements Parcelable {
         long creationDate,
         long dueDate,
         Priority priority,
-        Reminder reminder) {
+        long reminderDate) {
 
         super(itemId, description, false, dueDate, priority);
 
         mTodoListId = todoListId;
         mStatus = status;
         mCreationDate = creationDate;
-        mReminder = reminder;
+        mReminder = reminderDate;
     }
 
     private Task(Parcel in) {
@@ -38,7 +38,7 @@ public class Task extends ItemBase implements Parcelable {
         mTodoListId = in.readString();
         mCreationDate = in.readLong();
         mStatus = TaskStatus.values()[in.readInt()];
-        mReminder = Reminder.values()[in.readInt()];
+        mReminder = in.readLong();
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
@@ -82,16 +82,16 @@ public class Task extends ItemBase implements Parcelable {
         parcel.writeString(mTodoListId);
         parcel.writeLong(mCreationDate);
         parcel.writeInt(mStatus.ordinal());
-        parcel.writeInt(mReminder.ordinal());
+        parcel.writeLong(mReminder);
     }
 
-    public Reminder getReminder() {
+    public long getReminder() {
 
         return mReminder;
     }
 
-    public void setReminder(Reminder reminder) {
+    public void setReminder(long reminderDate) {
 
-        mReminder = reminder;
+        mReminder = reminderDate;
     }
 }
