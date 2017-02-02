@@ -16,7 +16,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_TODO_LISTS = "TODO_LISTS";
     public static final String COLUMN_TODO_LIST_ID = "TODOLIST_ID";
-    public static final String COLUMN_TODO_LIST_NAME = "NAME";
+    public static final String COLUMN_TODO_LIST_DESCRIPTION = "NAME";
     public static final String COLUMN_TODO_LIST_DUE_DATE = "DUE_DATE";
     public static final String COLUMN_TODO_LIST_POSITION = "POSITION";
     public static final String COLUMN_TODO_LIST_PRIORITY = "PRIORITY";
@@ -25,7 +25,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
         + "("
         + COLUMN_TODO_LIST_ID + " TEXT PRIMARY KEY, "
         + COLUMN_TODO_LIST_POSITION + " INTEGER, "
-        + COLUMN_TODO_LIST_NAME + " TEXT, "
+        + COLUMN_TODO_LIST_DESCRIPTION + " TEXT, "
         + COLUMN_TODO_LIST_DUE_DATE + " INTEGER, "
         + COLUMN_TODO_LIST_PRIORITY + " INTEGER"
         + ")";

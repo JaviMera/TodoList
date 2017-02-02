@@ -56,11 +56,9 @@ public class DialogModifyTodoList extends DialogEditTodoList {
     @Override
     protected void saveItem() {
 
-        mListener.onModifyTodoList(
-            mTodoList.getId(),
-            mEditText.getText().toString(),
-            mDueDate.getTime(),
-            mPriority
-        );
+        mTodoList.setDescription(mEditText.getText().toString());
+        mTodoList.setDueDate(mDueDate.getTime());
+        mTodoList.setPriority(mPriority);
+        mListener.onModifyTodoList(mTodoList);
     }
 }

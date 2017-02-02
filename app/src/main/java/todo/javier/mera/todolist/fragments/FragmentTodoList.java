@@ -25,7 +25,6 @@ import todo.javier.mera.todolist.comparators.ComparatorFactory;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.dialogs.DialogCreateTodoList;
-import todo.javier.mera.todolist.fragments.dialogs.DialogEditTodoList;
 import todo.javier.mera.todolist.fragments.dialogs.DialogModifyTodoList;
 import todo.javier.mera.todolist.fragments.dialogs.DialogModifyTodoListListener;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTodoListListener;
@@ -253,9 +252,26 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     }
 
     @Override
-    public void onModifyTodoList(String id, String description, long dueDate, Priority priority) {
+    public void onModifyTodoList(TodoList updatedTodoList) {
 
+        ContentValues values = new ContentValues();
 
+        values.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_DESCRIPTION, updatedTodoList.getDescription());
+        values.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE, updatedTodoList.getDueDate());
+        values.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_PRIORITY, updatedTodoList.getPriority().ordinal());
+
+        TodoListDataSource source = new TodoListDataSource(mParent);
+        int affectedRows = source.update(
+            TodoListSQLiteHelper.TABLE_TODO_LISTS,
+            TodoListSQLiteHelper.COLUMN_TODO_LIST_ID,
+            updatedTodoList.getId(),
+            values
+        );
+
+        if(affectedRows != -1) {
+
+            mAdapter.updateItem(updatedTodoList);
+        }
     }
 }
 

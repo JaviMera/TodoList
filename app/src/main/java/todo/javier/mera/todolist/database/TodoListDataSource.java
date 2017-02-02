@@ -51,7 +51,7 @@ public class TodoListDataSource {
         ContentValues todoListValues = new ContentValues();
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_ID, newList.getId());
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION, position);
-        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME, newList.getDescription());
+        todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_DESCRIPTION, newList.getDescription());
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE, newList.getDueDate());
         todoListValues.put(TodoListSQLiteHelper.COLUMN_TODO_LIST_PRIORITY, newList.getPriority().ordinal());
 
@@ -156,7 +156,7 @@ public class TodoListDataSource {
     private TodoList createTodoList(Cursor cursor) {
 
         String id = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_ID);
-        String name = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME);
+        String name = getString(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_DESCRIPTION);
         long dueDate = getLong(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE);
         Priority priority = Priority.values()[getInt(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_PRIORITY)];
 
@@ -336,7 +336,7 @@ public class TodoListDataSource {
 
             TodoListSQLiteHelper.COLUMN_TODO_LIST_ID,
             TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION,
-            TodoListSQLiteHelper.COLUMN_TODO_LIST_NAME,
+            TodoListSQLiteHelper.COLUMN_TODO_LIST_DESCRIPTION,
             TodoListSQLiteHelper.COLUMN_TODO_LIST_DUE_DATE,
             TodoListSQLiteHelper.COLUMN_TODO_LIST_PRIORITY
         };

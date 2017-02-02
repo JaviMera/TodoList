@@ -13,6 +13,7 @@ import java.util.Map;
 
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.model.ItemBase;
+import todo.javier.mera.todolist.model.TodoList;
 
 /**
  * Created by javie on 11/29/2016.
@@ -32,12 +33,6 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
     public T getItem(int position) {
 
         return mItems.get(position);
-    }
-
-    public void addItem(T item) {
-
-        mItems.add(item);
-        notifyItemInserted(mItems.size() - 1);
     }
 
     public void setRemovable(int position, boolean isRemovable) {
@@ -195,5 +190,12 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
     public boolean isEmpty() {
 
         return mItems.isEmpty();
+    }
+
+    public void updateItem(T item) {
+
+        int position = mItems.indexOf(item);
+        mItems.set(position, item);
+        notifyItemChanged(position);
     }
 }

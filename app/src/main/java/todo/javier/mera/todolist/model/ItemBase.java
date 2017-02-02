@@ -115,4 +115,14 @@ public abstract class ItemBase implements Parcelable {
 
         return mDescription;
     }
+
+    public void setDescription(String newDescription) {
+
+        mDescription = newDescription;
+    }
+
+    public void setDueDate(long newDueDate) {
+
+        mDueDate = newDueDate;
+    }
 }
