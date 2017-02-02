@@ -3,6 +3,7 @@ package todo.javier.mera.todolist.adapters;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
@@ -12,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
@@ -31,16 +34,9 @@ class TaskViewHolder extends ViewHolderBase<Task>
     View.OnClickListener,
     View.OnLongClickListener {
 
-    private TextView mDueDate;
-    private LinearLayout mLayout;
-    private TextView mDescription;
     private CheckBox mStatus;
     private ImageView mDragImageView;
-    private ImageView mPriorityImageView;
     private ImageView mReminderImageView;
-
-    private int mNormalColor;
-    private int mRemoveColor;
     private int mMoveColor;
 
     private ItemTaskListener mTaskListener;
@@ -50,81 +46,60 @@ class TaskViewHolder extends ViewHolderBase<Task>
         super(fragment, itemView);
 
         mTaskListener = (FragmentTask)fragment;
-
-        mNormalColor = ContextCompat.getColor(mParent.getActivity(), android.R.color.transparent);
-        mRemoveColor = ContextCompat.getColor(mParent.getActivity(), R.color.remove_color_light);
         mMoveColor = ContextCompat.getColor(mParent.getActivity(), R.color.move_color_light);
     }
 
     @Override
-    public void bind(final Task item) {
+    public void bind(final Task task) {
 
-        final ViewHolderBase currentObject = this;
+        setDescription(task.getDescription());
+        setDueDate(task.getDueDate());
+        setDragImage(this);
+        setStatus(task.getStatus() == TaskStatus.Completed);
+        setBackgroundColor(task);
 
-        mDragImageView.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN)
-                    mParent.onStartDrag(currentObject, getLayoutPosition());
-
-                return false;
-            }
-        });
-
-        boolean isCompleted = item.getStatus() == TaskStatus.Completed;
-        mStatus.setChecked(isCompleted);
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-
-        mDescription.setText(item.getDescription());
-        mDueDate.setText(
-            "Due by " +
-            dateFormat.format(item.getDueDate()) +
-            " at " +
-            timeFormat.format(item.getDueDate()));
-        
-        int color = getLayoutColor(item);
-        mLayout.setBackgroundColor(color);
-
+        // Check if the parent is removing items and not if the current item is selected to be removed
+        // This will cause for each item in the list to be checked, instead of just the current item.
         if(mParent.isRemovingItems()) {
 
-            mDragImageView.setVisibility(View.GONE);
-            mStatus.setVisibility(View.GONE);
-            mReminderImageView.setVisibility(View.GONE);
-            mPriorityImageView.setVisibility(View.GONE);
+            setVisibility(mDragImageView, View.GONE);
+            setVisibility(mStatus, View.GONE);
+            setVisibility(mReminderImageView, View.GONE);
+            setVisibility(mPriorityImageView, View.GONE);
         }
         else {
 
-            mDragImageView.setVisibility(View.VISIBLE);
-            mStatus.setVisibility(View.VISIBLE);
-
-            if(Priority.None != item.getPriority()) {
-
-                mPriorityImageView.setVisibility(View.VISIBLE);
-                Drawable icon = ContextCompat.getDrawable(mParent.getContext(), PriorityUtil.getDrawable(item.getPriority().ordinal()));
-                mPriorityImageView.setImageDrawable(icon);
-            }
-            else {
-
-                mPriorityImageView.setVisibility(View.GONE);
-            }
-
-            if(Reminder.OFF != item.getReminder()) {
-
-                mReminderImageView.setVisibility(View.VISIBLE);
-            }
-            else {
-
-                mReminderImageView.setVisibility(View.GONE);
-            }
+            setVisibility(mDragImageView, View.VISIBLE);
+            setVisibility(mStatus, View.VISIBLE);
+            setPriority(task.getPriority());
+            setReminder(task.getReminder());
         }
     }
 
     @Override
-    protected void setViews() {
+    protected int getBackgrounColor(Task task) {
+
+        if(task.isMoving()) {
+
+            return mMoveColor;
+        }
+
+        if(task.getCanRemove()) {
+
+            return mRemoveColor;
+        }
+
+        return mNormalColor;
+    }
+
+    @Override
+    protected SimpleDateFormat getDateFormat() {
+
+        return new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.ENGLISH);
+    }
+
+    @Override
+    protected void setChildViews() {
 
         mStatus = (CheckBox) itemView.findViewById(R.id.itemCheckBoxView);
         mStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -135,11 +110,7 @@ class TaskViewHolder extends ViewHolderBase<Task>
             }
         });
 
-        mDueDate = (TextView) itemView.findViewById(R.id.dueDateView);
-        mLayout = (LinearLayout) itemView.findViewById(R.id.containerLayout);
-        mDescription = (TextView) itemView.findViewById(R.id.itemDescriptionView);
         mDragImageView = (ImageView) itemView.findViewById(R.id.dragImageView);
-        mPriorityImageView = (ImageView) itemView.findViewById(R.id.priorityIconView);
         mReminderImageView = (ImageView) itemView.findViewById(R.id.reminderImageView);
 
         itemView.setOnClickListener(this);
@@ -159,18 +130,40 @@ class TaskViewHolder extends ViewHolderBase<Task>
         return true;
     }
 
-    private int getLayoutColor(Task task) {
+    private View.OnTouchListener getTouchListener(final RecyclerView.ViewHolder viewHolder) {
 
-        if(task.isMoving()) {
+        return new View.OnTouchListener() {
 
-            return mMoveColor;
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN)
+                    mParent.onStartDrag(viewHolder, getLayoutPosition());
+
+                return false;
+            }
+        };
+    }
+
+    private void setDragImage(ViewHolderBase viewHolderBase) {
+
+        mDragImageView.setOnTouchListener(getTouchListener(viewHolderBase));
+    }
+
+    private void setStatus(boolean isCompleted) {
+
+        mStatus.setChecked(isCompleted);
+    }
+
+    private void setReminder(Reminder reminder) {
+
+        if(Reminder.OFF != reminder) {
+
+            setVisibility(mReminderImageView, View.VISIBLE);
         }
+        else {
 
-        if(task.getCanRemove()) {
-
-            return mRemoveColor;
+            setVisibility(mReminderImageView, View.GONE);
         }
-
-        return mNormalColor;
     }
 }

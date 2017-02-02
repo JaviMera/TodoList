@@ -38,10 +38,4 @@ public class PriorityUtil {
 
         return drawableMap.get(key);
     }
-
-    public static String[] getNames() {
-
-        Collection<String> names = namesMap.values();
-        return names.toArray(new String[names.size()]);
-    }
 }
