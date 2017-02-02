@@ -26,8 +26,10 @@ import todo.javier.mera.todolist.comparators.Comparator;
 import todo.javier.mera.todolist.comparators.ComparatorFactory;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
-import todo.javier.mera.todolist.fragments.dialogs.DialogTask;
-import todo.javier.mera.todolist.fragments.dialogs.DialogTaskListener;
+import todo.javier.mera.todolist.fragments.dialogs.DialogCreateTask;
+import todo.javier.mera.todolist.fragments.dialogs.DialogModifyTask;
+import todo.javier.mera.todolist.fragments.dialogs.DialogModifyTaskListener;
+import todo.javier.mera.todolist.fragments.dialogs.DialogCreateTaskListener;
 import todo.javier.mera.todolist.model.Reminder;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.Priority;
@@ -40,8 +42,9 @@ import todo.javier.mera.todolist.model.TodoList;
 
 public class FragmentTask extends FragmentRecycler<Task>
     implements
-    DialogTaskListener,
+    DialogCreateTaskListener,
     ItemTaskListener,
+    DialogModifyTaskListener,
     PopupMenu.OnMenuItemClickListener{
 
     public static final String TODO_LISt = "TODO_LISt";
@@ -91,6 +94,14 @@ public class FragmentTask extends FragmentRecycler<Task>
         }
 
         return true;
+    }
+
+    @Override
+    protected void showModifyDialog(Task item) {
+
+        DialogModifyTask dialogModifyTask = DialogModifyTask.newInstance(item);
+        dialogModifyTask.setTargetFragment(this, 1);
+        dialogModifyTask.show(mParent.getSupportFragmentManager(), "modify_dialog");
     }
 
     @Override
@@ -177,7 +188,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     @Override
     public void showAddDialog() {
 
-        DialogTask dialogFragment = new DialogTask();
+        DialogCreateTask dialogFragment = DialogCreateTask.newInstance();
         dialogFragment.setTargetFragment(this, 1);
         dialogFragment.show(mParent.getSupportFragmentManager(), "dialog_task");
     }
@@ -301,5 +312,11 @@ public class FragmentTask extends FragmentRecycler<Task>
             }
         }, 500);
         return true;
+    }
+
+    @Override
+    public void onUpdateItem(String todoListId, String id, String description) {
+
+
     }
 }

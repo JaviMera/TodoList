@@ -7,7 +7,7 @@ import todo.javier.mera.todolist.model.Priority;
 /**
  * Created by javie on 12/6/2016.
  */
-public interface DialogTaskListener {
+public interface DialogCreateTaskListener {
 
     void onCreatedTask(
         String title,

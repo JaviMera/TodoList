@@ -24,14 +24,20 @@ import todo.javier.mera.todolist.comparators.Comparator;
 import todo.javier.mera.todolist.comparators.ComparatorFactory;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
-import todo.javier.mera.todolist.fragments.dialogs.DialogTodoList;
+import todo.javier.mera.todolist.fragments.dialogs.DialogCreateTodoList;
+import todo.javier.mera.todolist.fragments.dialogs.DialogEditTodoList;
+import todo.javier.mera.todolist.fragments.dialogs.DialogModifyTodoList;
+import todo.javier.mera.todolist.fragments.dialogs.DialogModifyTodoListListener;
 import todo.javier.mera.todolist.fragments.dialogs.DialogTodoListListener;
 import todo.javier.mera.todolist.model.Priority;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class FragmentTodoList extends FragmentRecycler<TodoList>
-    implements DialogTodoListListener, PopupMenu.OnMenuItemClickListener {
+    implements
+    DialogTodoListListener,
+    DialogModifyTodoListListener,
+    PopupMenu.OnMenuItemClickListener {
 
     private Map<String, List<Task>> mRemovableTodoLists;
     private int mSortSelected;
@@ -86,6 +92,14 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     }
 
     @Override
+    protected void showModifyDialog(TodoList item) {
+
+        DialogModifyTodoList dialog = DialogModifyTodoList.newInstance(item);
+        dialog.setTargetFragment(this, 1);
+        dialog.show(mParent.getSupportFragmentManager(), "modify_dialog");
+    }
+
+    @Override
     protected int removeItems(List<TodoList> itemsToRemove) {
 
         TodoListDataSource source = new TodoListDataSource(mParent);
@@ -127,7 +141,7 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     @Override
     public void showAddDialog() {
 
-        DialogTodoList dialogTodoList = new DialogTodoList();
+        DialogCreateTodoList dialogTodoList = new DialogCreateTodoList();
         dialogTodoList.setTargetFragment(this, 1);
         dialogTodoList.show(mParent.getSupportFragmentManager(), "dialog_todolists");
     }
@@ -236,6 +250,12 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
         mAdapter.addItems(todoLists);
 
         return true;
+    }
+
+    @Override
+    public void onModifyTodoList(String id, String description, long dueDate, Priority priority) {
+
+
     }
 }
 

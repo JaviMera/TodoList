@@ -38,6 +38,7 @@ public class Task extends ItemBase implements Parcelable {
         mTodoListId = in.readString();
         mCreationDate = in.readLong();
         mStatus = TaskStatus.values()[in.readInt()];
+        mReminder = Reminder.values()[in.readInt()];
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
@@ -81,6 +82,7 @@ public class Task extends ItemBase implements Parcelable {
         parcel.writeString(mTodoListId);
         parcel.writeLong(mCreationDate);
         parcel.writeInt(mStatus.ordinal());
+        parcel.writeInt(mReminder.ordinal());
     }
 
     public Reminder getReminder() {

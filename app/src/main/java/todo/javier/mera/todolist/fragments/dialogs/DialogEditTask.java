@@ -1,7 +1,6 @@
 package todo.javier.mera.todolist.fragments.dialogs;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,20 +17,19 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 import todo.javier.mera.todolist.R;
-import todo.javier.mera.todolist.fragments.FragmentTask;
 
 /**
  * Created by javie on 12/6/2016.
  */
 
-public class DialogTask extends DialogCreate
+public abstract class DialogEditTask extends DialogEdit
     implements
     ReminderListener
     {
 
-    private int mReminderTime;
+    protected int mReminderTime;
 
-    private static Map<Integer, Integer> reminderOptions = new LinkedHashMap<Integer, Integer>() {
+    protected Map<Integer, Integer> reminderOptions = new LinkedHashMap<Integer, Integer>() {
         {
             put(R.id.fiveBeforeButton, -5);
             put(R.id.tenBeforeButton, -10);
@@ -40,8 +38,6 @@ public class DialogTask extends DialogCreate
             put(R.id.hourBeforeButton, -60);
         }
     };
-
-    private DialogTaskListener mListener;
 
     @BindView(R.id.reminderTextView)
     TextView mReminderTextView;
@@ -57,35 +53,6 @@ public class DialogTask extends DialogCreate
 
         View view = LayoutInflater.from(mParent).inflate(R.layout.task_dialog, null);
         return view;
-    }
-
-    @Override
-    protected void createItem() {
-
-        Date reminderDate = null;
-        if(mReminderTime != -1) {
-
-            Calendar c = Calendar.getInstance();
-            c.setTime(mDueDate);
-            int reminderMinutes = reminderOptions.get(mReminderTime);
-            c.add(Calendar.MINUTE, reminderMinutes);
-            reminderDate = c.getTime();
-        }
-
-        mListener.onCreatedTask(
-            mEditText.getText().toString(),
-            mDueDate,
-            mDueTime,
-            reminderDate,
-            mPriority
-        );
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        mListener = (FragmentTask)getTargetFragment();
     }
 
     @Override

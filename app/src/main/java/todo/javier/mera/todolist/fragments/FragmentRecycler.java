@@ -296,7 +296,14 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
                 mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
             }
         }
+        else {
+
+            T item = (T) mAdapter.getItem(position);
+            showModifyDialog(item);
+        }
     }
+
+    protected abstract void showModifyDialog(T item);
 
     @Override
     public void onItemsUpdate(Map<String, Integer> items) {

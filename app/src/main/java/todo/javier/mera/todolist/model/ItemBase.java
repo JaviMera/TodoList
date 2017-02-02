@@ -28,7 +28,9 @@ public abstract class ItemBase implements Parcelable {
     ItemBase(Parcel in) {
 
         mId = in.readString();
-        mCanRemove = in.readInt() == 1;
+        mDescription = in.readString();
+        mPriority = Priority.values()[in.readInt()];
+        mDueDate = in.readLong();
     }
 
     @Override
@@ -40,7 +42,9 @@ public abstract class ItemBase implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
 
         parcel.writeString(mId);
-        parcel.writeInt(mCanRemove ? 1 : 0);
+        parcel.writeString(mDescription);
+        parcel.writeInt(mPriority.ordinal());
+        parcel.writeLong(mDueDate);
     }
 
     @Override

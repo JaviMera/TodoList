@@ -1,6 +1,5 @@
 package todo.javier.mera.todolist.adapters;
 
-import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
@@ -9,19 +8,14 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
 import todo.javier.mera.todolist.fragments.FragmentTask;
 import todo.javier.mera.todolist.fragments.ItemTaskListener;
-import todo.javier.mera.todolist.model.Priority;
-import todo.javier.mera.todolist.model.PriorityUtil;
 import todo.javier.mera.todolist.model.Reminder;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TaskStatus;

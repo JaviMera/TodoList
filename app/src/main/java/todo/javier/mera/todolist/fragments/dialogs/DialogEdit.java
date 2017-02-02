@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -28,10 +27,10 @@ import todo.javier.mera.todolist.model.PriorityUtil;
  * Created by javie on 1/30/2017.
  */
 
-public abstract class DialogCreate extends DialogBase
+public abstract class DialogEdit extends DialogBase
     implements DueDateListener, PriorityListener {
 
-    private static Map<Integer, Integer> priorityOptions = new LinkedHashMap<Integer, Integer>() {
+    protected Map<Integer, Integer> priorityOptions = new LinkedHashMap<Integer, Integer>() {
         {
             put(R.id.noneButton, 0);
             put(R.id.lowButton, 1);
@@ -42,7 +41,7 @@ public abstract class DialogCreate extends DialogBase
 
     protected abstract String getTitle();
     protected abstract View getLayout();
-    protected abstract void createItem();
+    protected abstract void saveItem();
 
     protected Date mDueDate;
     protected long mDueTime;
@@ -51,13 +50,13 @@ public abstract class DialogCreate extends DialogBase
     @BindView(R.id.dialogTitleView)
     TextView mTitleView;
 
-    @BindView(R.id.editTextView)
+    protected @BindView(R.id.editTextView)
     EditText mEditText;
 
-    @BindView(R.id.dueDateTextView)
+    protected @BindView(R.id.dueDateTextView)
     TextView mDueDateTextView;
 
-    @BindView(R.id.priorityTextView)
+    protected @BindView(R.id.priorityTextView)
     TextView mPriorityTextView;
 
     @BindView(R.id.priorityMessageTextView)
@@ -147,7 +146,7 @@ public abstract class DialogCreate extends DialogBase
             return;
         }
 
-        createItem();
+        saveItem();
         dismiss();
     }
 
