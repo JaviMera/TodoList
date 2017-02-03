@@ -106,6 +106,14 @@ class TaskViewHolder extends ViewHolderBase<Task>
         mDragImageView = (ImageView) itemView.findViewById(R.id.dragImageView);
         mReminderImageView = (ImageView) itemView.findViewById(R.id.reminderImageView);
 
+        mReminderImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ((FragmentTask)mParent).onReminderClick(getLayoutPosition());
+            }
+        });
+
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
     }

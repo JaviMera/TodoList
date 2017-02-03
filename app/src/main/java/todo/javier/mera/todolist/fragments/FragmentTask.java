@@ -24,6 +24,7 @@ import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
+import todo.javier.mera.todolist.adapters.ReminderClickListener;
 import todo.javier.mera.todolist.adapters.TaskAdapter;
 import todo.javier.mera.todolist.comparators.Comparator;
 import todo.javier.mera.todolist.comparators.ComparatorFactory;
@@ -33,6 +34,7 @@ import todo.javier.mera.todolist.fragments.dialogs.DialogCreateTask;
 import todo.javier.mera.todolist.fragments.dialogs.DialogModifyListener;
 import todo.javier.mera.todolist.fragments.dialogs.DialogModifyTask;
 import todo.javier.mera.todolist.fragments.dialogs.DialogCreateTaskListener;
+import todo.javier.mera.todolist.fragments.dialogs.ReminderListener;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.Priority;
 import todo.javier.mera.todolist.model.TaskStatus;
@@ -47,6 +49,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     DialogCreateTaskListener,
     ItemTaskListener,
     DialogModifyListener<Task>,
+    ReminderClickListener,
     PopupMenu.OnMenuItemClickListener{
 
     public static final String TODO_LISt = "TODO_LISt";
@@ -350,6 +353,30 @@ public class FragmentTask extends FragmentRecycler<Task>
 
                 mParent.cancelReminder(task);
             }
+        }
+    }
+
+    @Override
+    public void onReminderClick(int position) {
+
+        Task task = (Task) mAdapter.getItem(position);
+        task.setReminder(0L);
+
+        ContentValues values = new ContentValues();
+        TodoListDataSource dataSource = new TodoListDataSource(mParent);
+        values.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, task.getReminderDate());
+
+        int affectedRows = dataSource.update(
+            TodoListSQLiteHelper.TABLE_TASKS,
+            TodoListSQLiteHelper.COLUMN_ITEMS_ID,
+            task.getId(),
+            values
+        );
+
+        if(affectedRows != -1) {
+
+            mParent.cancelReminder(task);
+            mAdapter.updateItem(task);
         }
     }
 }
