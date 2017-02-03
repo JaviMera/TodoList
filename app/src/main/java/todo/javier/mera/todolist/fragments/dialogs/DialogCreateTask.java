@@ -1,10 +1,8 @@
-package todo.javier.mera.todolist.fragments.dialogs.create;
+package todo.javier.mera.todolist.fragments.dialogs;
 
 import android.content.Context;
 
 import java.util.Calendar;
-
-import todo.javier.mera.todolist.fragments.dialogs.DialogEditTask;
 
 /**
  * Created by javie on 2/1/2017.

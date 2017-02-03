@@ -14,7 +14,8 @@ import java.util.Date;
 public interface DialogEditView {
 
     void setTitle(String title);
-    void setSaveText(String description);
+    void setDescriptionText(String description);
+    void setSaveText(String saveText);
     void setDueDateText(Date date, SimpleDateFormat formatter);
     void setPriorityText(int position);
     void startAnimation(View view, Animation animation);

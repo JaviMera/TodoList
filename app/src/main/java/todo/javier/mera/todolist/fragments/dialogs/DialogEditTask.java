@@ -24,8 +24,10 @@ import todo.javier.mera.todolist.R;
 
 public abstract class DialogEditTask extends DialogEdit
     implements
-    ReminderListener
-    {
+    DialogEditTaskView,
+    ReminderListener {
+
+    private DialogEditTaskPresenter mPresenter;
 
     protected int mReminderTime;
 
@@ -68,7 +70,11 @@ public abstract class DialogEditTask extends DialogEdit
 
         Dialog dialog = super.onCreateDialog(savedInstanceState);
 
-        mReminderTextView.setEnabled(false);
+        // Add reminder dialog to the map of dialogs
+        mDialogs.put(R.id.reminderTextView, DialogReminder.newInstance());
+
+        mPresenter = new DialogEditTaskPresenter(this);
+        mPresenter.setEnableReminder(false);
 
         return dialog;
     }
@@ -77,23 +83,16 @@ public abstract class DialogEditTask extends DialogEdit
     public void onDueDateSelected(Date date) {
         super.onDueDateSelected(date);
 
-        mReminderTextView.setEnabled(true);
+        mPresenter.setEnableReminder(true);
 
         String reminderText = mParent.getString(R.string.task_reminder_text);
-        mReminderTextView.setText(reminderText);
+        mPresenter.setReminderText(reminderText);
     }
 
     @OnClick(R.id.reminderTextView)
     public void onReminderClick(View view) {
 
-        // Explicitly hide the virtual keyboard when taped on add due date text view
-        // if the user didn't press enter after entering a description, the keyboard will still be
-        // present.
-        mParent.hideSoftKeyboard(view);
-
-        DialogReminder dialogReminder = DialogReminder.newInstance();
-        dialogReminder.setTargetFragment(this, 1);
-        dialogReminder.show(mParent.getSupportFragmentManager(), "reminder_dialog");
+        super.onTextViewClick(view);
     }
 
     @Override
@@ -101,8 +100,22 @@ public abstract class DialogEditTask extends DialogEdit
 
         mReminderTime = buttonId;
         Date reminder = getReminderDate(mReminderTime);
-        SimpleDateFormat format = new SimpleDateFormat("LLL, EEE dd  HH:mm");
-        mReminderTextView.setText(format.format(reminder));
+
+        mPresenter.setReminderText(
+            mFormatter.format(reminder)
+        );
+    }
+
+    @Override
+    public void setEnableReminder(boolean isEnabled) {
+
+        mReminderTextView.setEnabled(isEnabled);
+    }
+
+    @Override
+    public void setReminderText(String text) {
+
+        mReminderTextView.setText(text);
     }
 
     protected Date getReminderDate(int buttonId) {

@@ -17,6 +17,8 @@ import todo.javier.mera.todolist.model.Task;
  */
 public class DialogModifyTask extends DialogEditTask {
 
+    private static final String TASK_SELECTED = "item";
+    public static final long EMPTY_REMINDER = 0L;
     private DialogModifyListener mListener;
     private Task mTask;
 
@@ -24,7 +26,7 @@ public class DialogModifyTask extends DialogEditTask {
 
         DialogModifyTask dialogModifyTask = new DialogModifyTask();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("item", item);
+        bundle.putParcelable(TASK_SELECTED, item);
         dialogModifyTask.setArguments(bundle);
 
         return dialogModifyTask;
@@ -49,7 +51,7 @@ public class DialogModifyTask extends DialogEditTask {
         }
         else {
 
-            mTask.setReminder(0L);
+            mTask.setReminder(EMPTY_REMINDER);
         }
 
         mTask.setPriority(mPriority);
@@ -68,21 +70,25 @@ public class DialogModifyTask extends DialogEditTask {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
 
-        mTask = getArguments().getParcelable("item");
-        mEditText.setText(mTask.getDescription());
+        mTask = getArguments().getParcelable(TASK_SELECTED);
+
+        // Set the description of the task selected
+        setDescriptionText(mTask.getDescription());
 
         Date dueDate = new Date();
         dueDate.setTime(mTask.getDueDate());
+
+        // Set the due date of the task selected
         onDueDateSelected(dueDate);
 
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.ENGLISH);
+        // Set the reminder of the task selected, if there is any
+        if(mTask.getReminderDate() != EMPTY_REMINDER) {
 
-        if(mTask.getReminderDate() != 0L) {
-
-            mReminderTextView.setText(format.format(mTask.getReminderDate()));
+            setReminderText(mFormatter.format(mTask.getReminderDate()));
         }
 
-        mPriorityTextView.setText(PriorityUtil.getName(mTask.getPriority().ordinal()));
+        // Set the priority of the task selected
+        setPriorityText(mTask.getPriority().ordinal());
 
         return dialog;
     }

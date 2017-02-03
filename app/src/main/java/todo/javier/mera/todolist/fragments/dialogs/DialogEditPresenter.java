@@ -44,4 +44,9 @@ public class DialogEditPresenter {
 
         mView.startAnimation(view, anim);
     }
+
+    public void setDescriptionText(String description) {
+
+        mView.setDescriptionText(description);
+    }
 }

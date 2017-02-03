@@ -98,4 +98,17 @@ public class DialogEditPresenterTest {
         // Assert
         Mockito.verify(mView).startAnimation(view, anim);
     }
+
+    @Test
+    public void setDescriptionText() throws Exception {
+
+        // Arrange
+        String description = "";
+
+        // Act
+        mPresenter.setDescriptionText(description);
+
+        // Assert
+        Mockito.verify(mView).setDescriptionText(description);
+    }
 }

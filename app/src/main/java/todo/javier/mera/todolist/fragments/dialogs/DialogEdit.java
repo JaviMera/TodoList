@@ -37,7 +37,7 @@ public abstract class DialogEdit extends DialogBase
 
     private DialogEditPresenter mPresenter;
 
-    private Map<Integer, DialogBase> mDialogs = new LinkedHashMap<Integer, DialogBase>(){
+    protected Map<Integer, DialogBase> mDialogs = new LinkedHashMap<Integer, DialogBase>(){
         {
             put(R.id.dueDateTextView, DialogDueDate.newInstance());
             put(R.id.priorityTextView, DialogPriority.newInstance());
@@ -52,7 +52,6 @@ public abstract class DialogEdit extends DialogBase
             put(R.id.highButton, 3);
         }
     };
-    private SimpleDateFormat mFormatter;
 
     protected abstract String getTitle();
     protected abstract View getLayout();
@@ -61,6 +60,7 @@ public abstract class DialogEdit extends DialogBase
 
     protected Date mDueDate;
     protected Priority mPriority;
+    protected SimpleDateFormat mFormatter;
 
     @BindView(R.id.dialogTitleView)
     TextView mTitleView;
@@ -193,5 +193,11 @@ public abstract class DialogEdit extends DialogBase
     public void startAnimation(View view, Animation animation) {
 
         view.startAnimation(animation);
+    }
+
+    @Override
+    public void setDescriptionText(String description) {
+
+        mEditText.setText(description);
     }
 }
