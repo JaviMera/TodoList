@@ -27,6 +27,7 @@
                     android:layout_height="wrap_content"
                     android:src="@mipmap/ic_list"
                     android:scaleType="fitCenter"
+                    android:layout_gravity="center"
                     />
 
                 <TextView
@@ -37,7 +38,7 @@
                     android:layout_gravity="center"
                     tools:text="this is a made up list"
                     android:textColor="@android:color/black"
-                    android:textSize="22sp"
+                    android:textSize="@dimen/todo_list_description_text_size"
                     android:padding="10dp"
                     android:maxLines="1"/>
 
@@ -47,10 +48,6 @@
                     android:layout_height="wrap_content"
                     tools:src="@mipmap/ic_priority"
                     android:scaleType="fitCenter"
-                    android:maxHeight="30dp"
-                    android:maxWidth="30dp"
-                    android:scaleX="0.8"
-                    android:adjustViewBounds="true"
                     android:layout_gravity="center"/>
             </LinearLayout>
 
@@ -65,14 +62,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1.5"
                     tools:text="TASKS  54"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:textSize="@dimen/todo_list_task_number_text_size"/>
 
                 <TextView
                     android:id="@+id/dueDateView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    tools:text="12/12/12"/>
+                    tools:text="12/12/12"
+                    android:textSize="@dimen/todo_list_due_date_text_size"/>
             </LinearLayout>
         </LinearLayout>
 

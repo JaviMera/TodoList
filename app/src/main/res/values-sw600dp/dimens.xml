@@ -13,4 +13,7 @@
     <dimen name="dialog_edit_text_margin">15dp</dimen>
     <dimen name="dialog_title_size">20sp</dimen>
     <dimen name="dialog_title_pad">15dp</dimen>
+    <dimen name="todo_list_description_text_size">40sp</dimen>
+    <dimen name="todo_list_task_number_text_size">30sp</dimen>
+    <dimen name="todo_list_due_date_text_size">30sp</dimen>
 </resources>

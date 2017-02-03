@@ -62,6 +62,7 @@ public class DialogModifyTask extends DialogEditTask {
         }
 
         // Set the priority of the task selected
+        mPriority = mTask.getPriority();
         setPriorityText(mTask.getPriority().ordinal());
 
         return dialog;
