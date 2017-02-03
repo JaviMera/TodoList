@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class TodoListSQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "todo_lists.db";
-    private static final int DB_VERSION = 30;
+    private static final int DB_VERSION = 31;
 
     public static final String TABLE_TODO_LISTS = "TODO_LISTS";
     public static final String COLUMN_TODO_LIST_ID = "TODOLIST_ID";
@@ -35,9 +35,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ITEMS_POSITION = "POSITION";
     public static final String COLUMN_ITEMS_DESCRIPTION = "DESCRIPTION";
     public static final String COLUMN_ITEMS_STATUS = "COMPLETED";
-    public static final String COLUMN_ITEMS_CREATED_ON = "CREATED_ON";
     public static final String COLUMN_ITEMS_DUE_DATE = "DUE_DATE";
-    public static final String COLUMN_ITEMS_DUE_TIME = "DUE_TIME";
     public static final String COLUMN_ITEMS_PRIORITY = "PRIORITY";
     public static final String COLUMN_ITEMS_REMINDER = "REMINDER";
     private static final String CREATE_TODO_LIST_ITEMS = "CREATE TABLE "
@@ -48,9 +46,7 @@ public class TodoListSQLiteHelper extends SQLiteOpenHelper {
         + COLUMN_ITEMS_POSITION + " INTEGER, "
         + COLUMN_ITEMS_DESCRIPTION + " TEXT, "
         + COLUMN_ITEMS_STATUS + " INTEGER, "
-        + COLUMN_ITEMS_CREATED_ON +  " INTEGER, "
         + COLUMN_ITEMS_DUE_DATE + " INTEGER, "
-        + COLUMN_ITEMS_DUE_TIME + " INTEGER, "
         + COLUMN_ITEMS_PRIORITY + " INTEGER, "
         + COLUMN_ITEMS_REMINDER + " INTEGER, "
         + "FOREIGN KEY " + "(" + COLUMN_TODO_LIST_ID + ") REFERENCES " + TABLE_TODO_LISTS + "(" + COLUMN_TODO_LIST_ID + ")"

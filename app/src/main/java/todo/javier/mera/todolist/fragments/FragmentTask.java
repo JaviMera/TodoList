@@ -26,10 +26,10 @@ import todo.javier.mera.todolist.comparators.Comparator;
 import todo.javier.mera.todolist.comparators.ComparatorFactory;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
-import todo.javier.mera.todolist.fragments.dialogs.DialogCreateTask;
+import todo.javier.mera.todolist.fragments.dialogs.create.DialogCreateTask;
+import todo.javier.mera.todolist.fragments.dialogs.DialogModifyListener;
 import todo.javier.mera.todolist.fragments.dialogs.DialogModifyTask;
-import todo.javier.mera.todolist.fragments.dialogs.DialogModifyTaskListener;
-import todo.javier.mera.todolist.fragments.dialogs.DialogCreateTaskListener;
+import todo.javier.mera.todolist.fragments.dialogs.create.DialogCreateTaskListener;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.Priority;
 import todo.javier.mera.todolist.model.TaskStatus;
@@ -43,7 +43,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     implements
     DialogCreateTaskListener,
     ItemTaskListener,
-    DialogModifyTaskListener,
+    DialogModifyListener<Task>,
     PopupMenu.OnMenuItemClickListener{
 
     public static final String TODO_LISt = "TODO_LISt";
@@ -196,7 +196,6 @@ public class FragmentTask extends FragmentRecycler<Task>
     public void onCreatedTask(
         String taskDescription,
         Date taskDuedate,
-        long dueTime,
         long reminderDate,
         Priority priority) {
 
@@ -205,7 +204,6 @@ public class FragmentTask extends FragmentRecycler<Task>
         TodoListDataSource source = new TodoListDataSource(mParent);
 
         String taskId = UUID.randomUUID().toString();
-        long taskCreationDate = new Date().getTime();
         TaskStatus taskStatus = TaskStatus.Created;
 
         Task newTask = new Task(
@@ -213,7 +211,6 @@ public class FragmentTask extends FragmentRecycler<Task>
             mTodoList.getId(),
             taskDescription,
             taskStatus,
-            taskCreationDate,
             taskDuedate.getTime(),
             priority,
             reminderDate
@@ -314,7 +311,7 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    public void onUpdateItem(Task task) {
+    public void onModifyItem(Task task) {
 
         ContentValues values = new ContentValues();
         TodoListDataSource dataSource = new TodoListDataSource(mParent);

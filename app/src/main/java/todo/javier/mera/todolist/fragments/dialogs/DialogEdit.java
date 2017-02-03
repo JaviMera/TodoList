@@ -45,7 +45,6 @@ public abstract class DialogEdit extends DialogBase
     protected abstract String getSaveText();
 
     protected Date mDueDate;
-    protected long mDueTime;
     protected Priority mPriority;
 
     @BindView(R.id.dialogTitleView)

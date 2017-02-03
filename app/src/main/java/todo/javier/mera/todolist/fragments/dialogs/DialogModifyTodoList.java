@@ -17,7 +17,7 @@ import todo.javier.mera.todolist.model.TodoList;
 public class DialogModifyTodoList extends DialogEditTodoList {
 
     private TodoList mTodoList;
-    private DialogModifyTodoListListener mListener;
+    private DialogModifyListener mListener;
 
     public static DialogModifyTodoList newInstance(TodoList todoList) {
 
@@ -33,7 +33,7 @@ public class DialogModifyTodoList extends DialogEditTodoList {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        mListener = (DialogModifyTodoListListener) getTargetFragment();
+        mListener = (DialogModifyListener) getTargetFragment();
     }
 
     @NonNull
@@ -59,7 +59,7 @@ public class DialogModifyTodoList extends DialogEditTodoList {
         mTodoList.setDescription(mEditText.getText().toString());
         mTodoList.setDueDate(mDueDate.getTime());
         mTodoList.setPriority(mPriority);
-        mListener.onModifyTodoList(mTodoList);
+        mListener.onModifyItem(mTodoList);
     }
 
     @Override

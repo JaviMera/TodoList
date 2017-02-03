@@ -1,9 +1,10 @@
-package todo.javier.mera.todolist.fragments.dialogs;
+package todo.javier.mera.todolist.fragments.dialogs.create;
 
 import android.content.Context;
 
 import java.util.Calendar;
-import java.util.Date;
+
+import todo.javier.mera.todolist.fragments.dialogs.DialogEditTask;
 
 /**
  * Created by javie on 2/1/2017.
@@ -44,7 +45,6 @@ public class DialogCreateTask extends DialogEditTask {
         mListener.onCreatedTask(
             mEditText.getText().toString(),
             mDueDate,
-            mDueTime,
             reminderDate,
             mPriority
         );

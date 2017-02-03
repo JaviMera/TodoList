@@ -17,7 +17,7 @@ import todo.javier.mera.todolist.model.Task;
  */
 public class DialogModifyTask extends DialogEditTask {
 
-    private DialogModifyTaskListener mListener;
+    private DialogModifyListener mListener;
     private Task mTask;
 
     public static DialogModifyTask newInstance(Task item) {
@@ -34,7 +34,7 @@ public class DialogModifyTask extends DialogEditTask {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        mListener = (DialogModifyTaskListener)getTargetFragment();
+        mListener = (DialogModifyListener)getTargetFragment();
     }
 
     @Override
@@ -54,7 +54,7 @@ public class DialogModifyTask extends DialogEditTask {
 
         mTask.setPriority(mPriority);
 
-        mListener.onUpdateItem(mTask);
+        mListener.onModifyItem(mTask);
     }
 
     @Override

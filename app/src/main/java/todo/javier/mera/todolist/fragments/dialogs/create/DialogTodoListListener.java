@@ -1,4 +1,4 @@
-package todo.javier.mera.todolist.fragments.dialogs;
+package todo.javier.mera.todolist.fragments.dialogs.create;
 
 import java.util.Date;
 

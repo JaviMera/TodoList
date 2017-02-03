@@ -24,10 +24,10 @@ import todo.javier.mera.todolist.comparators.Comparator;
 import todo.javier.mera.todolist.comparators.ComparatorFactory;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
-import todo.javier.mera.todolist.fragments.dialogs.DialogCreateTodoList;
+import todo.javier.mera.todolist.fragments.dialogs.create.DialogCreateTodoList;
 import todo.javier.mera.todolist.fragments.dialogs.DialogModifyTodoList;
-import todo.javier.mera.todolist.fragments.dialogs.DialogModifyTodoListListener;
-import todo.javier.mera.todolist.fragments.dialogs.DialogTodoListListener;
+import todo.javier.mera.todolist.fragments.dialogs.DialogModifyListener;
+import todo.javier.mera.todolist.fragments.dialogs.create.DialogTodoListListener;
 import todo.javier.mera.todolist.model.Priority;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TodoList;
@@ -35,7 +35,7 @@ import todo.javier.mera.todolist.model.TodoList;
 public class FragmentTodoList extends FragmentRecycler<TodoList>
     implements
     DialogTodoListListener,
-    DialogModifyTodoListListener,
+    DialogModifyListener<TodoList>,
     PopupMenu.OnMenuItemClickListener {
 
     private Map<String, List<Task>> mRemovableTodoLists;
@@ -252,7 +252,7 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     }
 
     @Override
-    public void onModifyTodoList(TodoList updatedTodoList) {
+    public void onModifyItem(TodoList updatedTodoList) {
 
         ContentValues values = new ContentValues();
 

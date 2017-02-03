@@ -1,4 +1,4 @@
-package todo.javier.mera.todolist.fragments.dialogs;
+package todo.javier.mera.todolist.fragments.dialogs.create;
 
 import java.util.Date;
 
@@ -12,7 +12,6 @@ public interface DialogCreateTaskListener {
     void onCreatedTask(
         String title,
         Date dueDate,
-        long dueTime,
         long reminderDate,
         Priority priority);
 }
