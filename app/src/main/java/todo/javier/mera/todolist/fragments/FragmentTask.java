@@ -318,7 +318,7 @@ public class FragmentTask extends FragmentRecycler<Task>
             @Override
             public void run() {
 
-                mAdapter.addItems(tasks);
+            mAdapter.addItems(tasks);
             }
         }, 500);
         return true;
@@ -348,6 +348,7 @@ public class FragmentTask extends FragmentRecycler<Task>
             if(task.getReminderDate() != 0L) {
 
                 mParent.setReminder(task);
+                mAdapter.updateItem(task);
             }
             else {
 
