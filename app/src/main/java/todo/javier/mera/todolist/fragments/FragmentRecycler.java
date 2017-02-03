@@ -89,6 +89,11 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         setHasOptionsMenu(true);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

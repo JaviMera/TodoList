@@ -78,8 +78,16 @@ public abstract class DialogEdit extends DialogBase
         super.onCreate(savedInstanceState);
 
         mPriority = Priority.None;
-        mDueDate = new Date();
+        mDueDate = null;
         mFormatter = new SimpleDateFormat("LLL, EEE dd  HH:mm", Locale.ENGLISH);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putLong("due", mDueDate == null ? 0L : mDueDate.getTime());
+        outState.putInt("priority", mPriority.ordinal());
     }
 
     @NonNull
@@ -95,6 +103,21 @@ public abstract class DialogEdit extends DialogBase
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mParent);
         dialogBuilder.setView(view);
+
+        if(savedInstanceState != null) {
+
+            long dueDate = savedInstanceState.getLong("due");
+            if(dueDate != 0L) {
+
+                mDueDate = new Date();
+                mDueDate.setTime(dueDate);
+                mPresenter.setDueDateText(mDueDate, mFormatter);
+            }
+
+            int priorityPosition = savedInstanceState.getInt("priority");
+            mPriority = Priority.values()[priorityPosition];
+            mPresenter.setPriorityText(priorityPosition);
+        }
 
         return createDialog(
             dialogBuilder.create()
@@ -130,6 +153,7 @@ public abstract class DialogEdit extends DialogBase
     @Override
     public void onDueDateSelected(Date date) {
 
+        mDueDate = new Date();
         mDueDate.setTime(date.getTime());
         mPresenter.setDueDateText(mDueDate, mFormatter);
     }

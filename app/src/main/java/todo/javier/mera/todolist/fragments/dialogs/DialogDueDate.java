@@ -48,7 +48,7 @@ public class DialogDueDate extends DialogBase
 
         DialogDueDate dialog = new DialogDueDate();
         Bundle bundle = new Bundle();
-        bundle.putLong("due_date", mDate.getTime());
+        bundle.putLong("due_date", mDate == null ? 0L : mDate.getTime());
         dialog.setArguments(bundle);
 
         return dialog;

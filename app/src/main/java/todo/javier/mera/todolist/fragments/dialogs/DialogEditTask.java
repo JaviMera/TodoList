@@ -58,20 +58,31 @@ public abstract class DialogEditTask extends DialogEdit
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        mReminderTime = -1;
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         Dialog dialog = super.onCreateDialog(savedInstanceState);
 
         mPresenter = new DialogEditTaskPresenter(this);
-        mPresenter.setEnableReminder(false);
+
+        if(savedInstanceState != null) {
+
+            mReminderTime = savedInstanceState.getInt("reminder");
+
+            if(mReminderTime != -1) {
+
+                onReminderSelected(mReminderTime);
+            }
+        }
+        else {
+
+            mReminderTime = -1;
+            mPresenter.setEnableReminder(false);
+        }
 
         return dialog;
     }

@@ -1,6 +1,10 @@
 package todo.javier.mera.todolist.fragments.dialogs;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.Calendar;
 
@@ -20,10 +24,28 @@ public class DialogCreateTask extends DialogEditTask {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("reminder", mReminderTime);
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
         mListener = (DialogCreateTaskListener)getTargetFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return super.onCreateDialog(savedInstanceState);
     }
 
     @Override
@@ -51,6 +73,6 @@ public class DialogCreateTask extends DialogEditTask {
     @Override
     protected String getSaveText() {
 
-        return "Create";
+        return "create";
     }
 }
