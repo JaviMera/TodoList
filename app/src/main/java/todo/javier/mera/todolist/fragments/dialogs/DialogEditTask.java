@@ -70,9 +70,6 @@ public abstract class DialogEditTask extends DialogEdit
 
         Dialog dialog = super.onCreateDialog(savedInstanceState);
 
-        // Add reminder dialog to the map of dialogs
-        mDialogs.put(R.id.reminderTextView, DialogReminder.newInstance());
-
         mPresenter = new DialogEditTaskPresenter(this);
         mPresenter.setEnableReminder(false);
 
@@ -92,7 +89,14 @@ public abstract class DialogEditTask extends DialogEdit
     @OnClick(R.id.reminderTextView)
     public void onReminderClick(View view) {
 
-        super.onTextViewClick(view);
+        // Explicitly hide the virtual keyboard when taped on add due date text view
+        // if the user didn't press enter after entering a description, the keyboard will still be
+        // present.
+        mParent.hideSoftKeyboard(view);
+
+        DialogBase dialog = DialogReminder.newInstance();
+        dialog.setTargetFragment(this, 1);
+        dialog.show(mParent.getSupportFragmentManager(), "dialog");
     }
 
     @Override

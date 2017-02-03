@@ -44,9 +44,13 @@ public class DialogDueDate extends DialogBase
     private int mHour;
     private int mMinute;
 
-    public static DialogDueDate newInstance() {
+    public static DialogDueDate newInstance(Date mDate) {
 
         DialogDueDate dialog = new DialogDueDate();
+        Bundle bundle = new Bundle();
+        bundle.putLong("due_date", mDate.getTime());
+        dialog.setArguments(bundle);
+
         return dialog;
     }
 
@@ -67,7 +71,14 @@ public class DialogDueDate extends DialogBase
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         dialogBuilder.setView(view);
 
+        long time = getArguments().getLong("due_date");
         Date date = new Date();
+
+        if(time != 0L) {
+
+            date.setTime(time);
+        }
+
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         int hour = c.get(Calendar.HOUR_OF_DAY);

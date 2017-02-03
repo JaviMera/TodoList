@@ -37,13 +37,6 @@ public abstract class DialogEdit extends DialogBase
 
     private DialogEditPresenter mPresenter;
 
-    protected Map<Integer, DialogBase> mDialogs = new LinkedHashMap<Integer, DialogBase>(){
-        {
-            put(R.id.dueDateTextView, DialogDueDate.newInstance());
-            put(R.id.priorityTextView, DialogPriority.newInstance());
-        }
-    };
-
     protected Map<Integer, Integer> priorityOptions = new LinkedHashMap<Integer, Integer>() {
         {
             put(R.id.noneButton, 0);
@@ -85,6 +78,7 @@ public abstract class DialogEdit extends DialogBase
         super.onCreate(savedInstanceState);
 
         mPriority = Priority.None;
+        mDueDate = new Date();
         mFormatter = new SimpleDateFormat("LLL, EEE dd  HH:mm", Locale.ENGLISH);
     }
 
@@ -107,15 +101,28 @@ public abstract class DialogEdit extends DialogBase
         );
     }
 
-    @OnClick({R.id.dueDateTextView, R.id.priorityTextView})
-    public void onTextViewClick(View view) {
+    @OnClick(R.id.dueDateTextView)
+    public void onDueDateClick(View view) {
 
         // Explicitly hide the virtual keyboard when taped on add due date text view
         // if the user didn't press enter after entering a description, the keyboard will still be
         // present.
         mParent.hideSoftKeyboard(view);
 
-        DialogBase dialog = mDialogs.get(view.getId());
+        DialogBase dialog = DialogDueDate.newInstance(mDueDate);
+        dialog.setTargetFragment(this, 1);
+        dialog.show(mParent.getSupportFragmentManager(), "dialog");
+    }
+
+    @OnClick(R.id.priorityTextView)
+    public void onPriorityClick(View view) {
+
+        // Explicitly hide the virtual keyboard when taped on add due date text view
+        // if the user didn't press enter after entering a description, the keyboard will still be
+        // present.
+        mParent.hideSoftKeyboard(view);
+
+        DialogBase dialog = DialogPriority.newInstance();
         dialog.setTargetFragment(this, 1);
         dialog.show(mParent.getSupportFragmentManager(), "dialog");
     }
@@ -123,7 +130,6 @@ public abstract class DialogEdit extends DialogBase
     @Override
     public void onDueDateSelected(Date date) {
 
-        mDueDate = new Date();
         mDueDate.setTime(date.getTime());
         mPresenter.setDueDateText(mDueDate, mFormatter);
     }
