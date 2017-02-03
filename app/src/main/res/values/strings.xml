@@ -31,5 +31,20 @@
     <string name="add_due_time">Add due time</string>
     <string name="dialog_reminder_title">Choose a time</string>
     <string name="task_reminder_text">Add reminder</string>
+    <string name="dialog_due_date_set_text_view">set date</string>
+    <string name="reminder_title_text">Set a reminder</string>
+    <string name="five_minutes_text">5 minutes before due date</string>
+    <string name="ten_minutes_text">10 minutes before due date</string>
+    <string name="twenty_minutes_text">20 minutes before due date</string>
+    <string name="thirty_minutes_text">30 minutes before due date</string>
+    <string name="hour_text">1 hour before due date</string>
+    <string name="priority_title_text">Set a priority</string>
+    <string name="none_text">None</string>
+    <string name="low_text">low</string>
+    <string name="medium_text">Medium</string>
+    <string name="high_text">High</string>
+    <string name="priority_message_text">None if no selection</string>
+    <string name="cancel_text">cancel</string>
+    <string name="create_text">create</string>
 
 </resources>

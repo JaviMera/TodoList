@@ -19,4 +19,23 @@
     <dimen name="task_description_text_size">40sp</dimen>
     <dimen name="task_due_date_text_size">30sp</dimen>
     <dimen name="task_data_left_pad">10dp</dimen>
+    <dimen name="due_date_title_text_size">40sp</dimen>
+    <dimen name="due_date_text_size">25sp</dimen>
+    <dimen name="due_date_time_text_size">25sp</dimen>
+    <dimen name="due_date_set_text_size">23sp</dimen>
+    <dimen name="due_date_title_pad">25dp</dimen>
+    <dimen name="due_date_pad">25dp</dimen>
+    <dimen name="due_date_time_pad">25dp</dimen>
+    <dimen name="field_description_text_size">25sp</dimen>
+    <dimen name="field_due_date_text_size">25sp</dimen>
+    <dimen name="field_priority_text_size">25sp</dimen>
+    <dimen name="field_priority_message_text_size">17sp</dimen>
+    <dimen name="field_reminder_text_size">25sp</dimen>
+    <dimen name="create_item_text_size">20sp</dimen>
+    <dimen name="cancel_item_text_size">20sp</dimen>
+    <dimen name="icon_max_height">200dp</dimen>
+    <dimen name="icon_max_width">200dp</dimen>
+    <dimen name="priority_title_text_size">40sp</dimen>
+    <dimen name="radio_button_text_size">25sp</dimen>
+    <dimen name="reminder_title_text_size">40sp</dimen>
 </resources>

@@ -48,7 +48,10 @@
                     android:layout_height="wrap_content"
                     tools:src="@mipmap/ic_priority"
                     android:scaleType="fitCenter"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="@dimen/icon_max_height"
+                    android:maxWidth="@dimen/icon_max_width"/>
             </LinearLayout>
 
             <LinearLayout

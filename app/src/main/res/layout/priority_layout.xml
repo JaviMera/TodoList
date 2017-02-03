@@ -6,9 +6,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Set a priority"
+        android:text="@string/priority_title_text"
         android:textColor="@color/colorPrimary"
-        android:textSize="25dp"
+        android:textSize="@dimen/priority_title_text_size"
         android:padding="15dp"
         android:layout_marginLeft="10dp"/>
 
@@ -22,32 +22,32 @@
             android:id="@+id/noneButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="None"
-            android:textSize="18sp"
+            android:text="@string/none_text"
+            android:textSize="@dimen/radio_button_text_size"
             android:padding="10dp"/>
 
         <RadioButton
             android:id="@+id/lowButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="low"
-            android:textSize="18sp"
+            android:text="@string/low_text"
+            android:textSize="@dimen/radio_button_text_size"
             android:padding="10dp"/>
 
         <RadioButton
             android:id="@+id/mediumButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Medium"
-            android:textSize="18sp"
+            android:text="@string/medium_text"
+            android:textSize="@dimen/radio_button_text_size"
             android:padding="10dp"/>
 
         <RadioButton
             android:id="@+id/highButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="High"
-            android:textSize="18sp"
+            android:text="@string/high_text"
+            android:textSize="@dimen/radio_button_text_size"
             android:padding="10dp"/>
     </RadioGroup>
 </LinearLayout>

@@ -6,9 +6,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Set a reminder"
+        android:text="@string/reminder_title_text"
         android:textColor="@color/colorPrimary"
-        android:textSize="25dp"
+        android:textSize="@dimen/reminder_title_text_size"
         android:padding="15dp"
         android:layout_marginLeft="10dp"/>
 
@@ -22,40 +22,40 @@
             android:id="@+id/fiveBeforeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="5 minutes before due date"
-            android:textSize="18sp"
+            android:text="@string/five_minutes_text"
+            android:textSize="@dimen/radio_button_text_size"
             android:padding="10dp"/>
 
         <RadioButton
             android:id="@+id/tenBeforeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10 minutes before due date"
-            android:textSize="18sp"
+            android:text="@string/ten_minutes_text"
+            android:textSize="@dimen/radio_button_text_size"
             android:padding="10dp"/>
 
         <RadioButton
             android:id="@+id/twentyBeforeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="20 minutes before due date"
-            android:textSize="18sp"
+            android:text="@string/twenty_minutes_text"
+            android:textSize="@dimen/radio_button_text_size"
             android:padding="10dp"/>
 
         <RadioButton
             android:id="@+id/thirtyBeforeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="30 minutes before due date"
-            android:textSize="18sp"
+            android:text="@string/thirty_minutes_text"
+            android:textSize="@dimen/radio_button_text_size"
             android:padding="10dp"/>
 
         <RadioButton
             android:id="@+id/hourBeforeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1 hour before due date"
-            android:textSize="18sp"
+            android:text="@string/hour_text"
+            android:textSize="@dimen/radio_button_text_size"
             android:padding="10dp"/>
     </RadioGroup>
 </LinearLayout>

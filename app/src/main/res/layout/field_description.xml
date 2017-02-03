@@ -25,7 +25,8 @@
             android:layout_gravity="center"
             android:hint="@string/todo_list_title"
             android:inputType="text"
-            android:imeOptions="actionDone"/>
+            android:imeOptions="actionDone"
+            android:textSize="@dimen/field_description_text_size"/>
 
     </LinearLayout>
 </merge>

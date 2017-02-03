@@ -10,17 +10,17 @@
         android:layout_height="wrap_content"
         android:text="@string/dialog_reminder_title"
         android:textColor="@color/colorPrimary"
-        android:textSize="20sp"
-        android:padding="15dp"/>
+        android:textSize="@dimen/due_date_title_text_size"
+        android:padding="@dimen/due_date_title_pad"/>
 
     <TextView
         android:id="@+id/dateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:paddingLeft="15dp"
+        android:paddingLeft="@dimen/due_date_pad"
         tools:text="Sat, Jan 27"
-        android:textSize="16sp"
+        android:textSize="@dimen/due_date_text_size"
         android:textColor="@android:color/darker_gray"/>
 
     <View
@@ -33,9 +33,9 @@
         android:id="@+id/timeTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
+        android:paddingLeft="@dimen/due_date_time_pad"
         tools:text="10:00 PM"
-        android:textSize="16sp"
+        android:textSize="@dimen/due_date_time_text_size"
         android:textColor="@android:color/darker_gray"/>
 
     <View
@@ -48,8 +48,8 @@
         android:id="@+id/setDueDateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Set Due Date"
-        android:textSize="18sp"
+        android:text="@string/dialog_due_date_set_text_view"
+        android:textSize="@dimen/due_date_set_text_size"
         android:textColor="@color/colorPrimary"
         android:gravity="end"
         android:layout_marginTop="15dp"

@@ -57,7 +57,10 @@
                 android:layout_height="wrap_content"
                 tools:src="@mipmap/ic_low"
                 android:scaleType="fitCenter"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:maxHeight="@dimen/icon_max_height"
+                android:maxWidth="@dimen/icon_max_width"/>
 
             <ImageView
                 android:id="@+id/reminderImageView"
@@ -65,7 +68,10 @@
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_alarm_on"
                 android:scaleType="fitCenter"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:maxHeight="@dimen/icon_max_height"
+                android:maxWidth="@dimen/icon_max_width"/>
 
             <ImageView
                 android:id="@+id/dragImageView"
@@ -74,7 +80,10 @@
                 android:layout_margin="10dp"
                 android:src="@mipmap/ic_drag"
                 android:scaleType="fitCenter"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:maxHeight="@dimen/icon_max_height"
+                android:maxWidth="@dimen/icon_max_width"/>
         </LinearLayout>
 
     <View
