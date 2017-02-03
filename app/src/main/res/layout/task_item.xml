@@ -28,13 +28,15 @@
                 android:gravity="bottom"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
+                android:paddingLeft="@dimen/task_data_left_pad"
                 android:layout_marginLeft="10dp">
 
                 <TextView
                     android:id="@+id/itemDescriptionView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/task_description_text_size"
+                    android:textColor="@android:color/black"
                     tools:text="This is an item"
                     android:maxLines="1"
                     android:ellipsize="end"/>
@@ -44,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/task_due_date_text_size"
                     android:textStyle="italic"
                     tools:text="Due by 12/12/2016 at 00:00:00"/>
             </LinearLayout>
@@ -55,10 +57,6 @@
                 android:layout_height="wrap_content"
                 tools:src="@mipmap/ic_low"
                 android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:maxHeight="30dp"
-                android:maxWidth="30dp"
-                android:scaleX="0.8"
                 android:layout_gravity="center"/>
 
             <ImageView
@@ -67,9 +65,6 @@
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_alarm_on"
                 android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:maxHeight="30dp"
-                android:maxWidth="30dp"
                 android:layout_gravity="center"/>
 
             <ImageView
@@ -79,9 +74,6 @@
                 android:layout_margin="10dp"
                 android:src="@mipmap/ic_drag"
                 android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:maxHeight="30dp"
-                android:maxWidth="30dp"
                 android:layout_gravity="center"/>
         </LinearLayout>
 

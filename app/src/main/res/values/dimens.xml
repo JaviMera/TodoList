@@ -20,4 +20,7 @@
     <dimen name="todo_list_description_text_size">22sp</dimen>
     <dimen name="todo_list_task_number_text_size">15sp</dimen>
     <dimen name="todo_list_due_date_text_size">15sp</dimen>
+    <dimen name="task_description_text_size">20sp</dimen>
+    <dimen name="task_due_date_text_size">15sp</dimen>
+    <dimen name="task_data_left_pad">0dp</dimen>
 </resources>
