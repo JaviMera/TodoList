@@ -57,11 +57,6 @@ public abstract class DialogEditTask extends DialogEdit
         return view;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -86,6 +81,12 @@ public abstract class DialogEditTask extends DialogEdit
 
         return dialog;
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
 
     @Override
     public void onDueDateSelected(Date date) {

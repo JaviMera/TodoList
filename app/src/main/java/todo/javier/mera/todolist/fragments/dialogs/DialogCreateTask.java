@@ -24,13 +24,6 @@ public class DialogCreateTask extends DialogEditTask {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putInt("reminder", mReminderTime);
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
@@ -68,6 +61,13 @@ public class DialogCreateTask extends DialogEditTask {
             reminderDate,
             mPriority
         );
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("reminder", mReminderTime);
     }
 
     @Override

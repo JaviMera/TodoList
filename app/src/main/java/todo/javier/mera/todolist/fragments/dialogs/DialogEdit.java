@@ -82,14 +82,6 @@ public abstract class DialogEdit extends DialogBase
         mFormatter = new SimpleDateFormat("LLL, EEE dd  HH:mm", Locale.ENGLISH);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putLong("due", mDueDate == null ? 0L : mDueDate.getTime());
-        outState.putInt("priority", mPriority.ordinal());
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -122,6 +114,14 @@ public abstract class DialogEdit extends DialogBase
         return createDialog(
             dialogBuilder.create()
         );
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putLong("due", mDueDate == null ? 0L : mDueDate.getTime());
+        outState.putInt("priority", mPriority.ordinal());
     }
 
     @OnClick(R.id.dueDateTextView)

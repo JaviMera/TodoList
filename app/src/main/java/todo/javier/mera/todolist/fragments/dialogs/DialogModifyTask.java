@@ -39,32 +39,6 @@ public class DialogModifyTask extends DialogEditTask {
         mListener = (DialogModifyListener)getTargetFragment();
     }
 
-    @Override
-    protected void saveItem() {
-
-        mTask.setDescription(mEditText.getText().toString());
-        mTask.setDueDate(mDueDate.getTime());
-
-        if(mReminderTime != -1) {
-
-            mTask.setReminder(getReminderDate(mReminderTime).getTime());
-        }
-        else {
-
-            mTask.setReminder(EMPTY_REMINDER);
-        }
-
-        mTask.setPriority(mPriority);
-
-        mListener.onModifyItem(mTask);
-    }
-
-    @Override
-    protected String getSaveText() {
-
-        return "Update";
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -91,5 +65,31 @@ public class DialogModifyTask extends DialogEditTask {
         setPriorityText(mTask.getPriority().ordinal());
 
         return dialog;
+    }
+
+    @Override
+    protected void saveItem() {
+
+        mTask.setDescription(mEditText.getText().toString());
+        mTask.setDueDate(mDueDate.getTime());
+
+        if(mReminderTime != -1) {
+
+            mTask.setReminder(getReminderDate(mReminderTime).getTime());
+        }
+        else {
+
+            mTask.setReminder(EMPTY_REMINDER);
+        }
+
+        mTask.setPriority(mPriority);
+
+        mListener.onModifyItem(mTask);
+    }
+
+    @Override
+    protected String getSaveText() {
+
+        return "Update";
     }
 }
