@@ -9,8 +9,11 @@ import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.animation.TranslateAnimation;
 
 import java.util.Date;
 import java.util.List;
@@ -67,6 +70,9 @@ public class FragmentTask extends FragmentRecycler<Task>
 
         mTodoList = getArguments().getParcelable(TODO_LISt);
         mSortSelected = R.id.sortByNone;
+
+        setEnterTransition(new Slide(Gravity.RIGHT));
+        setExitTransition(new Slide(Gravity.LEFT));
     }
 
     @Override

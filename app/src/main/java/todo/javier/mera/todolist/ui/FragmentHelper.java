@@ -30,7 +30,6 @@ class FragmentHelper {
 
         mManager
             .beginTransaction()
-            .setCustomAnimations(R.anim.left_enter, R.anim.exit_right)
             .replace(containerId, fragment, tag)
             .addToBackStack(name)
             .commit();
