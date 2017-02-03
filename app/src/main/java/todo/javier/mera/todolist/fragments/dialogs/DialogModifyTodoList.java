@@ -43,13 +43,13 @@ public class DialogModifyTodoList extends DialogEditTodoList {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
 
         mTodoList = getArguments().getParcelable("item");
-        mEditText.setText(mTodoList.getDescription());
+        setDescriptionText(mTodoList.getDescription());
 
         Date dueDate = new Date();
         dueDate.setTime(mTodoList.getDueDate());
         onDueDateSelected(dueDate);
 
-        mPriorityTextView.setText(PriorityUtil.getName(mTodoList.getPriority().ordinal()));
+        setPriorityText(mTodoList.getPriority().ordinal());
         return dialog;
     }
 
