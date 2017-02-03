@@ -1,5 +1,7 @@
 package todo.javier.mera.todolist.fragments.dialogs;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.view.animation.Animation;
 
 /**
@@ -14,23 +16,13 @@ class DialogBasePresenter {
         mView = view;
     }
 
-    void updateEditTextHintColor(int colorId) {
+    public void showToast(Context ctx, String msg, int duration) {
 
-        mView.updateEditTextHintColor(colorId);
+        mView.showToast(ctx, msg, duration);
     }
 
-    void startEditTextAnimation(Animation anim) {
+    public AlertDialog createDialog(AlertDialog dialog) {
 
-        mView.startEditTextAnim(anim);
-    }
-
-    void updateEditTextHint(String text) {
-
-        mView.updateEditTextHint(text);
-    }
-
-    void setDialogTitle(String title) {
-
-        mView.setDialogTitle(title);
+        return mView.createDialog(dialog);
     }
 }

@@ -43,16 +43,6 @@ public class MainActivityPresenterTest {
     }
 
     @Test
-    public void showAddButton() throws Exception {
-
-        // Act
-        mPresenter.showFabButton();
-
-        // Assert
-        Mockito.verify(mView).showFabButton();
-    }
-
-    @Test
     public void toggleBackButton() throws Exception {
 
         // Arrange
@@ -86,19 +76,6 @@ public class MainActivityPresenterTest {
 
         // Assert
         Mockito.verify(mView).setToolbarTitle(title);
-    }
-
-    @Test
-    public void setFabVisibility() throws Exception {
-
-        // Arrange
-        int visibility = 1;
-
-        // Act
-        mPresenter.setFabVisibility(visibility);
-
-        // Assert
-        Mockito.verify(mView).setFabVisibility(visibility);
     }
 
     @Test

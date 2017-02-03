@@ -27,7 +27,8 @@ import todo.javier.mera.todolist.ui.MainActivity;
  * Created by javie on 12/6/2016.
  */
 
-public abstract class DialogBase extends DialogFragment {
+public abstract class DialogBase extends DialogFragment
+    implements DialogBaseView {
 
     protected MainActivity mParent;
     protected Animation mShakeAnimation;
@@ -35,6 +36,7 @@ public abstract class DialogBase extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         mParent = (MainActivity)context;
     }
 
@@ -56,14 +58,16 @@ public abstract class DialogBase extends DialogFragment {
             .windowAnimations = R.style.FragmentDialogTaskAnimations;
     }
 
-    protected void showToast(String message) {
+    @Override
+    public void showToast(Context ctx, String message, int duration) {
 
         Toast
-            .makeText(mParent, message, Toast.LENGTH_LONG)
+            .makeText(ctx, message, duration)
             .show();
     }
 
-    protected AlertDialog createDialog(AlertDialog dialog) {
+    @Override
+    public AlertDialog createDialog(AlertDialog dialog) {
 
         dialog.setCanceledOnTouchOutside(false);
         return dialog;

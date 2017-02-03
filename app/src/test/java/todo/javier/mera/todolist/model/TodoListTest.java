@@ -33,7 +33,7 @@ public class TodoListTest {
     public void getTitle() throws Exception {
 
         // Assert
-        Assert.assertEquals(expectedTitle, mTodoList.getTitle());
+        Assert.assertEquals(expectedTitle, mTodoList.getDescription());
     }
 
     @Test
@@ -44,16 +44,9 @@ public class TodoListTest {
     }
 
     @Test
-    public void getCreationdate() throws Exception {
-
-        // Assert
-        Assert.assertEquals(expectedDate, mTodoList.getCreationDate());
-    }
-
-    @Test
     public void getItemsCount() throws Exception {
 
         // Assert
-        Assert.assertEquals(expectedItemcount, mTodoList.getItemsCount());
+        Assert.assertEquals(expectedItemcount, mTodoList.getTaskNumber());
     }
 }

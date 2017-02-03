@@ -1,6 +1,10 @@
 package todo.javier.mera.todolist.fragments.dialogs;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.view.animation.Animation;
+
+import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +12,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import todo.javier.mera.todolist.ui.MainActivity;
 
 /**
  * Created by javie on 12/6/2016.
@@ -27,54 +33,31 @@ public class DialogBasePresenterTest {
     }
 
     @Test
-    public void setDialogTitle() throws Exception {
+    public void showToast() throws Exception {
 
         // Arrange
-        String title = "harambe's memoirs";
+        Context ctx = null;
+        String msg = "";
+        int duration = 0;
 
         // Act
-        mPresenter.setDialogTitle(title);
+        mPresenter.showToast(ctx, msg, duration);
 
         // Assert
-        Mockito.verify(mView).setDialogTitle(title);
+        Mockito.verify(mView).showToast(ctx, msg, duration);
     }
 
     @Test
-    public void updateHintTextColor() throws Exception {
+    public void createDialog() throws Exception {
 
         // Arrange
-        int colorId = 1234;
+        Context ctx = new MainActivity();
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ctx);
 
         // Act
-        mPresenter.updateEditTextHintColor(colorId);
+        mPresenter.createDialog(dialogBuilder.create());
 
         // Assert
-        Mockito.verify(mView).updateEditTextHintColor(colorId);
-    }
-
-    @Test
-    public void startEditTextAnimation() throws Exception {
-
-        // Arrange
-        Animation anim = null;
-
-        // Act
-        mPresenter.startEditTextAnimation(anim);
-
-        // Assert
-        Mockito.verify(mView).startEditTextAnim(anim);
-    }
-
-    @Test
-    public void updateEditTextHint() throws Exception {
-
-        // Arrange
-        String text = "harambe";
-
-        // Act
-        mPresenter.updateEditTextHint(text);
-
-        // Assert
-        Mockito.verify(mView).updateEditTextHint(text);
+        Mockito.verify(mView).createDialog(dialogBuilder.create());
     }
 }

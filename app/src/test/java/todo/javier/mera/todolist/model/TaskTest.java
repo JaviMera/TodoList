@@ -17,10 +17,10 @@ public class TaskTest {
     private String mExpectedItemId = UUID.randomUUID().toString();
     private String mExpectedDescription = "Some task to do";
     private TaskStatus mExpectedStatus = TaskStatus.Created;
-    private long mExpectedCreationDate = new Date().getTime();
     private Task mTask;
     private long mExpectedDueDate = new Date().getTime();
     private Priority mExpectedPriority = Priority.None;
+    private long mExpectedReminderDate = new Date().getTime();
 
     @Before
     public void setUp() throws Exception {
@@ -30,9 +30,9 @@ public class TaskTest {
             mExpectedTodolistId,
             mExpectedDescription,
             mExpectedStatus,
-            mExpectedCreationDate,
             mExpectedDueDate,
-            mExpectedPriority
+            mExpectedPriority,
+            mExpectedReminderDate
         );
     }
 
@@ -62,13 +62,6 @@ public class TaskTest {
 
         // Assert
         Assert.assertEquals(mExpectedStatus, mTask.getStatus());
-    }
-
-    @Test
-    public void getCreationDate() throws Exception {
-
-        // Assert
-        Assert.assertEquals(mExpectedCreationDate, mTask.getCreationDate());
     }
 
     @Test
@@ -131,5 +124,12 @@ public class TaskTest {
 
         // Assert
         Assert.assertEquals(newPriority, mTask.getPriority());
+    }
+
+    @Test
+    public void getReminderDate() throws Exception {
+
+        // Assert
+        Assert.assertEquals(mExpectedReminderDate, mTask.getReminderDate());
     }
 }

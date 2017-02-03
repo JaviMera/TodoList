@@ -22,9 +22,14 @@ import todo.javier.mera.todolist.R;
  * Created by javie on 1/23/2017.
  */
 
-public class DialogPriority extends DialogFragment {
+public class DialogPriority extends DialogBase {
 
     private PriorityListener mListener;
+
+    public static DialogPriority newInstance() {
+
+        return new DialogPriority();
+    }
 
     @BindView(R.id.priorityRadioGroup)
     RadioGroup mPriorityGroup;

@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,7 +30,19 @@ import todo.javier.mera.todolist.model.PriorityUtil;
  */
 
 public abstract class DialogEdit extends DialogBase
-    implements DueDateListener, PriorityListener {
+    implements
+    DialogEditView,
+    DueDateListener,
+    PriorityListener {
+
+    private DialogEditPresenter mPresenter;
+
+    private Map<Integer, DialogBase> mDialogs = new LinkedHashMap<Integer, DialogBase>(){
+        {
+            put(R.id.dueDateTextView, DialogDueDate.newInstance());
+            put(R.id.priorityTextView, DialogPriority.newInstance());
+        }
+    };
 
     protected Map<Integer, Integer> priorityOptions = new LinkedHashMap<Integer, Integer>() {
         {
@@ -38,6 +52,7 @@ public abstract class DialogEdit extends DialogBase
             put(R.id.highButton, 3);
         }
     };
+    private SimpleDateFormat mFormatter;
 
     protected abstract String getTitle();
     protected abstract View getLayout();
@@ -70,6 +85,7 @@ public abstract class DialogEdit extends DialogBase
         super.onCreate(savedInstanceState);
 
         mPriority = Priority.None;
+        mFormatter = new SimpleDateFormat("LLL, EEE dd  HH:mm", Locale.ENGLISH);
     }
 
     @NonNull
@@ -78,8 +94,11 @@ public abstract class DialogEdit extends DialogBase
 
         View view = getLayout();
         ButterKnife.bind(this, view);
-        mTitleView.setText(getTitle());
-        mSaveTextView.setText(getSaveText());
+
+        mPresenter = new DialogEditPresenter(this);
+        mPresenter.setTitle(getTitle());
+        mPresenter.setSaveText(getSaveText());
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mParent);
         dialogBuilder.setView(view);
 
@@ -88,30 +107,17 @@ public abstract class DialogEdit extends DialogBase
         );
     }
 
-    @OnClick(R.id.dueDateTextView)
-    public void onDueDateClick(View view) {
+    @OnClick({R.id.dueDateTextView, R.id.priorityTextView})
+    public void onTextViewClick(View view) {
 
         // Explicitly hide the virtual keyboard when taped on add due date text view
         // if the user didn't press enter after entering a description, the keyboard will still be
         // present.
         mParent.hideSoftKeyboard(view);
 
-        DialogDueDate dialog = DialogDueDate.newInstance();
+        DialogBase dialog = mDialogs.get(view.getId());
         dialog.setTargetFragment(this, 1);
-        dialog.show(mParent.getSupportFragmentManager(), "due_date_dialog");
-    }
-
-    @OnClick(R.id.priorityTextView)
-    public void onPriorityClick(View view) {
-
-        // Explicitly hide the virtual keyboard when taped on add due date text view
-        // if the user didn't press enter after entering a description, the keyboard will still be
-        // present.
-        mParent.hideSoftKeyboard(view);
-
-        DialogPriority dialog = new DialogPriority();
-        dialog.setTargetFragment(this, 1);
-        dialog.show(mParent.getSupportFragmentManager(), "priority_dialog");
+        dialog.show(mParent.getSupportFragmentManager(), "dialog");
     }
 
     @Override
@@ -119,9 +125,7 @@ public abstract class DialogEdit extends DialogBase
 
         mDueDate = new Date();
         mDueDate.setTime(date.getTime());
-        SimpleDateFormat format = new SimpleDateFormat("LLL, EEE dd  HH:mm", Locale.ENGLISH);
-
-        mDueDateTextView.setText(format.format(mDueDate));
+        mPresenter.setDueDateText(mDueDate, mFormatter);
     }
 
     @Override
@@ -129,7 +133,7 @@ public abstract class DialogEdit extends DialogBase
 
         int position = priorityOptions.get(buttonId);
         mPriority = Priority.values()[position];
-        mPriorityTextView.setText(PriorityUtil.getName(mPriority.ordinal()));
+        mPresenter.setPriorityText(mPriority.ordinal());
     }
 
     @OnClick(R.id.saveItemView)
@@ -137,15 +141,15 @@ public abstract class DialogEdit extends DialogBase
 
         if(mEditText.getText().toString().isEmpty()) {
 
-            showToast("To-do list title cannot be blank.");
-            mEditText.startAnimation(mShakeAnimation);
+            showToast(mParent, "To-do list title cannot be blank.", Toast.LENGTH_SHORT);
+            mPresenter.startAnimation(mEditText, mShakeAnimation);
             return;
         }
 
         if(mDueDate == null) {
 
-            showToast("Task due date cannot be blank.");
-            mDueDateTextView.startAnimation(mShakeAnimation);
+            showToast(mParent, "Task due date cannot be blank.", Toast.LENGTH_SHORT);
+            mPresenter.startAnimation(mDueDateTextView, mShakeAnimation);
             return;
         }
 
@@ -157,5 +161,37 @@ public abstract class DialogEdit extends DialogBase
     public void onCancelClick(View view) {
 
         dismiss();
+    }
+
+    @Override
+    public void setTitle(String title) {
+
+        mTitleView.setText(title);
+    }
+
+    @Override
+    public void setSaveText(String saveText) {
+
+        mSaveTextView.setText(saveText);
+    }
+
+    @Override
+    public void setDueDateText(Date date, SimpleDateFormat formatter) {
+
+        mDueDateTextView.setText(formatter.format(mDueDate));
+    }
+
+    @Override
+    public void setPriorityText(int position) {
+
+        mPriorityTextView.setText(
+                PriorityUtil.getName(position)
+        );
+    }
+
+    @Override
+    public void startAnimation(View view, Animation animation) {
+
+        view.startAnimation(animation);
     }
 }

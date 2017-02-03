@@ -1,5 +1,6 @@
 package todo.javier.mera.todolist.fragments.dialogs;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.animation.Animation;
 
@@ -8,8 +9,6 @@ import android.view.animation.Animation;
  */
 public interface DialogBaseView {
 
-    void updateEditTextHintColor(int colorId);
-    void updateEditTextHint(String text);
-    void startEditTextAnim(Animation anim);
-    void setDialogTitle(String title);
+    void showToast(Context ctx, String message, int duration);
+    AlertDialog createDialog(AlertDialog dialog);
 }
