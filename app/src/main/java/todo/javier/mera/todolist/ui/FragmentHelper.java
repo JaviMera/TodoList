@@ -3,6 +3,8 @@ package todo.javier.mera.todolist.ui;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 
+import todo.javier.mera.todolist.R;
+
 /**
  * Created by javie on 12/3/2016.
  */
@@ -28,6 +30,7 @@ class FragmentHelper {
 
         mManager
             .beginTransaction()
+            .setCustomAnimations(R.anim.left_enter, R.anim.exit_right)
             .replace(containerId, fragment, tag)
             .addToBackStack(name)
             .commit();
