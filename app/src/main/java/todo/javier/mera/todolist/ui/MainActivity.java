@@ -122,15 +122,7 @@ public class MainActivity extends AppCompatActivity
 
             mCurrentFragment.resetItems();
             mPresenter.updateToolbarBackground(R.color.colorPrimary);
-
-            if(mCurrentFragment instanceof FragmentTodoList) {
-
-                mPresenter.toggleBackButton(false);
-            }
-            else {
-
-                mPresenter.toggleBackButton(true);
-            }
+            canDisplayToggleButton(mCurrentFragment);
         }
         else {
 
@@ -329,5 +321,17 @@ public class MainActivity extends AppCompatActivity
         );
 
         return notificationBuilder.build();
+    }
+
+    public void canDisplayToggleButton(FragmentRecycler tFragmentRecycler) {
+
+        if(tFragmentRecycler instanceof FragmentTodoList) {
+
+            mPresenter.toggleBackButton(false);
+        }
+        else {
+
+            mPresenter.toggleBackButton(true);
+        }
     }
 }
