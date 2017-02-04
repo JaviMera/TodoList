@@ -92,8 +92,14 @@ public class DialogModifyTask extends DialogEditTask {
     }
 
     @Override
+    protected String getTitle() {
+
+        return "Edit Task!";
+    }
+
+    @Override
     protected String getSaveText() {
 
-        return "Update";
+        return "update";
     }
 }

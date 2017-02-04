@@ -76,7 +76,7 @@ public class DialogModifyTodoList extends DialogEditTodoList {
     @Override
     protected String getSaveText() {
 
-        return "Update";
+        return "update";
     }
 
     @Override
