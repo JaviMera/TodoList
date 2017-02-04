@@ -110,6 +110,9 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
         mPresenter.setItemAnimator(new FadeInDownAnimator(new LinearOutSlowInInterpolator()));
 
+        // Make the initial addition of items a bit slower for better user experience
+        mRecyclerView.getItemAnimator().setAddDuration(300);
+
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
         mHelper = new ItemTouchHelper(callback);
         mHelper.attachToRecyclerView(mRecyclerView);

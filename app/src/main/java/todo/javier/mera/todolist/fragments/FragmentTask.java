@@ -13,6 +13,7 @@ import android.transition.Slide;
 import android.view.Gravity;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.animation.DecelerateInterpolator;
 
 import java.util.Date;
 import java.util.List;
@@ -20,7 +21,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
+import jp.wasabeef.recyclerview.animators.FadeInLeftAnimator;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
+import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.ReminderClickListener;
@@ -211,10 +215,10 @@ public class FragmentTask extends FragmentRecycler<Task>
         long reminderDate,
         Priority priority) {
 
-        setItemAnimator(new FadeInUpAnimator());
+        setItemAnimator(new FadeInLeftAnimator());
+        mRecyclerView.getItemAnimator().setAddDuration(500);
 
         TodoListDataSource source = new TodoListDataSource(mParent);
-
         String taskId = UUID.randomUUID().toString();
         TaskStatus taskStatus = TaskStatus.Created;
 
@@ -326,6 +330,9 @@ public class FragmentTask extends FragmentRecycler<Task>
 
     @Override
     public void onModifyItem(Task task) {
+
+        setItemAnimator(new SlideInLeftAnimator());
+        mRecyclerView.getItemAnimator().setChangeDuration(500);
 
         ContentValues values = new ContentValues();
         TodoListDataSource dataSource = new TodoListDataSource(mParent);
