@@ -85,8 +85,9 @@ public abstract class DialogEditTask extends DialogEdit
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-    }
 
+        outState.putInt("reminder", mReminderTime);
+    }
 
     @Override
     public void onDueDateSelected(Date date) {

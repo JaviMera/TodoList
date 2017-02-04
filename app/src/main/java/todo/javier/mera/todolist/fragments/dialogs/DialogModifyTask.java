@@ -46,24 +46,27 @@ public class DialogModifyTask extends DialogEditTask {
 
         mTask = getArguments().getParcelable(TASK_SELECTED);
 
-        // Set the description of the task selected
-        setDescriptionText(mTask.getDescription());
+        if(savedInstanceState == null) {
 
-        Date dueDate = new Date();
-        dueDate.setTime(mTask.getDueDate());
+            // Set the description of the task selected
+            setDescriptionText(mTask.getDescription());
 
-        // Set the due date of the task selected
-        onDueDateSelected(dueDate);
+            Date dueDate = new Date();
+            dueDate.setTime(mTask.getDueDate());
 
-        // Set the reminder of the task selected, if there is any
-        if(mTask.getReminderDate() != EMPTY_REMINDER) {
+            // Set the due date of the task selected
+            onDueDateSelected(dueDate);
 
-            setReminderText(mFormatter.format(mTask.getReminderDate()));
+            // Set the reminder of the task selected, if there is any
+            if(mTask.getReminderDate() != EMPTY_REMINDER) {
+
+                setReminderText(mFormatter.format(mTask.getReminderDate()));
+            }
+
+            // Set the priority of the task selected
+            mPriority = mTask.getPriority();
+            setPriorityText(mTask.getPriority().ordinal());
         }
-
-        // Set the priority of the task selected
-        mPriority = mTask.getPriority();
-        setPriorityText(mTask.getPriority().ordinal());
 
         return dialog;
     }

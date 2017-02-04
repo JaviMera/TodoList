@@ -64,13 +64,6 @@ public class DialogCreateTask extends DialogEditTask {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putInt("reminder", mReminderTime);
-    }
-
-    @Override
     protected String getSaveText() {
 
         return "create";
