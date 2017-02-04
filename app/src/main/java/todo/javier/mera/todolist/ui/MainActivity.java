@@ -239,7 +239,8 @@ public class MainActivity extends AppCompatActivity
         mAlarmManager.cancel(pendingIntent);
     }
 
-    public void setReminder(Task task) {
+    @Override
+    public void createReminder(Task task) {
 
         Notification notification = createNotification(
             "Task Reminder",

@@ -1,5 +1,7 @@
 package todo.javier.mera.todolist.ui;
 
+import android.view.View;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import todo.javier.mera.todolist.model.ItemBase;
+import todo.javier.mera.todolist.model.Task;
 
 /**
  * Created by javie on 12/17/2016.
@@ -104,5 +107,44 @@ public class MainActivityPresenterTest {
 
         // Assert
         Mockito.verify(mView).setIndicator(resourceId);
+    }
+
+    @Test
+    public void hideSoftKeyboard() throws Exception {
+
+        // Arrange
+        View view = null;
+
+        // Act
+        mPresenter.hideSoftKeyboard(view);
+
+        // Assert
+        Mockito.verify(mView).hideSoftKeyboard(view);
+    }
+
+    @Test
+    public void cancelReminder() throws Exception {
+
+        // Arrange
+        Task someTask = null;
+
+        // Act
+        mPresenter.cancelReminder(someTask);
+
+        // Assert
+        Mockito.verify(mView).cancelReminder(someTask);
+    }
+
+    @Test
+    public void createReminder() throws Exception {
+
+        // Arrange
+        Task someTask = null;
+
+        // Act
+        mPresenter.createReminder(someTask);
+
+        // Assert
+        Mockito.verify(mView).createReminder(someTask);
     }
 }

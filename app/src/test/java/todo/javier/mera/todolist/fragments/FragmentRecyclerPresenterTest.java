@@ -61,7 +61,6 @@ public class FragmentRecyclerPresenterTest {
 
         // Arrange
         Context context = null;
-        int orientation = 1;
 
         // Act
         mPresenter.setLayoutManager(context);

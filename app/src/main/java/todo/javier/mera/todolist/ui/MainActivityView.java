@@ -22,4 +22,5 @@ public interface MainActivityView {
     void setIndicator(int resourceId);
     void hideSoftKeyboard(View view);
     void cancelReminder(Task task);
+    void createReminder(Task task);
 }

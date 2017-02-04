@@ -13,7 +13,6 @@ import android.transition.Slide;
 import android.view.Gravity;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.animation.TranslateAnimation;
 
 import java.util.Date;
 import java.util.List;
@@ -34,7 +33,6 @@ import todo.javier.mera.todolist.fragments.dialogs.DialogCreateTask;
 import todo.javier.mera.todolist.fragments.dialogs.DialogModifyListener;
 import todo.javier.mera.todolist.fragments.dialogs.DialogModifyTask;
 import todo.javier.mera.todolist.fragments.dialogs.DialogCreateTaskListener;
-import todo.javier.mera.todolist.fragments.dialogs.ReminderListener;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.Priority;
 import todo.javier.mera.todolist.model.TaskStatus;
@@ -248,7 +246,7 @@ public class FragmentTask extends FragmentRecycler<Task>
 
             if(reminderDate != 0L) {
 
-                mParent.setReminder(newTask);
+                mParent.createReminder(newTask);
             }
         }
     }
@@ -349,7 +347,7 @@ public class FragmentTask extends FragmentRecycler<Task>
 
             if(task.getReminderDate() != 0L) {
 
-                mParent.setReminder(task);
+                mParent.createReminder(task);
                 mAdapter.updateItem(task);
             }
             else {

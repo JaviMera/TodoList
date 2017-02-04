@@ -1,8 +1,11 @@
 package todo.javier.mera.todolist.ui;
 
+import android.view.View;
+
 import java.util.Map;
 
 import todo.javier.mera.todolist.model.ItemBase;
+import todo.javier.mera.todolist.model.Task;
 
 /**
  * Created by javie on 12/17/2016.
@@ -48,4 +51,18 @@ public class MainActivityPresenter {
         mView.setIndicator(resourceId);
     }
 
+    public void hideSoftKeyboard(View view) {
+
+        mView.hideSoftKeyboard(view);
+    }
+
+    public void cancelReminder(Task someTask) {
+
+        mView.cancelReminder(someTask);
+    }
+
+    public void createReminder(Task someTask) {
+
+
+    }
 }

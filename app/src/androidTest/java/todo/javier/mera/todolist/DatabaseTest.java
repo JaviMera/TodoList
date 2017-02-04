@@ -78,7 +78,6 @@ public class DatabaseTest {
             "My Task",
             TaskStatus.Created,
             new Date().getTime(),
-            new Date().getTime(),
             Priority.None,
             new Date().getTime()
         );
@@ -159,7 +158,6 @@ public class DatabaseTest {
         Assert.assertEquals(task.getId(), item.getId());
         Assert.assertEquals(task.getTodoListId(), item.getTodoListId());
         Assert.assertEquals(task.getDescription(), item.getDescription());
-        Assert.assertEquals(task.getCreationDate(), item.getCreationDate());;
         Assert.assertEquals(task.getDueDate(), item.getDueDate());
         Assert.assertEquals(task.getDueDate(), item.getDueDate());
         Assert.assertEquals(task.getStatus(), item.getStatus());
