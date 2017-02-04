@@ -47,7 +47,7 @@ class TaskViewHolder extends ViewHolderBase<Task>
     }
 
     @Override
-    public void bind(final Task task) {
+    public void bind(Task task) {
 
         setDescription(task.getDescription());
         setDueDate(task.getDueDate());

@@ -218,6 +218,8 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
             int position = comparator.getPosition(newList, lists);
 
             mAdapter.addItem(position, newList);
+
+            mParent.showSnackBar("ADDED NEW LIST!", null, null);
         }
     }
 

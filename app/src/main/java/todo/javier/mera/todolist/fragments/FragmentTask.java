@@ -244,6 +244,8 @@ public class FragmentTask extends FragmentRecycler<Task>
             int position = comparator.getPosition(newTask, tasks);
             mAdapter.addItem(position, newTask);
 
+            mParent.showSnackBar("ADDED NEW TASK!", null, null);
+
             if(reminderDate != 0L) {
 
                 mParent.setReminder(newTask);
