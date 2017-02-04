@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
 
             mCurrentFragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
             mFragmentHelper.replace(R.id.fragmentContainer, mCurrentFragment, FRAGMENT_TAG);
-            mPresenter.toggleBackButton(true);
+            canDisplayToggleButton(mCurrentFragment);
         }
         else {
 
