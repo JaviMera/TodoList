@@ -36,7 +36,7 @@
     <dimen name="field_priority_message_text_size">12sp</dimen>
     <dimen name="field_reminder_text_size">15sp</dimen>
     <dimen name="create_item_text_size">15sp</dimen>
-    <dimen name="cancel_item_text_size">20sp</dimen>
+    <dimen name="cancel_item_text_size">15sp</dimen>
     <dimen name="icon_max_height">30dp</dimen>
     <dimen name="icon_max_width">30dp</dimen>
     <dimen name="priority_title_text_size">25sp</dimen>

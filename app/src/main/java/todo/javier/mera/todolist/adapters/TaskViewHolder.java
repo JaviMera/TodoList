@@ -3,11 +3,15 @@ package todo.javier.mera.todolist.adapters;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.Spanned;
+import android.text.style.StrikethroughSpan;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -98,6 +102,25 @@ class TaskViewHolder extends ViewHolderBase<Task>
         mStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isCompleted) {
+
+            if(isCompleted) {
+
+                mDescriptionView.setText(mDescriptionView.getText().toString(), TextView.BufferType.SPANNABLE);
+                Spannable spannable = (Spannable) mDescriptionView.getText();
+                spannable.setSpan(new StrikethroughSpan(), 0, mDescriptionView.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                mDueDateTextView.setText(mDueDateTextView.getText().toString(), TextView.BufferType.SPANNABLE);
+                Spannable dueDateSpan = (Spannable) mDueDateTextView.getText();
+                dueDateSpan.setSpan(new StrikethroughSpan(), 0, mDueDateTextView.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+            else{
+
+                String descriptionText = mDescriptionView.getText().toString();
+                mDescriptionView.setText(descriptionText);
+
+                String dueDateText = mDueDateTextView.getText().toString();
+                mDueDateTextView.setText(dueDateText);
+            }
 
             mTaskListener.onUpdateStatus(getAdapterPosition(), isCompleted);
             }
