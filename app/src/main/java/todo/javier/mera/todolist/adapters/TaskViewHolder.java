@@ -105,21 +105,13 @@ class TaskViewHolder extends ViewHolderBase<Task>
 
             if(isCompleted) {
 
-                mDescriptionView.setText(mDescriptionView.getText().toString(), TextView.BufferType.SPANNABLE);
-                Spannable spannable = (Spannable) mDescriptionView.getText();
-                spannable.setSpan(new StrikethroughSpan(), 0, mDescriptionView.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                mDueDateTextView.setText(mDueDateTextView.getText().toString(), TextView.BufferType.SPANNABLE);
-                Spannable dueDateSpan = (Spannable) mDueDateTextView.getText();
-                dueDateSpan.setSpan(new StrikethroughSpan(), 0, mDueDateTextView.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                strikeThroughTextView(mDescriptionView);
+                strikeThroughTextView(mDueDateTextView);
             }
             else{
 
-                String descriptionText = mDescriptionView.getText().toString();
-                mDescriptionView.setText(descriptionText);
-
-                String dueDateText = mDueDateTextView.getText().toString();
-                mDueDateTextView.setText(dueDateText);
+                removeStrikeThroughTextView(mDescriptionView);
+                removeStrikeThroughTextView(mDueDateTextView);
             }
 
             mTaskListener.onUpdateStatus(getAdapterPosition(), isCompleted);
@@ -189,5 +181,18 @@ class TaskViewHolder extends ViewHolderBase<Task>
 
             setVisibility(mReminderImageView, View.GONE);
         }
+    }
+
+    private void strikeThroughTextView (TextView view) {
+
+        view.setText(view.getText().toString(), TextView.BufferType.SPANNABLE);
+        Spannable spannable = (Spannable) view.getText();
+        spannable.setSpan(new StrikethroughSpan(), 0, view.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    private void removeStrikeThroughTextView(TextView view) {
+
+        String viewText = view.getText().toString();
+        view.setText(viewText);
     }
 }
