@@ -71,6 +71,16 @@ class TaskViewHolder extends ViewHolderBase<Task>
             setPriority(task.getPriority());
             setReminder(task.getReminderDate());
         }
+
+        if (task.getStatus() == TaskStatus.Completed) {
+
+            strikeThroughTextView(mDescriptionView);
+            strikeThroughTextView(mDueDateTextView);
+        } else {
+
+            removeStrikeThroughTextView(mDescriptionView);
+            removeStrikeThroughTextView(mDueDateTextView);
+        }
     }
 
     @Override
@@ -103,12 +113,11 @@ class TaskViewHolder extends ViewHolderBase<Task>
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isCompleted) {
 
-            if(isCompleted) {
+            if (isCompleted) {
 
                 strikeThroughTextView(mDescriptionView);
                 strikeThroughTextView(mDueDateTextView);
-            }
-            else{
+            } else {
 
                 removeStrikeThroughTextView(mDescriptionView);
                 removeStrikeThroughTextView(mDueDateTextView);
@@ -125,7 +134,7 @@ class TaskViewHolder extends ViewHolderBase<Task>
             @Override
             public void onClick(View view) {
 
-                ((FragmentTask)mParent).onReminderClick(getLayoutPosition());
+            ((FragmentTask)mParent).onReminderClick(getLayoutPosition());
             }
         });
 

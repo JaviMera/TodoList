@@ -125,6 +125,7 @@ public abstract class RecyclerAdapter<T extends ItemBase, H extends ViewHolderBa
         }
 
         mFragment.onItemsUpdate(items);
+        notifyItemChanged(newPosition);
     }
 
     public int getRemovableCount() {

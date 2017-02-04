@@ -327,12 +327,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
         return LinearLayoutManager.VERTICAL;
     }
 
-    protected void scrollToLastPosition() {
-
-        int lastPosition = mAdapter.getItemCount();
-        mRecyclerView.smoothScrollToPosition(lastPosition);
-    }
-
     public boolean isRemovingItems() {
 
         return mIsRemovingItems;
