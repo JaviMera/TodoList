@@ -306,4 +306,20 @@ public class DatabaseTest {
         Assert.assertTrue(tasks.isEmpty());
         Assert.assertTrue(expectedRowCount > -1);
     }
+
+    @Test
+    public void dbShouldReadMaxTodoListPosition() throws Exception {
+
+        // Arrange
+        TodoList list1 = createTodoList(Priority.None);
+        TodoList list2 = createTodoList(Priority.None);
+
+        // act
+        mDataSource.createTodoList(list1, 0);
+        mDataSource.createTodoList(list2, 1);
+
+        // Arrange
+        int position = mDataSource.getLastTodoList();
+        Assert.assertEquals(1, position);
+    }
 }

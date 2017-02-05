@@ -2,14 +2,17 @@ package todo.javier.mera.todolist.ui;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
@@ -26,6 +29,9 @@ import todo.javier.mera.todolist.model.TodoList;
 public class MainActivity extends ActivityBase
     implements
     DialogTodoListListener{
+
+    @BindView(R.id.activity_main)
+    LinearLayout mLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +60,9 @@ public class MainActivity extends ActivityBase
 
         String id = UUID.randomUUID().toString();
         long date = dueDate.getTime();
-        TodoListDataSource source = new TodoListDataSource(this);
+        int position = getNextPosition();
 
-        int position = source.getLastTodoList();
-//        setItemAnimator(new FlipInTopXAnimator());
+        TodoListDataSource source = new TodoListDataSource(this);
         TodoList newList = new TodoList(
             id,
             name,
@@ -69,18 +74,23 @@ public class MainActivity extends ActivityBase
             position
         );
 
-//        if(rowId != -1 ){
-//
-//            Comparator comparator = new ComparatorFactory<TodoList>()
-//                .getComparator(mSortSelected);
-//
-//            List<TodoList> lists = mAdapter.getItems();
-//            int position = comparator.getPosition(newList, lists);
-//
-//            mAdapter.addItem(position, newList);
-//
-//            mParent.showSnackBar("ADDED NEW LIST!", null, null);
-//        }
+        if(rowId != -1 ){
+
+            Snackbar snackbar = Snackbar.make(
+                mLayout,
+                "ADDED NEW LIST!",
+                Snackbar.LENGTH_SHORT
+            );
+
+            snackbar.show();
+        }
     }
 
+    private int getNextPosition() {
+
+        TodoListDataSource source = new TodoListDataSource(this);
+        int position = source.getLastTodoList();
+
+       return position == -1 ? 0 : position;
+    }
 }
