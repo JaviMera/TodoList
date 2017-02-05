@@ -14,7 +14,7 @@ public class DialogCreateTodoList extends DialogEditTodoList {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        mListener = (DialogTodoListListener) getTargetFragment();
+        mListener = (DialogTodoListListener) context;
     }
 
     @Override

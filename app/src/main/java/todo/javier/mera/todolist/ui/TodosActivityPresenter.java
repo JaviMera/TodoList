@@ -11,11 +11,11 @@ import todo.javier.mera.todolist.model.Task;
  * Created by javie on 12/17/2016.
  */
 
-public class MainActivityPresenter {
+public class TodosActivityPresenter {
 
-    private MainActivityView mView;
+    private TodosActivityView mView;
 
-    public MainActivityPresenter(MainActivityView view) {
+    public TodosActivityPresenter(TodosActivityView view) {
 
         mView = view;
     }
@@ -49,11 +49,6 @@ public class MainActivityPresenter {
     public void setIndicator(int resourceId) {
 
         mView.setIndicator(resourceId);
-    }
-
-    public void hideSoftKeyboard(View view) {
-
-        mView.hideSoftKeyboard(view);
     }
 
     public void cancelReminder(Task someTask) {

@@ -2,9 +2,6 @@ package todo.javier.mera.todolist.fragments.dialogs;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.view.animation.Animation;
-
-import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import todo.javier.mera.todolist.ui.MainActivity;
+import todo.javier.mera.todolist.ui.TodosActivity;
 
 /**
  * Created by javie on 12/6/2016.
@@ -51,7 +48,7 @@ public class DialogBasePresenterTest {
     public void createDialog() throws Exception {
 
         // Arrange
-        Context ctx = new MainActivity();
+        Context ctx = new TodosActivity();
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ctx);
 
         // Act

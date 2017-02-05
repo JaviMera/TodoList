@@ -396,4 +396,32 @@ public class TodoListDataSource {
             reminder
         );
     }
+
+    public int getLastTodoList() {
+
+        mDb = openReadable();
+        Cursor cursor = getCursor(
+            mDb,
+            TodoListSQLiteHelper.TABLE_TODO_LISTS,
+            new String[]{TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION},
+            null,
+            null,
+            TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION + " DESC"
+        );
+
+        if(cursor.moveToFirst()) {
+
+            do {
+
+                int position = getInt(cursor, TodoListSQLiteHelper.COLUMN_TODO_LIST_POSITION);
+                return position;
+
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+        close(mDb);
+
+        return -1;
+    }
 }

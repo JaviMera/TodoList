@@ -19,17 +19,17 @@ import todo.javier.mera.todolist.model.Task;
  * Created by javie on 12/17/2016.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class MainActivityPresenterTest {
+public class TodosActivityPresenterTest {
 
     @Mock
-    public MainActivityView mView;
+    public TodosActivityView mView;
 
-    private MainActivityPresenter mPresenter;
+    private TodosActivityPresenter mPresenter;
 
     @Before
     public void setUp() throws Exception {
 
-        mPresenter = new MainActivityPresenter(mView);
+        mPresenter = new TodosActivityPresenter(mView);
     }
 
     @Test
@@ -107,19 +107,6 @@ public class MainActivityPresenterTest {
 
         // Assert
         Mockito.verify(mView).setIndicator(resourceId);
-    }
-
-    @Test
-    public void hideSoftKeyboard() throws Exception {
-
-        // Arrange
-        View view = null;
-
-        // Act
-        mPresenter.hideSoftKeyboard(view);
-
-        // Assert
-        Mockito.verify(mView).hideSoftKeyboard(view);
     }
 
     @Test

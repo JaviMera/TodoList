@@ -10,5 +10,4 @@ import todo.javier.mera.todolist.model.Priority;
 public interface DialogTodoListListener {
 
     void onCreateTodoList(String name, Date dueDate, Priority priority);
-    void onNavigateClick(int position);
 }

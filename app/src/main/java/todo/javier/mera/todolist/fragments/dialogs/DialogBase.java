@@ -3,28 +3,14 @@ package todo.javier.mera.todolist.fragments.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import todo.javier.mera.todolist.R;
-import todo.javier.mera.todolist.ui.MainActivity;
+import todo.javier.mera.todolist.ui.ActivityBase;
 
 /**
  * Created by javie on 12/6/2016.
@@ -33,14 +19,14 @@ import todo.javier.mera.todolist.ui.MainActivity;
 public abstract class DialogBase extends DialogFragment
     implements DialogBaseView {
 
-    protected MainActivity mParent;
+    protected ActivityBase mParent;
     protected Animation mShakeAnimation;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        mParent = (MainActivity)context;
+        mParent = (ActivityBase)context;
     }
 
     @NonNull

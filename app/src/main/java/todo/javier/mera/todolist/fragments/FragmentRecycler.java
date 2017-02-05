@@ -32,9 +32,8 @@ import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.OnStartDragListener;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.SimpleItemTouchHelperCallback;
-import todo.javier.mera.todolist.model.Decoration;
 import todo.javier.mera.todolist.model.ItemBase;
-import todo.javier.mera.todolist.ui.MainActivity;
+import todo.javier.mera.todolist.ui.TodosActivity;
 
 /**
  * Created by javie on 12/5/2016.
@@ -50,7 +49,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     private Map<Integer, T> mRemovableItems;
     private ItemTouchHelper mHelper;
 
-    protected MainActivity mParent;
+    protected TodosActivity mParent;
     protected RecyclerAdapter mAdapter;
 
     protected abstract RecyclerAdapter createAdapter();
@@ -77,7 +76,7 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mParent = (MainActivity) getActivity();
+        mParent = (TodosActivity) getActivity();
         mIsRemovingItems = false;
 
         // Use a treemap because the order of the map will matter.

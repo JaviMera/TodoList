@@ -364,6 +364,11 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
+    public void onNavigateClick(int position) {
+
+    }
+
+    @Override
     public void onReminderClick(int position) {
 
         Task task = (Task) mAdapter.getItem(position);

@@ -39,7 +39,6 @@ import todo.javier.mera.todolist.model.TodoList;
 
 public class FragmentTodoList extends FragmentRecycler<TodoList>
     implements
-    DialogTodoListListener,
     DialogModifyListener<TodoList>,
     PopupMenu.OnMenuItemClickListener {
 
@@ -181,39 +180,6 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
         List<TodoList> todoLists = source.readTodoLists();
 
         return todoLists;
-    }
-
-    @Override
-    public void onCreateTodoList(String name, Date dueDate, Priority priority) {
-
-        String id = UUID.randomUUID().toString();
-        long date = dueDate.getTime();
-        TodoListDataSource source = new TodoListDataSource(mParent);
-
-        setItemAnimator(new FlipInTopXAnimator());
-        TodoList newList = new TodoList(
-            id,
-            name,
-            date,
-            priority);
-
-        long rowId = source.createTodoList(
-            newList,
-            mAdapter.getItemCount()
-        );
-
-        if(rowId != -1 ){
-
-            Comparator comparator = new ComparatorFactory<TodoList>()
-                .getComparator(mSortSelected);
-
-            List<TodoList> lists = mAdapter.getItems();
-            int position = comparator.getPosition(newList, lists);
-
-            mAdapter.addItem(position, newList);
-
-            mParent.showSnackBar("ADDED NEW LIST!", null, null);
-        }
     }
 
     @Override

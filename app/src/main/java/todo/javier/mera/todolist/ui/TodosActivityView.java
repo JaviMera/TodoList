@@ -11,7 +11,7 @@ import todo.javier.mera.todolist.model.TodoList;
 /**
  * Created by javie on 12/2/2016.
  */
-public interface MainActivityView {
+public interface TodosActivityView {
 
     void setToolbarTitle(String text);
     void showFragmentTodoList(TodoList todoList);
@@ -20,7 +20,6 @@ public interface MainActivityView {
     void setToolbar();
     void showSnackBar(String message, String action, Map<Integer, ItemBase> items);
     void setIndicator(int resourceId);
-    void hideSoftKeyboard(View view);
     void cancelReminder(Task task);
     void createReminder(Task task);
 }
