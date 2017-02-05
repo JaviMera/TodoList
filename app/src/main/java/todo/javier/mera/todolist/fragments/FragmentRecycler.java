@@ -128,33 +128,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-        inflater.inflate(R.menu.fragment_recycler_menu, menu);
-        MenuItem addItem = menu.findItem(R.id.action_add);
-        MenuItem deleteItem = menu.findItem(R.id.action_delete);
-        MenuItem sortItem = menu.findItem(R.id.action_sort);
-
-        deleteItem.setTitle(getDeleteTitle());
-
-        if(mIsRemovingItems) {
-
-            addItem.setVisible(false);
-            deleteItem.setVisible(true);
-            sortItem.setVisible(false);
-        }
-        else {
-
-            addItem.setVisible(true);
-            deleteItem.setVisible(false);
-            sortItem.setVisible(true);
-        }
-
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch(item.getItemId()) {

@@ -12,9 +12,9 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Slide;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.animation.DecelerateInterpolator;
 
 import java.util.Date;
 import java.util.List;
@@ -23,8 +23,6 @@ import java.util.UUID;
 
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import jp.wasabeef.recyclerview.animators.FadeInLeftAnimator;
-import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
-import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
@@ -364,8 +362,29 @@ public class FragmentTask extends FragmentRecycler<Task>
     }
 
     @Override
-    public void onNavigateClick(int position) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
+        inflater.inflate(R.menu.fragment_task_menu, menu);
+        MenuItem addItem = menu.findItem(R.id.action_add);
+        MenuItem deleteItem = menu.findItem(R.id.action_delete);
+        MenuItem sortItem = menu.findItem(R.id.action_sort);
+
+        deleteItem.setTitle(getDeleteTitle());
+
+        if(isRemovingItems()) {
+
+            addItem.setVisible(false);
+            deleteItem.setVisible(true);
+            sortItem.setVisible(false);
+        }
+        else {
+
+            addItem.setVisible(true);
+            deleteItem.setVisible(false);
+            sortItem.setVisible(true);
+        }
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override

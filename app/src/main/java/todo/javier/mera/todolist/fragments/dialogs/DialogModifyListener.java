@@ -10,5 +10,4 @@ import todo.javier.mera.todolist.model.TodoList;
 public interface DialogModifyListener<T extends ItemBase> {
 
     void onModifyItem(T item);
-    void onNavigateClick(int position);
 }

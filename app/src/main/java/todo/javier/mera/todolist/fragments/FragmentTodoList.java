@@ -2,48 +2,37 @@ package todo.javier.mera.todolist.fragments;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Slide;
-import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
-import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.adapters.RecyclerAdapter;
 import todo.javier.mera.todolist.adapters.TodolistAdapter;
-import todo.javier.mera.todolist.comparators.Comparator;
-import todo.javier.mera.todolist.comparators.ComparatorFactory;
 import todo.javier.mera.todolist.database.TodoListDataSource;
 import todo.javier.mera.todolist.database.TodoListSQLiteHelper;
 import todo.javier.mera.todolist.fragments.dialogs.DialogCreateTodoList;
 import todo.javier.mera.todolist.fragments.dialogs.DialogModifyTodoList;
 import todo.javier.mera.todolist.fragments.dialogs.DialogModifyListener;
-import todo.javier.mera.todolist.fragments.dialogs.DialogTodoListListener;
-import todo.javier.mera.todolist.model.Priority;
 import todo.javier.mera.todolist.model.Task;
 import todo.javier.mera.todolist.model.TodoList;
 
 public class FragmentTodoList extends FragmentRecycler<TodoList>
     implements
     DialogModifyListener<TodoList>,
+    TodoListNavigateListener,
     PopupMenu.OnMenuItemClickListener {
 
     private Map<String, List<Task>> mRemovableTodoLists;
-    private int mSortSelected;
 
     public static FragmentTodoList newInstance() {
 
@@ -66,6 +55,29 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     protected int getDeleteTitle() {
 
         return R.string.menu_delete_todolist;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        inflater.inflate(R.menu.fragment_todo_list_menu, menu);
+        MenuItem deleteItem = menu.findItem(R.id.action_delete);
+        MenuItem sortItem = menu.findItem(R.id.action_sort);
+
+        deleteItem.setTitle(getDeleteTitle());
+
+        if(isRemovingItems()) {
+
+            deleteItem.setVisible(true);
+            sortItem.setVisible(false);
+        }
+        else {
+
+            deleteItem.setVisible(false);
+            sortItem.setVisible(true);
+        }
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
     
     @Override
@@ -192,7 +204,6 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     @Override
     public boolean onMenuItemClick(MenuItem item) {
 
-        mSortSelected = item.getItemId();
         String sortByColumn = "";
         String order = "";
 
