@@ -2,6 +2,7 @@ package todo.javier.mera.todolist.fragments;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -76,8 +77,12 @@ public class FragmentTask extends FragmentRecycler<Task>
         mTodoList = getArguments().getParcelable(TODO_LISt);
         mSortSelected = R.id.sortByNone;
 
-        setEnterTransition(new Slide(Gravity.RIGHT));
-        setExitTransition(new Slide(Gravity.LEFT));
+        // Check the version of the current device since this feature is only available on
+        // API 21 and up
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setEnterTransition(new Slide(Gravity.RIGHT));
+            setExitTransition(new Slide(Gravity.LEFT));
+        }
     }
 
     @Override
@@ -171,12 +176,6 @@ public class FragmentTask extends FragmentRecycler<Task>
 
         TodoListDataSource dataSource = new TodoListDataSource(mParent);
         return dataSource.readTask(mTodoList.getId());
-    }
-
-    @Override
-    protected void showItem(Task item) {
-
-        // Todo: add behavior to handle a regular task click
     }
 
     @Override

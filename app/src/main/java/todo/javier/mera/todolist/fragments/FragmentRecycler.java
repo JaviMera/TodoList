@@ -57,7 +57,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
     protected abstract String getTitle();
     protected abstract RecyclerView.LayoutManager getLayoutManager(Context context);
     protected abstract List<T> getAllItems();
-    protected abstract void showItem(T item);
     protected abstract int getDeleteTitle();
     protected abstract int removeItems(List<T> itemsToRemove);
     protected abstract void updateItemPositions(Map<String, Integer> items);
@@ -264,13 +263,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
             mRemovableItems.put(position, (T)mAdapter.getItem(position));
             mParent.invalidateOptionsMenu();
         }
-    }
-
-    @Override
-    public void onNavigateClick(int position) {
-
-        T item = (T) mAdapter.getItem(position);
-        showItem(item);
     }
 
     @Override

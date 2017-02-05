@@ -9,6 +9,7 @@ import java.util.Locale;
 
 import todo.javier.mera.todolist.R;
 import todo.javier.mera.todolist.fragments.FragmentRecycler;
+import todo.javier.mera.todolist.fragments.FragmentTodoList;
 import todo.javier.mera.todolist.model.TodoList;
 
 class TodolistViewHolder extends ViewHolderBase<TodoList>
@@ -69,7 +70,7 @@ class TodolistViewHolder extends ViewHolderBase<TodoList>
             @Override
             public void onClick(View view) {
 
-                mParent.onNavigateClick(getLayoutPosition());
+                ((FragmentTodoList)mParent).onNavigateClick(getLayoutPosition());
             }
         });
 

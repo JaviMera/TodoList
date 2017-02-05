@@ -171,7 +171,6 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
     @Override
     protected RecyclerView.LayoutManager getLayoutManager(Context context) {
 
-        int orientation = getOrientation(context);
         return new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
     }
 
@@ -182,12 +181,6 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
         List<TodoList> todoLists = source.readTodoLists();
 
         return todoLists;
-    }
-
-    @Override
-    protected void showItem(TodoList item) {
-
-        mParent.showFragmentTodoList(item);
     }
 
     @Override
@@ -221,6 +214,13 @@ public class FragmentTodoList extends FragmentRecycler<TodoList>
 
             mParent.showSnackBar("ADDED NEW LIST!", null, null);
         }
+    }
+
+    @Override
+    public void onNavigateClick(int position) {
+
+        TodoList item = (TodoList) mAdapter.getItem(position);
+        mParent.showFragmentTodoList(item);
     }
 
     @Override
