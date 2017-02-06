@@ -35,12 +35,12 @@
     <dimen name="field_priority_text_size">15sp</dimen>
     <dimen name="field_priority_message_text_size">12sp</dimen>
     <dimen name="field_reminder_text_size">15sp</dimen>
-    <dimen name="create_item_text_size">15sp</dimen>
-    <dimen name="cancel_item_text_size">15sp</dimen>
+    <dimen name="action_text_size">15sp</dimen>
     <dimen name="icon_max_height">30dp</dimen>
     <dimen name="icon_max_width">30dp</dimen>
     <dimen name="priority_title_text_size">25sp</dimen>
     <dimen name="radio_button_text_size">18sp</dimen>
     <dimen name="reminder_title_text_size">25sp</dimen>
     <dimen name="main_activity_option_text_size">28sp</dimen>
+    <dimen name="action_text_size_land_sw600">40sp</dimen>
 </resources>
