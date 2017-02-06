@@ -58,10 +58,9 @@ abstract class ViewHolderBase<T extends ItemBase> extends RecyclerView.ViewHolde
         mDescriptionView.setText(text);
     }
 
-    protected void setDueDate(long dueDate) {
+    protected void setDueDate(String text) {
 
-        SimpleDateFormat dateFormat = getDateFormat();
-        mDueDateTextView.setText(dateFormat.format(dueDate));
+        mDueDateTextView.setText(text);
     }
 
     protected void setVisibility(View view, int visibility) {

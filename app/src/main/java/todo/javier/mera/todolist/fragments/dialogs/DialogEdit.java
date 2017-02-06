@@ -177,13 +177,6 @@ public abstract class DialogEdit extends DialogBase
             return;
         }
 
-        if(mDueDate == null) {
-
-            showToast(mParent, "Task due date cannot be blank.", Toast.LENGTH_SHORT);
-            mPresenter.startAnimation(mDueDateTextView, mShakeAnimation);
-            return;
-        }
-
         saveItem();
         dismiss();
     }

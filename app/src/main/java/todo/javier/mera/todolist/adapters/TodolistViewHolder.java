@@ -27,7 +27,17 @@ class TodolistViewHolder extends ViewHolderBase<TodoList>
     public void bind(TodoList todoList) {
 
         setDescription(todoList.getDescription());
-        setDueDate(todoList.getDueDate());
+
+        if(todoList.hasDueDate()) {
+
+            SimpleDateFormat dateFormat = getDateFormat();
+            setDueDate(dateFormat.format(todoList.getDueDate()));
+        }
+        else {
+
+            setDueDate("no due date");
+        }
+
         setTotalTasks(todoList.getTaskNumber());
         setBackgroundColor(todoList);
 

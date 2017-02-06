@@ -49,4 +49,20 @@ public class TodoListTest {
         // Assert
         Assert.assertEquals(expectedItemcount, mTodoList.getTaskNumber());
     }
+
+    @Test
+    public void hasDueDateReturnsTrueWithValidDate() throws Exception {
+
+        // Assert
+        Assert.assertTrue(mTodoList.hasDueDate());
+    }
+
+    @Test
+    public void hasDueDateReturnsFalseWithZeroDate() throws Exception {
+        // Act
+        mTodoList.setDueDate(0L);
+
+        // Assert
+        Assert.assertFalse(mTodoList.hasDueDate());
+    }
 }

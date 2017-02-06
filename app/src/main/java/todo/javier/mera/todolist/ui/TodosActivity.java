@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -14,6 +15,9 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -63,6 +67,10 @@ public class TodosActivity extends ActivityBase
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todos);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setEnterTransition(new Slide(Gravity.RIGHT));
+        }
+
         mPresenter = new TodosActivityPresenter(this);
         mFragmentHelper = new FragmentHelper(getSupportFragmentManager());
         mAlarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
@@ -92,25 +100,40 @@ public class TodosActivity extends ActivityBase
 
             // Check if the activity is being opened by a notification touch
             Intent intent = getIntent();
-            Bundle bundle = intent.getBundleExtra(NOTIFICATION_BUNDLE);
+
+            Bundle bundle;
+
+            bundle = intent.getBundleExtra(MainActivity.NEW_TODO_BUNDLE);
 
             if(bundle != null) {
 
-                String todoListId = bundle.getString(NOTIFICATION_TODO_ID);
-                String taskId = bundle.getString(NOTIFICATION_TASK_ID);
-
-                ContentValues values = new ContentValues();
-                values.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, 0L);
-
+                String todoListId = bundle.getString(MainActivity.NEW_TODO_ID);
                 TodoListDataSource source = new TodoListDataSource(this);
-                source.update(
-                    TodoListSQLiteHelper.TABLE_TASKS,
-                    TodoListSQLiteHelper.COLUMN_ITEMS_ID,
-                    taskId,
-                    values);
-
                 TodoList todoList = source.readTodoList(todoListId);
                 showFragmentTodoList(todoList);
+            }
+            else {
+
+                bundle = intent.getBundleExtra(NOTIFICATION_BUNDLE);
+
+                if(bundle != null) {
+
+                    String todoListId = bundle.getString(NOTIFICATION_TODO_ID);
+                    String taskId = bundle.getString(NOTIFICATION_TASK_ID);
+
+                    ContentValues values = new ContentValues();
+                    values.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, 0L);
+
+                    TodoListDataSource source = new TodoListDataSource(this);
+                    source.update(
+                        TodoListSQLiteHelper.TABLE_TASKS,
+                        TodoListSQLiteHelper.COLUMN_ITEMS_ID,
+                        taskId,
+                        values);
+
+                    TodoList todoList = source.readTodoList(todoListId);
+                    showFragmentTodoList(todoList);
+                }
             }
         }
     }

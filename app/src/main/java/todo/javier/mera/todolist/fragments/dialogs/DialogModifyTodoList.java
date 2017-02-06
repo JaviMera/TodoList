@@ -48,9 +48,12 @@ public class DialogModifyTodoList extends DialogEditTodoList {
 
             setDescriptionText(mTodoList.getDescription());
 
-            Date dueDate = new Date();
-            dueDate.setTime(mTodoList.getDueDate());
-            onDueDateSelected(dueDate);
+            if(mTodoList.getDueDate() != 0L) {
+
+                Date dueDate = new Date();
+                dueDate.setTime(mTodoList.getDueDate());
+                onDueDateSelected(dueDate);
+            }
 
             mPriority = mTodoList.getPriority();
             setPriorityText(mTodoList.getPriority().ordinal());

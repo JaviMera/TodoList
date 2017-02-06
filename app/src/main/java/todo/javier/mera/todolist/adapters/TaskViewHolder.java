@@ -50,7 +50,17 @@ class TaskViewHolder extends ViewHolderBase<Task>
     public void bind(Task task) {
 
         setDescription(task.getDescription());
-        setDueDate(task.getDueDate());
+
+        if(task.hasDueDate()) {
+
+            SimpleDateFormat dateFormat = getDateFormat();
+            setDueDate(dateFormat.format(task.getDueDate()));
+        }
+        else {
+
+            setDueDate("no due date");
+        }
+
         setDragImage(this);
         setStatus(task.getStatus() == TaskStatus.Completed);
         setBackgroundColor(task);

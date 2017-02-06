@@ -2,9 +2,13 @@ package todo.javier.mera.todolist.ui;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -30,6 +34,8 @@ public class MainActivity extends ActivityBase
     implements
     DialogTodoListListener{
 
+    public static final String NEW_TODO_ID = "new_todo_id";
+    public static final String NEW_TODO_BUNDLE = "new_todo_bundle";
     @BindView(R.id.activity_main)
     LinearLayout mLayout;
 
@@ -38,6 +44,12 @@ public class MainActivity extends ActivityBase
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setExitTransition(new Slide(Gravity.LEFT));
+        }
+
         ButterKnife.bind(this);
     }
 
@@ -45,7 +57,8 @@ public class MainActivity extends ActivityBase
     public void onViewListsClick(View view) {
 
         Intent intent = new Intent(this, TodosActivity.class);
-        startActivity(intent);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this);
+        startActivity(intent, options.toBundle());
     }
 
     @OnClick(R.id.createListLayout)
@@ -59,7 +72,7 @@ public class MainActivity extends ActivityBase
     public void onCreateTodoList(String name, Date dueDate, Priority priority) {
 
         String id = UUID.randomUUID().toString();
-        long date = dueDate.getTime();
+        long date = dueDate == null ? 0L : dueDate.getTime();
         int position = getNextPosition();
 
         TodoListDataSource source = new TodoListDataSource(this);
@@ -81,6 +94,14 @@ public class MainActivity extends ActivityBase
                 "ADDED NEW LIST!",
                 Snackbar.LENGTH_SHORT
             );
+
+            Intent intent = new Intent(this, TodosActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(NEW_TODO_ID, id);
+            intent.putExtra(NEW_TODO_BUNDLE, bundle);
+
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this);
+            startActivity(intent, options.toBundle());
 
             snackbar.show();
         }

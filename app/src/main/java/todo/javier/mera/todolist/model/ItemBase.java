@@ -125,4 +125,9 @@ public abstract class ItemBase implements Parcelable {
 
         mDueDate = newDueDate;
     }
+
+    public boolean hasDueDate() {
+
+        return mDueDate != 0L;
+    }
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import todo.javier.mera.todolist.R;
@@ -27,6 +28,7 @@ public abstract class DialogBase extends DialogFragment
         super.onAttach(context);
 
         mParent = (ActivityBase)context;
+        mShakeAnimation = AnimationUtils.loadAnimation(mParent, R.anim.shake);
     }
 
     @NonNull
