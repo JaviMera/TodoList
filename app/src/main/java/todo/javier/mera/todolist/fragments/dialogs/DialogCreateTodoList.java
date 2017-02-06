@@ -35,6 +35,6 @@ public class DialogCreateTodoList extends DialogEditTodoList {
     @Override
     protected String getSaveText() {
 
-        return "Create";
+        return "create";
     }
 }

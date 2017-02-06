@@ -41,7 +41,7 @@
                     android:scaleType="fitCenter"
                     android:padding="@dimen/item_body_pad_portrait"/>
 
-                <TextView
+                <todo.javier.mera.todolist.ui.FontTextView
                     android:id="@+id/reminderTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

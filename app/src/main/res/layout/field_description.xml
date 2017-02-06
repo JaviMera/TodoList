@@ -17,7 +17,7 @@
             android:padding="@dimen/item_body_pad_portrait"
             android:id="@+id/imageView" />
 
-        <EditText
+        <todo.javier.mera.todolist.ui.FontEditText
             android:id="@+id/editTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <todo.javier.mera.todolist.ui.FontTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/reminder_title_text"
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:padding="20dp">
 
-        <RadioButton
+        <todo.javier.mera.todolist.ui.FontRadioButton
             android:id="@+id/fiveBeforeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
             android:textSize="@dimen/radio_button_text_size"
             android:padding="10dp"/>
 
-        <RadioButton
+        <todo.javier.mera.todolist.ui.FontRadioButton
             android:id="@+id/tenBeforeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
             android:textSize="@dimen/radio_button_text_size"
             android:padding="10dp"/>
 
-        <RadioButton
+        <todo.javier.mera.todolist.ui.FontRadioButton
             android:id="@+id/twentyBeforeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
             android:textSize="@dimen/radio_button_text_size"
             android:padding="10dp"/>
 
-        <RadioButton
+        <todo.javier.mera.todolist.ui.FontRadioButton
             android:id="@+id/thirtyBeforeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             android:textSize="@dimen/radio_button_text_size"
             android:padding="10dp"/>
 
-        <RadioButton
+        <todo.javier.mera.todolist.ui.FontRadioButton
             android:id="@+id/hourBeforeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

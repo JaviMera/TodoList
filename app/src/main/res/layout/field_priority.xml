@@ -23,7 +23,7 @@
             android:orientation="vertical"
             android:layout_margin="15dp">
 
-            <TextView
+            <todo.javier.mera.todolist.ui.FontTextView
                 android:id="@+id/priorityTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
                 android:textSize="@dimen/field_priority_text_size"
                 android:textStyle="italic"/>
 
-            <TextView
+            <todo.javier.mera.todolist.ui.FontTextView
                 android:id="@+id/priorityMessageTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -11,7 +11,7 @@
         android:background="@color/colorPrimary"
         android:padding="15dp">
 
-        <TextView
+        <todo.javier.mera.todolist.ui.FontTextView
             android:id="@+id/dialogTitleView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

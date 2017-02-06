@@ -49,14 +49,14 @@
             android:layout_gravity="center"
             android:layout_centerInParent="true">
 
-            <TextView
+            <todo.javier.mera.todolist.ui.FontTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="VIEW"
                 android:textSize="@dimen/main_activity_option_text_size"
                 android:padding="5dp"/>
 
-            <TextView
+            <todo.javier.mera.todolist.ui.FontTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/main_activity_option_text_size"
@@ -90,13 +90,13 @@
             android:layout_gravity="center"
             android:layout_centerInParent="true">
 
-            <TextView
+            <todo.javier.mera.todolist.ui.FontTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="CREATE"
                 android:textSize="@dimen/main_activity_option_text_size"/>
 
-            <TextView
+            <todo.javier.mera.todolist.ui.FontTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"

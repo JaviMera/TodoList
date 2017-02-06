@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <todo.javier.mera.todolist.ui.FontTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/dialog_reminder_title"
@@ -13,7 +13,7 @@
         android:textSize="@dimen/due_date_title_text_size"
         android:padding="@dimen/due_date_title_pad"/>
 
-    <TextView
+    <todo.javier.mera.todolist.ui.FontTextView
         android:id="@+id/dateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
         android:background="#40BBBDC0"
         android:layout_margin="15dp" />
 
-    <TextView
+    <todo.javier.mera.todolist.ui.FontTextView
         android:id="@+id/timeTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         android:background="#40BBBDC0"
         android:layout_margin="15dp" />
 
-    <TextView
+    <todo.javier.mera.todolist.ui.FontTextView
         android:id="@+id/setDueDateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

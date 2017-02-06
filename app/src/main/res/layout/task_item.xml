@@ -31,7 +31,7 @@
                 android:paddingLeft="@dimen/task_data_left_pad"
                 android:layout_marginLeft="10dp">
 
-                <TextView
+                <todo.javier.mera.todolist.ui.FontTextView
                     android:id="@+id/itemDescriptionView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                     android:maxLines="1"
                     android:ellipsize="end"/>
 
-                <TextView
+                <todo.javier.mera.todolist.ui.FontTextView
                     android:id="@+id/dueDateView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
