@@ -13,14 +13,11 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.Fade;
 import android.transition.Slide;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -101,16 +98,11 @@ public class TodosActivity extends ActivityBase
             Intent intent = getIntent();
 
             Bundle bundle;
-
             bundle = intent.getBundleExtra(MainActivity.NEW_TODO_BUNDLE);
 
             if(bundle != null) {
 
-                String todoListId = bundle.getString(MainActivity.NEW_TODO_ID);
-                TodoListDataSource source = new TodoListDataSource(this);
-                TodoList todoList = source.readTodoList(todoListId);
-                showFragmentTodoList(todoList);
-
+                showFragmentTaskWithNewList(bundle);
                 showSnackBar("ADDED NEW LIST!", "", null);
             }
             else {
@@ -119,21 +111,7 @@ public class TodosActivity extends ActivityBase
 
                 if(bundle != null) {
 
-                    String todoListId = bundle.getString(NOTIFICATION_TODO_ID);
-                    String taskId = bundle.getString(NOTIFICATION_TASK_ID);
-
-                    ContentValues values = new ContentValues();
-                    values.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, 0L);
-
-                    TodoListDataSource source = new TodoListDataSource(this);
-                    source.update(
-                        TodoListSQLiteHelper.TABLE_TASKS,
-                        TodoListSQLiteHelper.COLUMN_ITEMS_ID,
-                        taskId,
-                        values);
-
-                    TodoList todoList = source.readTodoList(todoListId);
-                    showFragmentTodoList(todoList);
+                   showFragmentTaskAfterNotificationClick(bundle);
                 }
             }
         }
@@ -344,5 +322,32 @@ public class TodosActivity extends ActivityBase
         );
 
         return notificationBuilder.build();
+    }
+
+    private void showFragmentTaskAfterNotificationClick(Bundle bundle) {
+
+        String todoListId = bundle.getString(NOTIFICATION_TODO_ID);
+        String taskId = bundle.getString(NOTIFICATION_TASK_ID);
+
+        ContentValues values = new ContentValues();
+        values.put(TodoListSQLiteHelper.COLUMN_ITEMS_REMINDER, 0L);
+
+        TodoListDataSource source = new TodoListDataSource(this);
+        source.update(
+                TodoListSQLiteHelper.TABLE_TASKS,
+                TodoListSQLiteHelper.COLUMN_ITEMS_ID,
+                taskId,
+                values);
+
+        TodoList todoList = source.readTodoList(todoListId);
+        showFragmentTodoList(todoList);
+    }
+
+    private void showFragmentTaskWithNewList(Bundle bundle) {
+
+        String todoListId = bundle.getString(MainActivity.NEW_TODO_ID);
+        TodoListDataSource source = new TodoListDataSource(this);
+        TodoList todoList = source.readTodoList(todoListId);
+        showFragmentTodoList(todoList);
     }
 }

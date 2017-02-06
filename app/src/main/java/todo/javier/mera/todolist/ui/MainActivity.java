@@ -1,10 +1,13 @@
 package todo.javier.mera.todolist.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.content.pm.ActivityInfoCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.transition.Slide;
@@ -56,9 +59,7 @@ public class MainActivity extends ActivityBase
     @OnClick(R.id.viewListsLayout)
     public void onViewListsClick(View view) {
 
-        Intent intent = new Intent(this, TodosActivity.class);
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this);
-        startActivity(intent, options.toBundle());
+        startActivityWithTransition(this, TodosActivity.class);
     }
 
     @OnClick(R.id.createListLayout)
@@ -89,12 +90,7 @@ public class MainActivity extends ActivityBase
 
         if(rowId != -1 ){
 
-            Intent intent = new Intent(this, TodosActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString(NEW_TODO_ID, id);
-            intent.putExtra(NEW_TODO_BUNDLE, bundle);
-
-            startActivity(intent);
+            startActivityWithTodolist(this, TodosActivity.class, id);
         }
     }
 
@@ -106,5 +102,20 @@ public class MainActivity extends ActivityBase
        return position == -1 ? 0 : position;
     }
 
+    private void startActivityWithTransition(AppCompatActivity actLauncher, Class<?> actToLaunch) {
 
+        Intent intent = new Intent(this, actToLaunch);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(actLauncher);
+        startActivity(intent, options.toBundle());
+    }
+
+    private void startActivityWithTodolist(AppCompatActivity actLauncher, Class<?> actToLaunch, String todoId) {
+
+        Intent intent = new Intent(actLauncher, actToLaunch);
+        Bundle bundle = new Bundle();
+        bundle.putString(NEW_TODO_ID, todoId);
+        intent.putExtra(NEW_TODO_BUNDLE, bundle);
+
+        startActivity(intent);
+    }
 }
