@@ -89,21 +89,12 @@ public class MainActivity extends ActivityBase
 
         if(rowId != -1 ){
 
-            Snackbar snackbar = Snackbar.make(
-                mLayout,
-                "ADDED NEW LIST!",
-                Snackbar.LENGTH_SHORT
-            );
-
             Intent intent = new Intent(this, TodosActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString(NEW_TODO_ID, id);
             intent.putExtra(NEW_TODO_BUNDLE, bundle);
 
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this);
-            startActivity(intent, options.toBundle());
-
-            snackbar.show();
+            startActivity(intent);
         }
     }
 
@@ -114,4 +105,6 @@ public class MainActivity extends ActivityBase
 
        return position == -1 ? 0 : position;
     }
+
+
 }

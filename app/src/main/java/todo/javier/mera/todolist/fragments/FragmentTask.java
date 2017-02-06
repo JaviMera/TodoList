@@ -217,6 +217,7 @@ public class FragmentTask extends FragmentRecycler<Task>
 
         TodoListDataSource source = new TodoListDataSource(mParent);
         String taskId = UUID.randomUUID().toString();
+        long dueTime = taskDuedate == null ? 0L : taskDuedate.getTime();
         TaskStatus taskStatus = TaskStatus.Created;
 
         Task newTask = new Task(
@@ -224,7 +225,7 @@ public class FragmentTask extends FragmentRecycler<Task>
             mTodoList.getId(),
             taskDescription,
             taskStatus,
-            taskDuedate.getTime(),
+            dueTime,
             priority,
             reminderDate
         );

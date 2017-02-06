@@ -51,11 +51,14 @@ public class DialogModifyTask extends DialogEditTask {
             // Set the description of the task selected
             setDescriptionText(mTask.getDescription());
 
-            Date dueDate = new Date();
-            dueDate.setTime(mTask.getDueDate());
+            if(mTask.hasDueDate()) {
 
-            // Set the due date of the task selected
-            onDueDateSelected(dueDate);
+                // Set the due date of the task selected
+                Date dueDate = new Date();
+                dueDate.setTime(mTask.getDueDate());
+
+                onDueDateSelected(dueDate);
+            }
 
             // Set the reminder of the task selected, if there is any
             if(mTask.getReminderDate() != EMPTY_REMINDER) {

@@ -169,7 +169,6 @@ public abstract class FragmentRecycler<T extends ItemBase> extends Fragment
 
                 mParent.updateToolbarBackground(R.color.colorPrimary);
                 mParent.showSnackBar("Items deleted", "Undo", (Map<Integer, ItemBase>) mRemovableItems);
-                mParent.canDisplayToggleButton(this);
                 mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
 
                 break;

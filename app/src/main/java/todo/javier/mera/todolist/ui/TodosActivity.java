@@ -85,13 +85,12 @@ public class TodosActivity extends ActivityBase
         mPresenter.setToolbarTitle("");
 
         mPresenter.setToolbar();
-        mPresenter.toggleBackButton(false);
+        mPresenter.toggleBackButton(true);
 
         if(savedInstanceState != null) {
 
             mCurrentFragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
             mFragmentHelper.replace(R.id.fragmentContainer, mCurrentFragment, FRAGMENT_TAG);
-            canDisplayToggleButton(mCurrentFragment);
         }
         else {
 
@@ -111,6 +110,8 @@ public class TodosActivity extends ActivityBase
                 TodoListDataSource source = new TodoListDataSource(this);
                 TodoList todoList = source.readTodoList(todoListId);
                 showFragmentTodoList(todoList);
+
+                showSnackBar("ADDED NEW LIST!", "", null);
             }
             else {
 
@@ -141,15 +142,18 @@ public class TodosActivity extends ActivityBase
     @Override
     public void onBackPressed() {
 
+        // Get the current fragment in the container after a back press
+        // If this is not retrieved, Fragment task could be referenced even though the user
+        // pressed the back button to go back to Fragment To-do List
+        mCurrentFragment = (FragmentRecycler) mFragmentHelper.findFragment(FRAGMENT_TAG);
+
         if (mCurrentFragment.isRemovingItems()) {
 
             mCurrentFragment.resetItems();
             mPresenter.updateToolbarBackground(R.color.colorPrimary);
-            canDisplayToggleButton(mCurrentFragment);
         }
         else {
 
-            mPresenter.toggleBackButton(false);
             super.onBackPressed();
         }
     }
@@ -181,9 +185,6 @@ public class TodosActivity extends ActivityBase
 
     @Override
     public void showFragmentTodoList(TodoList todoList) {
-
-        // When the user selects a list, disply the back button also on the top left of the toolbar
-        mPresenter.toggleBackButton(true);
 
         mCurrentFragment = FragmentTask.newInstance(todoList);
         mFragmentHelper.replaceWithBackStack(
@@ -343,17 +344,5 @@ public class TodosActivity extends ActivityBase
         );
 
         return notificationBuilder.build();
-    }
-
-    public void canDisplayToggleButton(FragmentRecycler tFragmentRecycler) {
-
-        if(tFragmentRecycler instanceof FragmentTodoList) {
-
-            mPresenter.toggleBackButton(false);
-        }
-        else {
-
-            mPresenter.toggleBackButton(true);
-        }
     }
 }
